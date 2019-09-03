@@ -86,115 +86,144 @@
 			<div class="background">
 				<img src="/assets/img/ocean.jpg">
 			</div>
-			<span class="name white-text">User 1</span>
-			<span class="email white-text">user1@gmail.com</span>
+			<span class="name white-text">{{user.firstName}}</span>
+			<span class="email white-text">{{user.email}}</span>
 		</div>
 	</li>
-	{{!-- <li>
-		<a href="#">Patient</a>
-	</li> --}}
-	<li class="no-padding">
-        <ul class="collapsible collapsible-accordion">
-          <li>
-            <a class="collapsible-header">Patient<i class="material-icons">arrow_drop_down</i></a>
-            <div class="collapsible-body">
-				 <ul>
-					 <li class="no-padding">
-					<ul class="collapsible collapsible-accordion">
-						<li>
-							 <a class="collapsible-header">Biographical Data<i class="material-icons">arrow_drop_down</i></a>
-							 <div class="collapsible-body">
-								<ul>
-									{{!-- </li> --}}
-                						<li><a href="#!">Second</a></li>
-                						<li><a href="#!">Third</a></li>
-                						<li><a href="#!">Fourth</a></li> 
-								</ul>
-
-							 </div>
-						</li>
-						<li class="divider"></li>
-						<li><a href="#!">Contacts</a></li>
-                	<li><a href="#!">Home Meds</a></li>
-                	<li><a href="#!">Consents and Authorities</a></li>
-					<li><a href="#!">Emergency Notes</a></li>
-					<li><a href="#!">Belongings</a></li>
-					</ul>
-              </ul>
-            </div>
-          </li>
-					
-                	   
-				</ul>
-              <ul>
-                
-        </ul>
-      </li>
-	<li class="no-padding">
-		<ul class="collapsible collapsible-accordian">
+	{{#if showMenu}}
+		<li class="no-padding">
+			<ul class="collapsible collapsible-accordion">
 			<li>
-				 <a class="collapsible-header">Doctor<i class="material-icons">arrow_drop_down</i></a>
-				 <div class="collapsible-body">
-					 <ul>
-						<li><a href="#!">Notes</a></li>
-						<li class="divider"></li>
-                		<li><a href="#!">Orders</a></li>
-                		<li><a href="#!">Orders Results</a></li> 
-					 </ul>
-				 </div>
-			</li>
-		</ul>
-	</li>
-	<li class="no-padding">
-		<ul class="collapsible collapsible-accordian">
-			<li>
-				 <a class="collapsible-header">Nurse<i class="material-icons">arrow_drop_down</i></a>
-				 <div class="collapsible-body">
-					 <ul>
-						<li><a href="#!">Assessment</a></li>
-                		<li><a href="#!">Progress Notes</a></li>
-                		<li><a href="#!">Care Plan</a></li> 
-						<li><a href="#!">Discharge Planning</a></li> 
-						<li><a href="#!">Education</a></li>
-						<li class="divider"></li>
-						{{!-- start of dropdown for charts --}}
+				<a class="collapsible-header">Patient<i class="material-icons">arrow_drop_down</i></a>
+				<div class="collapsible-body">
+					<ul>
 						<li class="no-padding">
-							<ul class="collapsible collapsible-accordian">
-							<li>
-				 			<a class="collapsible-header">Charts<i class="material-icons">arrow_drop_down</i></a>
-				 			<div class="collapsible-body">
-					 			<ul>
-									<li><a href="#!">IO</a></li>
-                					<li><a href="#!">Vital</a></li>
-                					<li><a href="#!">Diabetic</a></li> 
-									<li><a href="#!">CLC</a></li> 
-									<li><a href="#!">Neurovascular</a></li> 
-					 				<li><a href="#!">Bladder Washout</a></li>
-									 <li><a href="#!">Morse Fall Scale</a></li>
-									 <li><a href="#!">Braden Scale</a></li>
-									 <li><a href="#!">Wound Chart</a></li>
-									 <li><a href="#!">Flowchart</a></li>
-								 </ul>
-				 			</div>
+							<ul class="collapsible collapsible-accordion">
+								<!--<li>
+									<a class="collapsible-header">Biographical Data<i class="material-icons">arrow_drop_down</i></a>
+									<div class="collapsible-body">
+										<ul>
+											<li><a href="#!">Second</a></li>
+											<li><a href="#!">Third</a></li>
+											<li><a href="#!">Fourth</a></li> 
+										</ul>
+									</div>
+								</li>-->
+								<li>
+									<a href="/master/edit/{{patient.patientID}}">Biographical Data</a>
+								</li>
+								{{!--<li>
+									<a class="dropdown-trigger navmenu" href="#!" data-target="History">History
+										<i class="fas fa-sort-down"></i>
+									</a>
+								</li>--}}
+								<li class="divider"></li>
+								<li><a href="#!">Contacts</a></li>
+								<li><a href="#!">Home Meds</a></li>
+								<li><a href="#!">Consents and Authorities</a></li>
+								<li><a href="#!">Emergency Notes</a></li>
+								<li><a href="#!">Belongings</a></li>
+							</ul>
 						</li>
 					</ul>
-				</li>
-						 {{!--end of dropdown for charts  --}}
-					 </ul>
-				 </div>
+				</div>
 			</li>
-		</ul>
-	</li>
+			</ul>
+		</li>
+		<li class="no-padding">
+			<ul class="collapsible collapsible-accordian">
+				<li>
+					<a class="collapsible-header">Doctor<i class="material-icons">arrow_drop_down</i></a>
+					<div class="collapsible-body">
+						<ul>
+							{{#unless userType}}
+							<li><a href="#!">Notes</a></li>
+							<li class="divider"></li>
+							<li><a href="/master/doctor/orders">Orders</a></li>
+							<li><a href="#!">Orders Results</a></li>
+							{{else}}
+							<li><a href="#!">Notes</a></li>
+							<li class="divider"></li>
+							<li><a href="/student/doctor/orders/{{recordID}}">Orders</a></li>
+							<li><a href="#!">Order Results</a></li>
+							{{/unless}}
+						</ul>
+					</div>
+				</li>
+			</ul>
+		</li>
+		<li class="no-padding">
+			<ul class="collapsible collapsible-accordian">
+				<li>
+					<a class="collapsible-header">Nurse<i class="material-icons">arrow_drop_down</i></a>
+					<div class="collapsible-body">
+						<ul>
+							<li><a href="/master/show-nursing-assessment/{{patient.patientID}}">Assessment</a></li>
+							<li><a href="#!">Progress Notes</a></li>
+							<li><a href="#!">Care Plan</a></li> 
+							<li><a href="#!">Discharge Planning</a></li> 
+							<li><a href="#!">Education</a></li>
+							<li class="divider"></li>
+							{{!-- start of dropdown for charts --}}
+							<li class="no-padding">
+								<ul class="collapsible collapsible-accordian">
+									<li>
+										<a class="collapsible-header"><i class="material-icons">arrow_drop_down</i>Charts</a>
+										<div class="collapsible-body">
+											<ul>
+												{{#unless userType}}
+												<li><a href="/master/io">IO</a></li>
+												<li><a href="/master/vital">Vital</a></li>
+												<li><a href="#!">Diabetic</a></li> 
+												<li><a href="#!">CLC</a></li> 
+												<li><a href="#!">Neurovascular</a></li> 
+												<li><a href="#!">Bladder Washout</a></li>
+												<li><a href="/master/fall">Morse Fall Scale</a></li>
+												<li><a href="/master/braden">Braden Scale</a></li>
+												<li><a href="#!">Wound Chart</a></li>
+												<li><a href="#!">Flowchart</a></li>
+												<li class="divider"></li>
+												{{else}} {{!-- If usertype is master --}}
+												<li><a href="/student/io/{{recordID}}">IO</a></li>
+												<li><a href="/student/vital/{{recordID}}">Vital</a></li>
+												<li><a href="#!">Diabetic</a></li>
+												<li><a href="#!">CLC</a></li>
+												<li><a href="#!">Neurovascular</a></li>
+												<li><a href="#!">Bladder Washout</a></li>
+												<li><a href="/student/fall/{{recordID}}">Morse Fall Scale</a></li>
+												<li><a href="/student/braden/{{recordID}}">Braden Scale</a></li>
+												<li><a href="#!">Wound Chart</a></li>
+												<li><a href="#!">Flowsheet</a></li>
+												<li class="divider"></li>
+												{{/unless}}
+											</ul>
+										</div>
+									</li>
+								</ul>
+							</li>
+							{{!--end of dropdown for charts  --}}
+						</ul>
+					</div>
+				</li>
+			</ul>
+		</li>
+	{{/if}}
 	<li class="no-padding">
 		<ul class="collapsible collapsible-accordian">
 			<li>
-				 <a class="collapsible-header">User<i class="material-icons">arrow_drop_down</i></a>
-				 <div class="collapsible-body">
-					 <ul>
+				<a class="collapsible-header">
+					<i class="material-icons">arrow_drop_down</i>
+					<i class="far fa-user" style="font-size: 17px; color: #ff7726"></i>{{user.firstName}}
+				</a>
+				<div class="collapsible-body">
+					<ul>
 						<li><a href="#!">Settings</a></li>
-                		<li><a href="#!">Logout</a></li>
-					 </ul>
-				 </div>
+						<li>
+							<a href="https://login.microsoftonline.com/common/oauth2/logout?post_logout_redirect_uri=https://localhost
+							/logout">Logout</a>
+						</li>
+					</ul>
+				</div>
 			</li>
 		</ul>
 	</li>
