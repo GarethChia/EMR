@@ -22,12 +22,13 @@
 						</a>
 					</li>
 				</ul>
+				
 				{{#if patient}}
 					{{>common/_patient-info}}
 
 					{{#if showMenu}}
 						<!-- Beginning of navbar menu items-->
-						<ul class="right hide-on-med-and-down">
+						<ul class="right">
 							<li>
 								<a class="dropdown-trigger navmenu" href="#!" data-target="Patient">
 									Patient
@@ -89,19 +90,43 @@
 			<span class="email white-text">user1@gmail.com</span>
 		</div>
 	</li>
-	<li>
+	{{!-- <li>
 		<a href="#">Patient</a>
-	</li>
+	</li> --}}
 	<li class="no-padding">
         <ul class="collapsible collapsible-accordion">
           <li>
             <a class="collapsible-header">Biographical Data<i class="material-icons">arrow_drop_down</i></a>
             <div class="collapsible-body">
+				 <ul>
+                	    <li><a href="#!">Second</a></li>
+                		<li><a href="#!">Third</a></li>
+                		<li><a href="#!">Fourth</a></li> 
+				</ul>
               <ul>
-                <li><a href="#!">First</a></li>
+                <li class="no-padding">
+					<ul class="collapsible collapsible-accordion">
+						<li>
+							 <a class="collapsible-header">Patient<i class="material-icons">arrow_drop_down</i></a>
+							 <div class="collapsible-body">
+								 <ul>
+									</li>
+                						<li><a href="#!">Contacts</a></li>
+                						<li><a href="#!">Home Meds</a></li>
+                						<li><a href="#!">Consents and Authorities</a></li>
+										<li><a href="#!">Emergency Notes</a></li>
+										<li><a href="#!">Belongings</a></li>
+									
+								 </ul>
+
+							 </div>
+						</li>
+					</ul>
+					{{!-- <a href="#!">Biographical Data</a> --}}
+				{{!-- </li>
                 <li><a href="#!">Second</a></li>
                 <li><a href="#!">Third</a></li>
-                <li><a href="#!">Fourth</a></li>
+                <li><a href="#!">Fourth</a></li> --}}
               </ul>
             </div>
           </li>
