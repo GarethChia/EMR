@@ -225,14 +225,3 @@
 	/logout"
 	>Logout</a></li>
 </ul>
-
-<script>
-	document.addEventListener('DOMContentLoaded', function(){
-		afterAngularOrReactHasCreatedAllDOM ();
-	});
-	function afterAngularOrReactHasCreatedAllDOM (){
-		// Because they were created by Angular/React after Materialize CSS finished its initialization scripts
-		// Manually make all DOM with .collapsible collapsible 
-		$('.collapsible').collapsible();
-	}
-</script>

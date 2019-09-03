@@ -6,6 +6,8 @@ function initMaterialzeCSS(){
 	initDropdownMenu();
 	initTabs();
 	initDropdownButton();
+	// dropdown list for side navbar
+	afterAngularOrReactHasCreatedAllDOM ();
 }
 
 function initSideNav(){
@@ -184,3 +186,9 @@ $(function(){
 });
 
 
+// dropdown list for the side navbar
+function afterAngularOrReactHasCreatedAllDOM (){
+	// Because they were created by Angular/React after Materialize CSS finished its initialization scripts
+	// Manually make all DOM with .collapsible collapsible 
+	$('.collapsible').collapsible();
+}
