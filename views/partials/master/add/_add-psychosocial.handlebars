@@ -1,0 +1,201 @@
+<!-- CARD WITH TITLE -->
+<div class="card purple lighten-5">
+	<div class="card-content">
+		<div id="psychoSocial" class="section scrollspy">
+			<span class="card-title blue-text darken-3">Psycho Social</span>
+			<br>
+			<span class="purple-text darken-2">Emergency Contact</span>
+			<div class="row">
+
+				{{!-- ================================================================================================== --}}
+				{{!-- Emergency Contact --}}
+				<div class="col s12 m6 l6 input-field">
+					<input id="emgName" type="text" name="emgName">
+					<label for="emgName">Contact Name</label>
+				</div>
+
+				{{!-- Relationship --}}
+				<div class="col s12 m6 l6 input-field">
+					<input id="emgRel" type="text" name="emgRel">
+					<label for="emgRel">Relationship</label>
+				</div>
+
+				{{!-- ================================================================================================== --}}
+				{{!-- Emergency Mobile phone --}}
+				<div class="col s12 m4 l4 input-field">
+					<input id="emgMobile" type="text" name="emgMobile">
+					<label for="emgMobile">Mobile Phone</label>
+				</div>
+
+				{{!-- Emergency Home Phone --}}
+				<div class="col s12 m4 l4 input-field">
+					<input id="emgHome" type="text" name="emgHome">
+					<label for="emgHome">Home Phone</label>
+				</div>
+
+				{{!-- Emergency Office phone --}}
+				<div class="col s12 m4 l4 input-field">
+					<input name="emgOffice" id="emgOffice" type="text">
+					<label for="emgOffice">Office Phone</label>
+				</div>
+
+			</div>
+
+			{{!-- ================================================================================================== --}}
+			{{!-- Care Giver Information--}}
+			<span class="purple-text darken-2">Care Giver Information</span>
+			<div class="row">
+
+				{{!-- Care Giver Name--}}
+				<div class="col s12 m4 l4 input-field">
+					<input id="careName" type="text" name="careName">
+					<label for="careName">Care Giver Name</label>
+				</div>
+
+				{{!-- Care Giver Relationship --}}
+				<div class="col s12 m4 l4 input-field">
+					<input id="careRel" type="text" name="careRel">
+					<label for="careRel">Relationship</label>
+				</div>
+
+				{{!-- Care Giver Occumpation --}}
+				<div class="col s12 m4 l4 input-field">
+					<input name="careOccu" id="careOccu" type="text">
+					<label for="careOccu">Occupation</label>
+				</div>
+
+				{{!-- ================================================================================================== --}}
+				{{!-- Care Mobile phone --}}
+				<div class="col s12 m4 l4 input-field">
+					<input id="careMobile" type="text" name="careMobile">
+					<label for="careMobile">Mobile Phone</label>
+				</div>
+
+				{{!-- Emergency Home Phone --}}
+				<div class="col s12 m4 l4 input-field">
+					<input id="careHome" type="text" name="careHome">
+					<label for="careHome">Home Phone</label>
+				</div>
+
+				{{!-- Emergency Office phone --}}
+				<div class="col s12 m4 l4 input-field">
+					<input name="careOffice" id="careOffice" type="text">
+					<label for="careOffice">Office Phone</label>
+				</div>
+			</div>
+
+			{{!-- ================================================================================================== --}}
+			{{!-- Personal Information--}}
+			<span class="purple-text darken-2">Personal Information</span>
+			<div class="row">
+				{{!-- Accomodation --}}
+				<div class="col s12 m3 l2" style="padding-top:20px">
+					<label for="accomodation" style="font-size: 15px">Accommodation</label>
+				</div>
+				<div class="col s12 m9 l10" style="padding-top:20px">
+					<label>
+						<input id="alone" name="accomodation" type="radio" value="Alone"/>
+						<span style="padding-left: 25px; padding-right: 10px">Alone</span>
+					</label>
+					<label>
+						<input id="family" name="accomodation" type="radio" value="Family"/>
+						<span style="padding-left: 25px; padding-right: 10px">Family</span>
+					</label>
+					<label>
+						<input id="accomodationUnable" name="accomodation" type="radio" value="Unable"/>
+						<span style="padding-left: 25px; padding-right: 10px">Unable to asssess</span>
+					</label>
+				</div>
+			</div>
+
+			{{!-- Hospitalisation concerns --}}
+			<div class="row">
+				<div class="col s12 m3 l2" style="padding-top:20px">
+					<label style="font-size: 15px">Hospitalisation Concerns</label>
+				</div>
+				<div class="col s12 m9 l10" style="padding-top:20px">
+					<label>
+						<input id="fear" name="hospConcerns" type="checkbox" value="Fear"/>
+						<span style="padding-left: 25px; padding-right: 10px">Fear</span>
+					</label>
+					<label>
+						<input id="anxiety" name="hospConcerns" type="checkbox" value="Anxiety"/>
+						<span style="padding-left: 25px; padding-right: 10px">Anxiety</span>
+					</label>
+					<label>
+						<input id="depressed" name="hospConcerns" type="checkbox" value="Depressed"/>
+						<span style="padding-left: 25px; padding-right: 10px">Depressed</span>
+					</label>
+					<label>
+						<input id="worry" name="hospConcerns" type="checkbox" value="Worry"/>
+						<span style="padding-left: 25px; padding-right: 10px">Worry</span>
+					</label>
+					<label>
+						<input id="noneConcerns" name="hospConcerns" type="checkbox" value="None"
+							   onclick="resetExceptNone('hospConcerns', 'noneConcerns')"/>
+						<span style="padding-left: 25px; padding-right: 10px">None</span>
+					</label>
+				</div>
+			</div>
+
+			{{!--Spiritual concerns --}}
+			<div class="row">
+				<div class="col s12 m3 l2" style="padding-top:20px">
+					<label style="font-size: 15px">Spiritual Concerns</label>
+				</div>
+				<div class="col s12 m9 l10" style="padding-top:20px">
+					<label>
+						<input id="spiritUnable" name="spiritConcerns" type="radio" value="Unable"/>
+						<span style="padding-left: 25px; padding-right: 10px">Unable to Assess</span>
+					</label>
+					<label>
+						<input id="spiritCounselling" name="spiritConcerns" type="radio" value="Counselling"/>
+						<span style="padding-left: 25px; padding-right: 10px">Request Counselling</span>
+					</label>
+					<label>
+						<input id="spiritAssistance" name="spiritConcerns" type="radio" value="Assistance"/>
+						<span style="padding-left: 25px; padding-right: 10px">Assistance Needed</span>
+					</label>
+					<label>
+						<input id="spiritNo" name="spiritConcerns" type="radio" value="None"/>
+						<span style="padding-left: 25px; padding-right: 10px">None</span>
+					</label>
+				</div>
+			</div>
+
+			{{!-- Preferred languages --}}
+			<div class="row">
+				<div class="col s12 m3 l2" style="padding-top:20px">
+					<label style="font-size: 15px">Preferred Languages</label>
+				</div>
+
+				<div class="col s12 m9 l5" style="padding-top:20px">
+					<label>
+						<input id="english" name="prefLang" type="checkbox" value="English"/>
+						<span style="padding-left: 25px; padding-right: 10px">English</span>
+					</label>
+					<label>
+						<input id="mandarin" name="prefLang" type="checkbox" value="Mandarin"/>
+						<span style="padding-left: 25px; padding-right: 10px">Mandarin</span>
+					</label>
+					<label>
+						<input id="malay" name="prefLang" type="checkbox" value="Malay"/>
+						<span style="padding-left: 25px; padding-right: 10px">Malay</span>
+					</label>
+					<label>
+						<input id="tamil" name="prefLang" type="checkbox" value="Tamil"/>
+						<span style="padding-left: 25px; padding-right: 10px">Tamil</span>
+					</label>
+				</div>
+
+				{{!-- Other languages --}}
+				<div class="col s12 m12 l5 input-field">
+					<input name="otherLang" id="otherLang" type="text">
+					<label for="otherLang">Other Languages</label>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+

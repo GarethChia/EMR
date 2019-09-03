@@ -1,0 +1,542 @@
+<style>
+	.tabs .indicator {
+        background-color: #6A1B9A;
+    }
+
+    .tabs .tab a:focus, .tabs .tab a:focus.active {
+        background: transparent;
+    }
+</style>
+<br>
+<div class="row">
+    <div class="col s12">
+        <div class="tabs">
+            <li class="tab col s3" id="tempTab"><a class="purple-text text-darken-3" id="tab1" href="#temperature" onclick="change('Temperature', 'chart')">Temperature</a></li>
+            <li class="tab col s3" id="painTab"><a class="purple-text text-darken-3" id="tab2" href="#pain" onclick="change('Pain', 'painChart')">Pain</a></li>
+            <li class="tab col s3" id="hrOxyTab"><a class="purple-text text-darken-3" id="tab3" href="#hrOxy" onclick="change('Heart Rate & Oxygen', 'oxyChart')">Heart Rate & Oxygen</a></li>
+            <li class="tab col s3" id="bpTab"><a class="purple-text text-darken-3" id="tab4" href="#bp" onclick="change('Blood Pressure', 'bpChart')">Blood Pressure</a></li>
+        </div>
+    </div>
+</div>
+
+<div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px; text-align: center" id="chartTitle">Temperature Chart</div>
+
+<div class="row" style="text-align: center">
+
+	<div class="col m4 input-field">
+		<input id="fromDate" type="text" class="datepicker" name="fromDate">
+		<label for="fromDate">From Date</label>
+		<span class="helper-text">dd/mm/yyyy</span>
+	</div>
+
+	<div class="col m4 input-field">
+		<input id="toDate" type="text" class="datepicker" name="toDate">
+		<label for="toDate">To Date</label>
+		<span class="helper-text">dd/mm/yyyy</span>
+	</div>
+
+	<div class="col m4 input-field">
+		
+		{{#unless userType}}
+		<!-- <button class="btn waves-effect waves-light red" style="width: 150px; margin-left: 70px;" type="submit" onclick="window.location.href='/master/vital'">Back
+		{{else}}
+		<button class="btn waves-effect waves-light red" style="width: 150px; margin-left: 70px;" type="submit" onclick="window.location.href='/student/vital/{{recordID}}'">Back
+		{{/unless}}	
+			<i class="material-icons right">cancel</i>
+		</button> -->
+
+		<button class="btn waves-effect waves-light" style="width: 150px; float:right;" id="dateCheck" type="button">Check
+			<i class="material-icons right">send</i>
+		</button>
+
+	</div>
+
+</div>
+
+<div id="temperature">
+	<div class="row" id="tempChart">
+
+	</div>
+</div>
+
+<div id="pain">
+	<div class="row" id="painChart">
+
+	</div>
+</div>
+
+<div id="hrOxy">
+	<div class="row" id="hrOxyChart">
+
+	</div>
+</div>
+
+<div id="bp">
+	<div class="row" id="bPressureChart">
+
+	</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts@latest"></script>
+<script
+		src="https://code.jquery.com/jquery-3.3.1.min.js"
+		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+		crossorigin="anonymous">
+</script>
+<script>
+
+	var currentChart = 'chart';
+	var vitalData = [];
+	var painData = [];
+	var hrData = [];
+	var o2Data = [];
+	var respData = [];
+	var sbpData = [];
+	var dbpData = [];
+
+	function change(title, chart){ 
+		document.getElementById('chartTitle').innerHTML = title + " Chart";
+		currentChart = chart;
+	};
+	
+	document.addEventListener('DOMContentLoaded', () => {
+		M.Datepicker.init(document.querySelector('#fromDate'), {
+            maxDate: new Date(),
+            format: 'dd/mm/yyyy',
+			showClearBtn: true
+        });
+
+		M.Datepicker.init(document.querySelector('#toDate'), {
+            maxDate: new Date(),
+            format: 'dd/mm/yyyy',
+			showClearBtn: true
+        });
+	});
+	
+    var tempOptions = {
+			chart: {
+				type: 'line',
+				stacked: false,
+				height: 600,
+				zoom: {
+					type: 'x',
+					enabled: true
+				},
+				toolbar: {
+					autoSelected: 'zoom'
+				}
+			},
+			dataLabels: {
+				enabled: false
+			},
+			series: [{
+				name: 'Temperature',
+				data: [
+                    {{#each chartVal}}
+                {
+                        x:'{{this.datetime}}',
+                        y: {{this.temp}}
+                },
+                    {{/each}}
+				]
+			}],
+			markers: {
+				size: 5,
+			},
+			yaxis: {
+				min: 35,
+				max: 42,
+				forceNiceScale: true,
+				tickAmount: 7,
+				title: {
+					text: 'Temperature'
+				},
+			},
+			xaxis: {
+				type: 'datetime',
+				labels: {
+					datetimeFormatter: {
+						year: 'yyyy',
+						month: 'MMM yyyy',
+						day: 'dd MMM',
+						hour: 'HH:mm dd MMM'
+					}
+				}
+
+			},
+			annotations :{
+				yaxis: [{
+					y: 36,
+					y2: 37.5,
+					borderColor: '#000',
+					fillColor: 'green',
+					opacity: 0.2,
+					label: {
+						borderColor: 'white',
+						style: {
+							fontSize: '14px',
+							color: 'white',
+							background: 'green'
+						},
+						text: 'Normal'
+					}
+				}]
+			},
+			tooltip: {
+				enable: true,
+				x: {
+					show: true,
+					format: 'HH:mm dd MMM',
+				},
+				y: {
+					formatter: function (val) {
+						return val.toFixed(1);
+					},
+				},
+			}
+		};
+
+		var painOptions = {
+			chart: {
+				type: 'line',
+				stacked: false,
+				height: 600,
+				zoom: {
+					type: 'x',
+					enabled: true
+				},
+				toolbar: {
+					autoSelected: 'zoom'
+				}
+			},
+			dataLabels: {
+				enabled: false
+			},
+			series: [{
+				name: 'Pain',
+				data: [
+                    {{#each painVal}}
+                {
+                        x:'{{this.datetime}}',
+                        y: {{this.painScore}}
+                },
+                    {{/each}}
+				]
+			}],
+			markers: {
+				size: 5,
+			},
+			yaxis: {
+				min: 0,
+				max: 10,
+				forceNiceScale: true,
+				tickAmount: 3,
+				title: {
+					text: 'Pain'
+				},
+			},
+			xaxis: {
+				type: 'datetime',
+				labels: {
+					datetimeFormatter: {
+						year: 'yyyy',
+						month: 'MMM yyyy',
+						day: 'dd MMM',
+						hour: 'HH:mm dd MMM'
+					}
+				}
+
+			},
+			tooltip: {
+				enable: true,
+				y: {
+					formatter: function (val) {
+						return val;
+					},
+				},
+				x: {
+					show: true,
+					format: 'HH:mm dd MMM',
+				}
+			}
+		};
+		
+		var hrOxyOptions = {
+			chart: {
+				type: 'line',
+				stacked: false,
+				height: 600,
+				zoom: {
+					type: 'x',
+					enabled: true
+				},
+				toolbar: {
+					autoSelected: 'zoom'
+				}
+			},
+			dataLabels: {
+				enabled: false
+			},
+			series: [{
+				name: 'Heart Rate',
+				data: [
+                    {{#each chartVal}}
+                {
+					x:'{{this.datetime}}',
+					y: {{this.heartRate}}
+                },
+                    {{/each}}
+				]
+			},
+			{
+				name: 'SpO2',
+				data: [
+					{{#each oxyVal}}
+				{
+					x:'{{this.datetime}}',
+					y: {{this.spo2}}
+				},
+					{{/each}}
+				]
+			},
+			{
+				name: 'Respiratory',
+				data: [
+					{{#each chartVal}}
+				{
+					x:'{{this.datetime}}',
+					y: {{this.resp}}
+				},
+					{{/each}}
+				]
+			}],
+			markers: {
+				size: 5,
+			},
+			yaxis: {
+				min: 0,
+				max: 120,
+				forceNiceScale: true,
+				tickAmount: 12,
+				title: {
+					text: 'Heart Rate & Oxygen'
+				}
+			},
+			xaxis: {
+				type: 'datetime',
+				labels: {
+					datetimeFormatter: {
+						year: 'yyyy',
+						month: 'MMM yyyy',
+						day: 'dd MMM',
+						hour: 'HH:mm dd MMM'
+					}
+				}
+			},
+			tooltip: {
+				y: [{
+				title: {
+					formatter: function (val) {
+						return val + ' (BPM)'
+						}
+					}
+				}, {
+				title: {
+					formatter: function (val) {
+						return val + ' (%)'
+						}
+					}
+				}, {
+					title: {
+						formatter: function (val) {
+							return val  
+						}
+					}
+				}],
+				x: {
+					show: true,
+					format: 'HH:mm dd MMM',
+				}
+			}
+		};
+
+		var bpOptions = {
+			chart: {
+				type: 'line',
+				stacked: false,
+				height: 600,
+				zoom: {
+					type: 'x',
+					enabled: true
+				},
+				toolbar: {
+					autoSelected: 'zoom'
+				}
+			},
+			dataLabels: {
+				enabled: false
+			},
+			series: [{
+				name: 'Systolic',
+				data: [
+                    {{#each chartVal}}
+                {
+					x:'{{this.datetime}}',
+					y: {{this.sbp}}
+                },
+                    {{/each}}
+				]
+			},
+			{
+				name: 'Diastolic',
+				data: [
+					{{#each chartVal}}
+				{
+					x:'{{this.datetime}}',
+					y: {{this.dbp}}
+				},
+					{{/each}}
+				]
+			}],
+			markers: {
+				size: 5,
+			},
+			yaxis: {
+				min: 0,
+				max: 120,
+				forceNiceScale: true,
+				tickAmount: 6,
+				title: {
+					text: 'Blood Pressure'
+				}
+			},
+			xaxis: {
+				type: 'datetime',
+				labels: {
+					datetimeFormatter: {
+						year: 'yyyy',
+						month: 'MMM yyyy',
+						day: 'dd MMM',
+						hour: 'HH:mm dd MMM'
+					}
+				}
+			},
+			tooltip: {
+				y: [{
+				title: {
+					formatter: function (val) {
+						return val
+						}
+					}
+				}, {
+				title: {
+					formatter: function (val) {
+						return val
+						}
+					}
+				}],
+				x: {
+					show: true,
+					format: 'HH:mm dd MMM',
+				}
+			}
+		};
+
+		var chart = new ApexCharts(
+			document.querySelector("#tempChart"), tempOptions);
+		chart.render();
+
+		var painChart = new ApexCharts(
+			document.querySelector("#painChart"), painOptions);
+		painChart.render();
+
+		var oxyChart = new ApexCharts(
+			document.querySelector('#hrOxyChart'), hrOxyOptions);
+		oxyChart.render();
+
+		var bpChart = new ApexCharts(
+			document.querySelector('#bPressureChart'), bpOptions);
+		bpChart.render();
+
+		$(document).ready(() => {
+        $('.tabs').tabs();
+		$('#dateCheck').click(() => {
+			url = '';
+			{{#unless userType}}
+				url = '/master/chart/update'
+			{{else}} 
+				url = '/student/chart/update/{{recordID}}'
+			{{/unless}}
+			$.ajax({
+				url: url,
+				method: 'GET',
+				contentType: 'application/json',
+				data: {
+					fromDate: $('#fromDate').val(),
+					toDate: $('#toDate').val()
+					},
+				success: (result) => {
+					vitalData = [];
+					painData = [];
+					hrData = [];
+					o2Data = [];
+					respData = [];
+					sbpData = [];
+					dbpData = [];
+					result.vital.forEach(key => {
+						vitalData.push({x: key.datetime, y:key.temp});
+						hrData.push({x: key.datetime, y: key.heartRate});
+						dbpData.push({x: key.datetime, y: key.dbp});
+						sbpData.push({x: key.datetime, y: key.sbp});
+						respData.push({x: key.datetime, y: key.resp});
+					});
+					result.pain.forEach(key => {
+						painData.push({x: key.datetime, y: key.painScore})
+					});
+					result.oxygen.forEach(key => {
+						o2Data.push({x: key.datetime, y: key.spo2})
+					});
+					updateChart(currentChart);
+					}
+				})
+			})
+		});
+
+		function updateChart(name){
+			switch(name) {
+				case 'chart':
+					chart.updateSeries([{
+						data: vitalData
+					}]);
+					break;
+
+				case 'painChart': 
+					painChart.updateSeries([{
+						data: painData
+					}]);
+					break;
+
+				case 'oxyChart': 
+					oxyChart.updateSeries([{
+						data: hrData
+					},
+					{
+						data: o2Data
+					},
+					{
+						data: respData
+					}])
+					break;
+
+				case 'bpChart': 
+					bpChart.updateSeries([{
+						data: sbpData
+					},
+					{
+						data: dbpData
+					}])
+					break;
+			}
+		}
+
+</script>

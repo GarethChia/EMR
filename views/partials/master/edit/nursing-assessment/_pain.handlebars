@@ -1,0 +1,148 @@
+<!-- CARD WITH TITLE -->
+<div class="card red lighten-4">
+	<div class="card-content">
+		<div id="pain" class="section scrollspy">
+			<span class="card-title blue-text darken-5">Pain Assessment</span>
+
+			{{!--Comfort ==================================================================================== --}}
+			<div class="row" style="padding-top:20px">
+				<div class="col s12 m2 l2" >
+					<label style="font-size: 15px">Pain present</label>
+				</div>
+
+				<div class="col s12 m4 l4">
+					<label>
+						<input id="painPresent" name="painPresent" type="radio" value="true"
+							{{ setRadioButton assessment.painPresent true }}/>
+						<span style="padding-left: 25px; padding-right: 10px">Yes (inform doctor)</span>
+					</label>
+					<label>
+						<input id="painAbsent" name="painPresent" type="radio" value="false"
+							{{ setRadioButton assessment.painPresent false }}/>
+						<span style="padding-left: 25px; padding-right: 10px">No</span>
+					</label>
+				</div>
+
+				<div class="col s12 m1 l1">
+					<label style="font-size: 15px">Pain scale</label>
+				</div>
+
+				<div class="col s12 m5 l5">
+					<label>
+						<input id="painScale" name="painScale" type="radio" value="Numeric"
+							{{checked assessment.painScale 'Numeric'}}/>
+						<span style="padding-left: 25px; padding-right: 10px">Numeric</span>
+					</label>
+					<label>
+						<input id="painScale" name="painScale" type="radio" value="Faces"
+							{{checked assessment.painScale 'Faces'}}/>
+						<span style="padding-left: 25px; padding-right: 10px">Faces</span>
+					</label>
+					<label>
+						<input id="painScale" name="painScale" type="radio" value="Behavioural"
+							{{checked assessment.painScale 'Behavioural'}}/>
+						<span style="padding-left: 25px; padding-right: 10px">Behavioural</span>
+					</label>
+				</div>
+			</div>
+
+
+			{{!-- Behavioural ==================================================================================== --}}
+			<div class="row">
+				<div class="col s12 m2 l2" style="padding-top:20px">
+					<label style="font-size: 15px">Behavioural</label>
+				</div>
+				<div class="col s12 m10 l10" >
+					<div class="input-field">
+						<input id="behavioural" name="behavioural" type="text" value="{{assessment.behavioural}}"/>
+						<label for="behavioural">Describe</label>
+						<span class="helper-text"></span>
+					</div>
+				</div>
+			</div>
+
+			{{!-- Onset ==================================================================================== --}}
+			<div class="row">
+				<div class="col s12 m2 l2" style="padding-top:20px">
+					<label style="font-size: 15px">Onset</label>
+				</div>
+				<div class="col s12 m10 l10" >
+					<div class="input-field">
+						<input id="onset" name="onset" type="text" value="{{assessment.onset}}"/>
+						<label for="onset">Describe</label>
+						<span class="helper-text"></span>
+					</div>
+				</div>
+			</div>
+
+			{{!-- Location ==================================================================================== --}}
+			<div class="row">
+				<div class="col s12 m2 l2" style="padding-top:20px">
+					<label style="font-size: 15px">Location</label>
+				</div>
+				<div class="col s12 m10 l10" >
+					<div class="input-field">
+						<input id="location" name="location" type="text" value="{{assessment.location}}"/>
+						<label for="location">Describe</label>
+						<span class="helper-text"></span>
+					</div>
+				</div>
+			</div>
+			{{!-- Characteristic ==================================================================================== --}}
+			<div class="row">
+				<div class="col s12 m2 l2" style="padding-top:20px">
+					<label style="font-size: 15px">Characteristic</label>
+				</div>
+				<div class="col s12 m10 l10" >
+					<div class="input-field">
+						<input id="characteristic" name="characteristic" type="text" value="{{assessment.characteristic}}"/>
+						<label for="characteristic">Describe</label>
+						<span class="helper-text"></span>
+					</div>
+				</div>
+			</div>
+
+			{{!-- Associated Symptoms =========================================================================== --}}
+			<div class="row">
+				<div class="col s12 m2 l2" style="padding-top:20px">
+					<label style="font-size: 15px">Associated Symptoms</label>
+				</div>
+				<div class="col s12 m10 l10" >
+					<div class="input-field">
+						<input id="symptoms" name="symptoms" type="text" value="{{assessment.symptoms}}"/>
+						<label for="symptoms">Describe</label>
+						<span class="helper-text"></span>
+					</div>
+				</div>
+			</div>
+
+			{{!-- Relieving/Aggravating Factors ==================================================================================== --}}
+			<div class="row">
+				<div class="col s12 m2 l2" style="padding-top:20px">
+					<label style="font-size: 15px">Relieving/Aggravating Factors</label>
+				</div>
+				<div class="col s12 m10 l10" >
+					<div class="input-field">
+						<input id="factors" name="factors" type="text" value="{{assessment.factors}}"/>
+						<label for="factors">Describe</label>
+						<span class="helper-text"></span>
+					</div>
+				</div>
+			</div>
+
+			{{!-- Treatment ==================================================================================== --}}
+			<div class="row">
+				<div class="col s12 m2 l2" style="padding-top:20px">
+					<label style="font-size: 15px">Treatment</label>
+				</div>
+				<div class="col s12 m10 l10" >
+					<div class="input-field">
+						<input id="treatment" name="treatment" type="text" value="{{assessment.treatment}}"/>
+						<label for="treatment">Describe</label>
+						<span class="helper-text"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,127 @@
+<!-- CARD WITH TITLE -->
+<div class="card red lighten-5">
+	<div class="card-content">
+		<div id="respiratory" class="section scrollspy">
+			<span class="card-title blue-text darken-3">Respiratory</span>
+
+			{{!-- Respiratory --}}
+
+			{{!-- Breathing pattern ==================================================================================== --}}
+			<div class="row">
+				<div class="col s12 m2 l2" style="padding-top:20px">
+					<label style="font-size: 15px">Breathing pattern</label>
+				</div>
+
+				<div class="col s12 m5 l5" style="padding-top:20px">
+					<label>
+						<input id="regular" name="breathingPattern" type="checkbox" value="Regular"
+							{{checked assessment.breathingPattern 'Regular'}}/>
+						<span style="padding-left: 25px; padding-right: 10px">Regular</span>
+					</label>
+					<label>
+						<input id="irregular" name="breathingPattern" type="checkbox" value="Irregular"
+							{{checked assessment.breathingPattern 'Irregular'}}/>
+						<span style="padding-left: 25px; padding-right: 10px">Irregular</span>
+					</label>
+					<label>
+						<input id="strong" name="breathingPattern" type="checkbox" value="Strong"
+							{{checked assessment.breathingPattern 'Strong'}}/>
+						<span style="padding-left: 25px; padding-right: 10px">Strong</span>
+					</label>
+					<label>
+						<input id="tready" name="breathingPattern" type="checkbox" value="Tready"
+							{{checked assessment.breathingPattern 'Tready'}}/>
+						<span style="padding-left: 25px; padding-right: 10px">Tready</span>
+					</label>
+					<label>
+						<input id="weak" name="breathingPattern" type="checkbox" value="Weak"
+							{{checked assessment.breathingPattern 'Weak'}}/>
+						<span style="padding-left: 25px; padding-right: 10px">Weak</span>
+					</label>
+				</div>
+
+				{{!-- Breathing pattern remarks --}}
+				<div class="col s12 m5 l5 input-field">
+					<input id="breathingRemarks" name="breathingRemarks" type="text"
+						   value="{{assessment.breathingRemarks}}"/>
+					<label for="breathingRemarks">Remarks</label>
+				</div>
+			</div>
+
+			{{!-- Presence of==================================================================================== --}}
+			<div class="row">
+				<div class="col s12 m2 l2">
+					<label style="font-size: 15px">Presence of</label>
+				</div>
+
+				<div class="col s12 m10 l10" >
+					<label>
+						<input id="dyponea" name="breathingPresence" type="checkbox" value="Dyponea"
+							{{resetExceptNone assessment.breathingPresence 'Dyponea' 'None'}}/>
+						<span style="padding-left: 25px; padding-right: 10px">Dyponea</span>
+					</label>
+					<label>
+						<input id="orthopnoea" name="breathingPresence" type="checkbox" value="Orthopnoea"
+							{{resetExceptNone assessment.breathingPresence 'Orthopnoea' 'None'}}/>
+						<span style="padding-left: 25px; padding-right: 10px">Orthopnoea</span>
+					</label>
+					<label>
+						<input id="wheeze" name="breathingPresence" type="checkbox" value="Wheeze"
+							{{resetExceptNone assessment.breathingPresence 'Wheeze' 'None'}}/>
+						<span style="padding-left: 25px; padding-right: 10px">Wheeze</span>
+					</label>
+					<label>
+						<input id="cyanosis" name="breathingPresence" type="checkbox" value="Cyanosis"
+							{{resetExceptNone assessment.breathingPresence 'Cyanosis' 'None'}}/>
+						<span style="padding-left: 25px; padding-right: 10px">Cyanosis</span>
+					</label>
+					<label>
+						<input id="noneResPresenceOf" name="breathingPresence" type="checkbox" value="None"
+							{{checked assessment.breathingPresence 'None'}}
+							   onclick="resetExceptNone('breathingPresence', 'None')"/>
+						<span style="padding-left: 25px; padding-right: 10px">None</span>
+					</label>
+				</div>
+			</div>
+
+			{{!-- Cough and Sputum ==================================================================================== --}}
+			<div class="row">
+				<div class="col s12 m2 l2" style="padding-top:20px">
+					<label for="cough" style="font-size: 15px">Cough</label>
+				</div>
+				<div class="col s12 m2 l2" style="padding-top:20px">
+					<label>
+						<input id="coughYes" name="cough" type="radio" value="true"
+							{{!--{{#if assessment.cough}} checked="checked" {{/if}}--}}
+							{{ setRadioButton assessment.cough true }}/>
+						<span style="padding-left: 25px; padding-right: 10px">Yes</span>
+					</label>
+					<label>
+						<input id="coughNo" name="cough" type="radio" value="false"
+							{{!--{{#unless assessment.cough}} checked="checked" {{/unless}}--}}
+							{{ setRadioButton assessment.cough false }}/>
+						<span style="padding-left: 25px; padding-right: 10px">No</span>
+					</label>
+				</div>
+
+				<div class="col s12 m1 l1" style="padding-top:20px">
+					<label for="sputum" style="font-size: 15px">Sputum</label>
+				</div>
+				<div class="col s12 m2 l2" style="padding-top:20px">
+					<label>
+						<input id="sputumYes" name="sputum" type="radio" value="true"
+							{{ setRadioButton assessment.sputum true }}/>
+						<span style="padding-left: 25px; padding-right: 10px">Yes</span>
+					</label>
+					<label>
+						<input id="sputumNo" name="sputum" type="radio" value="false"
+							{{ setRadioButton assessment.sputum false }}/>
+						<span style="padding-left: 25px; padding-right: 10px">No</span>
+					</label>
+				</div>
+
+				<div class="class col m5 l5"></div>
+			</div>
+		</div>
+	</div>
+</div>

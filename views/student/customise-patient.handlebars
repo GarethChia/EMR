@@ -1,0 +1,66 @@
+
+{{!--Student edit and save own customised patient record--}}
+{{>common/_patient-scrollbar}}
+<form action="/student/save-customised-patient/{{patient.patientID}}?_method=PUT" method="post">
+
+	<input type="hidden" name="_method" value="PUT">
+	<div class="col s12 m12 l12">
+		{{>student/edit/_edit-biography}}
+		{{>student/edit/_edit-admission}}
+		{{>student/edit/_edit-psychosocial}}
+	</div>
+
+	<div class="row">
+		<div class="col s12 m4 offset-m10 l4 offset-l10">
+			<button class="btn waves-effect waves-light" style="width: 150px" type="submit">Save
+				<i class="material-icons right">send</i>
+			</button>
+		</div>
+	</div>
+
+	{{!--<button class="mdc-button">
+		<i class="material-icons right">send</i>
+		Save
+	</button>--}}
+</form>
+
+
+
+<div style="height: 100px"></div>
+<script>
+
+	/*	$(function(){
+		   $('#dob').pickadate({
+			   min: new Date(2015, 3, 20),
+			   max: new Date(2015, 7, 14),
+			   selectYears: true,
+			   selectMonths: true
+		   })
+	   });*/
+	document.addEventListener('DOMContentLoaded', () =>{
+		const dob = document.querySelector('#dob');
+		const admissionDate = document.querySelector('#admDate');
+
+		M.Datepicker.init(dob, {
+			maxDate: new Date(),
+			/*max: new Date(2015,7,14)*/
+			format: 'dd/mm/yyyy',
+		});
+
+		M.Datepicker.init(admissionDate, {
+			maxDate: new Date(),
+			format: 'dd/mm/yyyy'
+		});
+	});
+
+	/*
+	document.getElementById('prevAdmitYes').addEventListener('click', () => {
+		document.getElementById('prevAdmitReasonDiv').style.display = 'block';
+	});
+
+	document.getElementById('prevAdmitNo').addEventListener('click', () => {
+		document.getElementById('prevAdmitReasonDiv').style.display = 'none';
+	});
+	*/
+</script>
+

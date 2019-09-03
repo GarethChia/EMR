@@ -1,0 +1,238 @@
+<div class="navbar-fixed" style="z-index: 1000">
+	<nav class="transparent z-depth-0"> <!-- removed blue darken-4 -->
+		<div class="nav-wrapper">
+			<header class="main-header">
+
+				<!-- Hamburger menu-->
+				<!-- Show all the time with show-on-large. To position on right, use right class -->
+				<a href="#" data-target="slide-out" class="sidenav-trigger show-on-large">
+					<i class="material-icons">menu</i>
+				</a>
+
+
+				<a class="goToHome" href="{{user.homeURL}}">EMR</a>
+
+				<!-- Beginning of navbar menu items-->
+				<ul class="right hide-on-med-and-down">
+					<li>
+						<a class="dropdown-trigger navmenu" href="#!" data-target="User">
+							{{!--<div style="color: #ff7726"></div>--}}
+							<i class="far fa-user" style="font-size: 17px; color: #ff7726 ">{{user.firstName}}</i>
+							<i class="fas fa-sort-down"></i>
+						</a>
+					</li>
+				</ul>
+				{{#if patient}}
+					{{>common/_patient-info}}
+
+					{{#if showMenu}}
+						<!-- Beginning of navbar menu items-->
+						<ul class="right hide-on-med-and-down">
+							<li>
+								<a class="dropdown-trigger navmenu" href="#!" data-target="Patient">
+									Patient
+									<i class="fas fa-sort-down"></i>
+								</a>
+							</li>
+							<li>
+								<a class="dropdown-trigger navmenu" href="#!" data-target="Doctor">
+									Doctor
+									<i class="fas fa-sort-down"></i>
+								</a>
+							</li>
+							<li>
+								<a class="dropdown-trigger navmenu" href="#!" data-target="Nurse">
+									Nurse
+									<i class="fas fa-sort-down"></i>
+								</a>
+							</li>
+							<!--
+							   <li style="padding-top: 5px">
+								   <a class="navmenu" href="#!" >
+									   MAR
+								   </a>
+							   </li>
+						   -->
+
+
+							{{!--
+							   {{#if user}}
+								   <li style="padding-top: 5px"><span id="welcome">{{user.firstName}}</span></li>
+							   {{else}}
+
+						   <li><a href="/auth/google">Login</a>/li>
+						   {{/if}}
+						   --}}
+							<!-- Icon link -->
+						</ul>
+					{{/if}}
+				{{/if}}
+
+			</header>
+			<!--</div>-->
+		</div>
+	</nav>
+</div>
+
+<!--
+	  Side Nav
+	  1. id to be same as <a class button-collapse.'s data-activates
+	  2. Add javascript to trigger: $('.button-collapse').sideNav();
+  -->
+<ul id="slide-out" class="sidenav" style="z-index: 1001">
+	<li>
+		<div class="user-view">
+			<div class="background">
+				<img src="/assets/img/ocean.jpg">
+			</div>
+			<span class="name white-text">User 1</span>
+			<span class="email white-text">user1@gmail.com</span>
+		</div>
+	</li>
+	<li>
+		<a href="#">Patient</a>
+	</li>
+	<li class="no-padding">
+        <ul class="collapsible collapsible-accordion">
+          <li>
+            <a class="collapsible-header">Biographical Data<i class="material-icons">arrow_drop_down</i></a>
+            <div class="collapsible-body">
+              <ul>
+                <li><a href="#!">First</a></li>
+                <li><a href="#!">Second</a></li>
+                <li><a href="#!">Third</a></li>
+                <li><a href="#!">Fourth</a></li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </li>
+	<li>
+		<a href="#">Doctor</a>
+	</li>
+	<li>
+		<a href="#">Nurse</a>
+	</li>
+	<li>
+		<a href="#">User</a>
+	</li>
+	
+</ul>
+
+
+<!-- Drop down menu items -->
+{{!-- Patient -> ... --}}
+<ul id="Patient" class="dropdown-content">
+	<li><a href="/master/edit/{{patient.patientID}}">Biographical Data</a></li>
+	{{!--<li>
+		<a class="dropdown-trigger navmenu" href="#!" data-target="History">History
+			<i class="fas fa-sort-down"></i>
+		</a>
+	</li>--}}
+	<li class="divider"></li>
+	<li><a href="#!">Contacts</a></li>
+	<li><a href="#!">Home Meds</a></li>
+	<li><a href="#!">Consents and Authorities</a></li>
+	<li><a href="#!">Emergency Notes</a></li>
+	<li><a href="#!">Belongings</a></li>
+</ul>
+{{!-- Patient -> History ->... --}}
+<ul id="History" class="dropdown-content">
+	<li><a href="#!">Medical</a></li>
+	<li><a href="#!">Surgical</a></li>
+	<li><a href="#!">Family</a></li>
+	<li><a href="#!">Social</a></li>
+	<li><a href="#!">Travel</a></li>
+</ul>
+
+
+<ul id="Doctor" class="dropdown-content">
+	{{#unless userType}}
+	<li><a href="#!">Notes</a></li>
+	<li class="divider"></li>
+	<li><a href="/master/doctor/orders">Orders</a></li>
+	<li><a href="#!">Order Results</a></li>
+	{{else}}
+	<li><a href="#!">Notes</a></li>
+	<li class="divider"></li>
+	<li><a href="/student/doctor/orders/{{recordID}}">Orders</a></li>
+	<li><a href="#!">Order Results</a></li>
+	{{/unless}}
+	{{!-- <li>
+		<a class="dropdown-trigger navmenu" href="#!" data-target="Order-entry">Order Entry
+			<i class="fas fa-sort-down"></i>
+		</a>
+	</li> --}}
+</ul>
+
+{{!-- Doctor -> Order entry ->... --}}
+{{!-- <ul id="Order-entry" class="dropdown-content">
+	<li><a href="#!">Pharmacy</a></li>
+	<li><a href="#!">Laboratory</a></li>
+	<li><a href="#!">Imaging</a></li>
+	<li><a href="#!">Therapies</a></li>
+	<li><a href="#!">Social Service</a></li>
+	<li><a href="#!">General Orders</a></li>
+</ul> --}}
+
+{{!-- Nurse -> ... --}}
+<ul id="Nurse" class="dropdown-content">
+	<li><a href="/master/show-nursing-assessment/{{patient.patientID}}">Assessment</a></li>
+	<li><a href="#!">Progress Notes</a></li>
+	<li><a href="#!">Care Plan</a></li>
+	<li><a href="#!">Discharge Planning</a></li>
+	<li><a href="#!">Education</a></li>
+	<li class="divider"></li>
+	<li>
+		<a class="dropdown-trigger navmenu" href="#!" data-target="Charts">Charts
+			<i class="fas fa-sort-down"></i>
+		</a>
+	</li>
+</ul>
+
+{{!-- Nurse -> Charts ->... --}}
+<ul id="Charts" class="dropdown-content">
+	{{#unless userType}}
+	<li><a href="/master/io">IO</a></li>
+	<li><a href="/master/vital">Vital</a></li>
+	<li><a href="#!">Diabetic</a></li>
+	<li><a href="#!">CLC</a></li>
+	<li><a href="#!">Neurovascular</a></li>
+	<li><a href="#!">Bladder Washout</a></li>
+	<li><a href="/master/fall">Morse Fall Scale</a></li>
+	<li><a href="/master/braden">Braden Scale</a></li>
+	<li><a href="#!">Wound Chart</a></li>
+	<li><a href="#!">Flowsheet</a></li>
+	{{else}} {{!-- If usertype is master --}}
+	<li><a href="/student/io/{{recordID}}">IO</a></li>
+	<li><a href="/student/vital/{{recordID}}">Vital</a></li>
+	<li><a href="#!">Diabetic</a></li>
+	<li><a href="#!">CLC</a></li>
+	<li><a href="#!">Neurovascular</a></li>
+	<li><a href="#!">Bladder Washout</a></li>
+	<li><a href="/student/fall/{{recordID}}">Morse Fall Scale</a></li>
+	<li><a href="/student/braden/{{recordID}}">Braden Scale</a></li>
+	<li><a href="#!">Wound Chart</a></li>
+	<li><a href="#!">Flowsheet</a></li>
+	{{/unless}}
+</ul>
+
+
+<ul id="User" class="dropdown-content">
+	<li><a href="#!">Settings</a></li>
+	<li class="divider"></li>
+	<li><a href="https://login.microsoftonline.com/common/oauth2/logout?post_logout_redirect_uri=https://localhost
+	/logout"
+	>Logout</a></li>
+</ul>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function(){
+		afterAngularOrReactHasCreatedAllDOM ();
+	});
+	function afterAngularOrReactHasCreatedAllDOM (){
+		// Because they were created by Angular/React after Materialize CSS finished its initialization scripts
+		// Manually make all DOM with .collapsible collapsible 
+		$('.collapsible').collapsible();
+	}
+</script>

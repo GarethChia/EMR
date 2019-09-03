@@ -1,0 +1,154 @@
+<!-- CARD WITH TITLE -->
+<div class="card purple lighten-5">
+	<div class="card-content">
+		<div id="gastrointestinal" class="section scrollspy">
+			<span class="card-title blue-text darken-5">Gastrointestinal</span>
+
+			{{!-- Home diet type ==================================================================================== --}}
+			<div class="row">
+				<div class="col s12 m2 l2" style="padding-top:20px">
+					<label style="font-size: 15px">Home diet type</label>
+				</div>
+
+				<div class="col s12 m2 l2" style="padding-top:20px">
+					<label>
+						<input id="full" name="dietType" type="radio" value="Full"
+							{{checked assessment.dietType 'Full'}}
+							   onclick="document.getElementById('otherDiet').value = ''"/>
+						<span style="padding-left: 25px; padding-right: 10px">Full</span>
+					</label>
+					<label>
+						<input id="light" name="dietType" type="radio" value="Light"
+							{{checked assessment.dietType 'Light'}}
+							   onclick="document.getElementById('otherDiet').value = ''"/>
+						<span style="padding-left: 25px; padding-right: 10px">Light/Soft</span>
+					</label>
+				</div>
+
+				{{!-- Other diet Specify --}}
+				<div class="col s12 m8 l8 input-field">
+					<input name="dietOthers" id="otherDiet" type="text" onfocus="resetByName('dietType')"
+						   value="{{assessment.dietOthers}}"/>
+					<label for="dietOthers">Others</label>
+					<span class="helper-text">Specify</span>
+				</div>
+			</div>
+
+
+			{{!-- Fluid Restriction==================================================================================== --}}
+			<div class="row">
+				<div class="col s12 m2 l2" style="padding-top:25px">
+					<label style="font-size: 15px">Fluid Restriction</label>
+				</div>
+				<div class="col s12 m1 l1" style="padding-top:25px">
+					<label>
+						<input id="fluidYes" name="fluidRestriction" type="radio" value="true"
+							{{ setRadioButton assessment.fluidRestriction true }}
+							onfocus="document.getElementById('fluidUnable').value = ''"/>
+						<span style="padding-left: 25px; padding-right: 10px">Yes</span>
+					</label>
+					<label>
+						<input id="fluidNo" name="fluidRestriction" type="radio" value="false"
+							{{ setRadioButton assessment.fluidRestriction false }}
+							   onfocus="document.getElementById('fluidSpecify').value = '';
+										document.getElementById('fluidUnable').value = ''"/>
+						<span style="padding-left: 25px; padding-right: 10px">No</span>
+					</label>
+
+				</div>
+				<div class="col s12 m4 l4" >
+					<div class="input-field">
+						<input name="fluidSpecify" id="fluidSpecify" type="text" onfocus="check('fluidYes')"
+							   value="{{assessment.fluidSpecify}}"/>
+						<label for="fluidSpecify">If restrict fluid</label>
+						<span class="helper-text">Specify </span>
+					</div>
+				</div>
+
+				<div class="col s12 m5 l5" >
+					<div class="input-field">
+						<input name="fluidUnable" id="fluidUnable" type="text"
+							onfocus="document.getElementById('fluidSpecify').value = '';resetByName('fluidRestriction')"
+							   value="{{assessment.fluidUnable}}"/>
+						<label for="fluidUnable">Unable to assess</label>
+						<span class="helper-text">Reason</span>
+					</div>
+				</div>
+			</div>
+
+
+			{{!-- Oral Cavity ==================================================================================== --}}
+			<div class="row">
+				<div class="col s12 m2 l2" style="padding-top:20px">
+					<label style="font-size: 15px">Oral Cavity</label>
+				</div>
+
+				<div class="col s12 m10 l10" style="padding-top:20px">
+					<label>
+						<input id="moist" name="oralCavity" type="checkbox" value="Moist"
+							{{checked assessment.oralCavity 'Moist'}}/>
+						<span style="padding-left: 23px; padding-right: 7px">Moist</span>
+					</label>
+					<label>
+						<input id="dry" name="oralCavity" type="checkbox" value="Dry"
+							{{checked assessment.oralCavity 'Dry'}}/>
+						<span style="padding-left: 23px; padding-right: 7px">Dry</span>
+					</label>
+					<label>
+						<input id="coatedTeeth" name="oralCavity" type="checkbox" value="Coated Teeth"
+							{{checked assessment.oralCavity 'Coated Teeth'}}/>
+						<span style="padding-left: 23px; padding-right: 7px">Coated Teeth</span>
+					</label>
+					<label>
+						<input id="own" name="oralCavity" type="checkbox" value="Own"
+							{{checked assessment.oralCavity 'Own'}}/>
+						<span style="padding-left: 23px; padding-right: 7px">Own</span>
+					</label>
+					<label>
+						<input id="upperDenture" name="oralCavity" type="checkbox" value="Upper Denture"
+							{{checked assessment.oralCavity 'Upper Denture'}}/>
+						<span style="padding-left: 23px; padding-right: 7px">Upper Denture</span>
+					</label>
+					<label>
+						<input id="lowerDenture" name="oralCavity" type="checkbox" value="Lower Denture"
+							{{checked assessment.oralCavity 'Lower Denture'}}/>
+						<span style="padding-left: 23px; padding-right: 7px">Lower Denture</span>
+					</label>
+				</div>
+			</div>
+
+			{{!-- Presence of ==================================================================================== --}}
+			<div class="row">
+				<div class="col s12 m2 l2" style="padding-top:20px">
+					<label style="font-size: 15px">Presence of</label>
+				</div>
+
+				<div class="col s12 m4 l4" style="padding-top:20px">
+					<label>
+						<input id="nausea" name="oralCavityPresence" type="checkbox" value="Nausea"
+							{{checked assessment.oralCavityPresence 'Nausea'}}/>
+						<span style="padding-left: 23px; padding-right: 7px">Nausea</span>
+					</label>
+					<label>
+						<input id="vomit" name="oralCavityPresence" type="checkbox" value="Vomit"
+							{{checked assessment.oralCavityPresence 'Vomit'}}/>
+						<span style="padding-left: 23px; padding-right: 7px">Vomit</span>
+					</label>
+					<label>
+						<input id="diffSwallow" name="oralCavityPresence" type="checkbox" value="Difficulty Swallowing"
+							{{checked assessment.oralCavityPresence 'Difficulty Swallowing'}}/>
+						<span style="padding-left: 23px; padding-right: 7px">Difficulty Swallowing</span>
+					</label>
+				</div>
+				{{!-- Others --}}
+				<div class="col s12 m6 l6 input-field">
+					<input name="oralCavityOthers" id="oralCavityOthers" type="text"
+						   value="{{assessment.oralCavityOthers}}">
+					<label for="oralCavityOthers">Others</label>
+					<span class="helper-text">Specify</span>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>

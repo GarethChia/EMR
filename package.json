@@ -1,0 +1,44 @@
+{
+  "name": "emr",
+  "version": "1.0.0",
+  "description": "Electronic Medical Records for Education",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "EMR",
+    "EHR"
+  ],
+  "author": "Chew Phuay Hern",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "connect-flash": "^0.1.1",
+    "connect-mongo": "^2.0.3",
+    "cookie-parser": "^1.4.4",
+    "csurf": "^1.9.0",
+    "express": "^4.16.4",
+    "express-handlebars": "^3.0.0",
+    "express-session": "^1.15.6",
+    "flash-messenger": "^1.1.1",
+    "helmet": "^3.15.1",
+    "lusca": "^1.6.1",
+    "method-override": "^3.0.0",
+    "moment": "^2.24.0",
+    "mongoose": "^5.4.14",
+    "mongoose-dateonly": "^1.0.6",
+    "multer": "^1.4.2",
+    "passport": "^0.4.0",
+    "passport-azure-ad": "^4.0.0",
+    "passport-google-oauth20": "^1.0.0",
+    "passport-local": "^1.0.0",
+    "rxjs": "^5.5.12",
+    "s-age": "^1.1.2",
+    "standardid": "^1.0.3",
+    "validator": "^9.4.1",
+    "web-push": "^3.3.3",
+    "winston": "^2.4.4"
+  }
+}

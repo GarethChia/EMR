@@ -1,0 +1,191 @@
+<!-- CARD WITH TITLE -->
+<div class="card light-green lighten-5">
+	<div class="card-content">
+		<div id="neurosensory" class="section scrollspy">
+			<span class="card-title blue-text darken-3">Neuro Sensory</span>
+
+			{{!-- Neuro Sensory --}}
+			{{!-- Mental Status ==================================================================================== --}}
+			<div class="row" onblur="console.log('======= out of town ======')">
+				<div class="col s12 m2 l2" style="padding-top:20px">
+					<label style="font-size: 15px">Mental Status</label>
+				</div>
+
+				<div class="col s12 m7 l7" style="padding-top:20px">
+					<label>
+						<input id="alert" name="mentalStatus" type="checkbox" value="Alert"
+							{{checked assessment.mentalStatus 'Alert'}}/>
+						<span style="padding-left: 23px; padding-right: 7px">Alert</span>
+					</label>
+					<label>
+						<input id="confused" name="mentalStatus" type="checkbox" value="Confused"
+							{{checked assessment.mentalStatus 'Confused'}}/>
+						<span style="padding-left: 23px; padding-right: 7px">Confused</span>
+					</label>
+					<label>
+						<input id="drowsy" name="mentalStatus" type="checkbox" value="Drowsy"
+							{{checked assessment.mentalStatus 'Drowsy'}}/>
+						<span style="padding-left: 23px; padding-right: 7px">Drowsy</span>
+					</label>
+					<label>
+						<input id="anxious" name="mentalStatus" type="checkbox" value="Anxious"
+							{{checked assessment.mentalStatus 'Anxious'}}/>
+						<span style="padding-left: 23px; padding-right: 7px">Anxious</span>
+					</label>
+					<label>
+						<input id="depressed" name="mentalStatus" type="checkbox" value="Depressed"
+							{{checked assessment.mentalStatus 'Depressed'}}/>
+						<span style="padding-left: 23px; padding-right: 7px">Depressed</span>
+					</label>
+					<label>
+						<input id="unreponsive" name="mentalStatus" type="checkbox" value="Unresponsive"
+							{{checked assessment.mentalStatus 'Unresponsive'}}/>
+						<span style="padding-left: 23px; padding-right: 7px">Unresponsive</span>
+					</label>
+				</div>
+
+				{{!-- Other Mental Status --}}
+				<div class="col s12 m3 l3 input-field">
+					<input name="mentalOthers" id="mentalOthers" type="text" value="{{assessment.mentalOthers}}"/>
+					<label for="mentalOthers">Others</label>
+				</div>
+			</div>
+			{{!-- Oriented to ==================================================================================== --}}
+			<div class="row">
+				<div class="col s12 m2 l2">
+					<label style="font-size: 15px">Oriented to</label>
+				</div>
+
+				<div class="col s12 m10 l10" >
+					<label>
+						<input id="day" name="orientedTo" type="checkbox" value="Day"
+							{{resetExceptNone assessment.orientedTo 'Day' 'not'}}/>
+						<span style="padding-left: 25px; padding-right: 10px">Day</span>
+					</label>
+					<label>
+						<input id="time" name="orientedTo" type="checkbox" value="Time"
+							{{resetExceptNone assessment.orientedTo 'Time' 'not'}}/>
+						<span style="padding-left: 25px; padding-right: 10px">Time</span>
+					</label>
+					<label>
+						<input id="place" name="orientedTo" type="checkbox" value="Place"
+							{{resetExceptNone assessment.orientedTo 'Place' 'not'}}/>
+						<span style="padding-left: 25px; padding-right: 10px">Place</span>
+					</label>
+					<label>
+						<input id="person" name="orientedTo" type="checkbox" value="Person"
+							{{resetExceptNone assessment.orientedTo 'Person' 'not'}}/>
+						<span style="padding-left: 25px; padding-right: 10px">Person</span>
+					</label>
+					<label>
+						<input id="not" name="orientedTo" type="checkbox" value="not"
+							   {{checked assessment.orientedTo 'not'}}
+							   onclick="resetExceptNone('orientedTo', 'not')"/>
+						<span style="padding-left: 25px; padding-right: 10px">Not at all</span>
+					</label>
+				</div>
+			</div>
+
+			{{!-- Hearing ==================================================================================== --}}
+			<div class="row">
+				<div class="col s12 m2 l2" style="padding-top:20px">
+					<label style="font-size: 15px">Hearing</label>
+				</div>
+				<div class="col s12 m3 l3" style="padding-top:20px">
+					<label>
+						<input id="normal" name="hearing" type="radio" value="Normal"
+							   {{checked assessment.hearing 'Normal'}}
+							   onclick="document.getElementById('hearingUnable').value =''"/>
+						<span style="padding-left: 25px; padding-right: 10px">Normal</span>
+					</label>
+					<label>
+						<input id="impaired" name="hearing" type="radio" value="Impaired"
+							   {{checked assessment.hearing 'Impaired'}}
+							   onclick="document.getElementById('hearingUnable').value =''"/>
+						<span style="padding-left: 25px; padding-right: 10px">Impaired</span>
+					</label>
+				</div>
+
+				<div class="input-field col s12 m3 l3">
+					<input name="hearingOthers" id="hearingOthers" type="text"
+						   value="{{assessment.hearingOthers}}"/>
+					<label for="hearingOthers">Others</label>
+				</div>
+
+				<div class="input-field col s12 m4 l4">
+					<input id="hearingUnable" name="hearingUnable" type="text"
+						   value="{{assessment.hearingUnable}}"
+						   onfocus="resetByName('hearing');document.getElementById('hearingOthers').value=''"/>
+					<label for="hearingUnable">Unable to assess</label>
+					<span class="helper-text">Reason</span>
+				</div>
+			</div>
+
+			{{!-- Vision ==================================================================================== --}}
+			<div class="row">
+				<div class="col s12 m2 l2" style="padding-top:20px">
+					<label style="font-size: 15px">Vision</label>
+				</div>
+				<div class="col s12 m3 l3" style="padding-top:20px">
+					<label>
+						<input id="normal" name="vision" type="radio"
+							   value="Normal" {{checked assessment.vision 'Normal'}}
+							   onclick="document.getElementById('visionUnable').value =''"/>
+						<span style="padding-left: 25px; padding-right: 7px">Normal</span>
+					</label>
+					<label>
+						<input id="glasses" name="vision" type="radio"
+							   value="Glasses" {{checked assessment.vision 'Glasses'}}
+							   onclick="document.getElementById('visionUnable').value =''"/>
+						<span style="padding-left: 25px; padding-right: 7px">Glasses</span>
+					</label>
+					<label>
+						<input id="contacts" name="vision" type="radio"
+							   value="Contact Lens" {{checked assessment.vision 'Contact Lens'}}
+							   onclick="document.getElementById('visionUnable').value =''"/>
+						<span style="padding-left: 25px;">Contact Lens</span>
+					</label>
+				</div>
+
+				<div class="input-field col s12 m3 l3">
+					<input id="visionOthers"  name="visionOthers" type="text"
+							value="{{assessment.visionOthers}}"/>
+					<label for="visionOthers">Others</label>
+				</div>
+
+				<div class="input-field col s12 m4 l4">
+					<input id="visionUnable" type="text" name="visionUnable" onfocus="resetByName('vision')"
+						   value="{{assessment.visionUnable}}"/>
+					<label for="visionUnable">Unable to assess</label>
+					<span class="helper-text">Reason</span>
+				</div>
+			</div>
+
+			{{!-- Speech ==================================================================================== --}}
+			<div class="row">
+				<div class="col s12 m2 l2" style="padding-top:20px">
+					<label style="font-size: 15px">Speech</label>
+				</div>
+				<div class="col s12 m10 l10" style="padding-top:20px">
+					<label>
+						<input id="normalSpeech" name="speech" type="radio"
+							   value="Normal" {{checked assessment.speech 'Normal'}}/>
+						<span style="padding-left: 25px; padding-right: 10px">Normal</span>
+					</label>
+					<label>
+						<input id="speedImpaired" name="speech" type="radio"
+							   value="Speed Impaired" {{checked assessment.speech 'Speed Impaired'}}/>
+						<span style="padding-left: 25px; padding-right: 10px">Speed Impaired</span>
+					</label>
+					<label>
+						<input id="nonComm" name="speech" type="radio"
+							   value="Non-communicative" {{checked assessment.speech 'Non-communicative'}}/>
+						<span style="padding-left: 25px; padding-right: 10px">Non-communicative</span>
+					</label>
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+</div>

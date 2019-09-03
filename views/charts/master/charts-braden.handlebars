@@ -1,0 +1,472 @@
+<br/><div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">Braden Scale Records</div>
+<div style="overflow-x:auto; max-height: 16em;">
+<table id="bradenRecords" class="hover order-column">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Sensory Perception</th>
+            <th>Moisture</th>
+            <th>Activity</th>
+            <th>Mobility</th>
+            <th>Nutrition</th>
+            <th>Friction and Shear</th>
+            <th>Total</th>
+            {{!-- <th>Patient ID</th> --}}
+            {{#unless userType}}
+            <th>Delete</th>
+            {{/unless}}
+        </tr>
+    </thead>
+    <tbody>
+        {{#if newBraden}}
+            {{#each newBraden}}
+            <tr style="height: 60px">
+                {{#unless ../userType}}
+                <td><a href="/master/braden/{{bradenID}}">{{datetime}}</a></td>
+                {{else}}
+                <td><a href="/student/braden/{{../recordID}}/{{bradenID}}">{{datetime}}</a></td>
+                {{/unless}}
+                <td>{{sensePerc}}</td>
+                <td>{{moisture}}</td>
+                <td>{{activity}}</td>
+                <td>{{mobility}}</td>
+                <td>{{nutrition}}</td>
+                <td>{{fns}}</td>
+                <td>{{total}}</td>
+                {{!-- <td>{{patientID}}</td> --}}
+                {{#unless ../userType}}
+                <td style="width: 55px"> <!-- the tr we're trying to get -->
+						<form action="/master/del-braden/{{bradenID}}?_method=DELETE" method="post" id="delete-form">
+						<input type="hidden" name="_method" value="DELETE">
+						<button type="submit" class="btn red darken-3">
+							<i class="material-icons">delete</i>
+						</button>
+					</form>
+				</td>
+                {{/unless}}
+            </tr>			
+            {{/each}}
+        {{else}}
+        <p id="noRecord">You have not created any Braden records yet</p>
+        {{/if}}
+    </tbody>
+</table>
+</div>
+<br>
+
+{{#if editBraden}}
+{{#unless userType}}
+<form action="/master/edit-braden/{{editBraden.bradenID}}?_method=PUT" method="POST" id="editBraden">
+{{else}}
+<form action="/student/edit-braden/{{recordID}}/{{editBraden.bradenID}}?_method=PUT" method="POST" id="editBraden">
+{{/unless}}
+<input type="hidden" name="_method" value="PUT">
+{{else}}
+<form action="/master/add-braden" method="POST" id="addBraden">
+{{/if}}
+
+<div id="bradenid" class="row" >       
+
+<div class="col s12 m3 input-field">
+          <input id="dateBraden" type="text" class="datepicker" name="dateBraden" value="{{editBraden.date}}">
+          <label for="dateBraden">Date</label>
+          <span class="helper-text">DD/MM/YYYY</span>
+
+</div>
+
+</div>
+        <div class="wrapper" id="bradenid" >      
+
+                <div style="font-weight:bold">
+                    Sensory Perception
+                </div>
+                <div ><b>Completely Limited</b> - Unresponsive (does not moan, flinch, or grasp) to painful stimuli, due to diminished level of consciousness or sedation</div>
+                <div ><b>Very Limited</b> – <br> Responds only to painful stimuli. Cannot communicate discomfort except by moaning or restlessness</div>  
+                <div ><b>Slightly Limited</b>  – Responds to verbal commands but cannot always communicate discomfort or need to be turned</div>
+                <div ><b>No Impairment</b> – Responds to verbal commands. Has no sensory deficit which would limit ability to feel or voice pain or discomfort. </div>
+                <div >
+                    <select id="sensePerc" name="sensePerc" required>
+                        <option value="+0" >Sensory Perception</option>
+                        <option value="Completely Limited +1">Completely Limited +1</option>
+                        <option value="Very Limited +2">Very Limited +2</option>
+                        <option value="Slightly Limited +3">Slightly Limited +3</option>
+                        <option value="No Impairment +4">No Impairment +4</option>
+                    </select>
+                                <label for="sensePerc">Sensory Perception</label>
+                </div>
+
+                <div style="font-weight:bold">
+                    Moisture
+                </div>
+                <div>
+                   <b>Constantly Moist</b> – Skin is kept
+                    moist almost constantly
+                    by perspiration, urine,
+                    etc. Dampness is detected
+                    every time patient    
+                </div>
+                <div>
+                   <b>Often Moist</b> – Skin
+                    is often but not always
+                    moist. Linen must be
+                    changed at least once a
+                    shift.
+                </div>
+                <div>
+                    <b>Occasionally Moist</b> – Skin is
+                    occasionally moist,
+                    requiring an extra linen
+                    change appro
+                </div>
+                <div>
+                    <b>Rarely Moist</b>  – Skin
+                    is usually dry; linen only
+                    requires changing at
+                    routine intervals.
+                </div>
+
+                <div>
+                    <select id="moisture" name="moisture" required>
+                     <option value="+0">Moisture</option>
+                     <option value="Constantly Moist +1">Constantly Moist +1</option>
+                     <option value="Often Moist +2">Often Moist +2</option>
+                     <option value="Occasionally Moist +3">Occasionally Moist +3</option>
+                     <option value="Rarely Moist +4">Rarely Moist +4</option>
+                    </select>
+                    <label for="moisture">Moisture</label>
+                </div>
+
+                <div style="font-weight:bold">
+                    Activity
+                </div>
+                 <div>
+                    <b>Bedfast</b> - Confined to bed
+                </div>
+                 <div>
+                    <b>Chairfast</b> – Ability
+                    to walk severely limited
+                    or nonexistent. Cannot
+                    bear own weight and/or
+                    must be assisted into
+                    chair or wheelchair.
+                </div>
+                <div>
+                    <b>Walks Occasionally</b> – Walks
+                    occasionally during day,
+                    but for very short
+                    distances, with or without
+                    assistance. Spends
+                    majority of each shift in
+                    bed or chair.
+                </div>
+                <div>
+                   <b> Walks Frequently</b> – Walks
+                    outside the room at least
+                    twice a day and inside
+                    room at least once every
+                    2 hours during waking
+                    hours.
+                </div>
+                <div>
+                     <select id="activity" name="activity" required>
+                     <option value="+0" >Activity</option>
+                     <option value="Bedfast +1">Bedfast +1</option>
+                     <option value="Chairfast +2">Chairfast +2</option>
+                     <option value="Walk Occasionally +3">Walk Occasionally +3</option>
+                     <option value="Walks Frequenetly +4">Walks Frequenetly +4</option>
+                     </select>
+                     <label for="activity">Activity</label>
+                </div>
+                
+                <div style="font-weight:bold">
+                    Mobility
+                </div>
+                <div>
+                    <b>Completely Immobile</b> – Does not
+                    make even slight changes
+                    in body or extremity
+                    position without
+                    assistance.
+
+                </div>    
+                
+                <div>
+                    <b>Very Limited</b> –
+                    Makes occasional slight
+                    changes in body or
+                    extremity position but
+                    unable to make frequent
+                    or significant changes
+                    independently.
+                </div>      
+        
+                <div>
+                    <b>Slightly Limited</b> –
+                    Makes frequent though
+                    slight changes in body or
+                    extremity position
+                    independently.
+
+                </div>   
+    
+                 <div>
+                   <b> No Limitations</b> –
+                    Makes major and
+                    frequent changes in
+                    position without
+                    assistance.
+                </div>
+
+                
+                 <div>
+                                <select id="mobility" name="mobility" required>
+                                    <option value="+0">Mobility</option>
+                                    <option value="Completely Immobile +1">Completely Immobile +1</option>
+                                    <option value="Very Limited +2">Very Limited +2</option>
+                                    <option value="Slightly Limited +3">Slightly Limited +3</option>
+                                    <option value="No Limitations +4">No Limitations +4</option>
+                                </select>
+                                <label for="mobility">Mobility</label>
+                </div>
+
+                <div style="font-weight:bold">
+                    Nutrition
+                </div>
+                <div>
+                    <b>Very Poor</b> – Never
+                    eats a complete meal.
+                    Rarely eats more than 1/3
+                    of any food offered. Eats
+                    2 servings or less of
+                    protein (meat or dairy
+                    products) per day. Takes
+                    fluids poorly. Does not
+                    take a liquid dietary
+                    supplement
+                </div>
+
+                <div>
+                    <b>Probably Inadequate </b>– Rarely
+                    eats a complete meal and
+                    generally eats only about
+                    ½ of any food offered.
+                    Protein intake includes
+                    only 3 servings of meat or
+                    dairy products per day.
+                    Occasionally will take a
+                    dietary supplement
+
+                </div>
+                <div>
+                    <b>Adequate</b> – Eats
+                    over half of most meals.
+                    Eats a total of 4 servings
+                    of protein (meat, dairy
+                    products) each day.
+                    Occasionally refuses a
+                    meal, but will usually take
+                    a supplement if offered
+                </div>
+                <div>
+                   <b> Excellent</b> – Eats
+                    most of every meal.
+                    Never refuses a meal.
+                    Usually eats a total of 4 or
+                    more servings of meat
+                    and dairy products.
+                    Occasionally eats
+                    between meals. Does not
+                    require supplementation
+                </div>
+
+                 <div>
+                      <select id="nutrition" name="nutrition" required>
+                                    <option value="+0" >Nutrition</option>
+                                    <option value="Very Poor +1">Very Poor +1</option>
+                                    <option value="Probably Inadequate +2">Probably Inadequate +2</option>
+                                    <option value="Adequate +3">Adequate +3</option>
+                                    <option value="Excellent +4">Excellent +4</option>
+                                </select>
+                       <label for="nutrtion">Nutrition</label>
+                </div>
+
+                <div style="font-weight:bold">
+                    Friction And Shear
+                </div>
+
+                <div>
+                    <b>Problem</b> - Requires
+                    moderate to maximum
+                    assistance in moving.
+                    Complete lifting without
+                    sliding against sheets is
+                    impossible. Frequently
+                    slides down in bed or
+                    chair, requiring frequent
+                    repositioning with
+                    maximum assistance.
+                    Spasticity, contractures,
+                    or agitation leads to
+                    almost constant friction.
+                </div>
+                <div>
+                   <b>Potential Problem</b> - Moves
+                    feebly or requires
+                    minimum assistance.
+                    During a move, skin
+                    probably slides to some
+                    extent against sheets,
+                    chair, restraints, or other
+                    devices. Maintains
+                    relatively good position in
+                    chair or bed most of the
+                    time but occasionally
+                    slides down.
+
+                </div>
+                <div>
+                <b> No Apparent Problem</b>
+                 – Moves in
+                bed and in chair
+                independently and has
+                sufficient muscle strength
+                to lift up completely
+                during move. Maintains
+                good position in bed or
+                chair at all times.
+                </div>
+                <div></div>
+                <div>
+                        <select id="fns" name="fns" required>
+                                    <option value="+0">Friction And Shear</option>
+                                    <option value="Problem +1">Problem +1</option>
+                                    <option value="Potential Problem +2">Potential Problem +2</option>
+                                    <option value="No Apparent Problem +3">No Apparent Problem +3</option>
+                                </select>
+                                <label for="fns">Friction And Shear</label>
+                </div>
+        </div>
+
+</form>
+
+<br>
+
+<div class="row">
+
+    <div class="col s12 m8"></div>
+
+        <div class="col s12 m4">
+            {{#if editBraden}}
+            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editBraden">Save
+            {{else}}
+            {{#unless userType}}
+            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addBraden">Save
+            {{/unless}}
+            {{/if}}
+            {{#unless userType}}
+                <i class="material-icons right">send</i>
+                </button>
+            {{/unless}}
+        </div>
+</div>
+
+<div class="row"> 
+
+
+
+<div class=" col s12 m3">
+   <u>  <b>Legend</b>   </u> 
+    <br>    <br>
+
+    Very High Risk: Total Score 9 or less
+    <br>    <br>
+
+    High Risk: Total Score 10-12
+    <br>    <br>
+
+    Moderate Risk: Total Score 13-14
+    <br>    <br>
+
+    Mild Risk: Total Score 15-18
+    <br>    <br>
+
+    No Risk: Total Score 19-23
+</div>
+
+<div class="col s12 m9">
+
+</div>
+
+</div>
+
+
+<style>
+
+.wrapper {
+    display:grid;
+    grid-template-columns:repeat(6, 1fr);
+    grid-gap:0.2em;
+    grid-auto-rows: minmax(10px,auto);
+}
+
+.wrapper > div{
+   padding:1em;
+   background:#f3e5f5;
+}
+
+.card {
+    padding: 16px;
+}
+
+
+
+</style>
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const dateBraden = document.querySelector('#dateBraden');
+        const sensePerc = document.querySelector('#sensePerc');
+        const moisture = document.querySelector('#moisture');
+        const activity = document.querySelector('#activity');
+        const mobility = document.querySelector('#mobility');
+        const nutrition = document.querySelector('#nutrition');
+        const fns = document.querySelector('#fns');
+
+        M.Datepicker.init(dateBraden, {
+            maxDate: new Date(),
+            format: 'dd/mm/yyyy',
+            disableWeekends:true
+        });
+
+        M.FormSelect.init(sensePerc, {
+            
+        })
+        M.FormSelect.init(activity, {
+            
+        })
+        M.FormSelect.init(moisture, {
+            
+        })
+        M.FormSelect.init(mobility, {
+            
+        })
+        M.FormSelect.init(nutrition, {
+            
+        })
+        M.FormSelect.init(fns, {
+            
+        })
+    })
+
+    {{#if editBraden}}
+        document.getElementById('sensePerc').value = "{{editBraden.sensePerc}}";
+        document.getElementById('moisture').value = "{{editBraden.moisture}}";
+        document.getElementById('activity').value = "{{editBraden.activity}}";
+        document.getElementById('mobility').value = "{{editBraden.mobility}}";
+        document.getElementById('nutrition').value = "{{editBraden.nutrition}}";
+        document.getElementById('fns').value = "{{editBraden.fns}}";
+    {{/if}}
+
+</script>
+

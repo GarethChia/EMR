@@ -1,0 +1,49 @@
+<!-- CARD WITH TITLE -->
+<div class="card blue-grey lighten-5">
+	<div class="card-content">
+		<div id="sleep" class="section scrollspy">
+			<span class="card-title blue-text darken-5">Sleep</span>
+
+
+			{{!-- Sleep Problem================================================================================== --}}
+			<div class="row">
+				<div class="col s12 m2 l2" style="padding-top:25px">
+					<label style="font-size: 15px">Sleep Problem</label>
+				</div>
+				<div class="col s12 m1 l1" style="padding-top:25px">
+					<label>
+						<input id="sleepYes" name="sleep" type="radio" value="true"
+							onfocus="document.getElementById('fluidUnable').value = ''"
+							{{ setRadioButton assessment.sleep true }}/>
+						<span style="padding-left: 25px; padding-right: 10px">Yes</span>
+					</label>
+					<label>
+						<input id="sleepNo" name="sleep" type="radio" value="false"
+							   onfocus="document.getElementById('fallPrecaution').value = ''"
+							{{ setRadioButton assessment.sleep false }}/>
+						<span style="padding-left: 25px; padding-right: 10px">No</span>
+					</label>
+
+				</div>
+				<div class="col s12 m4 l4" >
+					<div class="input-field">
+						<input id="sleepSpecify" name="sleepSpecify" type="text" onfocus="check('sleepYes')"
+							   value="{{assessment.sleepSpecify}}"/>
+						<label for="sleepSpecify">If yes</label>
+						<span class="helper-text">Specify fall precaution </span>
+					</div>
+				</div>
+
+				<div class="col s12 m5 l5" >
+					<div class="input-field">
+						<input id="dietRestriction" name="dietRestriction" type="text"/>
+						<label for="dietRestriction">Diet Restriction</label>
+						<span class="helper-text">Specify</span>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+</div>

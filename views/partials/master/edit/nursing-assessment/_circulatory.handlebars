@@ -1,0 +1,138 @@
+<!-- CARD WITH TITLE -->
+<div class="card blue lighten-5">
+	<div class="card-content">
+		<div id="circulatory" class="section scrollspy">
+			<span class="card-title blue-text darken-5">Circulatory</span>
+
+
+			{{!-- Pulse ==================================================================================== --}}
+			<div class="row">
+				<div class="col s12 m2 l2">
+					<label style="font-size: 15px">Pulse</label>
+				</div>
+				<div class="col s12 m10 l10">
+					<label>
+						<input id="circulationRegular" name="pulse" type="radio" value="Regular"
+							{{checked assessment.pulse 'Regular'}}/>
+						<span style="padding-left: 25px; padding-right: 10px">Regular</span>
+					</label>
+					<label>
+						<input id="circulationIrregular" name="pulse" type="radio" value="Irregular"
+							{{checked assessment.pulse 'Irregular'}}/>
+						<span style="padding-left: 25px; padding-right: 10px">Irreglar</span>
+					</label>
+					<label>
+						<input id="circulationStrong" name="pulse" type="radio" value="Strong"
+							{{checked assessment.pulse 'Strong'}}/>
+						<span style="padding-left: 25px; padding-right: 10px">Strong</span>
+					</label>
+					<label>
+						<input id="ciculationTready" name="pulse" type="radio" value="Tready"
+							{{checked assessment.pulse 'Tready'}}/>
+						<span style="padding-left: 25px; padding-right: 10px">Tready</span>
+					</label>
+					<label>
+						<input id="circulationWeak" name="pulse" type="radio" value="Weak"
+							{{checked assessment.pulse 'Weak'}}/>
+						<span style="padding-left: 25px; padding-right: 10px">Weak</span>
+					</label>
+				</div>
+			</div>
+
+
+			{{!-- Presence of ==================================================================================== --}}
+			<div class="row">
+				<div class="col s12 m2 l2" style="padding-top:20px">
+					<label style="font-size: 15px">Presence of</label>
+				</div>
+
+				<div class="col s12 m4 l4" style="padding-top:20px">
+					<label>
+						<input id="tightness" name="cirPresence" type="checkbox" value="Chest Tightness"
+							{{checked assessment.cirPresence 'Chest Tightness'}}/>
+						<span style="padding-left: 22px; padding-right: 7px">Chest Tightness</span>
+					</label>
+					<label>
+						<input id="pain" name="cirPresence" type="checkbox" value="Chest Pain"
+							{{checked assessment.cirPresence 'Chest Pain'}}/>
+						<span style="padding-left: 22px; padding-right: 7px">Chest Pain</span>
+					</label>
+					<label>
+						<input id="giddiness" name="cirPresence" type="checkbox" value="Giddiness"
+							{{checked assessment.cirPresence 'Giddiness'}}/>
+						<span style="padding-left: 22px; padding-right: 7px">Giddiness</span>
+					</label>
+				</div>
+
+				{{!-- Oeedema Specify --}}
+				<div class="col s12 m6 l6 input-field">
+					<input id="oedema" name="oedema"  type="text" value="{{assessment.oedema}}"/>
+					<label for="oedema">Oedema</label>
+					<span class="helper-text">Specify</span>
+				</div>
+			</div>
+
+
+			{{!-- Extremities==================================================================================== --}}
+			<div class="row">
+				<div class="col s12 m2 l2">
+					<label style="font-size: 15px">Extremities</label>
+				</div>
+
+				<div class="col s12 m10 l10" >
+					<label>
+						<input id="warm" name="extremities" type="checkbox" value="Warm"
+							{{checked assessment.extremities 'Warm'}}/>
+						<span style="padding-left: 25px; padding-right: 10px">Warm</span>
+					</label>
+					<label>
+						<input id="cold" name="extremities" type="checkbox" value="Cold"
+							{{checked assessment.extremities 'Cold'}}/>
+						<span style="padding-left: 25px; padding-right: 10px">Cold</span>
+					</label>
+					<label>
+						<input id="clammy" name="extremities" type="checkbox" value="Clammy"
+							{{checked assessment.extremities 'Clammy'}}/>
+						<span style="padding-left: 25px; padding-right: 10px">Clammy</span>
+					</label>
+					<label>
+						<input id="cyanosed" name="extremities" type="checkbox" value="Cyanosed"
+							{{checked assessment.extremities 'Cyanosed'}}/>
+						<span style="padding-left: 25px; padding-right: 10px">Cyanosed</span>
+					</label>
+				</div>
+			</div>
+
+
+			{{!-- Pacemaker ==================================================================================== --}}
+			<div class="row">
+				<div class="col s12 m2 l2" style="padding-top:25px">
+					<label style="font-size: 15px">Permanent Pacemaker</label>
+				</div>
+				<div class="col s12 m1 l1" style="padding-top:25px">
+					<label>
+						<input id="pacemakerYes" name="pacemaker" type="radio" value="true"
+							{{ setRadioButton assessment.pacemaker true }}/>
+						<span style="padding-left: 25px; padding-right: 10px">Yes</span>
+					</label>
+					<label>
+						<input id="pacemakerNo" name="pacemaker" type="radio" value="false"
+							   onclick="document.getElementById('pacemakerManu').value = ''"
+							{{ setRadioButton assessment.pacemaker false }}/>
+						<span style="padding-left: 25px; padding-right: 10px">No</span>
+					</label>
+				</div>
+				<div class="col s12 m9 l9" >
+					<div class="input-field">
+						<input name="pacemakerManu" id="pacemakerManu" type="text"
+							   onfocus="document.getElementById('pacemakerYes').checked = true"
+							   value="{{assessment.pacemakerManu}}"/>
+						<label for="paceMakerManu">If yes</label>
+						<span class="helper-text">Specify manufacturer and contact number</span>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>

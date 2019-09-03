@@ -1,0 +1,83 @@
+{{#if user}}
+	{{> _add-btn}}
+{{/if}}
+<h5>Welcome {{user.firstName}}</h5>
+
+<br>
+<div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">Patient Master Records</div>
+
+{{#if patients}}
+	<table id="patientMasterList" class="hover order-column">
+		<thead>
+		<tr>
+			<th>ID</th>
+			<th class="dt-head-center">Ward</th>
+			<th class="dt-head-center">Bed</th>
+			<th>Family Name</th>
+			<th>Given Name</th>
+			<th class="dt-head-center">Gender</th>
+			<th class="dt-head-center">Adm Date</th>
+			<th>Updated</th>
+			<th></th>
+		</tr>
+		</thead>
+		<tbody>
+		{{#each patients}}
+			<tr style="height: 60px">
+				<td><a href="/master/edit/{{patientID}}">{{patientID}}</a></td>
+				<td class="dt-body-center">{{ward}}</td>
+				<td class="dt-body-center">{{bed}}</td>
+				<td>{{familyName}}</td>
+				<td>{{givenName}}</td>
+				<td class="dt-body-center">{{gender}}</td>
+				<td class="dt-body-center">{{formatDate admDate 'DD/MM/YYYY'}}</td>
+				<td>{{formatDate dateCreated 'DD/MM/YYYY HH:mm'}}</td>
+				<td style="width: 55px"> <!-- the tr we're trying to get -->
+					<a id="dropdown-button" class='dropdown-trigger btn purple darken-3 waves-effect waves-light'
+						style="display: none; width:20px" href='#'
+						data-target='menu-options'>
+						<i class="material-icons">more_vert</i>
+					</a>
+				</td>
+			</tr>
+			<ul id="menu-options" class='dropdown-content'>
+				<li>
+					<form action="/master/edit/{{patientID}}">
+						<button type="submit" class="btn green darken-3">
+							<i class="material-icons">mode_edit</i>
+						</button>
+					</form>
+				</li>
+				<li>
+					<form action="/stories/{{id}}?_method=DELETE" method="post" id="delete-form">
+						<input type="hidden" name="_method" value="DELETE">
+						<button type="submit" class="btn red darken-3">
+							<i class="material-icons">delete</i>
+						</button>
+					</form>
+				</li>
+			</ul>
+		{{/each}}
+		</tbody>
+	</table>
+
+{{else}}
+	<p id="noRecord">You have not <a href="/master/add-patient">created</a> any master patient records yet</p>
+{{/if}}
+<br>
+<hr>
+
+<script>
+	paceOptions = {
+		ajax: false, // disabled
+		document: true,
+		eventLag: false, // disabled
+		elements: {
+			selectors: [ '#patientMasterList, #noRecord' ]
+		}
+	};
+</script>
+<script src="/assets/pace/pace.min.js"></script>
+<script src="/assets/js/ListPatientMaster.js"></script>
+
+

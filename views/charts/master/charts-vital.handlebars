@@ -1,0 +1,1156 @@
+<style>
+    td, th {
+        text-align: center;
+    }
+
+    .tabs .indicator {
+        background-color: #6A1B9A;
+    }
+
+    .tabs .tab a:focus, .tabs .tab a:focus.active {
+        background: transparent;
+    }
+    #flowsheetTable th {
+        border-right: 1px solid rgba(0, 0, 0, 0.12);
+        border-bottom: none;
+    }
+
+    #flowsheetTable tr {
+        border-bottom: none;
+    }
+
+    #flowsheetTable tr td {
+        border-right: 1px solid rgba(0, 0, 0, 0.12);
+    }
+</style>
+<br>
+<div class="row">
+    <div class="col s12">
+        <div class="tabs">
+            <li class="tab col s2 offset-s1" id="flowTab"><a class="purple-text text-darken-3" id="tab0" href="#flowsheet">Flowsheet</a></li>
+            <li class="tab col s2" id="vitalTab"><a class="purple-text text-darken-3" id="tab1" href="#vitalSigns">Vital Signs</a></li>
+            <li class="tab col s2" id="painTab"><a class="purple-text text-darken-3" id="tab2" href="#pain">Pain</a></li>
+            <li class="tab col s2" id="oxyTab"><a class="purple-text text-darken-3" id="tab3" href="#oxygen">Oxygen</a></li>
+            <li class="tab col s2" id="whTab"><a class="purple-text text-darken-3" id="tab4" href="#weightHeight">Weight & Height</a></li>
+        </div>
+    </div>
+</div>
+
+{{!-- Flowsheet --}}
+<div id="flowsheet">
+    <div class="card-panel purple darken-3 white-text" style="padding: 5px; font-size: 20px; text-align: center">Flowsheet</div>
+    
+    <div style="overflow-x: auto; max-height: 48em;">
+        <table id="flowsheetTable">
+            <tr>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Datetime</th>
+                {{#each dateVal}}
+                <th style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">{{formatDatetime this}}</th>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Temp (°C)</th>
+                {{#each vitalFlow}}
+                <td>{{temp}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Temp Route</th>
+                {{#each vitalFlow}}
+                <td>{{tempRoute}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Heart Rate (BPM)</th>
+                {{#each vitalFlow}}
+                <td>{{heartRate}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Resp</th>
+                {{#each vitalFlow}}
+                <td>{{resp}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Blood Pressure</th>
+                {{#each vitalFlow}}
+                <td>{{bPressure}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">BP (Arterial)</th>
+                {{#each vitalFlow}}
+                <td>{{arterialBP}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">BP Location</th>
+                {{#each vitalFlow}}
+                <td>{{bpLocation}}</td>
+                {{/each}}
+            </tr>                
+            <tr>
+                <th width="10%">BP Method</th>
+                {{#each vitalFlow}}
+                <td>{{bpMethod}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Patient Position</th>
+                {{#each vitalFlow}}
+                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">{{patientPosition}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Pain Scale</th>
+                {{#each painFlow}}
+                <td>{{painScale}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Pain Score (Site 1)</th>
+                {{#each painFlow}}
+                <td>{{painScore}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Onset</th>
+                {{#each painFlow}}
+                <td>{{onset}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Location</th>
+                {{#each painFlow}}
+                <td>{{location}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Duration</th>
+                {{#each painFlow}}
+                <td>{{duration}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Characteristics</th>
+                {{#each painFlow}}
+                <td>{{characteristics}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Associated Symptoms</th>
+                {{#each painFlow}}
+                <td>{{associatedSymp}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Aggravating Factor(s)</th>
+                {{#each painFlow}}
+                <td>{{aggravatingFact}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Relieving Factor(s)</th>
+                {{#each painFlow}}
+                <td>{{relievingFact}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Pain Intervention(s)</th>
+                {{#each painFlow}}
+                <td>{{painIntervene}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Response to Intervention(s)</th>
+                {{#each painFlow}}
+                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">{{responseIntervene}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">O2 Device</th>
+                {{#each oxyFlow}}
+                <td>{{o2Device}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Humidifier</th>
+                {{#each oxyFlow}}
+                <td>{{humidifier}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">O2 Amount (L/min)</th>
+                {{#each oxyFlow}}
+                <td>{{o2Amt}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">FiO2 (%)</th>
+                {{#each oxyFlow}}
+                <td>{{fio2}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">SpO2 (%)</th>
+                {{#each oxyFlow}}
+                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">{{spo2}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Height (M)</th>
+                {{#each whFlow}}
+                <td colspan="{{colspan}}">{{height}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Estimated Height (M)</th>
+                {{#each whFlow}}
+                <td colspan="{{colspan}}">{{heightEst}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Weight (Kg)</th>
+                {{#each whFlow}}
+                <td colspan="{{colspan}}">{{weight}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Estimated Weight (Kg)</th>
+                {{#each whFlow}}
+                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)" colspan="{{colspan}}">{{weightEst}}</td>
+                {{/each}}
+            </tr>
+        </table>
+    </div>
+</div>
+
+{{!-- Vital Signs --}}
+<div id="vitalSigns">
+    <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px; text-align: center">Vital Signs</div>
+    <div style="overflow-x:auto; max-height: 16em;">
+        <table id="vitalRecords" class="hover order-column">
+            <thead>
+                <tr>
+                    <th>Datetime</th>
+                    <th>Temp (°C)</th>
+                    <th>Temp Route</th>
+                    <th>Heart Rate (BPM)</th>
+                    <th>Resp</th>
+                    <th>Blood Pressure</th>
+                    <th>BP (Arterial)</th>
+                    <th>BP Location</th>
+                    <th>BP Method</th>
+                    <th>Patient Position</th>
+                    {{!-- <th>Patient ID</th> --}}
+                    {{!-- <th>User</th> <!-- JR --> --}}
+                    {{#unless userType}}
+                    <th>Delete</th>
+                    {{/unless}}
+                </tr>
+            </thead>
+            <tbody>
+                {{#if newVital}}
+                    {{#each newVital}}
+                    <tr style="height: 60px">
+                        {{#unless ../userType}}
+                        <td><a href="/master/vital/{{vitalID}}">{{formatDatetime datetime}}</a></td>
+                        {{else}}
+                        <td><a href="/student/vital/{{../recordID}}/{{vitalID}}">{{formatDatetime datetime}}</a></td>
+                        {{/unless}}
+                        <td>{{temp}}</td>
+                        <td>{{tempRoute}}</td>
+                        <td>{{heartRate}}</td>
+                        <td>{{resp}}</td>
+                        <td>{{bPressure}}</td>
+                        <td>{{arterialBP}}</td>
+                        <td>{{bpLocation}}</td>
+                        <td>{{bpMethod}}</td>
+                        <td>{{patientPosition}}</td>
+                        {{!-- <td>{{patientID}}</td> --}}
+                        {{!-- <td>{{userType}}</td> --}}
+                        {{#unless ../userType}}
+                        <td style="width: 55px"> <!-- the tr we're trying to get -->
+                            <form action="/master/del-vitals/{{vitalID}}?_method=DELETE" method="post" id="delete-form">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn red darken-3">
+                                    <i class="material-icons">delete</i>
+                                </button>
+                            </form>
+                        </td>
+                        {{/unless}}
+                    </tr>
+                    {{/each}}
+                {{else}}
+                <td colspan="13">You have not created any vital records yet</td>
+                {{/if}}
+            </tbody>
+        </table>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col s12 m8"></div>
+
+        {{#unless userType}}
+        <form action="/master/chart">
+        {{else}}
+        <form action="/student/chart/{{recordID}}">
+        {{/unless}}
+            <div class="col s12 m4">
+                <button class="btn waves-effect waves-light" style="width: 150px; float: right;" type="submit">Chart
+                    <i class="material-icons right">insert_chart</i>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    {{#if editVital}}
+        {{#unless userType}}
+        <form action="/master/edit-vital/{{editVital.vitalID}}?_method=PUT" method="POST" id="editVital">
+        {{else}}
+        <form action="/student/edit-vital/{{recordID}}/{{editVital.vitalID}}?_method=PUT" method="POST" id="editVital">
+        {{/unless}}
+    <input type="hidden" name="_method" value="PUT">
+    {{else}}
+    <form action="/master/add-vital" method="POST" id="addVital">
+    {{/if}}
+        <div class="card purple lighten-5">
+            <div class="card-content">
+                <div id="vitalInfo">
+                    <span class="purple-text darken-2">Vital Information</span>
+
+                    <div class="row">
+                        <div class="col s12 m3 input-field">
+                            <input id="dateVital" type="text" class="datepicker" name="dateVital" value="{{editVital.date}}" required>
+                            <label for="dateVital">Date</label>
+                            <span class="helper-text">dd/mm/yyyy</span>
+                        </div>
+
+                        <div class="col s12 m3 input-field">
+                            <input id="timeVital" type="text" class="timepicker" name="timeVital" value="{{editVital.time}}" required>
+                            <label for="timeVital">Time</label>
+                            <span class="helper-text">hh:ss</span>
+                        </div>
+
+                        <div class="col s12 m3 input-field">
+                            <input id="temp" type="number" name="temp" step="0.1" value="{{editVital.temp}}" required>
+                            <label for="temp">Temperature</label>
+                            <span class="helper-text">00.0 (°C)</span>
+                        </div>
+
+                        <div class="col s12 m3 input-field">
+                            <select id="tempRoute" name="tempRoute" required>
+                                <option value="" disabled selected>Routes</option>
+                                <option value="Oral">Oral</option>
+                                <option value="Tympanic">Tympanic</option>
+                                <option value="Axillary">Axillary</option>
+                                <option value="Rectal">Rectal</option>
+                            </select>
+                            <label for="tempRoute">Temperature Route</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col s12 m3 input-field">
+                            <input id="heartRate" type="number" name="heartRate" value="{{editVital.heartRate}}" required>
+                            <label for="heartRate">Heart Rate (BPM)</label>
+                        </div>
+
+                        <div class="col s12 m3 input-field">
+                            <input id="resp" type="number" name="resp" value="{{editVital.resp}}" required>
+                            <label for="resp">Resp</label>
+                        </div>
+
+                        <div class="col s12 m2 input-field">
+                            <select id="bpLocation" name="bpLocation">
+                                <option value="" disabled selected>Location</option required>
+                                <option value="Right Arm">Right Arm</option>
+                                <option value="Right Leg">Right Leg</option>
+                                <option value="Left Arm">Left Arm</option>
+                                <option value="Left Leg">Left Leg</option>
+                            </select>
+                            <label for="bpLocation">BP Location</label>
+                        </div>
+                        
+                        <div class="col s12 m2 input-field">
+                            <select id="bpMethod" name="bpMethod">
+                                <option value="" disabled selected>Method</option required>
+                                <option value="Manual">Manual</option>
+                                <option value="Auto">Auto</option>
+                            </select>
+                            <label for="bpMethod">BP Method</label>
+                        </div>
+
+                        <div class="col s12 m2 input-field">
+                            <select id="patientPosition" name="patientPosition">
+                                <option value="" disabled selected>Position</option required>
+                                <option value="Sitting">Sitting</option>
+                                <option value="Lying Right">Lying Right</option>
+                                <option value="Lying Left">Lying Left</option>
+                                <option value="Supine">Supine</option>
+                                <option value="Standing">Standing</option>
+                            </select>
+                            <label for="patientPosition">Patient Position</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col s12 m3 input-field">
+                            <input id="sbp" type="number" name="sbp" value="{{editVital.sbp}}" required>
+                            <label for="sbp">Blood Pressure (SBP)</label>
+                        </div>
+
+                        <div class="col s12 m3 input-field">
+                            <input id="dbp" type="number" name="dbp" value="{{editVital.dbp}}" required>
+                            <label for="dbp">Blood Pressure (DBP)</label>
+                        </div>
+
+                        <div class="col s12 m3 input-field">
+                            <input id="sbpArterial" type="number" name="sbpArterial" value="{{editVital.sbpArterial}}" required>
+                            <label for="sbpArterial">Arterial Blood Pressure (SBP)</label>
+                        </div>
+
+                        <div class="col s12 m3 input-field">
+                            <input id="dbpArterial" type="number" name="dbpArterial" value="{{editVital.dbpArterial}}" required>
+                            <label for="dbpArterial">Arterial Blood Pressure (DBP)</label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="row">
+        <div class="col s12 m8"></div>
+
+        <div class="col s12 m4">
+            {{#if editVital}}
+            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editVital">Save
+            {{else}}
+            {{#unless userType}}
+            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addVital">Save
+            {{/unless}}
+            {{/if}}
+            {{#unless userType}}
+                <i class="material-icons right">send</i>
+            </button>
+            {{/unless}}
+        </div>
+    </div>
+</div>
+
+{{!-- Pain --}}
+<div id="pain">
+    <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px; text-align: center">Pain</div>
+    <div style="overflow-x:auto; max-height: 16em;">
+        <table id="painRecords" class="hover order-column">
+            <thead>
+                <tr>
+                    <th>Datetime</th>
+                    <th>Pain Scale</th>
+                    <th>Pain Score (Site 1)</th>
+                    <th>Onset</th>
+                    <th>Location</th>
+                    <th>Duration</th>
+                    <th>Characteristics</th>
+                    <th>Associated Symptoms</th>
+                    <th>Aggravating Factor(s)</th>
+                    <th>Relieving Factor(s)</th>
+                    <th>Pain Intervention(s)</th>
+                    <th>Response to Intervention(s)</th>
+                    {{#unless userType}}
+                    <th>Delete</th>
+                    {{/unless}}
+                </tr>
+            </thead>
+            <tbody>
+                {{#if painData}}
+                    {{#each painData}}
+                    <tr style="height: 60px">
+                        {{#unless ../userType}}
+                        <td><a href="/master/pain/{{painID}}">{{formatDatetime datetime}}</a></td>
+                        {{else}}
+                        <td><a href="/student/pain/{{../recordID}}/{{painID}}">{{formatDatetime datetime}}</a></td>
+                        {{/unless}}
+                        <td>{{painScale}}</td>
+                        <td>{{painScore}}</td>
+                        <td>{{onset}}</td>
+                        <td>{{location}}</td>
+                        <td>{{duration}}</td>
+                        <td>{{characteristics}}</td>
+                        <td>{{associatedSymp}}</td>
+                        <td>{{aggravatingFact}}</td>
+                        <td>{{relievingFact}}</td>
+                        <td>{{painIntervene}}</td>
+                        <td>{{responseIntervene}}</td>
+                        {{#unless ../userType}}
+                        <td style="width: 55px"> <!-- the tr we're trying to get -->
+                            <form action="/master/del-pain/{{painID}}?_method=DELETE" method="post" id="delete-form">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn red darken-3">
+                                    <i class="material-icons">delete</i>
+                                </button>
+                            </form>
+                        </td>
+                        {{/unless}}
+                    </tr>
+                    {{/each}}
+                {{else}}
+                <td colspan="13">You have not created any pain records yet</td>
+                {{/if}}
+            </tbody>
+        </table>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col s12 m8"></div>
+
+        {{#unless userType}}
+        <form action="/master/chart">
+        {{else}}
+        <form action="/student/chart/{{recordID}}">
+        {{/unless}}
+            <div class="col s12 m4">
+                <button class="btn waves-effect waves-light" style="width: 150px; float: right;" type="submit">Chart
+                    <i class="material-icons right">insert_chart</i>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    {{#if editPain}}
+        {{#unless userType}}
+        <form action="/master/edit-pain/{{editPain.painID}}?_method=PUT" method="POST" id="editPain">
+        {{else}}
+        <form action="/student/edit-pain/{{recordID}}/{{editPain.painID}}?_method=PUT" method="POST" id="editPain">
+        {{/unless}}
+    <input type="hidden" name="_method" value="PUT">
+    {{else}}
+    <form action="/master/add-pain" method="POST" id="addPain">
+    {{/if}}
+        <div class="card purple lighten-5">
+            <div class="card-content">
+                <div id="painInfo">
+                    <span class="purple-text darken-2">Pain Information</span>
+
+                    <div class="row">
+                        <div class="col s12 m2 input-field">
+                            <input id="datePain" type="text" class="datepicker" name="datePain" value="{{editPain.date}}" required>
+                            <label for="datePain">Date</label>
+                            <span class="helper-text">dd/mm/yyyy</span>
+                        </div>
+
+                        <div class="col s12 m2 input-field">
+                            <input id="timePain" type="text" class="timepicker" name="timePain" value="{{editPain.time}}" required>
+                            <label for="timePain">Time</label>
+                            <span class="helper-text">hh:ss</span>
+                        </div>
+
+                        <div class="col s12 m2 input-field">
+                            <select id="painScale" name="painScale">
+                                <option value="" disabled selected>Scale</option>
+                                <option value="Numerical Rating Scale">Numerical Rating Scale</option>
+                                <option value="Wong-Baker">Wong-Baker</option>
+                                <option value="FLACC">FLACC</option>
+                            </select>
+                            <label for="painScale">Pain Scale</label>
+                        </div>
+
+                        <div class="col s12 m2 input-field">
+                            <select id="painScore" name="painScore">
+                                <option value="" disabled selected>Score</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                            <label for="painScore">Pain Score</label>
+                        </div>
+
+                        <div class="col s12 m4 input-field">
+                            <input id="onset" type="text" class="onset" name="onset" value="{{editPain.onset}}" required>
+                            <label for="onset">Onset</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col s12 m3 input-field">
+                            <input id="location" type="text" class="location" name="location" value="{{editPain.location}}" required>
+                            <label for="location">Location</label>
+                        </div>
+
+                        <div class="col s12 m3 input-field">
+                            <input id="duration" type="text" class="duration" name="duration" value="{{editPain.duration}}" required>
+                            <label for="duration">Duration</label>
+                        </div>
+
+                        <div class="col s12 m3 input-field">
+                            <input id="characteristics" type="text" class="characteristics" name="characteristics" value="{{editPain.characteristics}}" required>
+                            <label for="characteristics">Characteristics</label>
+                        </div>
+
+                        <div class="col s12 m3 input-field">
+                            <input id="associatedSymp" type="text" class="associatedSymp" name="associatedSymp" value="{{editPain.associatedSymp}}" required>
+                            <label for="associatedSymp">Associated Symptoms</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col s12 m3 input-field">
+                            <input id="aggravatingFact" type="text" class="aggravatingFact" name="aggravatingFact" value="{{editPain.aggravatingFact}}" required>
+                            <label for="aggravatingFact">Aggravating Factor(s)</label>
+                        </div>
+
+                        <div class="col s12 m3 input-field">
+                            <input id="relievingFact" type="text" class="relievingFact" name="relievingFact" value="{{editPain.relievingFact}}" required>
+                            <label for="relievingFact">Relieving Factor(s)</label>
+                        </div>
+
+                        <div class="col s12 m3 input-field">
+                            <input id="painIntervene" type="text" class="painIntervene" name="painIntervene" value="{{editPain.painIntervene}}" required>
+                            <label for="painIntervene">Pain Intervention(s)</label>
+                        </div>
+
+                        <div class="col s12 m3 input-field">
+                            <input id="responseIntervene" type="text" class="responseIntervene" name="responseIntervene" value="{{editPain.responseIntervene}}" required>
+                            <label for="responseIntervene">Response to Intervention(s)</label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="row">
+        <div class="col s12 m8"></div>
+
+        <div class="col s12 m4">
+            {{#if editPain}}
+            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editPain">Save
+            {{else}}
+            {{#unless userType}}
+            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addPain">Save
+            {{/unless}}
+            {{/if}}
+            {{#unless userType}}
+                <i class="material-icons right">send</i>
+            </button>
+            {{/unless}}
+        </div>
+    </div>
+</div>
+
+{{!-- Oxygen --}}
+<div id="oxygen">
+<div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px; text-align: center">Oxygen</div>
+    <div style="overflow-x:auto; max-height: 16em;">
+        <table id="oxyRecords" class="hover order-column">
+            <thead>
+                <tr>
+                    <th>Datetime</th>
+                    <th>O2 Device</th>
+                    <th>Humidifier</th>
+                    <th>O2 Amount</th>
+                    <th>FiO2 (%)</th>
+                    <th>SpO2 (%)</th>
+                    {{#unless userType}}
+                    <th>Delete</th>
+                    {{/unless}}
+                </tr>
+            </thead>
+            <tbody>
+                {{#if oxyData}}
+                    {{#each oxyData}}
+                    <tr style="height: 60px">
+                        {{#unless ../userType}}
+                        <td><a href="/master/oxygen/{{oxygenID}}">{{formatDatetime datetime}}</a></td>
+                        {{else}}
+                        <td><a href="/student/oxygen/{{../recordID}}/{{oxygenID}}">{{formatDatetime datetime}}</a></td>
+                        {{/unless}}
+                        <td>{{o2Device}}</td>
+                        <td>{{humidifier}}</td>
+                        <td>{{o2Amt}}</td>
+                        <td>{{fio2}}</td>
+                        <td>{{spo2}}</td>
+                        {{#unless ../userType}}
+                        <td style="width: 55px"> <!-- the tr we're trying to get -->
+                            <form action="/master/del-oxygen/{{oxygenID}}?_method=DELETE" method="post" id="delete-form">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn red darken-3">
+                                    <i class="material-icons">delete</i>
+                                </button>
+                            </form>
+                        </td>
+                        {{/unless}}
+                    </tr>
+                    {{/each}}
+                {{else}}
+                <td colspan="7">You have not created any oxygen records yet</td>
+                {{/if}}
+            </tbody>
+        </table>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col s12 m8"></div>
+
+        {{#unless userType}}
+        <form action="/master/chart">
+        {{else}}
+        <form action="/student/chart/{{recordID}}">
+        {{/unless}}
+            <div class="col s12 m4">
+                <button class="btn waves-effect waves-light" style="width: 150px; float: right;" type="submit">Chart
+                    <i class="material-icons right">insert_chart</i>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    {{#if editOxy}}
+        {{#unless userType}}
+        <form action="/master/edit-oxygen/{{editOxy.oxygenID}}?_method=PUT" method="POST" id="editOxy">
+        {{else}}
+        <form action="/student/edit-oxygen/{{recordID}}/{{editOxy.oxygenID}}?_method=PUT" method="POST" id="editOxy">
+        {{/unless}}
+    <input type="hidden" name="_method" value="PUT">
+    {{else}}
+    <form action="/master/add-oxygen" method="POST" id="addOxy">
+    {{/if}}
+        <div class="card purple lighten-5">
+            <div class="card-content">
+                <div id="oxyInfo">
+                    <span class="purple-text darken-2">Oxygen Information</span>
+
+                    <div class="row">
+                        <div class="col s12 m3 input-field">
+                            <input id="dateOxy" type="text" class="datepicker" name="dateOxy" value="{{editOxy.date}}" required>
+                            <label for="dateOxy">Date</label>
+                            <span class="helper-text">dd/mm/yyyy</span>
+                        </div>
+
+                        <div class="col s12 m3 input-field">
+                            <input id="timeOxy" type="text" class="timepicker" name="timeOxy" value="{{editOxy.time}}" required>
+                            <label for="timeOxy">Time</label>
+                            <span class="helper-text">hh:ss</span>
+                        </div>
+
+                        <div class="col s12 m3 input-field">
+                            <select id="oxyDevice" name="oxyDevice" required>
+                                <option value="" disabled selected>Device</option>
+                                <option value="Nasal Prong">Nasal Prong</option>
+                                <option value="Simple Face Mask">Simple Face Mask</option>
+                                <option value="Venturi Mask">Venturi Mask</option>
+                                <option value="Partial Rebreathing Mask">Partial Rebreathing Mask</option>
+                                <option value="Non-Rebreathing Mask">Non-Rebreathing Mask</option>
+                                <option value="Tracheastomy Mask">Tracheastomy Mask</option>
+                            </select>
+                            <label for="oxyDevice">O2 Device</label>
+                        </div>
+
+                        <div class="col s12 m3 input-field">
+                            <select id="humidifier" name="humidifier" required>
+                                <option value="" disabled selected>Humidifier</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                            <label for="humidifier">Humidifier</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col s12 m3 input-field">
+                            <select id="oxyAmt" name="oxyAmt" required>
+                                <option value="" disabled selected>Amount</option>
+                                <option value="Room Air">Room Air</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                                <option value="13">13</option>
+                                <option value="14">14</option>
+                                <option value="15">15</option>
+                            </select>
+                            <label for="oxyAmt">O2 Amount</label>
+                        </div>
+
+                        <div class="col s12 m3 input-field">
+                            <input id="fiOxy" type="number" name="fiOxy" value="{{editOxy.fio2}}" required>
+                            <label for="fiOxy">Fi02</label>
+                            <span class="helper-text">(%)</span>
+                        </div>                     
+                        
+                        <div class="col s12 m3 input-field">
+                            <input id="spOxy" type="number" name="spOxy" value="{{editOxy.spo2}}" required>
+                            <label for="spOxy">SpO2</label>
+                            <span class="helper-text">(%)</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="row">
+        <div class="col s12 m8"></div>
+
+        <div class="col s12 m4">
+            {{#if editOxy}}
+            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editOxy">Save
+            {{else}}
+            {{#unless userType}}
+            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addOxy">Save
+            {{/unless}}
+            {{/if}}
+            {{#unless userType}}
+                <i class="material-icons right">send</i>
+            </button>
+            {{/unless}}
+        </div>
+    </div>
+</div>
+
+<div id="weightHeight">
+    <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px; text-align: center">Weight & Height</div>
+    <div style="overflow-x:auto; max-height: 16em;">
+        <table id="whRecords" class="hover order-column">
+            <thead>
+                <tr>
+                    <th>Datetime</th>
+                    <th>Height (m)</th>
+                    <th>Estimated Height (m)</th>
+                    <th>Weight (kg)</th>
+                    <th>Estimated Weight (kg)</th>
+                    <th>BSA (sqm)</th>
+                    <th>BMI</th>
+                    {{#unless userType}}
+                    <th>Delete</th>
+                    {{/unless}}
+                </tr>
+            </thead>
+            <tbody>
+                {{#if whData}}
+                    {{#each whData}}
+                    <tr>
+                        {{#unless ../userType}}
+                        <td><a href="/master/wh/{{whID}}">{{formatDatetime datetime}}</a></td>
+                        {{else}}
+                        <td><a href="/student/wh/{{../recordID}}/{{whID}}">{{formatDatetime datetime}}</a></td>
+                        {{/unless}}
+                        <td>{{height}}</td>
+                        <td>{{heightEst}}</td>
+                        <td>{{weight}}</td>
+                        <td>{{weightEst}}</td>
+                        <td>{{bsa}}</td>
+                        <td>{{bmi}}</td>
+                        {{#unless ../userType}}
+                        <td style="width: 55px"> <!-- the tr we're trying to get -->
+                            <form action="/master/del-wh/{{whID}}?_method=DELETE" method="post" id="delete-form">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn red darken-3">
+                                    <i class="material-icons">delete</i>
+                                </button>
+                            </form>
+                        </td>
+                        {{/unless}}
+                    </tr>
+                    {{/each}}
+                {{else}}
+                <td colspan="8">You have not created any weight & height records yet</td>
+                {{/if}}
+            </tbody>
+        </table>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col s12 m8"></div>
+
+        {{#unless userType}}
+        <form action="/master/chart">
+        {{else}}
+        <form action="/student/chart/{{recordID}}">
+        {{/unless}}
+            <div class="col s12 m4">
+                <button class="btn waves-effect waves-light" style="width: 150px; float: right;" type="submit">Chart
+                    <i class="material-icons right">insert_chart</i>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    {{#if editWh}}
+        {{#unless userType}}
+        <form action="/master/edit-wh/{{editWh.whID}}?_method=PUT" method="POST" id="editWh">
+        {{else}}
+        <form action="/student/edit-wh/{{recordID}}/{{editWh.whID}}?_method=PUT" method="POST" id="editWh">
+        {{/unless}}
+    <input type="hidden" name="_method" value="PUT">
+    {{else}}
+    <form action="/master/add-wh" method="POST" id="addWh">
+    {{/if}}
+        <div class="card purple lighten-5">
+            <div class="card-content">
+                <div id="whInfo">
+                    <span class="purple-text darken-2">Weight & Height Information</span>
+
+                    <div class="row">
+                        <div class="col s12 m3 input-field">
+                            <input id="dateWh" type="text" class="datepicker" name="dateWh" value="{{editWh.date}}" required>
+                            <label for="dateWh">Date</label>
+                            <span class="helper-text">dd/mm/yyyy</span>
+                        </div>
+
+                        <div class="col s12 m3 input-field">
+                            <input id="timeWh" type="text" class="timepicker" name="timeWh" value="{{editWh.time}}" required>
+                            <label for="timeWh">Time</label>
+                            <span class="helper-text">hh:ss</span>
+                        </div>
+
+                        <div class="col s12 m3 input-field">
+                            <input id="height" type="number"  step="0.1" name="height" value="{{editWh.height}}" required>
+                            <label for="height">Height</label>
+                            <span class="helper-text">0.0M</span>
+                        </div>
+
+                        <div class="col s12 m3 input-field">
+                            <input id="heightEst" type="number"  step="0.1" name="heightEst" value="{{editWh.heightEst}}" required>
+                            <label for="heightEst">Estimated Height</label>
+                            <span class="helper-text">0.0M</span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col s12 m3 input-field">
+                            <input id="weight" type="number" name="weight" step="0.1" value="{{editWh.weight}}" required>
+                            <label for="weight">Weight</label>
+                            <span class="helper-text">0.0Kg</span>
+                        </div>
+
+                        <div class="col s12 m3 input-field">
+                            <input id="weightEst" type="number" name="weightEst" step="0.1" value="{{editWh.weightEst}}" required>
+                            <label for="weightEst">Estimated Weight</label>
+                            <span class="helper-text">0.0Kg</span>
+                        </div>                     
+                        
+                        <div class="col s12 m3 input-field">
+                            <input id="bsa" type="text" name="bsa" value="{{editWh.bsa}}" required>
+                            <label for="bsa">BSA</label>
+                            <span class="helper-text">sqm</span>
+                        </div>
+
+                        <div class="col s12 m3 input-field">
+                            <input id="bmi" type="number" name="bmi" value="{{editWh.bmi}}" required>
+                            <label for="bmi">BMI</label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="row">
+        <div class="col s12 m8"></div>
+
+        <div class="col s12 m4">
+            {{#if editWh}}
+            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editWh">Save
+            {{else}}
+            {{#unless userType}}
+            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addWh">Save
+            {{/unless}}
+            {{/if}}
+            {{#unless userType}}
+                <i class="material-icons right">send</i>
+            </button>
+            {{/unless}}
+        </div>
+    </div>
+</div>
+
+<script
+		src="https://code.jquery.com/jquery-3.3.1.min.js"
+		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+		crossorigin="anonymous">
+</script>
+<script>
+
+    $(document).ready(() => {
+        $('.tabs').tabs();
+    })
+
+    document.addEventListener('DOMContentLoaded', () => {
+        //Vital Signs
+        const dateVital = document.querySelector('#dateVital');
+        const timeVital = document.querySelector('#timeVital');
+        const tempRoute = document.querySelector('#tempRoute');
+        const bpLocation = document.querySelector('#bpLocation');
+        const bpMethod = document.querySelector('#bpMethod');
+        const patientPosition = document.querySelector('#patientPosition');
+
+        //Pain
+        const datePain = document.querySelector('#datePain');
+        const timePain = document.querySelector('#timePain');
+        const painScale = document.querySelector('#painScale');
+        const painScore = document.querySelector('#painScore');
+
+        //Oxygen
+        const dateOxy = document.querySelector('#dateOxy');
+        const timeOxy = document.querySelector('#timeOxy');
+        const oxyDevice = document.querySelector('#oxyDevice');
+        const humidifier = document.querySelector('#humidifier');
+        const oxyAmt = document.querySelector('#oxyAmt');
+
+        //Weight Height
+        const dateWh = document.querySelector('#dateWh');
+        const timeWh = document.querySelector('#timeWh');
+
+        //Vital Signs Instances
+        M.Datepicker.init(dateVital, {
+            maxDate: new Date(),
+            format: 'dd/mm/yyyy',
+            disableWeekends: true
+        });
+
+        M.Timepicker.init(timeVital, {
+            twelveHour: false,
+            showClearBtn: true
+        });
+
+        M.FormSelect.init(tempRoute, {
+            
+        })
+
+        M.FormSelect.init(bpLocation, {
+            
+        });
+
+        M.FormSelect.init(bpMethod, {
+            
+        });
+
+        M.FormSelect.init(patientPosition, {
+            
+        });
+
+        //Pain Instances
+        M.Datepicker.init(datePain, {
+            maxDate: new Date(),
+            format: 'dd/mm/yyyy',
+            disableWeekends: true
+        })
+
+        M.Timepicker.init(timePain, {
+            twelveHour: false,
+            showClearBtn: true
+        })
+
+        M.FormSelect.init(painScale, {
+
+        })
+
+        M.FormSelect.init(painScore, {
+            
+        })
+
+        //Oxygen Instances
+        M.Datepicker.init(dateOxy, {
+            maxDate: new Date(),
+            format: 'dd/mm/yyyy',
+            disableWeekends: true
+        });
+
+        M.Timepicker.init(timeOxy, {
+            twelveHour: false,
+            showClearBtn: true
+        });
+
+        M.FormSelect.init(oxyDevice, {
+
+        });
+
+        M.FormSelect.init(humidifier, {
+
+        });
+
+        M.FormSelect.init(oxyAmt, {
+
+        });
+
+        //Weight Height Instances
+        M.Datepicker.init(dateWh, {
+            maxDate: new Date(),
+            format: 'dd/mm/yyyy',
+            disableWeekends: true
+        })
+        
+        M.Timepicker.init(timeWh, {
+            twelveHour: false,
+            showClearBtn: true
+        })
+        
+    })
+
+    {{#if editVital}}
+        document.getElementById('tempRoute').value = "{{editVital.tempRoute}}";
+        document.getElementById('bpLocation').value = "{{editVital.bpLocation}}";
+        document.getElementById('bpMethod').value = "{{editVital.bpMethod}}";
+        document.getElementById('patientPosition').value = "{{editVital.patientPosition}}";
+        document.getElementById('flowTab').className += " disabled";
+        document.getElementById('painTab').className += " disabled";
+        document.getElementById('oxyTab').className += " disabled";
+        document.getElementById('whTab').className += " disabled";
+        document.getElementById('tab1').className += " active";
+    {{/if}}
+
+    {{#if editPain}}
+        document.getElementById('painScale').value = "{{editPain.painScale}}";
+        document.getElementById('painScore').value = "{{editPain.painScore}}";
+        document.getElementById('flowTab').className += " disabled";
+        document.getElementById('vitalTab').className += " disabled";
+        document.getElementById('oxyTab').className += " disabled";
+        document.getElementById('whTab').className += " disabled";
+        document.getElementById('tab2').className += " active";
+    {{/if}}
+
+    {{#if editOxy}}
+        document.getElementById('oxyDevice').value = "{{editOxy.o2Device}}";
+        document.getElementById('humidifier').value = "{{editOxy.humidifier}}";
+        document.getElementById('oxyAmt').value = "{{editOxy.o2Amt}}";
+        document.getElementById('flowTab').className += " disabled";
+        document.getElementById('painTab').className += " disabled";
+        document.getElementById('vitalTab').className += " disabled";
+        document.getElementById('whTab').className += " disabled";
+        document.getElementById('tab3').className += " active";
+    {{/if}}
+
+    {{#if editWh}}
+        document.getElementById('flowTab').className += " disabled";
+        document.getElementById('painTab').className += " disabled";
+        document.getElementById('vitalTab').className += " disabled";
+        document.getElementById('oxyTab').className += " disabled";
+        document.getElementById('tab4').className += " active";
+    {{/if}}
+</script>

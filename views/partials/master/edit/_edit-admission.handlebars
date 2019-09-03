@@ -1,0 +1,198 @@
+<!-- CARD WITH TITLE -->
+<div class="card blue lighten-5">
+	<div class="card-content">
+		<div id="admission" class="section scrollspy">
+			<span class="card-title blue-text darken-3">Admission</span>
+
+			{{!-- ================================================================================================== --}}
+			<div class="row">
+				{{!-- Ward number --}}
+				<div class="col s12 m2 l2 input-field">
+					<input id="ward" type="number" name="ward" value="{{patient.ward}}">
+					<label for="ward">Ward</label>
+				</div>
+
+				{{!-- Bed number --}}
+				<div class="col s12 m2 l2 input-field">
+					<input id="bed" type="number" name="bed" value="{{patient.bed}}">
+					<label for="bed">Bed</label>
+				</div>
+
+				{{!-- Admission Date --}}
+				<div class="col s12 m2 l2 input-field">
+					{{!--<img src="https://png.icons8.com/material/50/000000/date-to.png" class="prefix">--}}
+					<input id="admDate" class="datepicker" type="text" name="admDate"
+							 value="{{formatDate patient.admDate 'DD/MM/YYYY'}}">
+					<label for="admDate">Admission Date</label>
+					<span class="helper-text">dd/mm/yyyy</span>
+				</div>
+
+				{{!-- Police Case --}}
+				{{!--<div class="col s12 m1 l1 input-field">
+					<img src="https://png.icons8.com/material/32/000000/policeman-male.png" class="prefix left">
+				</div>--}}
+				<div class="col s12 m2 l2 input-field">
+					<p><label for="policeCase">Police Case</label></p>
+					<p>
+						<label>
+							<input name="policeCase" type="radio" value="true"
+								{{ setRadioButton patient.policeCase true }}/>
+							<span>Yes</span>
+						</label>
+					</p>
+					<p>
+						<label>
+							<input name="policeCase" type="radio" value="false"
+								{{ setRadioButton patient.policeCase false }}/>
+							<span>No</span>
+						</label>
+					</p>
+				</div>
+
+				{{!-- Admitted From --}}
+				<div class="col s12 m4 l4 input-field">
+					{{!--	<img src="https://png.icons8.com/material/24/000000/place-marker.png" class="prefix">--}}
+					<input id="admFrom" type="text" name="admFrom" value="{{patient.admFrom}}">
+					<label for="admFrom">Admitted From</label>
+					<span class="helper-text">Place</span>
+				</div>
+			</div>
+
+			{{!-- ================================================================================================== --}}
+			<div class="row">
+				{{!-- Mode of Arrival --}}
+				<div class="col s12 m2 l2 input-field">
+					<p><label for="modeOfArr" style="font-size: 15px;">Mode of Arrival</label></p>
+					<p>
+						<label>
+							<input name="modeOfArr" type="radio" value="Walking" {{checked patient.modeOfArr 'Walking'}}/>
+							<span>Walking</span>
+						</label>
+					</p>
+					<p>
+						<label>
+							<input name="modeOfArr" type="radio" value="Wheelchair" {{checked patient.modeOfArr 'Wheelchair'}}/>
+							<span>Wheelchair</span>
+						</label>
+					</p>
+					<p>
+						<label>
+							<input name="modeOfArr" type="radio" value="Trolley" {{checked patient.modeOfArr 'Trolley'}}/>
+							<span>Trolley</span>
+						</label>
+					</p>
+				</div>
+
+				{{!-- Accompanied by--}}
+				<div class="col s12 m3 l3 input-field">
+					<input id="accompBy" type="text" name="accompBy" value="{{patient.accompBy}}">
+					<label for="accompBy">Accompanied by</label>
+					<span class="helper-text">Person/name</span>
+				</div>
+
+				{{!-- No. of case notes --}}
+				<div class="col s12 m2 l2 input-field">
+					<input type="number" name="caseNotes" id="caseNotes" value="{{patient.caseNotes}}">
+					<label for="caseNotes">Case notes</label>
+					<span class="helper-text">Number of</span>
+				</div>
+
+				{{!-- No of Xrays/CD --}}
+				<div class="col s12 m2 l2 input-field">
+					<input type="number" name="xRaysCD" id="xRaysCD" value="{{patient.xRaysCD}}">
+					<label for="xRaysCD">Xray/CD</label>
+					<span class="helper-text">Number of</span>
+				</div>
+
+				{{!-- Previous admission --}}
+				<div class="col s12 m3 l3 input-field">
+					<input type="text" name="prevAdm" id="prevAdm" value="{{patient.prevAdm}}">
+					<label for="prevAdm">Previous Admission</label>
+					<span class="helper-text">Previously admitted reason</span>
+				</div>
+			</div>
+
+			{{!-- ================================================================================================== --}}
+			<div class="row">
+				{{!-- Condition on arrival --}}
+				<div class="col s12 m3 l3" style="padding-top:20px">
+					<label style="font-size: 15px">Condition on Arrival</label>
+				</div>
+				<div class="col s12 m9 l9" style="margin-top:25px">
+					<label>
+						<input id="alert" name="condArr" type="radio" value="Alert" {{checked patient.condArr 'Alert'}}/>
+						<span style="padding-left: 25px; padding-right: 10px">Alert</span>
+					</label>
+
+					<label>
+						<input id="confused" name="condArr" type="radio" value="Confused"
+							{{checked patient.condArr 'Confused'}}/>
+						<span style="padding-left: 25px; padding-right: 10px">Confused</span>
+					</label>
+
+					<label>
+						<input id="drowsy" name="condArr" type="radio" value="Drowsy"
+							{{checked patient.condArr 'Drowsy'}}/>
+						<span style="padding-left: 25px; padding-right: 10px">Drowsy</span>
+					</label>
+
+					<label>
+						<input id="unresponsive" name="condArr" type="radio" value="Unresponsive"
+							{{checked patient.condArr 'Unresponsive'}}/>
+						<span style="padding-left: 25px; padding-right: 10px">Unresponsive</span>
+					</label>
+					<div id="otherCond" class="input-field">
+						<input type="text" name="otherCond" id="otherCond" value="{{patient.otherCond}}">
+						<label for="otherCond">Other condition/s </label>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				{{!-- ================================================================================================== --}}
+				<div class="col s12 m12 l12 input-field">
+					<a href="#">
+						<i class="fas fa-notes-medical small"></i>
+						Past Medical History</a>
+				</div>
+
+				<div class="col s12 m12 l12" style="height:20px"></div>
+
+			</div>
+
+			{{!-- ================================================================================================== --}}
+			<div class="row">
+				{{!-- Taking Own Medication --}}
+				<div class="col s12 m6 l6">
+					<label for="ownMeds" style="font-size: 15px">Taking Own Medication</label>
+					<label>
+						<input id="ownMedsYes" name="ownMeds" type="radio" value="true"
+							{{ setRadioButton patient.ownMeds true }}/>
+						<span style="padding-left: 25px; padding-right: 10px">Yes</span>
+					</label>
+					<label>
+						<input id="ownMedsNo" name="ownMeds" type="radio" value="false"
+							{{ setRadioButton patient.ownMeds false }}/>
+						<span style="padding-left: 25px; padding-right: 10px">No</span>
+					</label>
+
+					<div class="input-field">
+						<input type="text" name="unableAssess" id="unableAssess" onfocus="resetByName('ownMeds')"
+							   value="{{patient.unableAssess}}">
+						<label for="unableAssess">Unable to assess</label>
+						<span class="helper-text">Reason</span>
+					</div>
+				</div>
+
+				{{!-- ================================================================================================== --}}
+				{{!-- Advice On Medication --}}
+				<div class="col s12 m6 l6 input-field" style="padding-top:25px">
+					<input type="text" name="adviceMeds" id="adviceMeds" value="{{patient.adviceMeds}}">
+					<label for="adviceMeds">Advice on Medication</label>
+					<span class="helper-text">If yes, to whom? If no, specify.</span>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>

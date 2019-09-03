@@ -1,0 +1,180 @@
+<!-- CARD WITH TITLE -->
+<div class="card lime lighten-5">
+	<div class="card-content">
+		<div id="elimination" class="section scrollspy">
+			<span class="card-title blue-text darken-5">Elimination</span>
+
+			{{!-- Bowel Problem ==================================================================================== --}}
+			<div class="row">
+				<div class="col s12 m2 l2" style="padding-top:20px">
+					<label style="font-size: 15px">Bowel Problem</label>
+				</div>
+
+				<div class="col s12 m6 l6" style="padding-top:20px">
+					<label>
+						<input id="incontinence" name="bowel" type="checkbox" value="Incontinence"
+							{{resetExceptNone assessment.bowel 'Incontinence' 'None'}}/>
+						<span style="padding-left: 23px; padding-right: 7px">Incontinence</span>
+					</label>
+					<label>
+						<input id="diarrhoea" name="bowel" type="checkbox" value="Diarrhoea"
+							{{resetExceptNone assessment.bowel 'Diarrhoea' 'None'}}/>
+						<span style="padding-left: 23px; padding-right: 7px">Diarrhoea</span>
+					</label>
+					<label>
+						<input id="constipation" name="bowel" type="checkbox" value="Constipation"
+							{{resetExceptNone assessment.bowel 'Constipation' 'None'}}/>
+						<span style="padding-left: 23px; padding-right: 7px">Constipation</span>
+					</label>
+					<label>
+						<input id="malaena" name="bowel" type="checkbox" value="Malaena"
+							{{resetExceptNone assessment.bowel 'Malaena' 'None'}}/>
+						<span style="padding-left: 23px; padding-right: 7px">Malaena</span>
+					</label>
+					<label>
+						<input id="noneBowel" name="bowel" type="checkbox" value="None"
+							{{checked assessment.bowel 'None'}}
+							   onclick="resetExceptNone('bowel', 'noneBowel')"/>
+						<span style="padding-left: 23px; padding-right: 7px">None</span>
+					</label>
+
+				</div>
+
+				{{!-- Bowel Others --}}
+				<div class="col s12 m4 l4 input-field">
+					<input id="bowelOthers" name="bowelOthers" type="text" value="{{assessment.bowelOthers}}" />
+					<label for="bowelOthers">Others</label>
+					<span class="helper-text">Specify</span>
+				</div>
+			</div>
+
+		</div>
+
+
+		{{!-- Urinary Appearance ==================================================================================== --}}
+		<div class="row">
+			<div class="col s12 m2 l2" style="padding-top:15px">
+				<label style="font-size: 15px">Urinary Appearance</label>
+			</div>
+
+			<div class="col s12 m2 l2" style="padding-top:15px">
+				<label>
+					<input id="clear" name="urinaryAppearance" type="radio" value="Clear"
+						{{checked assessment.urinaryAppearance 'Clear'}}/>
+					<span style="padding-left: 25px; padding-right: 10px">Clear</span>
+				</label>
+				<label>
+					<input id="cloudy" name="urinaryAppearance" type="radio" value="Cloudy"
+						{{checked assessment.urinaryAppearance 'Cloudy'}}/>
+					<span style="padding-left: 25px; padding-right: 10px">Cloudy</span>
+				</label>
+			</div>
+
+			{{!-- Urinary Remarks --}}
+			<div class="col s12 m8 l8 input-field">
+				<input id="urinaryRemarks" name="urinaryRemarks" type="text" value="{{assessment.urinaryRemarks}}"/>
+				<label for="urinaryRemarks">Remarks</label>
+				<span class="helper-text">Specify</span>
+			</div>
+		</div>
+
+		{{!-- Urinary Presence of ==================================================================================== --}}
+		<div class="row">
+			<div class="col s12 m2 l2" style="padding-top:20px">
+				<label style="font-size: 15px">Urinary Presence</label>
+			</div>
+
+			<div class="col s12 m5 l5" style="padding-top:20px">
+				<label>
+					<input id="nocturia" name="urinaryPresence" type="checkbox" value="Nocturia"
+						{{resetExceptNone assessment.urinaryPresence 'Nocturia' 'None'}}/>
+					<span style="padding-left: 23px; padding-right: 7px">Nocturia</span>
+				</label>
+				<label>
+					<input id="frequency" name="urinaryPresence" type="checkbox" value="Frequency"
+						{{resetExceptNone assessment.urinaryPresence 'Frequency' 'None'}}/>
+					<span style="padding-left: 23px; padding-right: 7px">Frequency</span>
+				</label>
+				<label>
+					<input id="dysuria" name="urinaryPresence" type="checkbox" value="Dysuria"
+						{{resetExceptNone assessment.urinaryPresence 'Dysuria' 'None'}}/>
+					<span style="padding-left: 23px; padding-right: 7px">Dysuria</span>
+				</label>
+				<label>
+					<input id="noneUrinaryPresence" name="urinaryPresence" type="checkbox" value="None"
+						   onclick="resetExceptNone('urinaryPresence', 'noneUrinaryPresence')"
+							{{checked assessment.urinaryPresence 'None'}}/>
+					<span style="padding-left: 23px; padding-right: 7px">None</span>
+				</label>
+			</div>
+			{{!-- Others --}}
+			<div class="col s12 m5 l5 input-field">
+				<input name="urinaryOthers" id="oedema" type="text" value="{{assessment.urinaryOthers}}"/>
+				<label for="urinaryOthers">Others</label>
+				<span class="helper-text">Specify</span>
+			</div>
+		</div>
+
+		{{!-- Adaptive aids ==================================================================================== --}}
+		<div class="row">
+			<div class="col s12 m2 l2" style="padding-top:20px">
+				<label style="font-size: 15px">Adaptive Aids</label>
+			</div>
+
+			<div class="col s12 m10 l10" style="padding-top:20px">
+				<label>
+					<input id="diapers" name="adaptiveAids" type="checkbox" value="Diapers"
+						{{resetExceptNone assessment.adaptiveAids 'Diapers' 'None'}}/>
+					<span style="padding-left: 25px; padding-right: 10px">Diapers</span>
+				</label>
+				<label>
+					<input id="urosheath" name="adaptiveAids" type="checkbox" value="Urosheath"
+						{{resetExceptNone assessment.adaptiveAids 'Urosheath' 'None'}}/>
+					<span style="padding-left: 25px; padding-right: 10px">Urosheath</span>
+				</label>
+				<label>
+					<input id="indwellCathether" name="adaptiveAids" type="checkbox" value="Indwelling Cathether"
+						onclick="toggleCathether('cathetherType','SupraCathether')"
+						{{resetExceptNone assessment.adaptiveAids 'Indwelling Cathether' 'None'}}/>
+					<span style="padding-left: 25px; padding-right: 10px">Indwelling Cathether</span>
+				</label>
+				<label>
+					<input id="SupraCathether" name="adaptiveAids" type="checkbox" value="Suprapublic Cathether"
+						onclick="toggleCathether('cathetherType','indwellCathether')"
+						{{resetExceptNone assessment.adaptiveAids 'Suprapublic Cathether' 'None'}}/>
+					<span style="padding-left: 25px; padding-right: 10px">Suprapublic Cathether</span>
+				</label>
+				<label>
+					<input id="noneAdapt" name="adaptiveAids" type="checkbox" value="None"
+						{{checked assessment.adaptiveAids 'None'}}
+						   onclick="resetExceptNone('adaptiveAids', 'None');hide('cathetherType')"/>
+					<span style="padding-left: 25px; padding-right: 10px">None</span>
+				</label>
+			</div>
+		</div>
+
+		{{!-- Cathether type================================================================================= --}}
+		<div class="row" id="cathetherType">
+			<div class="col s12 m2 l2">
+			</div>
+
+			<div class="col s12 m3 l3 input-field">
+				<input name="catType" id="catType" type="text" value="{{assessment.catType}}"/>
+				<label for="catType">Cathether Type</label>
+				<span class="helper-text">Type A, B or C - Should this be drop down?</span>
+			</div>
+			<div class="col s12 m3 l3 input-field">
+				<input name="catSize" id="catSize" type="text" value="{{assessment.catSize}}"/>
+				<label for="catSize">Size</label>
+				<span class="helper-text">Size 1, 2, 3</span>
+			</div>
+			<div class="col s12 m4 l4 input-field">
+				<input name="dayLastChanged" id="dayLastChanged" type="text" value="{{assessment.dayLastChanged}}"/>
+				<label for="dayLastChanged">Day last changed</label>
+				<span class="helper-text">Day or date?</span>
+			</div>
+		</div>
+
+	</div>
+</div>
+</div>

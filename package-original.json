@@ -1,0 +1,40 @@
+{
+  "name": "traversy-media-projects",
+  "version": "1.0.0",
+  "description": "Intellij Project containing all projects created by Brad Traversy",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-babel-webpack": "./node_modules/.bin/webpack --config ./Babel-Webpack/webpack.config.js",
+    "start-babel-webpack": "./node_modules/.bin/webpack-dev-server --config ./Babel-Webpack/webpack.config.js --output-public-path=/build/",
+    "build-13-1": "./node_modules/.bin/webpack --config './Modern-Javascript/S13 - Microposts Project/13-1 Babel and Webpack Setup/webpack.config.js'",
+    "start-13-1": "./node_modules/.bin/webpack-dev-server --config './Modern-Javascript/S13 - Microposts Project/13-1 Babel and Webpack Setup/webpack.config.js' --output-public-path=/build/",
+    "build-13-2": "./node_modules/.bin/webpack --config './Modern-Javascript/S13 - Microposts Project/13-2 Intro to ES15 Modules/webpack.config.js'",
+    "start-13-2": "./node_modules/.bin/webpack-dev-server --config './Modern-Javascript/S13 - Microposts Project/13-2 Intro to ES15 Modules/webpack.config.js' --output-public-path=/build/",
+    "build-13-7-2": "./node_modules/.bin/webpack --config './Modern-Javascript/S13 - Microposts Project/13-7-2 Post Edit State & Update/webpack.config.js'",
+    "start-13-7-2": "./node_modules/.bin/webpack-dev-server --config './Modern-Javascript/S13 - Microposts Project/13-7-2 Post Edit State & Update/webpack.config.js' --output-public-path=/build/",
+    "start-json-server-13-7-2": "./node_modules/.bin/json-server Modern-Javascript/S13\ -\ Microposts\ Project/13-7-2\ Post\ Edit\ State\ \&\ Update/api/db.json",
+    "build-RxJS": "./node_modules/.bin/webpack --config ./RxJS/webpack.config.js",
+    "start-RxJS": "./node_modules/.bin/webpack-dev-server --config ./RxJS/webpack.config.js --output-public-path=/build/"
+  },
+  "author": "Brad Traversy & CPH",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "~1.18.2",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.3",
+    "express": "~4.15.5",
+    "express-handlebars": "^3.0.0",
+    "express-session": "^1.15.6",
+    "jquery": "^3.1.0",
+    "json-server": "^0.12.1",
+    "method-override": "^2.3.10",
+    "moment": "^2.21.0",
+    "mongoose": "^5.0.10",
+    "passport": "^0.4.0",
+    "passport-google-oauth20": "^1.0.0",
+    "passport-local": "^1.0.0",
+    "rxjs": "^5.0.0-beta.12"
+  }
+}

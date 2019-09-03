@@ -1,0 +1,129 @@
+<!-- CARD WITH TITLE -->
+<div class="card grey lighten-4">
+	<div class="card-content">
+		<div id="biography" class="section scrollspy">
+			<span class="card-title blue-text darken-3">Patient Biography</span>
+
+			{{!-- ================================================================================================== --}}
+			{{!--<div class="row">
+				--}}{{!-- NRIC/Passport/FID --}}{{!--
+				<div class="col s12 m4 l4 input-field">
+					<i class="far fa-id-card prefix"></i>
+					<input id="nric" type="text" class="validate" name="nric" readonly value="{{patient.nric}}">
+					<label for="nric">NRIC/Passport/FID</label>
+					<label for="nric">NRIC/Passport/FID</label>
+				</div>
+
+				--}}{{!-- Family Name --}}{{!--
+				<div class="col s12 m4 l4 input-field">
+					<i class="fa fa-users prefix" aria-hidden="true"></i>
+					<input id="familyName" type="text" class="validate" name="familyName"
+						   readonly value="{{patient.familyName}}">
+					<label class="active" for="familyName">Family Name</label>
+				</div>
+
+				--}}{{!-- Given Name --}}{{!--
+				<div class="col s12 m4 l4 input-field">
+					<i class="material-icons prefix">account_box</i>
+					<input id="givenName" type="text" class="validate" name="givenName"
+						   readonly value="{{patient.givenName}}">
+					<label class="active" for="givenName">Given Name</label>
+				</div>
+			</div>--}}
+
+			{{!-- ================================================================================================== --}}
+			<div class="row">
+				<input type="hidden" name="nric" value="{{patient.nric}}">
+				<input type="hidden" name="familyName" value="{{patient.familyName}}">
+				<input type="hidden" name="givenName"  value="{{patient.givenName}}">
+
+
+				{{!-- Date of birth --}}
+				<div class="col s12 m3 l3 input-field">
+					<i class="fa fa-calendar prefix" aria-hidden="true"></i>
+					<input id="dob" type="text" name="dob" readonly value="{{formatDate patient.dob 'DD/MM/YYYY'}}">
+					<label for="dob">Date of Birth</label>
+				</div>
+
+				{{!-- Gender --}}
+				<div class="col s12 m1 l1 input-field" style="padding-left: 40px">
+					<i class="fa fa-venus-mars prefix" aria-hidden="true"></i>
+				</div>
+				<div class="col s12 m2 l1 input-field" style="padding-left: 0px">
+					<p>
+						<label>
+							<input name="gender" type="radio" value="M" {{checked patient.gender 'M' true}}/>
+							<span>Male</span>
+						</label>
+					</p>
+					<p>
+						<label>
+							<input name="gender" type="radio" value="F" {{checked patient.gender 'F' true}}/>
+							<span>Female</span>
+						</label>
+					</p>
+				</div>
+
+				{{!-- Weight --}}
+				<div class="col s12 m3 l3 input-field">
+					<i class="fas fa-weight prefix"></i>
+					<input id="weight" type="number" name="weight" placeholder="0.0" step="0.1"
+					value="{{patient.weight}}">
+					<label for="weight">Weight</label>
+					<span class="helper-text">KG</span>
+				</div>
+
+				{{!-- Height --}}
+				<div class="col s12 m3 l3 input-field">
+					<img src="https://png.icons8.com/material/50/000000/height.png" class="prefix">
+					<input id="height" type="number" name="height" placeholder="0" step="1"
+					value="{{patient.height}}">
+					<label for="height">Height</label>
+					<span class="helper-text">CM</span>
+				</div>
+			</div>
+
+			{{!-- ================================================================================================== --}}
+			<div class="row">
+				{{!-- Address --}}
+				<div class="col s12 m9 l9 input-field">
+					<img src="https://png.icons8.com/material/50/000000/address.png" class="prefix">
+					<input id="address" type="text" name="address" value="{{patient.address}}">
+					<label for="address">Address</label>
+				</div>
+
+				{{!-- Postal Code--}}
+				<div class="col s12 m3 l3 input-field">
+					<img src="https://png.icons8.com/material/50/000000/mailbox-with-letter.png" class="prefix">
+					<input type="text" name="postalCode" id="postalCode" value="{{patient.postalCode}}">
+					<label for="postalCode">Postal Code</label>
+				</div>
+			</div>
+			{{!-- ================================================================================================== --}}
+			<div class="row">
+				{{!-- Mobile phone  --}}
+				<div class="col s12 m4 l4 input-field">
+					<i class="material-icons prefix">phone_iphone</i>
+					<input id="mobilePhone" type="text" name="mobilePhone" value="{{patient.mobilePhone}}">
+					<label for="mobilePhone">Mobile Phone</label>
+				</div>
+
+				{{!-- Home Phone --}}
+				<div class="col s12 m4 l4 input-field">
+					<i class="material-icons prefix">phone</i>
+					<input id="homePhone" type="text" name="homePhone" value="{{patient.homePhone}}">
+					<label for="homePhone">Home Phone</label>
+				</div>
+
+				{{!-- Office phone --}}
+				<div class="col s12 m4 l4 input-field">
+					<i class="material-icons prefix">work</i>
+					<input name="officePhone" id="officePhone" type="text" value="{{patient.officePhone}}">
+					<label for="officePhone">Office Phone</label>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+

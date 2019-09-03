@@ -1,0 +1,189 @@
+<style>
+    th, td {
+        text-align: center;
+    }
+</style>
+<br>
+<div class="card-panel purple darken-3 white-text" style="padding: 5px; font-size: 20px; text-align: center">Doctor's Orders</div>
+<div style="overflow-x: auto; max-height: 16em">
+    <table class="hover order-column">
+        <thead>
+            <tr>
+                <th>Datetime</th>
+                <th>Orders</th>
+                <th>Status</th>
+                <th></th>
+                {{#unless userType}}
+                <th>Delete</th>
+                {{/unless}}
+            </tr>
+        </thead>
+        <tbody>
+            {{#if docOrders}}
+                {{#each docOrders}}
+                <tr>
+                    {{#unless ../userType}}
+                    <td><a href="/master/doctor/orders/{{orderID}}">{{formatDatetime datetime}}</a></td>
+                    {{else}}                    
+                    <td><a href="/student/doctor/orders/{{../recordID}}/{{orderID}}">{{formatDatetime datetime}}</a></td>
+                    {{/unless}}
+                    <td>{{orders}}</td>
+                    <td>
+                        <p>
+                            <label>
+                                <input type="checkbox" disabled="disabled" class="filled-in" {{checkOpt status}}>
+                                <span style="line-height: 18px;">{{status}}</span>
+                            </label>
+                        </p>
+                    </td>
+                    <td>
+                        <i class="fa fa-picture-o fa-2x" style="{{isResulted status}}"></i>
+                    </td>
+                    {{#unless ../userType}}
+                    <td>
+                        <form action="/master/doctor/orders/del-order/{{orderID}}?_method=DELETE" method="post" id="delete-form">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn red darken-3">
+                                <i class="material-icons">delete</i>
+                            </button>
+                        </form>
+                    </td>
+                    {{/unless}}
+                </tr>
+                {{/each}}
+            {{else}}
+            <td colspan="5">You have not created any vital records yet</td>
+            {{/if}}
+        </tbody>
+    </table>
+</div>
+<br>
+
+{{#if editOrder}}
+<form action="/master/doctor/orders/edit-order/{{editOrder.orderID}}?_method=PUT" method="POST" id="editOrder" enctype="multipart/form-data">
+<input type="hidden" name="_method" value="PUT">
+{{else}}
+<form action="/master/doctor/orders/add-order" method="POST" id="addOrder" enctype="multipart/form-data">
+{{/if}}
+    <div class="card purple lighten-5">
+        <div class="card-content">
+            <div id="orderInfo">
+                <span class="purple-text darken-2">Order Entry</span>
+
+                <div class="row">
+                    <div class="col s12 m4 input-field">
+                        <input id="dateOrder" type="text" class="datepicker" name="dateOrder" value="{{editOrder.date}}" required>
+                        <label for="dateOrder">Date</label>
+                        <span class="helper-text">dd/mm/yyyy</span>
+                    </div>
+
+                    <div class="col s12 m4 input-field">
+                        <input id="timeOrder" type="text" class="timepicker" name="timeOrder" value="{{editOrder.time}}" required>
+                        <label for="timeOrder">Time</label>
+                        <span class="helper-text">hh:ss</span>
+                    </div>
+
+                    <div class="col s12 m4 input-field">
+                        <input id="order" type="text" name="orders" value="{{editOrder.orders}}" required>
+                        <label for="order">Order</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s6 m1 input-field">
+                        <p>Status</p>
+                    </div>
+                    
+                    <div class="col s6 m3 input-field">
+                        <p>
+                            <label>
+                                <input name="status" type="radio" value="Pending" {{checked editOrder.status 'Pending'}}>
+                                <span>Pending</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input name="status" type="radio" value="Resulted" {{checked editOrder.status 'Resulted'}}>
+                                <span>Resulted</span>
+                            </label>
+                        </p>
+                    </div>
+                    {{#unless userType}}
+                    <div class="col s12 m8 file-field input-field">
+                        <div class="btn">
+                            <span>File</span>
+                            <input type="file" name="photo">
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text" name="photoName">
+                        </div>
+                    </div>
+                    {{/unless}}
+                </div>
+                {{#if editOrder}}
+                <div class="row" style="{{isResulted editOrder.status}}">
+                    <div class="col s12 m12">
+                        <img class="materialboxed" style="display: block;margin-left: auto;margin-right: auto; max-height: 40em;" src="/assets/img/upload/{{editOrder.uploadUrl}}">
+                    </div>
+                </div>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="row">
+    <div class="col s12 m8"></div>
+
+    <div class="col s12 m4">
+        {{#unless userType}}
+        {{#if editOrder}}
+        <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editOrder">Save
+        {{else}}
+        <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addOrder" id="addOrder">Save
+        {{/if}}
+            <i class="material-icons right">send</i>
+        </button>
+        {{/unless}}
+    </div>
+</div>
+
+{{!-- <div class="modal" id="modal1">
+    <div class="modal-content">
+        <img src="/assets/img/upload/photo-1565168495172.PNG" class="img-responsive" style="width: 100%; max-height: 65em;">
+    </div>
+</div> --}}
+
+<script
+		src="https://code.jquery.com/jquery-3.3.1.min.js"
+		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+		crossorigin="anonymous">
+</script>
+<script>
+
+    document.addEventListener('DOMContentLoaded', () => {
+        //Order
+        const dateOrder = document.querySelector('#dateOrder');
+        const timeOrder = document.querySelector('#timeOrder');
+        const elems = document.querySelectorAll('.materialboxed');
+        const instances = M.Materialbox.init(elems, {});
+
+        M.Datepicker.init(dateOrder, {
+            maxDate: new Date(),
+            format: 'dd/mm/yyyy',
+            disableWeekends: true
+        });
+
+        M.Timepicker.init(timeOrder, {
+            twelveHour: false,
+            showClearBtn: true
+        });
+
+        {{!-- $('.modalOpen').click(() => {
+            console.log('aspdlapslds')
+            instance.open();
+        }) --}}
+
+    })
+
+</script>
