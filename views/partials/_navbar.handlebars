@@ -1,3 +1,4 @@
+
 <div class="navbar-fixed" style="z-index: 1000">
 	<nav class="transparent z-depth-0"> <!-- removed blue darken-4 -->
 		<div class="nav-wrapper">
@@ -97,7 +98,7 @@
 				<div class="collapsible-body">
 					<ul>
 						<li class="no-padding">
-							<ul class="collapsible collapsible-accordion lighter-fonts">
+							<ul class="collapsible collapsible-accordion">
 								<!--<li>
 									<a class="collapsible-header">Biographical Data<i class="material-icons">arrow_drop_down</i></a>
 									<div class="collapsible-body">
@@ -117,11 +118,11 @@
 									</a>
 								</li>--}}
 								<li class="divider"></li>
-								<li><a href="#!">Contacts</a></li>
-								<li><a href="#!">Home Meds</a></li>
-								<li><a href="#!">Consents and Authorities</a></li>
-								<li><a href="#!">Emergency Notes</a></li>
-								<li><a href="#!">Belongings</a></li>
+								{{!-- <li><a href="#!">Contacts</a></li> --}}
+								<li class="lighter-fonts"><a href="#!">Home Meds</a></li>
+								<li class="lighter-fonts"><a href="#!">Consents and Authorities</a></li>
+								<li class="lighter-fonts"><a href="#!">Emergency Notes</a></li>
+								<li class="lighter-fonts"><a href="#!">Belongings</a></li>
 							</ul>
 						</li>
 					</ul>
@@ -134,17 +135,17 @@
 				<li>
 					<a class="collapsible-header">Doctor<i class="material-icons">arrow_drop_down</i></a>
 					<div class="collapsible-body">
-						<ul class="lighter-fonts">
+						<ul>
 							{{#unless userType}}
-							<li><a href="#!">Notes</a></li>
+							{{!-- <li><a href="#!">Notes</a></li> --}}
 							<li class="divider"></li>
 							<li><a href="/master/doctor/orders">Orders</a></li>
-							<li><a href="#!">Orders Results</a></li>
+							{{!-- <li><a href="#!">Orders Results</a></li> --}}
 							{{else}}
-							<li><a href="#!">Notes</a></li>
+							{{!-- <li><a href="#!">Notes</a></li> --}}
 							<li class="divider"></li>
 							<li><a href="/student/doctor/orders/{{recordID}}">Orders</a></li>
-							<li><a href="#!">Order Results</a></li>
+							{{!-- <li><a href="#!">Order Results</a></li> --}}
 							{{/unless}}
 						</ul>
 					</div>
@@ -156,12 +157,12 @@
 				<li>
 					<a class="collapsible-header">Nurse<i class="material-icons">arrow_drop_down</i></a>
 					<div class="collapsible-body">
-						<ul class="lighter-fonts">
+						<ul>
 							<li><a href="/master/show-nursing-assessment/{{patient.patientID}}">Assessment</a></li>
-							<li><a href="#!">Progress Notes</a></li>
+							<li><a href="#!">History Taking</a></li>
 							<li><a href="#!">Care Plan</a></li> 
-							<li><a href="#!">Discharge Planning</a></li> 
-							<li><a href="#!">Education</a></li>
+							<li class="lighter-fonts"><a href="#!">Discharge Planning</a></li> 
+							<li class="lighter-fonts"><a class="disabled" href="#!">Education</a></li>
 							<li class="divider"></li>
 							{{!-- start of dropdown for charts --}}
 							<li class="no-padding">
@@ -169,7 +170,7 @@
 									<li>
 										<a class="collapsible-header"><i class="material-icons">arrow_drop_down</i>Charts</a>
 										<div class="collapsible-body">
-											<ul class="lighter-fonts">
+											<ul>
 												{{#unless userType}}
 												<li><a href="/master/io">IO</a></li>
 												<li><a href="/master/vital">Vital</a></li>
@@ -215,7 +216,7 @@
 					<i class="far fa-user" style="font-size: 17px; color: #ff7726"></i>{{user.firstName}}
 				</a>
 				<div class="collapsible-body">
-					<ul class="lighter-fonts">
+					<ul>
 						<li><a href="#!">Settings</a></li>
 						<li>
 							<a href="https://login.microsoftonline.com/common/oauth2/logout?post_logout_redirect_uri=https://localhost
@@ -239,11 +240,11 @@
 		</a>
 	</li>--}}
 	<li class="divider"></li>
-	<li><a href="#!">Contacts</a></li>
-	<li><a href="#!">Home Meds</a></li>
-	<li><a href="#!">Consents and Authorities</a></li>
-	<li><a href="#!">Emergency Notes</a></li>
-	<li><a href="#!">Belongings</a></li>
+	{{!-- <li><a href="#!">Contacts</a></li> --}}
+	<li class="lighter-fonts"><a href="#!">Home Meds</a></li>
+	<li class="lighter-fonts"><a href="#!">Consents and Authorities</a></li>
+	<li class="lighter-fonts"><a href="#!">Emergency Notes</a></li>
+	<li class="lighter-fonts"><a href="#!">Belongings</a></li>
 </ul>
 {{!-- Patient -> History ->... --}}
 <ul id="History" class="dropdown-content">
@@ -257,15 +258,15 @@
 
 <ul id="Doctor" class="dropdown-content">
 	{{#unless userType}}
-	<li><a href="#!">Notes</a></li>
+	{{!-- <li><a href="#!">Notes</a></li> --}}
 	<li class="divider"></li>
 	<li><a href="/master/doctor/orders">Orders</a></li>
-	<li><a href="#!">Order Results</a></li>
+	{{!-- <li><a href="#!">Order Results</a></li> --}}
 	{{else}}
-	<li><a href="#!">Notes</a></li>
+	{{!-- <li><a href="#!">Notes</a></li> --}}
 	<li class="divider"></li>
 	<li><a href="/student/doctor/orders/{{recordID}}">Orders</a></li>
-	<li><a href="#!">Order Results</a></li>
+	{{!-- <li><a href="#!">Order Results</a></li> --}}
 	{{/unless}}
 	{{!-- <li>
 		<a class="dropdown-trigger navmenu" href="#!" data-target="Order-entry">Order Entry
@@ -287,10 +288,10 @@
 {{!-- Nurse -> ... --}}
 <ul id="Nurse" class="dropdown-content">
 	<li><a href="/master/show-nursing-assessment/{{patient.patientID}}">Assessment</a></li>
-	<li><a href="#!">Progress Notes</a></li>
+	<li><a href="#!">History Taking</a></li>
 	<li><a href="#!">Care Plan</a></li>
-	<li><a href="#!">Discharge Planning</a></li>
-	<li><a href="#!">Education</a></li>
+	<li class="lighter-fonts"><a href="#!">Discharge Planning</a></li>
+	<li class="lighter-fonts"><a href="#!">Education</a></li>
 	<li class="divider"></li>
 	<li>
 		<a class="dropdown-trigger navmenu" href="#!" data-target="Charts">Charts
