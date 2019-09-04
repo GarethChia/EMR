@@ -62,7 +62,10 @@
 	</table>
 
 {{else}}
-	<p id="noRecord">You have not <a href="/master/add-patient">created</a> any master patient records yet</p>
+	<!--<p id="noRecord">You have not <a href="/master/add-patient">created</a> any master patient records yet</p>-->
+	<p id="noRecord" class="center">
+		<a class="waves-effect waves-light btn" href="/master/add-patient"><i class="material-icons left">add</i>Create a record</a>
+	</p>
 {{/if}}
 <br>
 <hr>
