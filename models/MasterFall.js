@@ -34,4 +34,3 @@ const MasterFallSchema = new Schema({
 });
 
 mongoose.model('masterFall', MasterFallSchema, 'master-fall');
-//(any name, the schema name, the collection name)
