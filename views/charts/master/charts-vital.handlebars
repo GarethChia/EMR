@@ -1,3 +1,5 @@
+
+
 <style>
     td, th {
         text-align: center;
@@ -23,6 +25,8 @@
         border-right: 1px solid rgba(0, 0, 0, 0.12);
     }
 </style>
+
+
 <br>
 <div class="row">
     <div class="col s12">
@@ -563,6 +567,7 @@
                         <div class="col s12 m2 input-field">
                             <select id="painScore" name="painScore">
                                 <option value="" disabled selected>Score</option>
+                                <option value="0">0</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -908,7 +913,7 @@
         {{/unless}}
     <input type="hidden" name="_method" value="PUT">
     {{else}}
-    <form action="/master/add-wh" method="POST" id="addWh">
+    <form action="/master/add-wh" method="POST" id="addWh" name="addWh">
     {{/if}}
         <div class="card purple lighten-5">
             <div class="card-content">
@@ -961,8 +966,9 @@
                         </div>
 
                         <div class="col s12 m3 input-field">
-                            <input id="bmi" type="number" name="bmi" value="{{editWh.bmi}}" required>
-                            <label for="bmi">BMI</label>
+                            <input id="bmi" type="number" name="bmi" value="{{editWh.bmi}}" readonly> 
+                            <span class="helper-text">BMI</span>
+                            {{!-- <label for="bmi">BMI</label> --}}
                         </div>
                     </div>
 
@@ -995,6 +1001,25 @@
 		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
 		crossorigin="anonymous">
 </script>
+<script>
+$(document).ready(function(){
+ 
+  $("#height").keyup(function(){
+      var height = $("#height").val();
+      var weight = $("#weight").val();
+      var total = parseFloat(weight/(height*height)).toFixed(2);
+      $("#bmi").val(total);
+    });
+    $("#weight").keyup(function(){
+      var height = $("#height").val();
+      var weight = $("#weight").val();
+      var total = parseFloat(weight/(height*height)).toFixed(2);
+      $("#bmi").val(total);
+    });
+  });
+  
+</script>
+
 <script>
 
     $(document).ready(() => {
