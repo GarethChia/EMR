@@ -53,7 +53,7 @@
             <tr>
                 <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Intake PO</th>
                 {{#each ioFlow}}
-                <td></td>
+                <td class="intakePO"></td>
                 {{/each}}
             </tr>
 
@@ -81,7 +81,7 @@
             <tr>
                 <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Fluid Consumed (mL) </th>
                 {{#each ioFlow}}
-                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">{{fluidportion}}</td>
+                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)" class="fluidConsumed">{{fluidportion}}</td>
                 {{/each}}
             </tr>
 
@@ -90,7 +90,7 @@
             <tr>
                 <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Intake Enteral</th>
                 {{#each enteralFlow}}
-                <td></td>
+                <td class="intakeEnteral"></td>
                 {{/each}}
             </tr>
             <tr>
@@ -108,13 +108,13 @@
             <tr>
                 <th width="10%">Amount of Feeding (mL)</th>
                 {{#each enteralFlow}}
-                <td>{{feedamt}}</td>
+                <td class="amountOfFeeding">{{feedamt}}</td>
                 {{/each}}
             </tr>
             <tr>
                 <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Fluid Consumed (mL)</th>
                 {{#each enteralFlow}}
-                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">{{flush}}</td>
+                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)" class="flush">{{flush}}</td>
                 {{/each}}
             </tr>
 
@@ -123,7 +123,7 @@
             <tr>
                 <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Intake I.V (mL)</th>
                 {{#each ivFlow}}
-                <td></td>
+                <td class="intakeIV"></td>
                 {{/each}}
             </tr>
             <tr>
@@ -135,7 +135,7 @@
             <tr>
                 <th width="10%">Amount Infused (continuous)</th>
                 {{#each ivFlow}}
-                <td>{{conamt}}</td>
+                <td class="amountInfusedContinuous">{{conamt}}</td>
                 {{/each}}
             </tr>
             
@@ -148,13 +148,13 @@
             <tr>
                 <th width="10%">Amount Infused (intermittent)</th>
                 {{#each ivFlow}}
-                <td>{{amtinf}}</td>
+                <td class="amountInfusedIntermittent">{{amtinf}}</td>
                 {{/each}}
             </tr>
             <tr>
                 <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">I.V Flush (mL)</th>
                 {{#each ivFlow}}
-                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">{{ivflush}}</td>
+                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)" class="ivFlush">{{ivflush}}</td>
                 {{/each}}
             </tr> 
 
@@ -163,13 +163,13 @@
             <tr>
                 <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Output (mL)</th>
                 {{#each outputFlow}}
-                <td></td>
+                <td class="outputFlow"></td>
                 {{/each}}
             </tr>
             <tr>
                 <th width="10%">Urine (mL)</th>
                 {{#each outputFlow}}
-                <td>{{urineamt}}</td>
+                <td class="urine">{{urineamt}}</td>
                 {{/each}}
             </tr>
             <tr>
@@ -194,7 +194,7 @@
             <tr>
                 <th width="10%">Vomitus (mL)</th>
                 {{#each outputFlow}}
-                <td>{{vomitamt}}</td>
+                <td class="vomitus">{{vomitamt}}</td>
                 {{/each}}
             </tr>
             <tr>
@@ -206,20 +206,20 @@
             <tr>
                 <th width="10%">Blood (mL)</th>
                 {{#each outputFlow}}
-                <td>{{bloodamt}}</td>
+                <td class="blood">{{bloodamt}}</td>
                 {{/each}}
             </tr>
             
             <tr>
                 <th width="10%">Diaper Weight (mL)</th>
                 {{#each outputFlow}}
-                <td>{{diaper}}</td>
+                <td class="diaperWeight">{{diaper}}</td>
                 {{/each}}
             </tr>
             <tr>
                 <th width="10%">Other (mL)</th>
                 {{#each outputFlow}}
-                <td>{{otheramt}}</td>
+                <td class="other">{{otheramt}}</td>
                 {{/each}}
             </tr>
             <tr>
@@ -228,10 +228,126 @@
                 <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">{{otherass}}</td>
                 {{/each}}
             </tr>
-
+            <tr>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Nett Balance</th>
+                {{#each outputFlow}}
+                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)" class="nettBalance"></td>
+                {{/each}}
+            </tr>
         </table>
     </div>
 </div>
+<script>
+    // Intake PO
+    var fluidConsumed = document.getElementsByClassName("fluidConsumed");
+    var intakePO = document.getElementsByClassName("intakePO");
+
+    // Intake Enteral
+    var amountOfFeeding = document.getElementsByClassName("amountOfFeeding");
+    var flush = document.getElementsByClassName("flush");
+    var intakeEnteral = document.getElementsByClassName("intakeEnteral");
+
+    // Intake I.V
+    var amountInfusedContinuous = document.getElementsByClassName("amountInfusedContinuous");
+    var amountInfusedIntermittent = document.getElementsByClassName("amountInfusedIntermittent");
+    var ivFlush = document.getElementsByClassName("ivFlush");
+    var intakeIV = document.getElementsByClassName("intakeIV");
+
+    // Output
+    var urine = document.getElementsByClassName("urine");
+    var vomitus = document.getElementsByClassName("vomitus");
+    var blood = document.getElementsByClassName("blood");
+    var diaperWeight = document.getElementsByClassName("diaperWeight");
+    var other = document.getElementsByClassName("other");
+    var outputFlow = document.getElementsByClassName("outputFlow");
+    
+    for (i = 0; i < fluidConsumed.length; i++) { 
+        var totalIntakePO = 0;
+        var totalIntakeEnteral = 0;
+        var totalIntakeIV = 0;
+        var output = 0;
+        
+        // display total intakePO
+        if (!(isNaN(parseInt(fluidConsumed[i].innerHTML)))) 
+        { 
+            totalIntakePO += parseInt(fluidConsumed[i].innerHTML);
+            intakePO[i].innerHTML = totalIntakePO;
+        }
+        // display total intake enteral
+        if (!(isNaN(parseInt(amountOfFeeding[i].innerHTML)))) 
+        { 
+            totalIntakeEnteral += parseInt(amountOfFeeding[i].innerHTML);
+        }
+        if (!(isNaN(parseInt(flush[i].innerHTML)))) 
+        { 
+            totalIntakeEnteral += parseInt(flush[i].innerHTML);
+            intakeEnteral[i].innerHTML = totalIntakeEnteral;
+        }
+        // display total Intake I.V
+        if (!(isNaN(parseInt(amountInfusedContinuous[i].innerHTML)))) 
+        { 
+            totalIntakeIV += parseInt(amountInfusedContinuous[i].innerHTML);
+        }
+        if (!(isNaN(parseInt(amountInfusedIntermittent[i].innerHTML)))) 
+        { 
+            totalIntakeIV += parseInt(amountInfusedIntermittent[i].innerHTML);
+        }
+        if (!(isNaN(parseInt(ivFlush[i].innerHTML)))) 
+        { 
+            totalIntakeIV += parseInt(ivFlush[i].innerHTML);
+            intakeIV[i].innerHTML = totalIntakeIV;
+        }
+        // display total Output
+        if (!(isNaN(parseInt(urine[i].innerHTML)))) 
+        { 
+            output += parseInt(urine[i].innerHTML);
+        }
+        if (!(isNaN(parseInt(vomitus[i].innerHTML)))) 
+        { 
+            output += parseInt(vomitus[i].innerHTML);
+        }
+        if (!(isNaN(parseInt(blood[i].innerHTML)))) 
+        { 
+            output += parseInt(blood[i].innerHTML);
+        }
+        if (!(isNaN(parseInt(diaperWeight[i].innerHTML)))) 
+        { 
+            output += parseInt(diaperWeight[i].innerHTML);
+        }
+        if (!(isNaN(parseInt(other[i].innerHTML)))) 
+        { 
+            output += parseInt(other[i].innerHTML);
+            outputFlow[i].innerHTML = output;
+        }
+    }
+
+    // nett balance
+    var nettBalance = document.getElementsByClassName("nettBalance");
+
+    for (i = 0; i < nettBalance.length; i++)
+    {
+        var totalInput = 0;
+        var totalOutput = 0;
+        // intake PO, intake Enteral, intake I.V, output
+        if (!(isNaN(parseInt(intakePO[i].innerHTML)))) 
+        {
+            totalInput += parseInt(intakePO[i].innerHTML);
+        }
+        if (!(isNaN(parseInt(intakeEnteral[i].innerHTML)))) 
+        {
+            totalInput += parseInt(intakeEnteral[i].innerHTML);
+        }
+        if (!(isNaN(parseInt(intakeIV[i].innerHTML)))) 
+        {
+            totalInput += parseInt(intakeIV[i].innerHTML);
+        }
+        if (!(isNaN(parseInt(outputFlow[i].innerHTML)))) 
+        {
+            totalOutput += parseInt(outputFlow[i].innerHTML);
+        }
+        nettBalance[i].innerHTML = totalInput - totalOutput;
+    }
+</script>
 
 {{!-- IO code start --}}
 <div id="io">
@@ -513,7 +629,7 @@
                     
                         <div class="col s12 m4 input-field">
                             <input id="feedamt" type="number" name="feedamt" value="{{editenteral.feedamt}}" required>
-                            <label for="feedamt">Amount off feeding (mL)</label>
+                            <label for="feedamt">Amount of feeding (mL)</label>
                             <span class="helper-text"></span>
                         </div>
 
