@@ -35,7 +35,8 @@ require('./models/MasterEnteral');
 require('./models/MasterIV');
 require('./models/MasterOutput');
 require('./models/MasterOxygen');
-
+require('./models/MasterHistoryTaking');
+require('./models/StudentHistoryTaking');
 
 // load keys
 const key = fs.readFileSync('./server.key');

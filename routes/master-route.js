@@ -15,6 +15,8 @@ const MasterOxygen = mongoose.model('masterOxygen');
 const MasterPain = mongoose.model('masterPain');
 const MasterWH = mongoose.model('masterWh');
 const DoctorOrders = mongoose.model('doctorsOrders');
+//History Taking
+//const HistoryTaking = mongoose.model();
 const moment = require('moment');
 const csrf = require('csurf');
 const alertMessage = require('../helpers/messenger');
