@@ -339,13 +339,13 @@
                         </div>
 
                         <div class="col s12 m3 input-field">
-                            <input id="temp" type="number" name="temp" step="0.1" value="{{editVital.temp}}" required>
+                            <input id="temp" type="number" name="temp" step="0.1" value="{{editVital.temp}}">
                             <label for="temp">Temperature</label>
                             <span class="helper-text">00.0 (°C)</span>
                         </div>
 
                         <div class="col s12 m3 input-field">
-                            <select id="tempRoute" name="tempRoute" required>
+                            <select id="tempRoute" name="tempRoute">
                                 <option value="" disabled selected>Routes</option>
                                 <option value="Oral">Oral</option>
                                 <option value="Tympanic">Tympanic</option>
@@ -358,18 +358,18 @@
 
                     <div class="row">
                         <div class="col s12 m3 input-field">
-                            <input id="heartRate" type="number" name="heartRate" value="{{editVital.heartRate}}" required>
+                            <input id="heartRate" type="number" name="heartRate" value="{{editVital.heartRate}}">
                             <label for="heartRate">Heart Rate (BPM)</label>
                         </div>
 
                         <div class="col s12 m3 input-field">
-                            <input id="resp" type="number" name="resp" value="{{editVital.resp}}" required>
+                            <input id="resp" type="number" name="resp" value="{{editVital.resp}}">
                             <label for="resp">Resp</label>
                         </div>
 
                         <div class="col s12 m2 input-field">
                             <select id="bpLocation" name="bpLocation">
-                                <option value="" disabled selected>Location</option required>
+                                <option value="" disabled selected>Location</option>
                                 <option value="Right Arm">Right Arm</option>
                                 <option value="Right Leg">Right Leg</option>
                                 <option value="Left Arm">Left Arm</option>
@@ -380,7 +380,7 @@
                         
                         <div class="col s12 m2 input-field">
                             <select id="bpMethod" name="bpMethod">
-                                <option value="" disabled selected>Method</option required>
+                                <option value="" disabled selected>Method</option>
                                 <option value="Manual">Manual</option>
                                 <option value="Auto">Auto</option>
                             </select>
@@ -389,7 +389,7 @@
 
                         <div class="col s12 m2 input-field">
                             <select id="patientPosition" name="patientPosition">
-                                <option value="" disabled selected>Position</option required>
+                                <option value="" disabled selected>Position</option>
                                 <option value="Sitting">Sitting</option>
                                 <option value="Lying Right">Lying Right</option>
                                 <option value="Lying Left">Lying Left</option>
@@ -402,22 +402,22 @@
 
                     <div class="row">
                         <div class="col s12 m3 input-field">
-                            <input id="sbp" type="number" name="sbp" value="{{editVital.sbp}}" required>
+                            <input id="sbp" type="number" name="sbp" value="{{editVital.sbp}}">
                             <label for="sbp">Blood Pressure (SBP)</label>
                         </div>
 
                         <div class="col s12 m3 input-field">
-                            <input id="dbp" type="number" name="dbp" value="{{editVital.dbp}}" required>
+                            <input id="dbp" type="number" name="dbp" value="{{editVital.dbp}}">
                             <label for="dbp">Blood Pressure (DBP)</label>
                         </div>
 
                         <div class="col s12 m3 input-field">
-                            <input id="sbpArterial" type="number" name="sbpArterial" value="{{editVital.sbpArterial}}" required>
+                            <input id="sbpArterial" type="number" name="sbpArterial" value="{{editVital.sbpArterial}}">
                             <label for="sbpArterial">Arterial Blood Pressure (SBP)</label>
                         </div>
 
                         <div class="col s12 m3 input-field">
-                            <input id="dbpArterial" type="number" name="dbpArterial" value="{{editVital.dbpArterial}}" required>
+                            <input id="dbpArterial" type="number" name="dbpArterial" value="{{editVital.dbpArterial}}">
                             <label for="dbpArterial">Arterial Blood Pressure (DBP)</label>
                         </div>
                     </div>
@@ -583,51 +583,51 @@
                         </div>
 
                         <div class="col s12 m4 input-field">
-                            <input id="onset" type="text" class="onset" name="onset" value="{{editPain.onset}}" required>
+                            <input id="onset" type="text" class="onset" name="onset" value="{{editPain.onset}}">
                             <label for="onset">Onset</label>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col s12 m3 input-field">
-                            <input id="location" type="text" class="location" name="location" value="{{editPain.location}}" required>
+                            <input id="location" type="text" class="location" name="location" value="{{editPain.location}}">
                             <label for="location">Location</label>
                         </div>
 
                         <div class="col s12 m3 input-field">
-                            <input id="duration" type="text" class="duration" name="duration" value="{{editPain.duration}}" required>
+                            <input id="duration" type="text" class="duration" name="duration" value="{{editPain.duration}}">
                             <label for="duration">Duration</label>
                         </div>
 
                         <div class="col s12 m3 input-field">
-                            <input id="characteristics" type="text" class="characteristics" name="characteristics" value="{{editPain.characteristics}}" required>
+                            <input id="characteristics" type="text" class="characteristics" name="characteristics" value="{{editPain.characteristics}}">
                             <label for="characteristics">Characteristics</label>
                         </div>
 
                         <div class="col s12 m3 input-field">
-                            <input id="associatedSymp" type="text" class="associatedSymp" name="associatedSymp" value="{{editPain.associatedSymp}}" required>
+                            <input id="associatedSymp" type="text" class="associatedSymp" name="associatedSymp" value="{{editPain.associatedSymp}}">
                             <label for="associatedSymp">Associated Symptoms</label>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col s12 m3 input-field">
-                            <input id="aggravatingFact" type="text" class="aggravatingFact" name="aggravatingFact" value="{{editPain.aggravatingFact}}" required>
+                            <input id="aggravatingFact" type="text" class="aggravatingFact" name="aggravatingFact" value="{{editPain.aggravatingFact}}">
                             <label for="aggravatingFact">Aggravating Factor(s)</label>
                         </div>
 
                         <div class="col s12 m3 input-field">
-                            <input id="relievingFact" type="text" class="relievingFact" name="relievingFact" value="{{editPain.relievingFact}}" required>
+                            <input id="relievingFact" type="text" class="relievingFact" name="relievingFact" value="{{editPain.relievingFact}}">
                             <label for="relievingFact">Relieving Factor(s)</label>
                         </div>
 
                         <div class="col s12 m3 input-field">
-                            <input id="painIntervene" type="text" class="painIntervene" name="painIntervene" value="{{editPain.painIntervene}}" required>
+                            <input id="painIntervene" type="text" class="painIntervene" name="painIntervene" value="{{editPain.painIntervene}}">
                             <label for="painIntervene">Pain Intervention(s)</label>
                         </div>
 
                         <div class="col s12 m3 input-field">
-                            <input id="responseIntervene" type="text" class="responseIntervene" name="responseIntervene" value="{{editPain.responseIntervene}}" required>
+                            <input id="responseIntervene" type="text" class="responseIntervene" name="responseIntervene" value="{{editPain.responseIntervene}}">
                             <label for="responseIntervene">Response to Intervention(s)</label>
                         </div>
                     </div>
@@ -753,7 +753,7 @@
                         </div>
 
                         <div class="col s12 m3 input-field">
-                            <select id="oxyDevice" name="oxyDevice" required>
+                            <select id="oxyDevice" name="oxyDevice">
                                 <option value="" disabled selected>Device</option>
                                 <option value="Nasal Prong">Nasal Prong</option>
                                 <option value="Simple Face Mask">Simple Face Mask</option>
@@ -766,7 +766,7 @@
                         </div>
 
                         <div class="col s12 m3 input-field">
-                            <select id="humidifier" name="humidifier" required>
+                            <select id="humidifier" name="humidifier">
                                 <option value="" disabled selected>Humidifier</option>
                                 <option value="Yes">Yes</option>
                                 <option value="No">No</option>
@@ -777,7 +777,7 @@
 
                     <div class="row">
                         <div class="col s12 m3 input-field">
-                            <select id="oxyAmt" name="oxyAmt" required>
+                            <select id="oxyAmt" name="oxyAmt">
                                 <option value="" disabled selected>Amount</option>
                                 <option value="Room Air">Room Air</option>
                                 <option value="1">1</option>
@@ -800,13 +800,13 @@
                         </div>
 
                         <div class="col s12 m3 input-field">
-                            <input id="fiOxy" type="number" name="fiOxy" value="{{editOxy.fio2}}" required>
+                            <input id="fiOxy" type="number" name="fiOxy" value="{{editOxy.fio2}}">
                             <label for="fiOxy">Fi02</label>
                             <span class="helper-text">(%)</span>
                         </div>                     
                         
                         <div class="col s12 m3 input-field">
-                            <input id="spOxy" type="number" name="spOxy" value="{{editOxy.spo2}}" required>
+                            <input id="spOxy" type="number" name="spOxy" value="{{editOxy.spo2}}">
                             <label for="spOxy">SpO2</label>
                             <span class="helper-text">(%)</span>
                         </div>
@@ -934,13 +934,13 @@
                         </div>
 
                         <div class="col s12 m3 input-field">
-                            <input id="height" type="number"  step="0.1" name="height" value="{{editWh.height}}" required>
+                            <input id="height" type="number"  step="0.1" name="height" value="{{editWh.height}}">
                             <label for="height">Height</label>
                             <span class="helper-text">0.0M</span>
                         </div>
 
                         <div class="col s12 m3 input-field">
-                            <input id="heightEst" type="number"  step="0.1" name="heightEst" value="{{editWh.heightEst}}" required>
+                            <input id="heightEst" type="number"  step="0.1" name="heightEst" value="{{editWh.heightEst}}">
                             <label for="heightEst">Estimated Height</label>
                             <span class="helper-text">0.0M</span>
                         </div>
@@ -948,19 +948,19 @@
 
                     <div class="row">
                         <div class="col s12 m3 input-field">
-                            <input id="weight" type="number" name="weight" step="0.1" value="{{editWh.weight}}" required>
+                            <input id="weight" type="number" name="weight" step="0.1" value="{{editWh.weight}}">
                             <label for="weight">Weight</label>
                             <span class="helper-text">0.0Kg</span>
                         </div>
 
                         <div class="col s12 m3 input-field">
-                            <input id="weightEst" type="number" name="weightEst" step="0.1" value="{{editWh.weightEst}}" required>
+                            <input id="weightEst" type="number" name="weightEst" step="0.1" value="{{editWh.weightEst}}">
                             <label for="weightEst">Estimated Weight</label>
                             <span class="helper-text">0.0Kg</span>
                         </div>                     
                         
                         <div class="col s12 m3 input-field">
-                            <input id="bsa" type="text" name="bsa" value="{{editWh.bsa}}" required>
+                            <input id="bsa" type="text" name="bsa" value="{{editWh.bsa}}">
                             <label for="bsa">BSA</label>
                             <span class="helper-text">sqm</span>
                         </div>

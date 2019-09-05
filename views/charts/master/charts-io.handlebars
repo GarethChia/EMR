@@ -229,10 +229,14 @@
                 {{/each}}
             </tr>
             <tr>
-                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Nett Balance</th>
+                <th width="10%">Nett Balance</th>
                 {{#each outputFlow}}
-                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)" class="nettBalance"></td>
+                <td class="nettBalance" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);"></td>
                 {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Total Balance</th>
+                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12); border: 0;" id="totalBalance"></td>
             </tr>
         </table>
     </div>
@@ -328,8 +332,9 @@
         }
     }
 
-    // nett balance
+    // nett balance & total balance
     var nettBalance = document.getElementsByClassName("nettBalance");
+    var total = 0;
 
     for (i = 0; i < nettBalance.length; i++)
     {
@@ -353,7 +358,13 @@
             totalOutput += parseInt(outputFlow[i].innerHTML);
         }
         nettBalance[i].innerHTML = totalInput - totalOutput;
+        total += (totalInput - totalOutput);
     }
+
+    var totalBalance = document.getElementById("totalBalance");
+    totalBalance.colSpan = nettBalance.length;
+    totalBalance.style.textAlign = "center";
+    totalBalance.innerHTML += total;
 </script>
 
 {{!-- IO code start --}}
