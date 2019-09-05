@@ -277,6 +277,7 @@
         if (!(isNaN(parseInt(amountOfFeeding[i].innerHTML)))) 
         { 
             totalIntakeEnteral += parseInt(amountOfFeeding[i].innerHTML);
+            intakeEnteral[i].innerHTML = totalIntakeEnteral;
         }
         if (!(isNaN(parseInt(flush[i].innerHTML)))) 
         { 
@@ -287,10 +288,12 @@
         if (!(isNaN(parseInt(amountInfusedContinuous[i].innerHTML)))) 
         { 
             totalIntakeIV += parseInt(amountInfusedContinuous[i].innerHTML);
+            intakeIV[i].innerHTML = totalIntakeIV;
         }
         if (!(isNaN(parseInt(amountInfusedIntermittent[i].innerHTML)))) 
         { 
             totalIntakeIV += parseInt(amountInfusedIntermittent[i].innerHTML);
+            intakeIV[i].innerHTML = totalIntakeIV;
         }
         if (!(isNaN(parseInt(ivFlush[i].innerHTML)))) 
         { 
@@ -301,18 +304,22 @@
         if (!(isNaN(parseInt(urine[i].innerHTML)))) 
         { 
             output += parseInt(urine[i].innerHTML);
+            outputFlow[i].innerHTML = output;
         }
         if (!(isNaN(parseInt(vomitus[i].innerHTML)))) 
         { 
             output += parseInt(vomitus[i].innerHTML);
+            outputFlow[i].innerHTML = output;
         }
         if (!(isNaN(parseInt(blood[i].innerHTML)))) 
         { 
             output += parseInt(blood[i].innerHTML);
+            outputFlow[i].innerHTML = output;
         }
         if (!(isNaN(parseInt(diaperWeight[i].innerHTML)))) 
         { 
             output += parseInt(diaperWeight[i].innerHTML);
+            outputFlow[i].innerHTML = output;
         }
         if (!(isNaN(parseInt(other[i].innerHTML)))) 
         { 
@@ -434,7 +441,7 @@
                         </div>
 
                         <div class="col s12 m4 input-field">
-                            <input id="foodtype" type="text" name="foodtype" value="{{editIO.foodtype}}" required>
+                            <input id="foodtype" type="text" name="foodtype" value="{{editIO.foodtype}}">
                             <label for="foodtype">Food</label>
                             <span class="helper-text"></span>
                         </div>
@@ -445,7 +452,7 @@
                 <div class="row">
 
                     <div class="col s12 m4 input-field">
-                            <select id="foodportion" name="foodportion" required>
+                            <select id="foodportion" name="foodportion">
                                 <option value="" disabled selected>Portion Taken</option>
                                 <option value="1 Share">1 Share</option>
                                 <option value="3 Quarters">3 Quarters</option>
@@ -461,13 +468,13 @@
                     </div>
                     
                         <div class="col s12 m4 input-field">
-                            <input id="fluidtype" type="text" name="fluidtype" value="{{editIO.fluidtype}}" required>
+                            <input id="fluidtype" type="text" name="fluidtype" value="{{editIO.fluidtype}}">
                             <label for="fluidtype">Fluid Type</label>
                             <span class="helper-text"></span>
                         </div>
 
                         <div class="col s12 m4 input-field">
-                            <input id="fluidportion" type="number" name="fluidportion" value="{{editIO.fluidportion}}" required>
+                            <input id="fluidportion" type="number" name="fluidportion" value="{{editIO.fluidportion}}">
                             <label for="floodportion">Fluid Consumed (mL)</label>
                             <span class="helper-text"></span>
                         </div>
@@ -589,7 +596,7 @@
                         </div>
 
                        <div class="col s12 m4 input-field">
-                            <select id="enteralfeed" name="enteralfeed" required>
+                            <select id="enteralfeed" name="enteralfeed">
                             <option value="" disabled selected>Enteral Feed</option>
                             <option value="NG">NG</option>
                             <option value="NJ">NJ</option>
@@ -628,13 +635,13 @@
 
                     
                         <div class="col s12 m4 input-field">
-                            <input id="feedamt" type="number" name="feedamt" value="{{editenteral.feedamt}}" required>
+                            <input id="feedamt" type="number" name="feedamt" value="{{editenteral.feedamt}}">
                             <label for="feedamt">Amount of feeding (mL)</label>
                             <span class="helper-text"></span>
                         </div>
 
                         <div class="col s12 m4 input-field">
-                            <input id="flush" type="number" name="flush" value="{{editenteral.flush}}" required>
+                            <input id="flush" type="number" name="flush" value="{{editenteral.flush}}">
                             <label for="flush">Water for Flush (mL)</label>
                             <span class="helper-text"></span>
                         </div>
@@ -760,7 +767,7 @@
                         </div>
 
                        <div class="col s12 m4 input-field">
-                            <select id="coninf" name="coninf" required>
+                            <select id="coninf" name="coninf">
                             <option value="" disabled selected>Type of I.V Infusion (continuous)</option>
                             <option value="10% Mannitol">10% Mannitol</option>
                             <option value="20% Mannitol">20% Mannitol</option>
@@ -800,25 +807,25 @@
                 <div class="row">
 
                         <div class="col s12 m3 input-field">
-                            <input id="conamt" type="number" name="conamt" value="{{editiv.conamt}}" required>
+                            <input id="conamt" type="number" name="conamt" value="{{editiv.conamt}}">
                             <label for="conamt">Amount infused (continuous)</label>
                             <span class="helper-text"></span>
                         </div>
                     
                         <div class="col s12 m3 input-field">
-                            <input id="intinf" type="text" name="intinf" value="{{editiv.intinf}}" required>
+                            <input id="intinf" type="text" name="intinf" value="{{editiv.intinf}}">
                             <label for="intinf">Type of I.V. Infusion (intermittent)</label>
                             <span class="helper-text"></span>
                         </div>
 
                         <div class="col s12 m3 input-field">
-                            <input id="amtinf" type="number" name="amtinf" value="{{editiv.amtinf}}" required>
+                            <input id="amtinf" type="number" name="amtinf" value="{{editiv.amtinf}}">
                             <label for="amtinf">Amount infused (intermittent)</label>
                             <span class="helper-text"></span>
                         </div>
 
                         <div class="col s12 m3 input-field">
-                            <input id="ivflush" type="number" name="ivflush" value="{{editiv.ivflush}}" required>
+                            <input id="ivflush" type="number" name="ivflush" value="{{editiv.ivflush}}">
                             <label for="ivflush">I.V. Flush (mL)</label>
                             <span class="helper-text"></span>
                         </div>
@@ -959,25 +966,25 @@
                 <div class="row">
 
                         <div class="col s12 m3 input-field">
-                            <input id="urineamt" type="number" name="urineamt" value="{{editoutput.urineamt}}" required>
+                            <input id="urineamt" type="number" name="urineamt" value="{{editoutput.urineamt}}">
                             <label for="urineamt">Urine (mL)</label>
                             <span class="helper-text"></span>
                         </div>
                     
                         <div class="col s12 m3 input-field">
-                            <input id="urineass" type="text" name="urineass" value="{{editoutput.urineass}}" required>
+                            <input id="urineass" type="text" name="urineass" value="{{editoutput.urineass}}">
                             <label for="urineass">Urine Assessment</label>
                             <span class="helper-text"></span>
                         </div>
 
                         <div class="col s12 m3 input-field">
-                            <input id="stoolamt" type="text" name="stoolamt" value="{{editoutput.stoolamt}}" required>
+                            <input id="stoolamt" type="text" name="stoolamt" value="{{editoutput.stoolamt}}">
                             <label for="stoolamt">Stool (amount)</label>
                             <span class="helper-text"></span>
                         </div>
 
                         <div class="col s12 m3 input-field">
-                            <input id="stoolass" type="text" name="stoolass" value="{{editoutput.stoolass}}" required>
+                            <input id="stoolass" type="text" name="stoolass" value="{{editoutput.stoolass}}">
                             <label for="stoolass">Stool Assessment</label>
                             <span class="helper-text"></span>
                         </div>
@@ -986,25 +993,25 @@
                 <div class="row">
 
                         <div class="col s12 m3 input-field">
-                            <input id="vomitamt" type="number" name="vomitamt" value="{{editoutput.vomitamt}}" required>
+                            <input id="vomitamt" type="number" name="vomitamt" value="{{editoutput.vomitamt}}">
                             <label for="vomitamt">Vomitus (mL)</label>
                             <span class="helper-text"></span>
                         </div>
                     
                         <div class="col s12 m3 input-field">
-                            <input id="vomitass" type="text" name="vomitass" value="{{editoutput.urineass}}" required>
+                            <input id="vomitass" type="text" name="vomitass" value="{{editoutput.urineass}}">
                             <label for="vomitass">Vomitus Assessment</label>
                             <span class="helper-text"></span>
                         </div>
 
                         <div class="col s12 m3 input-field">
-                            <input id="bloodamt" type="number" name="bloodamt" value="{{editoutput.bloodamt}}" required>
+                            <input id="bloodamt" type="number" name="bloodamt" value="{{editoutput.bloodamt}}">
                             <label for="bloodamt">Blood (mL)</label>
                             <span class="helper-text"></span>
                         </div>
 
                         <div class="col s12 m3 input-field">
-                            <input id="diaper" type="number" name="diaper" value="{{editoutput.diaper}}" required>
+                            <input id="diaper" type="number" name="diaper" value="{{editoutput.diaper}}">
                             <label for="diaper">Diaper Weight (mL) </label>
                             <span class="helper-text"></span>
                         </div>
@@ -1013,13 +1020,13 @@
                 <div class="row">
 
                         <div class="col s12 m3 input-field">
-                            <input id="otheramt" type="number" name="otheramt" value="{{editoutput.otheramt}}" required>
+                            <input id="otheramt" type="number" name="otheramt" value="{{editoutput.otheramt}}">
                             <label for="otheramt">Other (mL) </label>
                             <span class="helper-text"></span>
                         </div>
                     
                         <div class="col s12 m3 input-field">
-                            <input id="otherass" type="text" name="otherass" value="{{editoutput.otherass}}" required>
+                            <input id="otherass" type="text" name="otherass" value="{{editoutput.otherass}}">
                             <label for="otherass">Assessment</label>
                             <span class="helper-text"></span>
                         </div>
