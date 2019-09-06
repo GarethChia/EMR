@@ -1561,7 +1561,7 @@ router.put('/edit-fall/:recordID/:fallID', ensureAuthenticated, (req,res) => {
 // mdp page
 router.get('/mdp', ensureAuthenticated, (req, res) => {
 	//MasterFall.find({ patientID: req.session.patient.patientID }).then(newFall => {
-		res.render('partials/student/add/_add-mdp', {
+		res.render('mdp-notes/student/mdp', {
 			patient: req.session.patient,
 			userType: req.user.userType,
 			showMenu: true	

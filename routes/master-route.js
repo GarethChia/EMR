@@ -1733,7 +1733,7 @@ router.delete('/doctor/orders/del-order/:orderID', ensureAuthenticated, ensureAu
 // MDP page
 router.get('/mdp', ensureAuthenticated, ensureAuthorised, (req, res) => {
 	MasterMDP.find({ patientID: req.session.patient.patientID}).then(newMDP => {
-		res.render('partials/master/add/_add-mdp', {
+		res.render('mdp-notes/master/mdp', {
 			newMDP: newMDP,
 			patient: req.session.patient,
 			showMenu: true
@@ -1771,7 +1771,7 @@ router.get('/mdp/:mdpID', ensureAuthenticated, ensureAuthorised, (req, res) => {
 	MasterMDP.find({ patientID: req.session.patient.patientID}).sort({'datetime':1}).then(newMDP => {
 		MasterMDP.findOne({ mdpID: req.params.mdpID}).then(editMDP => {
 			editMDP.date = moment(editMDP.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
-			res.render('partials/master/add/_add-mdp', {
+			res.render('mdp-notes/master/mdp', {
 				newMDP: newMDP,
 				editMDP: editMDP,
 				patient: req.session.patient,
