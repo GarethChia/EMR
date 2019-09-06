@@ -35,6 +35,8 @@ require('./models/MasterEnteral');
 require('./models/MasterIV');
 require('./models/MasterOutput');
 require('./models/MasterOxygen');
+//History Taking
+require('./models/MasterHistoryTracking');
 
 
 // load keys

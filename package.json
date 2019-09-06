@@ -34,6 +34,7 @@
     "passport-azure-ad": "^4.0.0",
     "passport-google-oauth20": "^1.0.0",
     "passport-local": "^1.0.0",
+    "popper.js": "^1.15.0",
     "rxjs": "^5.5.12",
     "s-age": "^1.1.2",
     "standardid": "^1.0.3",

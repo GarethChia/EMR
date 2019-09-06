@@ -15,6 +15,8 @@ const MasterOxygen = mongoose.model('masterOxygen');
 const MasterPain = mongoose.model('masterPain');
 const MasterWH = mongoose.model('masterWh');
 const DoctorOrders = mongoose.model('doctorsOrders');
+//HistoryTaking model
+const MasterHistory = mongoose.model('masterHistoryTrack');
 const moment = require('moment');
 const csrf = require('csurf');
 const alertMessage = require('../helpers/messenger');
@@ -837,6 +839,24 @@ router.get('/HistoryTaking', ensureAuthenticated, ensureAuthorised, (req, res) =
 		showMenu: true
 		});
 	})
+})
+//add history Taking
+router.post('/HistoryTaking', ensureAuthenticated, ensureAuthorised, (req, res) => {
+	new MasterHistory({
+		patientID: req.session.patient.patientID,
+		userType: req.user.userType,
+		chiefComp: req.body.chiefComp,
+		historyPresent: req.body.historyPresent,
+		allergy: req.body.allergy,
+		medicalH: req.body.medicalH,
+		surgicalH: req.body.surgicalH,
+		familyH: req.body.familyH,
+		socialH: req.body.socialH,
+		travelH: req.body.travelH,
+		historyId: req.body.historyId
+	}).save();
+
+	res.redirect('/master/HistoryTaking');
 })
 
 //open fall page

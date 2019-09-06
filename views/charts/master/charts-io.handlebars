@@ -585,8 +585,9 @@
     <form action="/student/edit-enteral/{{recordID}}/{{editenteral.enteralID}}?_method=PUT" method="POST" id="editenteral">
     {{/unless}}
     <input type="hidden" name="_method" value="PUT">
-    {{else}}
     <form action="/master/add-enteral" method="POST" id="addenteral">
+    {{else}}
+    <form action="/student/add-enteral" method="POST" id="addenteral">
     {{/if}}
         <div class="card purple lighten-5">
             <div class="card-content">
@@ -667,8 +668,20 @@
 
     <div class="row">
         <div class="col s12 m8"></div>
-
-        <div class="col s12 m4">
+       <div class="col s12 m4">
+            {{#if editenteral}}
+            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editenteral">Save
+            {{else}}
+           
+            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addenteral">Save
+           
+            {{/if}}
+            {{#unless userType}}
+                <i class="material-icons right">send</i>
+            </button>
+            {{/unless}}
+        </div>
+        {{!-- <div class="col s12 m4">
             {{#if editenteral}}
             <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editenteral">Save
             {{else}}
@@ -680,7 +693,7 @@
                 <i class="material-icons right">send</i>
             </button>
             {{/unless}}
-        </div>
+        </div> --}}
     </div>
 </div>
 
