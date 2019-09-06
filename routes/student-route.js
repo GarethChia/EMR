@@ -1500,6 +1500,19 @@ router.get('/fall/:recordID', ensureAuthenticated, (req, res) => {
 		});
 	})
 })
+//Open student History taking
+// havent create the handlebar yet, this is
+// using the masters hehe
+router.get('/HistoryTaking', ensureAuthenticated, ensureAuthorised, (req, res) => {
+	MasterFall.find({ patientID: req.session.patient.patientID }).then(newFall => {	
+	res.render('partials/master/add/add_HistoryTaking', {
+		newFall: newFall,
+		patient: req.session.patient,
+		showMenu: true
+		});
+	})
+})
+
 
 //get single fall info
 router.get('/fall/:recordID/:fallID', ensureAuthenticated, (req, res) => {

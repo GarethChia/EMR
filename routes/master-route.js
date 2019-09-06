@@ -828,6 +828,16 @@ router.put('/edit-braden/:bradenID', ensureAuthenticated, ensureAuthorised, (req
 	});
 	res.redirect('/master/braden');
 })
+//Open History Taking
+router.get('/HistoryTaking', ensureAuthenticated, ensureAuthorised, (req, res) => {
+	MasterFall.find({ patientID: req.session.patient.patientID }).then(newFall => {	
+	res.render('partials/master/add/add_HistoryTaking', {
+		newFall: newFall,
+		patient: req.session.patient,
+		showMenu: true
+		});
+	})
+})
 
 //open fall page
 router.get('/fall', ensureAuthenticated, ensureAuthorised, (req, res) => {

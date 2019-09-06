@@ -1,0 +1,339 @@
+<br/><div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">History Taking</div>
+<div style="overflow-x:auto; max-height: 16em;">
+<table id="fallRecords" class="hover order-column">
+    <thead>
+        <tr>
+            <th>Chief Complain</th>
+            <th>History of Present Illness</th>
+            <th>Allergy status</th>
+            <th>Medical History</th>
+            <th>Surgical History</th>
+            <th>Family History</th>
+            <th>Social History</th>
+            <th>Travel History</th>
+            {{!-- <th>Patient ID</th> --}}
+            {{#unless userType}}
+            <th>Delete</th>
+            {{/unless}}
+        </tr>
+    </thead>
+
+    <tbody>
+        {{#if newFall}}
+            {{#each newFall}}
+            <tr style="height: 60px">
+                {{#unless ../userType}}
+                <td><a href="/master/fall/{{fallID}}">{{datetime}}</a></td>
+                {{else}}
+                <td><a href="/student/fall/{{../recordID}}/{{fallID}}">{{datetime}}</a></td>
+                {{/unless}}
+                <td>{{history}}</td>
+                <td>{{secondary}}</td>
+                <td>{{ambu}}</td>
+                <td>{{ivhl}}</td>
+                <td>{{gait}}</td>
+                <td>{{mental}}</td>
+                <td>{{totalmf}}</td>
+                {{!-- <td>{{patientID}}</td> --}}
+                {{#unless ../userType}}
+                <td style="width: 55px"> <!-- the tr we're trying to get -->
+					<form action="/master/del-fall/{{fallID}}?_method=DELETE" method="post" id="delete-form">
+						<input type="hidden" name="_method" value="DELETE">
+						<button type="submit" class="btn red darken-3">
+							<i class="material-icons">delete</i>
+						</button>
+					</form>
+				</td>
+                {{/unless}}
+            </tr>
+            {{/each}}
+        {{else}}
+        <p id="noRecord">You have not created any History Taking records yet</p>
+        {{/if}}
+    </tbody>
+
+</table>
+</div>
+<br>
+
+{{#if editFall}}
+{{#unless userType}}
+<form action="/master/edit-fall/{{editFall.fallID}}?_method=PUT" method="POST" id="editFall">
+{{else}}
+<form action="/student/edit-fall/{{recordID}}/{{editFall.fallID}}?_method=PUT" method="POST" id="editFall">
+{{/unless}}
+<input type="hidden" name="_method" value="PUT">
+{{else}}
+<form action="/master/add-fall" method="POST" id="addFall">
+{{/if}}
+
+<div id="fallid" class="row" >       
+
+<div class="col s12 m3 input-field">
+          <input id="dateFall" type="text" class="datepicker" name="dateFall" value="{{editFall.date}}">
+          <label for="dateFall">Date</label>
+          <span class="helper-text">DD/MM/YYYY</span>
+
+</div>
+
+</div>
+        <div class="wrapper" id="fallid"  >      
+
+                <div>
+                    <b>Items</b>
+                </div>
+                <div >
+                    <b>Scale</b>
+                </div>
+
+                <div>
+                    <b>Score</b>
+                </div>
+                <div>
+                   <b>1. History of falling; immediate or within 3 months</b> 
+                </div>
+                <div>
+                    No 0
+                    <br>
+                    Yes 25
+                </div> 
+                <div>
+                    <select id="history" name="history" required>
+                     <option value="+0">History Of Falling</option>
+                     <option value="No +0">No +0</option>
+                     <option value="Yes +25">Yes +25</option>
+                    </select>
+                    <label for="history">History Of Falling</label>
+                </div>
+                <div>
+                    <b>2. Secondary Diagnosis</b> 
+                </div>
+
+                <div>
+                    <br>
+                    No 0
+                    <br>
+                    Yes 15
+                </div>
+
+                <div>
+                    <select id="secondary" name="secondary" required>
+                     <option value="+0">Secondary Diagnosis</option>
+                     <option value="No +0">No +0</option>
+                     <option value="Yes +15">Yes +15</option>
+                    </select>
+                    <label for="secondary">Secondary Diagnosis</label>
+                </div>
+
+                 <div>
+                     <b>3. Ambulatory Aid</b> 
+                    <br>
+                    Bed Rest/nurse assisted
+                    <br>
+                    Crutches/cane/walker 
+                    <br>
+                    Furniture
+                </div>
+
+                <div>
+                    <br>
+                    0
+                    <br>
+                    15
+                    <br>
+                    30
+                    
+                </div>
+
+                <div>
+                    <select id="ambu" name="ambu" required>
+                     <option value="+0">Ambulatory Aid</option>
+                     <option value="Bed Rest/Nurse Assisted +0">Bed Rest/Nurse Assisted +0 </option>
+                     <option value="Crutches/Cane/Walker +15 ">Crutches/Cane/Walker +15 </option>
+                     <option value="Furniture +30">Furniture +30</option>
+                    </select>
+                    <label for="ambu">Ambulatory Aid</label>
+                </div>
+
+                 <div>
+                    <b> 4. IV/Heparin Lock</b>
+                </div>
+                <div>
+                    <br>
+                    No 0
+                    <br>
+                    Yes 25
+                </div>
+                <div>
+                    <select id="ivhl" name="ivhl" required>
+                     <option value="+0">IV/Heparin Lock</option>
+                     <option value="No +0">No +0</option>
+                     <option value="Yes +25">Yes +25</option>
+                    </select>
+                    <label for="ivhl">IV/Heparin Lock</label>
+                </div>
+
+                <div>
+                     <b>5. Gait/Transferring </b> 
+                    <br>
+                    Normal/bedrest/immobile 
+                    <br>
+                    Weak
+                    <br>
+                    Impaired
+                </div>
+                <div>
+                    <br>
+                    0
+                    <br>
+                    10
+                    <br>
+                    20
+                </div>
+                <div>
+                     <select id="gait" name="gait" required>
+                     <option value="+0">Gait</option>
+                     <option value="Normal/Bedrest/Immobile +0">Normal/Bedrest/Immobile +0</option>
+                     <option value="Weak +10">Weak +10</option>
+                     <option value="Impaired +25">Impaired +20</option>
+
+                    </select>
+                    <label for="gait">Gait</label>
+                </div>
+
+                <div>
+                     <b>6. Mental Status</b> 
+                    <br>
+                    Oriented to own ability
+                    <br>
+                    Forget limitations
+                </div>
+                <div>
+                    <br>
+                    0
+                    <br>
+                    15
+                </div>
+
+                <div>
+                      <select id="mental" name="mental" required>
+                     <option value="+0">Mental</option>
+                     <option value="Oriented to own ability +0">Oriented to own ability +0</option>
+                     <option value="Forget Limitations +15">Forget Limitations +15</option>
+                    </select>
+                    <label for="mental">Mental</label>
+                </div>
+
+        </div>
+
+    
+    
+    </form>
+    <br>
+<div class="row">
+
+    <div class="col s12 m8"></div>
+
+        <div class="col s12 m4">
+            {{#if editFall}}
+            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editFall">Save
+            {{else}}
+            {{#unless userType}}
+            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addFall">Save
+            {{/unless}}
+            {{/if}}
+            {{#unless userType}}
+                <i class="material-icons right">send</i>
+                </button>
+            {{/unless}}
+        </div>
+</div>
+
+<div class="row"> 
+
+<div class=" col s12 m3">
+   <u>  <b>Interpretation of score</b>   </u> 
+    <br>    <br>
+    No Risk: 0-24 , Good Basic Nursing Care 
+    
+    <br>    <br>
+    Low Risk: 25-50 , Implement Standard Fall, Prevention Interventions 
+  
+
+    <br>    <br>
+
+    High Risk: ≥ 51 , Implement High Risk Fall, Prevention Interventions 
+
+</div>
+
+<div class="col s12 m9">
+
+</div>
+
+</div>
+
+<style>
+.wrapper {
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    grid-gap:0.2em;
+    grid-auto-rows: minmax(10px,auto);
+}
+
+.wrapper > div{
+   padding:1em;
+   background:#f3e5f5;
+   text-align: left;
+}
+</style>
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const dateFall = document.querySelector('#dateFall');
+        const history = document.querySelector('#history');
+        const secondary = document.querySelector('#secondary');
+        const ambu = document.querySelector('#ambu');
+        const ivhl = document.querySelector('#ivhl');
+        const gait = document.querySelector('#gait');
+        const mental = document.querySelector('#mental');
+
+        M.Datepicker.init(dateFall, {
+            maxDate: new Date(),
+            format: 'dd/mm/yyyy',
+            disableWeekends:true
+        });
+
+        M.FormSelect.init(history, {
+            
+        })
+        M.FormSelect.init(secondary, {
+            
+        })
+        M.FormSelect.init(ambu, {
+            
+        })
+        M.FormSelect.init(ivhl, {
+            
+        })
+        M.FormSelect.init(gait, {
+            
+        })
+        M.FormSelect.init(mental, {
+            
+        })
+    })
+
+    {{#if editFall}}
+        document.getElementById('history').value =  "{{editFall.history}}";
+        document.getElementById('secondary').value =  "{{editFall.secondary}}";
+        document.getElementById('ambu').value =  "{{editFall.ambu}}";
+        document.getElementById('ivhl').value =  "{{editFall.ivhl}}";
+        document.getElementById('gait').value =  "{{editFall.gait}}";
+        document.getElementById('mental').value = "{{editFall.mental}}";
+    {{/if}}
+
+</script>
+
+
+
