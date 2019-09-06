@@ -1,0 +1,156 @@
+<br/>
+<div id="io">
+    <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">MDP Notes</div>
+    <div style="overflow-x:auto; max-height: 16em;">
+        <table id="ioRecords" class="hover order-column">
+            <thead>
+                <tr>
+                    <th>Datetime</th>
+                    <th>Health Provider</th>
+                    <th>Progress Notes</th>
+                    <th>User</th>
+                    {{#unless userType}}
+                    <th>Delete</th>
+                    {{/unless}}
+                </tr>
+            </thead>
+            <tbody>
+                {{#if newMDP}}
+                    {{#each newMDP}}
+                    <tr style="height: 60px">
+                        {{#unless ../userType}}
+                        <td><a href="/master/mdp/{{mdpID}}">{{formatDatetime datetime}}</a></td>
+                        {{else}}
+                        <td><a href="/student/io/{{../recordID}}/{{mdpID}}">{{formatDatetime datetime}}</a></td>
+                        {{/unless}}
+                        <td>{{healthProvider}}</td>
+                        <td>{{progressNotes}}</td>
+                        <td>{{selectUser}}</td>
+                        {{!-- <td>{{patientID}}</td> --}}
+                        {{#unless ../userType}}
+                        <td style="width: 65px"> <!-- the tr we're trying to get -->
+                            <form action="/master/del-mdp/{{mdpID}}?_method=DELETE" method="post" id="delete-form">
+                                <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn red darken-3">
+                                 <i class="material-icons">delete
+                            </button>
+                            </form>
+                        </td>
+                        {{/unless}}
+                    </tr>
+                    {{/each}}
+                {{else}}
+                <p id="noRecord">You have not created any MDP notes yet</p>
+                {{/if}}
+            </tbody>
+        </table>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col s12 m8"></div>
+    </div>
+
+    {{#if editMDP}}
+    {{#unless userType}}
+    <form action="/master/edit-mdp/{{editMDP.mdpID}}?_method=PUT" method="POST" id="editMDP">
+    {{else}}    
+    <form action="/student/edit-mdp/{{recordID}}/{{editMDP.mdpID}}?_method=PUT" method="POST" id="editMDP">
+    {{/unless}}
+    <input type="hidden" name="_method" value="PUT">
+    {{else}}
+    <form action="/master/add-mdp" method="POST" id="addMDP">
+    {{/if}}
+        <div class="card purple lighten-5">
+            <div class="card-content">
+                <div id="ioInfo">
+                    <span class="purple-text darken-2">MDP Notes</span>
+                
+                    <div class="row">
+                            <div class="col s12 m4 input-field">
+                                <input id="dateMDP" type="text" class="datepicker" name="dateMDP" value="{{editMDP.date}}" required>
+                                <label for="dateMDP">Date</label>
+                                <span class="helper-text">dd/mm/yyyy</span>
+                            </div>
+
+                            <div class="col s12 m4 input-field">
+                                <input id="timeMDP" type="text" class="timepicker" name="timeMDP" value="{{editMDP.time}}" required>
+                                <label for="timeMDP">Time</label>
+                                <span class="helper-text">hh:ss</span>
+                            </div>
+                            <div class="col s12 m4 input-field">
+                                    <select id="selectUser" name="selectUser">
+                                        <option value="" disabled selected>Please select</option>
+                                        <option value="Doctor">Doctor</option>
+                                        <option value="Nurse">Nurse</option>
+                                        <option value="Allied Health">Allied Health</option>
+                                    </select>
+                                    <label for="selectUser">Users</label>
+                            </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m4 input-field">
+                            <input id="healthProvider" type="text" name="healthProvider" value="{{editMDP.healthProvider}}">
+                            <label for="healthProvider">Name of Health Provider</label>
+                            <span class="helper-text"></span>
+                        </div>
+                        <div class="col s12 m4 input-field">
+                            <textarea id="progressNotes" class="materialize-textarea" name="progressNotes">{{editMDP.progressNotes}}</textarea>
+                            <label for="progressNotes">Progress notes</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="row">
+        <div class="col s12 m8"></div>
+
+        <div class="col s12 m4">
+            {{#if editMDP}}
+            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editMDP">Save
+            {{else}}
+            {{#unless userType}}
+            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addMDP">Save
+            {{/unless}}
+            {{/if}}
+            {{#unless userType}}
+                <i class="material-icons right">send</i>
+            </button>
+            {{/unless}}
+        </div>
+    </div>
+</div>
+
+<script
+		src="https://code.jquery.com/jquery-3.3.1.min.js"
+		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+		crossorigin="anonymous">
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // MDP
+        const dateMDP = document.querySelector('#dateMDP');
+        const timeMDP = document.querySelector('#timeMDP');
+        const selectUser = document.querySelector('#selectUser');
+
+        // MDP Instances
+        M.Datepicker.init(dateMDP, {
+            maxDate: new Date(),
+            format: 'dd/mm/yyyy',
+            disableWeekends: true
+        });
+        M.Timepicker.init(timeMDP, {
+            twelveHour: false,
+            showClearBtn: true
+        });
+
+        M.FormSelect.init(selectUser, {
+            
+        })                
+    })  
+    {{#if editMDP}}
+        document.getElementById('selectUser').value = "{{editMDP.selectUser}}";
+    {{/if}}
+ </script>

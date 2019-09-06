@@ -1,0 +1,26 @@
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const EMR_User = mongoose.model('emr-users');
+const NursingAssessmentModel = require('./NursingAssessmentModel');
+
+// Create Schema
+const MasterMDPSchema = new Schema({
+    patientID: {type: String, require: true},
+    userID: {
+      type: Schema.Types.ObjectId,
+      ref: 'emr-users' 	// collection name in mongodb
+    },
+    nursingAssessmentID: {
+      type: Schema.Types.ObjectId,
+      ref: 'nursing-assessment'
+    },
+    mdpID: {type: String, default: ''},
+    date:	{type: String, default:''},
+    time:		 {type: String, default: ''},
+    datetime: {type: String, default: ''},
+    selectUser: {type: String, default:''},
+    healthProvider: {type: String, default: ''},
+    progressNotes: {type: String, default: ''}
+});
+
+mongoose.model('masterMDP', MasterMDPSchema, 'master-MDP');
