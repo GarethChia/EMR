@@ -4,7 +4,7 @@ const EMR_User = mongoose.model('emr-users');
 const NursingAssessmentModel = require('./NursingAssessmentModel');
 
 // Create Schema
-const MasterMDPSchema = new Schema({
+const StudentMDPSchema = new Schema({
     patientID: {type: String, require: true},
     user: {
       type: Schema.Types.ObjectId,
@@ -23,4 +23,4 @@ const MasterMDPSchema = new Schema({
     progressNotes: {type: String, default: ''}
 });
 
-mongoose.model('masterMDP', MasterMDPSchema, 'master-MDP');
+mongoose.model('studentMDP', StudentMDPSchema, 'student-MDP');

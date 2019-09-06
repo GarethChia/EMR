@@ -6,29 +6,30 @@
             <thead>
                 <tr>
                     <th>Datetime</th>
-                    <th>Progress notes</th>
+                    <th>Health Provider</th>
+                    <th>Progress Notes</th>
+                    <th>User</th>
                     {{#unless userType}}
                     <th>Delete</th>
                     {{/unless}}
                 </tr>
             </thead>
             <tbody>
-                {{#if newIO}}
-                    {{#each newIO}}
+                {{#if newMDP}}
+                    {{#each newMDP}}
                     <tr style="height: 60px">
                         {{#unless ../userType}}
-                        <td><a href="/master/io/{{ioID}}">{{formatDatetime datetime}}</a></td>
+                        <td><a href="/student/mdp/{{mdpID}}">{{formatDatetime datetime}}</a></td>
                         {{else}}
-                        <td><a href="/student/io/{{../recordID}}/{{ioID}}">{{formatDatetime datetime}}</a></td>
+                        <td><a href="/student/io/{{../recordID}}/{{mdpID}}">{{formatDatetime datetime}}</a></td>
                         {{/unless}}
-                        <td>{{foodtype}}</td>
-                        <td>{{foodportion}}</td>
-                        <td>{{fluidtype}}</td>
-                        <td>{{fluidportion}}</td>
+                        <td>{{healthProvider}}</td>
+                        <td>{{progressNotes}}</td>
+                        <td>{{selectUser}}</td>
                         {{!-- <td>{{patientID}}</td> --}}
                         {{#unless ../userType}}
                         <td style="width: 65px"> <!-- the tr we're trying to get -->
-                            <form action="/master/del-io/{{ioID}}?_method=DELETE" method="post" id="delete-form">
+                            <form action="/student/del-mdp/{{mdpID}}?_method=DELETE" method="post" id="delete-form">
                                 <input type="hidden" name="_method" value="DELETE">
                             <button type="submit" class="btn red darken-3">
                                  <i class="material-icons">delete
@@ -50,15 +51,15 @@
         <div class="col s12 m8"></div>
     </div>
 
-    {{#if editIO}}
+    {{#if editMDP}}
     {{#unless userType}}
-    <form action="/master/edit-io/{{editIO.ioID}}?_method=PUT" method="POST" id="editIO">
+    <form action="/student/edit-mdp/{{editMDP.mdpID}}?_method=PUT" method="POST" id="editMDP">
     {{else}}    
-    <form action="/student/edit-io/{{recordID}}/{{editIO.ioID}}?_method=PUT" method="POST" id="editIO">
+    <form action="/student/edit-mdp/{{recordID}}/{{editMDP.mdpID}}?_method=PUT" method="POST" id="editMDP">
     {{/unless}}
     <input type="hidden" name="_method" value="PUT">
     {{else}}
-    <form action="/master/add-io" method="POST" id="addIO">
+    <form action="/student/add-mdp" method="POST" id="addMDP">
     {{/if}}
         <div class="card purple lighten-5">
             <div class="card-content">
@@ -67,35 +68,35 @@
                 
                     <div class="row">
                             <div class="col s12 m4 input-field">
-                                <input id="dateIO" type="text" class="datepicker" name="dateIO" value="{{editIO.date}}" required>
-                                <label for="dateIO">Date</label>
+                                <input id="dateMDP" type="text" class="datepicker" name="dateMDP" value="{{editMDP.date}}" required>
+                                <label for="dateMDP">Date</label>
                                 <span class="helper-text">dd/mm/yyyy</span>
                             </div>
 
                             <div class="col s12 m4 input-field">
-                                <input id="timeIO" type="text" class="timepicker" name="timeIO" value="{{editIO.time}}" required>
-                                <label for="timeIO">Time</label>
+                                <input id="timeMDP" type="text" class="timepicker" name="timeMDP" value="{{editMDP.time}}" required>
+                                <label for="timeMDP">Time</label>
                                 <span class="helper-text">hh:ss</span>
                             </div>
                             <div class="col s12 m4 input-field">
-                                    <select id="foodportion" name="foodportion">
+                                    <select id="selectUser" name="selectUser">
                                         <option value="" disabled selected>Please select</option>
-                                        <option value="1 Share">Doctor</option>
-                                        <option value="3 Quarters">Nurse</option>
-                                        <option value="2 Thirds">Alied Health</option>
+                                        <option value="Doctor">Doctor</option>
+                                        <option value="Nurse">Nurse</option>
+                                        <option value="Allied Health">Allied Health</option>
                                     </select>
-                                    <label for="Portion">Users</label>
+                                    <label for="selectUser">Users</label>
                             </div>
                     </div>
                     <div class="row">
                         <div class="col s12 m4 input-field">
-                            <input id="fluidtype" type="text" name="fluidtype" value="{{editIO.fluidtype}}">
-                            <label for="fluidtype">Name of Health Provider</label>
+                            <input id="healthProvider" type="text" name="healthProvider" value="{{editMDP.healthProvider}}">
+                            <label for="healthProvider">Name of Health Provider</label>
                             <span class="helper-text"></span>
                         </div>
                         <div class="col s12 m4 input-field">
-                            <textarea id="textarea1" class="materialize-textarea"></textarea>
-                            <label for="textarea1">Progress notes</label>
+                            <textarea id="progressNotes" class="materialize-textarea" name="progressNotes">{{editMDP.progressNotes}}</textarea>
+                            <label for="progressNotes">Progress notes</label>
                         </div>
                     </div>
                 </div>
@@ -107,16 +108,14 @@
         <div class="col s12 m8"></div>
 
         <div class="col s12 m4">
-            {{#if editIO}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editIO">Save
+            {{#if editMDP}}
+            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editMDP">Save
             {{else}}
             {{#unless userType}}
-            {{else}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addIO">Save
+            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addMDP">Save
             {{/unless}}
             {{/if}}
             {{#unless userType}}
-                {{else}}
                 <i class="material-icons right">send</i>
             </button>
             {{/unless}}
@@ -130,93 +129,28 @@
 		crossorigin="anonymous">
 </script>
 <script>
-
-    $(document).ready(() => {
-        $('.tabs').tabs();
-    })
-
     document.addEventListener('DOMContentLoaded', () => {
-        //IO
-        const dateIO = document.querySelector('#dateIO');
-        const timeIO = document.querySelector('#timeIO');
-        const foodportion = document.querySelector('#foodportion');
+        // MDP
+        const dateMDP = document.querySelector('#dateMDP');
+        const timeMDP = document.querySelector('#timeMDP');
+        const selectUser = document.querySelector('#selectUser');
 
-        //Enteral
-        const dateenteral = document.querySelector('#dateenteral');
-        const timeenteral = document.querySelector('#timeenteral');
-        const enteralfeed = document.querySelector('#enteralfeed');
-        const formula = document.querySelector('#formula');
-
-        //IV
-        const dateiv = document.querySelector('#dateiv');
-        const timeiv = document.querySelector('#timeiv');
-        const coninf = document.querySelector('#coninf');
-
-        //Output
-        const dateoutput = document.querySelector('#dateoutput');
-        const timeoutput = document.querySelector('#timeoutput');
-
-        //IO Instances
-        M.Datepicker.init(dateIO, {
+        // MDP Instances
+        M.Datepicker.init(dateMDP, {
             maxDate: new Date(),
             format: 'dd/mm/yyyy',
             disableWeekends: true
         });
-        M.Timepicker.init(timeIO, {
+        M.Timepicker.init(timeMDP, {
             twelveHour: false,
             showClearBtn: true
         });
 
-        M.FormSelect.init(foodportion, {
+        M.FormSelect.init(selectUser, {
             
-        })
-
-        //Enteral Instances
-        M.Datepicker.init(dateenteral, {
-            maxDate: new Date(),
-            format: 'dd/mm/yyyy',
-            disableWeekends: true
-        });
-        M.Timepicker.init(timeenteral, {
-            twelveHour: false,
-            showClearBtn: true
-        });
-
-        M.FormSelect.init(enteralfeed, {
-            
-        })
-        
-        M.FormSelect.init(formula, {
-            
-        })
-
-        //IV Instances
-        M.Datepicker.init(dateiv, {
-            maxDate: new Date(),
-            format: 'dd/mm/yyyy',
-            disableWeekends: true
-        });
-        M.Timepicker.init(timeiv, {
-            twelveHour: false,
-            showClearBtn: true
-        });
-
-        M.FormSelect.init(coninf, {
-            
-        })       
-
-        //Output Instances
-        M.Datepicker.init(dateoutput, {
-            maxDate: new Date(),
-            format: 'dd/mm/yyyy',
-            disableWeekends: true
-        });
-
-        M.Timepicker.init(timeoutput, {
-            twelveHour: false,
-            showClearBtn: true
-        });
-                
+        })                
     })  
-
+    {{#if editMDP}}
+        document.getElementById('selectUser').value = "{{editMDP.selectUser}}";
+    {{/if}}
  </script>

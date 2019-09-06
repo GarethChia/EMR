@@ -36,6 +36,7 @@ require('./models/MasterIV');
 require('./models/MasterOutput');
 require('./models/MasterOxygen');
 require('./models/MasterMDP');
+require('./models/StudentMDP');
 //History Taking
 require('./models/MasterHistoryTracking');
 

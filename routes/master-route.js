@@ -15,12 +15,10 @@ const MasterOxygen = mongoose.model('masterOxygen');
 const MasterPain = mongoose.model('masterPain');
 const MasterWH = mongoose.model('masterWh');
 const DoctorOrders = mongoose.model('doctorsOrders');
-<<<<<<< HEAD
+
 //HistoryTaking model
 const MasterHistory = mongoose.model('masterHistoryTrack');
-=======
 const MasterMDP = mongoose.model('masterMDP');
->>>>>>> 56ae95a680e0623408b958a3438401d40cb93dc3
 const moment = require('moment');
 const csrf = require('csurf');
 const alertMessage = require('../helpers/messenger');
@@ -1755,13 +1753,14 @@ router.delete('/doctor/orders/del-order/:orderID', ensureAuthenticated, ensureAu
 
 // MDP page
 router.get('/mdp', ensureAuthenticated, ensureAuthorised, (req, res) => {
-	MasterMDP.find({ patientID: req.session.patient.patientID}).then(newMDP => {
+	MasterMDP.find({user: req.user.id, patientID: req.session.patient.patientID})
+	.then(newMDP => {
 		res.render('mdp-notes/master/mdp', {
 			newMDP: newMDP,
 			patient: req.session.patient,
 			showMenu: true
 		});
-	} )
+	})
 })
 // add MDP page
 router.post('/add-mdp', ensureAuthenticated, ensureAuthorised, (req, res) => {
@@ -1769,6 +1768,8 @@ router.post('/add-mdp', ensureAuthenticated, ensureAuthorised, (req, res) => {
 	datetime = moment(req.body.dateMDP, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeMDP;
 	new MasterMDP({
 		patientID: req.session.patient.patientID,
+		user: req.user.id,
+		//nursingAssessmentID: patient.nursingAssessmentID,
 		mdpID: mdpID,
 		date: moment(req.body.dateMDP, 'DD/MM/YYYY').format('YYYY-MM-DD'),
 		time: req.body.timeMDP,
