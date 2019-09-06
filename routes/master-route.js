@@ -1730,4 +1730,15 @@ router.delete('/doctor/orders/del-order/:orderID', ensureAuthenticated, ensureAu
 	res.redirect('/master/doctor/orders');
 })
 
+//mdp page
+router.get('/mdp', ensureAuthenticated, ensureAuthorised, (req, res) => {
+	MasterFall.find({ patientID: req.session.patient.patientID }).then(newFall => {
+		res.render('partials/master/add/_add-mdp', {
+			newFall: newFall,
+			patient: req.session.patient,
+			showMenu: true
+		});
+	})
+})
+
 module.exports = router;

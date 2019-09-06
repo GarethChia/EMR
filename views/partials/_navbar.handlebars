@@ -47,6 +47,19 @@
 									<i class="fas fa-sort-down"></i>
 								</a>
 							</li>
+							<li>
+								{{#unless userType}}
+								<a href="/master/mdp">
+									MDP Notes
+									<i class="fas fa-notes-medical"></i>
+								</a>
+								{{else}}
+								<a href="/student/mdp">
+									MDP Notes
+									<i class="fas fa-notes-medical"></i>
+								</a>
+								{{/unless}}
+							</li>
 							<!--
 							   <li style="padding-top: 5px">
 								   <a class="navmenu" href="#!" >
