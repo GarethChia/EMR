@@ -15,6 +15,7 @@ const MasterOxygen = mongoose.model('masterOxygen');
 const MasterPain = mongoose.model('masterPain');
 const MasterWH = mongoose.model('masterWh');
 const DoctorOrders = mongoose.model('doctorsOrders');
+const MasterMDP = mongoose.model('masterMDP');
 const moment = require('moment');
 const csrf = require('csurf');
 const alertMessage = require('../helpers/messenger');
@@ -652,7 +653,6 @@ router.delete('/del-io/:ioID', ensureAuthenticated, ensureAuthorised, (req, res)
 //edit IO informations
 router.put('/edit-io/:ioID', ensureAuthenticated, ensureAuthorised, (req,res) => {
 	datetime = moment(req.body.dateIO, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeIO;
-
 
 	MasterIO.findOne({ ioID: req.params.ioID }).then(editIO => {
 		editIO.date = moment(req.body.dateIO, 'DD/MM/YYYY').format('YYYY-MM-DD'),
@@ -1720,15 +1720,72 @@ router.delete('/doctor/orders/del-order/:orderID', ensureAuthenticated, ensureAu
 	res.redirect('/master/doctor/orders');
 })
 
-//mdp page
+// MDP page
 router.get('/mdp', ensureAuthenticated, ensureAuthorised, (req, res) => {
-	MasterFall.find({ patientID: req.session.patient.patientID }).then(newFall => {
+	MasterMDP.find({ patientID: req.session.patient.patientID}).then(newMDP => {
 		res.render('partials/master/add/_add-mdp', {
-			newFall: newFall,
+			newMDP: newMDP,
 			patient: req.session.patient,
 			showMenu: true
 		});
+	} )
+})
+// add MDP page
+router.post('/add-mdp', ensureAuthenticated, ensureAuthorised, (req, res) => {
+	mdpID = (new standardID('AAA0000')).generate();
+	datetime = moment(req.body.dateMDP, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeMDP;
+	new MasterMDP({
+		patientID: req.session.patient.patientID,
+		mdpID: mdpID,
+		date: moment(req.body.dateMDP, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		time: req.body.timeMDP,
+		datetime: datetime,
+		selectUser: req.body.selectUser,
+		healthProvider: req.body.healthProvider,
+		progressNotes: req.body.progressNotes
+	}).save();
+	res.redirect('/master/mdp');
+})
+// delete MDP page
+router.delete('/del-mdp/:mdpID', ensureAuthenticated, ensureAuthorised, (req, res) => {
+	MasterMDP.deleteOne({mdpID: req.params.mdpID}, function(err) {
+		if (err) {
+			console.log("cannot delete mdp details");
+		}
+	});
+	res.redirect('/master/mdp');
+})
+
+// get single MDP info
+router.get('/mdp/:mdpID', ensureAuthenticated, ensureAuthorised, (req, res) => {
+	MasterMDP.find({ patientID: req.session.patient.patientID}).sort({'datetime':1}).then(newMDP => {
+		MasterMDP.findOne({ mdpID: req.params.mdpID}).then(editMDP => {
+			editMDP.date = moment(editMDP.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
+			res.render('partials/master/add/_add-mdp', {
+				newMDP: newMDP,
+				editMDP: editMDP,
+				patient: req.session.patient,
+				showMenu: true
+			});
+		})
 	})
+})
+
+// edit MDP informations
+router.put('/edit-mdp/:mdpID', ensureAuthenticated, ensureAuthorised, (req,res) => {
+	datetime = moment(req.body.dateMDP, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeMDP;
+
+	MasterMDP.findOne({ mdpID: req.params.mdpID}).then(editMDP => {
+		editMDP.date = moment(req.body.dateMDP, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		editMDP.time = req.body.timeMDP,
+		editMDP.datetime = datetime,
+		editMDP.selectUser = req.body.selectUser,
+		editMDP.healthProvider = req.body.healthProvider,
+		editMDP.progressNotes = req.body.progressNotes
+
+		editMDP.save();
+	});
+	res.redirect("/master/mdp");
 })
 
 module.exports = router;
