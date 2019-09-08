@@ -18,6 +18,9 @@ const MasterWH = mongoose.model('masterWh');
 const DoctorOrders = mongoose.model('doctorsOrders');
 const StudentMDP = mongoose.model('studentMDP');
 const MasterMDP = mongoose.model('masterMDP');
+//HistoryTaking
+const MasterHistory = mongoose.model('masterHistoryTrack');
+const StudentHistory = mongoose.model('studentHistoryTrack');
 const moment = require('moment');
 const alertMessage = require('../helpers/messenger');
 const {ensureAuthenticated, ensureAuthorised} = require('../helpers/auth');
@@ -1502,20 +1505,55 @@ router.get('/fall/:recordID', ensureAuthenticated, (req, res) => {
 		});
 	})
 })
-//Open student History taking
-// havent create the handlebar yet, this is
-// using the masters hehe
-router.get('/HistoryTaking', ensureAuthenticated, ensureAuthorised, (req, res) => {
-	MasterFall.find({ patientID: req.session.patient.patientID }).then(newFall => {	
-	res.render('partials/master/add/add_HistoryTaking', {
-		newFall: newFall,
-		patient: req.session.patient,
-		showMenu: true
+// Open HistoryTakng page
+router.get('/HistoryTaking', ensureAuthenticated, (req, res) => {
+	StudentHistory.find({user: req.user.id, patientID: req.session.patient.patientID})
+	.then(newHistory => {
+		MasterHistory.findOne().then(newMasterHistory => {
+			res.render('HistoryTaking/student/add_HistoryTaking', {
+				newMasterHistory: newMasterHistory,
+				newHistory: newHistory,
+				patient: req.session.patient,
+				showMenu: true
+			});
 		});
 	})
 })
+// Add HistoryTaking
+router.post('/addHistory', ensureAuthenticated,(req, res) => {
+	historyId = (new standardID('AAA0000')).generate();
+	new StudentHistory({
+		user: req.user.id,
+		patientID: req.session.patient.patientID,
+		userType: req.user.userType,
+		chiefComp: req.body.chiefComp,
+		historyPresent: req.body.historyPresent,
+		allergy: req.body.allergy,
+		medicalH: req.body.medicalH,
+		surgicalH: req.body.surgicalH,
+		familyH: req.body.familyH,
+		socialH: req.body.socialH,
+		travelH: req.body.travelH,
+		historyId: req.body.historyId
+	}).save();
+	res.redirect('/student/HistoryTaking');
+})
+//Edit HistoryTaking
+router.put('/edit-history/:historyId', ensureAuthenticated, (req,res) => {
+	StudentHistory.findOne({ historyId: req.params.historyId}).then(editHistory => {
+		editHistory.chiefComp = req.body.chiefComp,
+		editHistory.historyPresent = req.body.chiefComp,
+		editHistory.allergy = req.body.allergy,
+		editHistory.medicalH = req.body.medicalH,
+		editHistory.surgicalH = req.body.surgicalH,
+		editHistory.familyH = req.body.familyH,
+		editHistory.socialH = req.body.socialH,
+		editHistory.travelH = req.body.travelH
 
-
+		editHistory.save();
+	});
+	res.redirect("/student/add_HistoryTaking");
+})
 //get single fall info
 router.get('/fall/:recordID/:fallID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';

@@ -39,6 +39,7 @@ require('./models/MasterMDP');
 require('./models/StudentMDP');
 //History Taking
 require('./models/MasterHistoryTracking');
+require('./models/StudentHistoryTracking');
 
 // load keys
 const key = fs.readFileSync('./server.key');

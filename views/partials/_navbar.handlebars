@@ -175,7 +175,7 @@
 							{{#unless userType}}
 							<li><a href="/master/HistoryTaking">History Taking</a></li>
 							{{else}}
-							<li><a href="/student/HistoryTaking">History Taking Student</a></li>
+							<li><a href="/student/HistoryTaking">History Taking</a></li>
 							{{/unless}}
 							<li><a href="#!">Care Plan</a></li> 
 							<li class="lighter-fonts"><a href="#!">Discharge Planning</a></li> 
@@ -316,7 +316,12 @@
 {{!-- Nurse -> ... --}}
 <ul id="Nurse" class="dropdown-content">
 	<li><a href="/master/show-nursing-assessment/{{patient.patientID}}">Assessment</a></li>
-	<li><a href="#!">History Taking</a></li>
+	{{#unless userType}}
+	<li><a href="/master/HistoryTaking">History Taking</a></li>
+	{{else}}
+	<li><a href="/student/HistoryTaking">History Taking</a></li>
+	{{/unless}}
+
 	<li><a href="#!">Care Plan</a></li>
 	<li class="lighter-fonts"><a href="#!">Discharge Planning</a></li>
 	<li class="lighter-fonts"><a href="#!">Education</a></li>

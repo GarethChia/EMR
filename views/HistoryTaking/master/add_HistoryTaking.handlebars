@@ -1,0 +1,352 @@
+<style>
+.tooltip {
+  position: relative;
+  display: inline-block;
+  /*border-bottom: 1px dotted black;*/
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: grey;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+\
+</style>
+<br/>
+<div id="io">
+    <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">History Taking</div>
+    <div style="overflow-x:auto; max-height: 16em;">
+        <table id="ioRecords" class="hover order-column">
+            <thead>
+                <tr>
+                    <th>Chief Complains</th>
+                    <th>History of Present Illness</th>
+                    <th>Allergy Status</th>
+                    <th>Medical History</th>
+                    <th>Surgical History</th>
+                    <th>Family History</th>
+                    <th>Social History</th>
+                    <th>Travel History</th>
+                    {{!-- {{#unless userType}}
+                    <th>Delete</th>
+                    {{/unless}} --}}
+                </tr>
+            </thead>
+            <tbody>
+                {{#if newHistory}}
+                    {{#each newHistory}}
+                    <tr style="height: 60px">
+                        {{#unless ../userType}}
+                        <td><a href="/master/HistoryTaking/{{historyId}}">{{historyId}}</a></td>
+                        {{else}}
+                        <td><a href="/student/io/{{../recordID}}/{{historyId}}">{{historyId}}</a></td>
+                        {{/unless}}
+                        <td>{{chiefComp}}</td>
+                        <td>{{historyPresent}}</td>
+                        <td>{{allergy}}</td>
+                        <td>{{medicalH}}</td>
+                        <td>{{surgicalH}}</td>
+                        <td>{{familyH}}</td>
+                        <td>{{socialH}}</td>
+                        <td>{{travelH}}</td>
+                        {{#unless ../userType}}
+                        <td style="width: 65px"> <!-- the tr we're trying to get -->
+                            <form action="/master/del-io/{{ioID}}?_method=DELETE" method="post" id="delete-form">
+                                <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn red darken-3">
+                                 <i class="material-icons">delete
+                            </button>
+                            </form>
+                        </td>
+                        {{/unless}}
+                    </tr>
+                    {{/each}}
+                {{else}}
+                <p id="noRecord">You have not created any History Taking yet</p>
+                {{/if}}
+            </tbody>
+        </table>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col s12 m8"></div>
+    </div>
+
+    {{#if editHistory}}
+    {{#unless userType}}
+    <form action="/master/edit-history/{{editHistory.historyId}}?_method=PUT" method="POST" id="editHistory">
+    {{else}}    
+    <form action="/student/edit-history/{{recordID}}/{{editHistory.historyId}}?_method=PUT" method="POST" id="editHistory">
+    {{/unless}}
+    <input type="hidden" name="_method" value="PUT">
+    {{else}}
+    <form action="/master/add-history" method="POST" id="addHistory">
+    {{/if}}
+        <div class="card purple lighten-5">
+            <div class="card-content">
+                <div id="ioInfo">
+                    <span class="purple-text darken-2">History Taking</span>
+                
+                    <table>
+                         <tr>
+                            <td>
+                                <div class="col s12 m4 ">
+                                   Chief Complains
+                                </div>
+                            </td>
+                            <td>
+                                <div class="col s12 m4 input-field">
+                                    <textarea id="chiefComp" name="chiefComp" class="materialize-textarea" value="{{editHistory.chiefComp}}"></textarea>
+                                    <label for="chiefComp">Chief Complains</label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="col s12 m4 ">
+                                   History of Present Illness
+                                </div>
+                            </td>
+                            <td>
+                                <div class="col s12 m4 input-field">
+                                    <textarea id="historyPresent"name="historyPresent" class="materialize-textarea" value="{{editHistory.historyPresent}}"></textarea>
+                                    <label for="historyPresent">History Present Illness</label>
+                                </div>
+                            </td>
+                        </tr>
+                
+                          <tr>
+                            <td>
+                                <div class="col s12 m4 ">
+                                   Allergy Status
+                                </div>
+                            </td>
+                            <td>
+                                <div class="col s12 m4 input-field">
+                                    <textarea id="allergy" name="allergy" class="materialize-textarea" value="{{editHistory.allergy}}"></textarea>
+                                    <label for="allergy">Allergy Status</label>
+                                </div>
+                            </td>
+                        </tr>
+                          <tr>
+                            <td>
+                                <div class="col s12 m4 ">
+                                    Medical History
+                                </div>
+                            </td>
+                            <td>
+                                <div class="col s12 m4 input-field">
+                                    <textarea id="medicalH" name="medicalH" class="materialize-textarea" value="{{editHistory.medicalH}}"></textarea>
+                                    <label for="medicalH">Medical History</label>
+                                </div>
+                            </td>
+                            
+                        </tr>
+                          <tr>
+                            <td>
+                                <div class="col s12 m4 ">
+                                    Surgical History
+                                </div>
+                            </td>
+                            <td>
+                                 <div class="col s12 m4 input-field">
+                                    <textarea id="surgicalH" name="surgicalH" class="materialize-textarea" value="{{editHistory.surgicalH}}"></textarea>
+                                    <label for="surgicalH">Surgical History</label>
+                                </div>
+                            </td>
+                            
+                        </tr>
+                          <tr>
+                            <td>
+                                <div class="col s12 m4 ">
+                                    Family History
+                                </div>
+                            </td>
+                            <td>
+                                 <div class="col s12 m4 input-field">
+                                    <textarea id="familyH" name="familyH" class="materialize-textarea" value="{{editHistory.familyH}}"></textarea>
+                                    <label for="familyH">Family History</label>
+                                </div>
+                            </td>
+                            
+                        </tr>
+                          <tr>
+                            <td>
+                                <div class="col s12 m4 ">
+                                    Social History
+                                </div>
+                            </td>
+                            <td>
+                                 <div class="col s12 m4 input-field">
+                                    <textarea id="socialH" name ="socialH" class="materialize-textarea" value="{{editHistory.socialH}}"></textarea>
+                                    <label for="socialH">Social History</label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="col s12 m4 ">
+                                    Travel History
+                                </div>
+                            </td>
+                            <td>
+                                <div class="col s12 m4 input-field">
+                                    <textarea id="travelH" name="travelH" class="materialize-textarea" value="{{editHistory.travelH}}"></textarea>
+                                    <label for="travelH">Travel History</label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                            </td>
+                            <td>
+                                <div class="col s12 m8"></div>
+
+                                <div class="col s12 m4">
+                                {{#if editHistory}}
+                                    <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editHistory">Save
+                                {{else}}
+                                {{#unless userType}}
+                                    <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addHistory">Save
+                                {{/unless}}
+                                {{/if}}
+                                {{#unless userType}}
+                                    <i class="material-icons right">send</i>
+                                    </button>
+                                {{/unless}}
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+    </form>
+
+    {{!-- <div class="row">
+        <div class="col s12 m8"></div>
+
+        <div class="col s12 m4">
+            {{#if editIO}}
+            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editIO">Save
+            {{else}}
+            {{#unless userType}}
+            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addIO">Save
+            {{/unless}}
+            {{/if}}
+            {{#unless userType}}
+                <i class="material-icons right">send</i>
+            </button>
+            {{/unless}}
+        </div>
+    </div> --}}
+</div>
+
+<script
+		src="https://code.jquery.com/jquery-3.3.1.min.js"
+		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+		crossorigin="anonymous">
+</script>
+
+<script>
+
+    $(document).ready(() => {
+        $('.tabs').tabs();
+    })
+/*
+    document.addEventListener('DOMContentLoaded', () => {
+        //IO
+        const dateIO = document.querySelector('#dateIO');
+        const timeIO = document.querySelector('#timeIO');
+        const foodportion = document.querySelector('#foodportion');
+
+        //Enteral
+        const dateenteral = document.querySelector('#dateenteral');
+        const timeenteral = document.querySelector('#timeenteral');
+        const enteralfeed = document.querySelector('#enteralfeed');
+        const formula = document.querySelector('#formula');
+
+        //IV
+        const dateiv = document.querySelector('#dateiv');
+        const timeiv = document.querySelector('#timeiv');
+        const coninf = document.querySelector('#coninf');
+
+        //Output
+        const dateoutput = document.querySelector('#dateoutput');
+        const timeoutput = document.querySelector('#timeoutput');
+
+        //IO Instances
+         M.Datepicker.init(dateIO, {
+            maxDate: new Date(),
+            format: 'dd/mm/yyyy',
+            disableWeekends: true
+        });
+        M.Timepicker.init(timeIO, {
+            twelveHour: false,
+            showClearBtn: true
+        });
+
+        M.FormSelect.init(foodportion, {
+            
+        })
+       
+
+        //Enteral Instances
+        M.Datepicker.init(dateenteral, {
+            maxDate: new Date(),
+            format: 'dd/mm/yyyy',
+            disableWeekends: true
+        });
+        M.Timepicker.init(timeenteral, {
+            twelveHour: false,
+            showClearBtn: true
+        });
+
+        M.FormSelect.init(enteralfeed, {
+            
+        })
+        
+        M.FormSelect.init(formula, {
+            
+        })
+
+        //IV Instances
+        M.Datepicker.init(dateiv, {
+            maxDate: new Date(),
+            format: 'dd/mm/yyyy',
+            disableWeekends: true
+        });
+        M.Timepicker.init(timeiv, {
+            twelveHour: false,
+            showClearBtn: true
+        });
+
+        M.FormSelect.init(coninf, {
+            
+        })       
+
+        //Output Instances
+        M.Datepicker.init(dateoutput, {
+            maxDate: new Date(),
+            format: 'dd/mm/yyyy',
+            disableWeekends: true
+        });
+
+        M.Timepicker.init(timeoutput, {
+            twelveHour: false,
+            showClearBtn: true
+        }); **/
+                
+    })  
+
+ </script>

@@ -831,21 +831,39 @@ router.put('/edit-braden/:bradenID', ensureAuthenticated, ensureAuthorised, (req
 	});
 	res.redirect('/master/braden');
 })
-//Open History Taking
+
+//another history
+// Open HistoryTaking page
+// router.get('/HistoryTaking', ensureAuthenticated, (req, res) => {
+// 	StudentHistory.find({user: req.user.id, patientID: req.session.patient.patientID})
+// 	.then(newHistory => {
+// 		MasterHistory.findOne().then(newMasterHistory => {
+// 			res.render('HistoryTaking/student/add_HistoryTaking', {
+// 				newMasterHistory: newMasterHistory,
+// 				newHistory: newHistory,
+// 				patient: req.session.patient,
+// 				showMenu: true
+// 			});
+// 		});
+// 	})
+// })
+// Open HistoryTakng page
 router.get('/HistoryTaking', ensureAuthenticated, ensureAuthorised, (req, res) => {
-	MasterFall.find({ patientID: req.session.patient.patientID }).then(newFall => {	
-	res.render('partials/master/add/add_HistoryTaking', {
-		newFall: newFall,
-		patient: req.session.patient,
-		showMenu: true
+	MasterHistory.findOne({ historyId: req.params.historyId})
+	.then(newHistory => {
+		res.render('HistoryTaking/master/add_HistoryTaking', {
+			newHistory: newHistory,
+			patient: req.session.patient,
+			showMenu: true
 		});
 	})
 })
-//add history Taking
-router.post('/HistoryTaking', ensureAuthenticated, ensureAuthorised, (req, res) => {
+//Add HistoryTaking
+router.post('/add-history', ensureAuthenticated, ensureAuthorised, (req, res) => {
+	historyId = (new standardID('AAA0000')).generate();
 	new MasterHistory({
+		user: req.user.id,
 		patientID: req.session.patient.patientID,
-		userType: req.user.userType,
 		chiefComp: req.body.chiefComp,
 		historyPresent: req.body.historyPresent,
 		allergy: req.body.allergy,
@@ -856,9 +874,108 @@ router.post('/HistoryTaking', ensureAuthenticated, ensureAuthorised, (req, res) 
 		travelH: req.body.travelH,
 		historyId: req.body.historyId
 	}).save();
-
-	res.redirect('/master/HistoryTaking');
+	res.redirect('/master/HistoryTaking');//PROBLEM(saved but no output)
 })
+
+// Single info of HistoryTaking by ID
+// router.get('/add-history/:historyId', ensureAuthenticated, ensureAuthorised, (req, res) => {
+// 	MasterHistory.find({ patientID: req.session.patient.patientID}).then(newHistory => {
+// 		MasterHistory.findOne({ historyId: req.params.historyId}).then(editHistory => {
+// 			res.render('HistoryTaking/master/add_HistoryTaking', {
+// 				newHistory: newHistory,
+// 				editHistory: editHistory,
+// 				patient: req.session.patient,
+// 				showMenu: true
+// 			});
+// 		})
+// 	})
+// })
+
+// editHistory
+// router.put('/edit-history/:historyId', ensureAuthenticated, ensureAuthorised, (req,res) => {
+
+// 	MasterHistory.findOne({ historyId: req.params.historyId}).then(editHistory => {
+// 		editHistory.chiefComp = req.body.chiefComp,
+// 		editHistory.historyPresent = req.body.chiefComp,
+// 		editHistory.allergy = req.body.allergy,
+// 		editHistory.medicalH = req.body.medicalH,
+// 		editHistory.surgicalH = req.body.surgicalH,
+// 		editHistory.familyH = req.body.familyH,
+// 		editHistory.socialH = req.body.socialH,
+// 		editHistory.travelH = req.body.travelH
+
+// 		editHistory.save();
+// 	});
+// 	res.redirect("/master/edit-history");
+// })
+//HAVENT UPDATE HISTORY
+router.get('/edit-history/:historyId', ensureAuthenticated, (req, res) => {
+	
+	MasterHistory.findOne({
+		patientID: req.params.patientID		// gets current patient
+	})
+	.then(retrievedPatient => {
+		if(JSON.stringify(retrievedPatient.user._id) === JSON.stringify(req.user.id)) {
+			NursingAssessmentModel.findById(retrievedPatient.nursingAssessmentID,{
+				// new way of calling method
+			}).then(assessment => {
+				//let toaster = new Toaster('Retrieving nursing assessment record');
+				req.session.assessment = assessment; // save to session for saving updated info
+				res.render('master/HistoryTaking', {
+					assessment: assessment,
+					patient: retrievedPatient,
+					user: req.user,
+					showMenu: true
+				});
+			});
+		}else {
+			console.log('User that created record is different from this user');
+			//alertMessage.flashMessage(res, 'User that created record is different from current user', 'fas fa-exclamation',
+			// true);
+			toaster.setErrorMessage(' ', 'User that created record is different from this user');
+			res.redirect('/master/list-patients');
+		}
+	});
+});
+
+
+// saves edited/updated History form
+router.put('/edit-history/:historyId/:patientID/:nursingAssessmentID', ensureAuthenticated, (req, res) => {
+	console.log('Assessment id: ' + req.session.assessment._id);
+	
+	// Todo: check authorised user
+	MasterHistory.findByIdAndUpdate(
+		// the id of the item to find
+		req.params.nursingAssessmentID,
+		req.body, // will default all boolean radio buttons to false even if no selection is made
+		{new: true},
+		// the callback function
+		(err, assessment) => {
+			// Handle any possible database errors
+			if (err) {
+				return res.status(500).send(err);
+			}
+			//alertMessage.flashMessage(res, 'Nursing assessment updated', 'far fa-thumbs-up', true);
+			toaster.setSuccessMessage(' ', 'History Taking Updated');
+			res.render('master/HistoryTaking', {
+				assessment: assessment,
+				patient: req.session.patient,
+				user: req.user,
+				toaster,
+				showMenu: true
+			});
+			/*if (req.user.userType === 'staff'){
+			
+			} else {
+				res.redirect('/student/list-patients');
+			}*/
+			
+		}
+	);
+});
+
+//END HISTORY
+
 
 //open fall page
 router.get('/fall', ensureAuthenticated, ensureAuthorised, (req, res) => {

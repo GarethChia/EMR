@@ -6,7 +6,7 @@ const NursingAssessmentModel = require('./NursingAssessmentModel');
 
 
 // Create Schema
-const MasterHistorySchema = new Schema({
+const StudentHistorySchema = new Schema({
 	patientID:  {type: String, require: true},
 	chiefComp: {type: String, default: ''},
 	historyPresent:  {type: String, default: ''},
@@ -14,7 +14,7 @@ const MasterHistorySchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: 'emr-users' 	// collection name in mongodb
     },
-    //this is 
+    //this is ??
 	nursingAssessmentID: {
 		type: Schema.Types.ObjectId,
 		ref: 'nursing-assessment'
@@ -29,4 +29,4 @@ const MasterHistorySchema = new Schema({
 	
 });
 
-mongoose.model('masterHistoryTrack', MasterHistorySchema, 'master-historyTrack');
+mongoose.model('studentHistoryTrack', StudentHistorySchema, 'student-historyTrack');

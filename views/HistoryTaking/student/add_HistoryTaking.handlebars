@@ -45,19 +45,22 @@
                 </tr>
             </thead>
             <tbody>
-                {{#if newIO}}
-                    {{#each newIO}}
+                {{#if newHistory}}
+                    {{#each newHistory}}
                     <tr style="height: 60px">
-                        {{!-- {{#unless ../userType}}
-                        <td><a href="/master/io/{{ioID}}">{{formatDatetime datetime}}</a></td>
+                        {{#unless ../userType}}
+                        <td><a href="/master/HistoryTaking/{{historyId}}">{{historyId}}</a></td>
                         {{else}}
-                        <td><a href="/student/io/{{../recordID}}/{{ioID}}">{{formatDatetime datetime}}</a></td>
-                        {{/unless}} --}}
-                        <td>{{foodtype}}</td>
-                        <td>{{foodportion}}</td>
-                        <td>{{fluidtype}}</td>
-                        <td>{{fluidportion}}</td>
-                        <td>{{patientID}}</td>
+                        <td><a href="/student/io/{{../recordID}}/{{historyId}}">{{historyId}}</a></td>
+                        {{/unless}}
+                       <td>{{chiefComp}}</td>
+                        <td>{{historyPresent}}</td>
+                        <td>{{allergy}}</td>
+                        <td>{{medicalH}}</td>
+                        <td>{{surgicalH}}</td>
+                        <td>{{familyH}}</td>
+                        <td>{{socialH}}</td>
+                        <td>{{travelH}}</td>
                         {{#unless ../userType}}
                         <td style="width: 65px"> <!-- the tr we're trying to get -->
                             <form action="/master/del-io/{{ioID}}?_method=DELETE" method="post" id="delete-form">
@@ -82,15 +85,15 @@
         <div class="col s12 m8"></div>
     </div>
 
-    {{#if editIO}}
+    {{#if editHistory}}
     {{#unless userType}}
-    <form action="/master/edit-io/{{editIO.ioID}}?_method=PUT" method="POST" id="editIO">
+    <form action="/student/edit-history/{{editIO.ioID}}?_method=PUT" method="POST" id="editHistory">
     {{else}}    
-    <form action="/student/edit-io/{{recordID}}/{{editIO.ioID}}?_method=PUT" method="POST" id="editIO">
+    <form action="/student/edit-history/{{recordID}}/{{editIO.ioID}}?_method=PUT" method="POST" id="editHistory">
     {{/unless}}
     <input type="hidden" name="_method" value="PUT">
     {{else}}
-    <form action="/master/HistoryTaking" method="POST" id="addHistory">
+    <form action="/student/add-history" method="POST" id="addHistory">
     {{/if}}
         <div class="card purple lighten-5">
             <div class="card-content">
@@ -106,7 +109,7 @@
                             </td>
                             <td>
                                 <div class="col s12 m4 input-field">
-                                    <textarea id="chiefComp" name="chiefComp" class="materialize-textarea"></textarea>
+                                    <textarea id="chiefComp" name="chiefComp" class="materialize-textarea" value="{{editHistory.chiefComp}}"></textarea>
                                     <label for="chiefComp">Chief Complains</label>
                                 </div>
                             </td>
@@ -119,7 +122,7 @@
                             </td>
                             <td>
                                 <div class="col s12 m4 input-field">
-                                    <textarea id="historyPresent"name="historyPresent" class="materialize-textarea"></textarea>
+                                    <textarea id="historyPresent"name="historyPresent" class="materialize-textarea" value="{{editHistory.historyPresent}}"></textarea>
                                     <label for="historyPresent">History Present Illness</label>
                                 </div>
                             </td>
@@ -133,7 +136,7 @@
                             </td>
                             <td>
                                 <div class="col s12 m4 input-field">
-                                    <textarea id="allergy" name="allergy" class="materialize-textarea"></textarea>
+                                    <textarea id="allergy" name="allergy" class="materialize-textarea" value="{{editHistory.allergy}}"></textarea>
                                     <label for="allergy">Allergy Status</label>
                                 </div>
                             </td>
@@ -146,7 +149,7 @@
                             </td>
                             <td>
                                 <div class="col s12 m4 input-field">
-                                    <textarea id="medicalH" name="medicalH" class="materialize-textarea"></textarea>
+                                    <textarea id="medicalH" name="medicalH" class="materialize-textarea" value="{{editHistory.medicalH}}"></textarea>
                                     <label for="medicalH">Medical History</label>
                                 </div>
                             </td>
@@ -160,7 +163,7 @@
                             </td>
                             <td>
                                  <div class="col s12 m4 input-field">
-                                    <textarea id="surgicalH" name="surgicalH" class="materialize-textarea"></textarea>
+                                    <textarea id="surgicalH" name="surgicalH" class="materialize-textarea" value="{{editHistory.surgicalH}}"></textarea>
                                     <label for="surgicalH">Surgical History</label>
                                 </div>
                             </td>
@@ -174,7 +177,7 @@
                             </td>
                             <td>
                                  <div class="col s12 m4 input-field">
-                                    <textarea id="familyH" name="familyH" class="materialize-textarea"></textarea>
+                                    <textarea id="familyH" name="familyH" class="materialize-textarea" value="{{editHistory.familyH}}"></textarea>
                                     <label for="familyH">Family History</label>
                                 </div>
                             </td>
@@ -188,7 +191,7 @@
                             </td>
                             <td>
                                  <div class="col s12 m4 input-field">
-                                    <textarea id="socialH" name ="socialH" class="materialize-textarea"></textarea>
+                                    <textarea id="socialH" name ="socialH" class="materialize-textarea" value="{{editHistory.socialH}}"></textarea>
                                     <label for="socialH">Social History</label>
                                 </div>
                             </td>
@@ -201,7 +204,7 @@
                             </td>
                             <td>
                                 <div class="col s12 m4 input-field">
-                                    <textarea id="travelH" name="travelH" class="materialize-textarea"></textarea>
+                                    <textarea id="travelH" name="travelH" class="materialize-textarea" value="{{editHistory.travelH}}"></textarea>
                                     <label for="travelH">Travel History</label>
                                 </div>
                             </td>
@@ -213,8 +216,8 @@
                                 <div class="col s12 m8"></div>
 
                                 <div class="col s12 m4">
-                                {{#if editIO}}
-                                    <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editIO">Save
+                                {{#if editHistory}}
+                                    <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editHistory">Save
                                 {{else}}
                                 {{#unless userType}}
                                     <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addHistory">Save
