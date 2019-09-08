@@ -49,9 +49,9 @@
                     {{#each newHistory}}
                     <tr style="height: 60px">
                         {{#unless ../userType}}
-                        <td><a href="/master/HistoryTaking/{{historyId}}">{{historyId}}</a></td>
+                        <td><a href="/student/HistoryTaking/{{historyId}}">{{historyId}}</a></td>
                         {{else}}
-                        <td><a href="/student/io/{{../recordID}}/{{historyId}}">{{historyId}}</a></td>
+                        <td><a href="/master/HistoryTaking/{{../recordID}}/{{historyId}}">{{historyId}}</a></td>
                         {{/unless}}
                        <td>{{chiefComp}}</td>
                         <td>{{historyPresent}}</td>
@@ -63,7 +63,7 @@
                         <td>{{travelH}}</td>
                         {{#unless ../userType}}
                         <td style="width: 65px"> <!-- the tr we're trying to get -->
-                            <form action="/master/del-io/{{ioID}}?_method=DELETE" method="post" id="delete-form">
+                            <form action="/student/del-io/{{historyId}}?_method=DELETE" method="post" id="delete-form">
                                 <input type="hidden" name="_method" value="DELETE">
                             <button type="submit" class="btn red darken-3">
                                  <i class="material-icons">delete
@@ -87,9 +87,9 @@
 
     {{#if editHistory}}
     {{#unless userType}}
-    <form action="/student/edit-history/{{editIO.ioID}}?_method=PUT" method="POST" id="editHistory">
+    <form action="/student/edit-history/{{editHistory.historyId}}?_method=PUT" method="POST" id="editHistory">
     {{else}}    
-    <form action="/student/edit-history/{{recordID}}/{{editIO.ioID}}?_method=PUT" method="POST" id="editHistory">
+    <form action="/master/edit-history/{{recordID}}/{{editHistory.historyId}}?_method=PUT" method="POST" id="editHistory">
     {{/unless}}
     <input type="hidden" name="_method" value="PUT">
     {{else}}
@@ -263,6 +263,7 @@
     $(document).ready(() => {
         $('.tabs').tabs();
     })
+    
 /*
     document.addEventListener('DOMContentLoaded', () => {
         //IO
@@ -348,5 +349,6 @@
         }); **/
                 
     })  
+
 
  </script>
