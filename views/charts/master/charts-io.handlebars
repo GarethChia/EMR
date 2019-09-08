@@ -585,9 +585,9 @@
     <form action="/student/edit-enteral/{{recordID}}/{{editenteral.enteralID}}?_method=PUT" method="POST" id="editenteral">
     {{/unless}}
     <input type="hidden" name="_method" value="PUT">
-    <form action="/master/add-enteral" method="POST" id="addenteral">
-    {{else}}
     <form action="/student/add-enteral" method="POST" id="addenteral">
+    {{else}}
+    <form action="/master/add-enteral" method="POST" id="addenteral">
     {{/if}}
         <div class="card purple lighten-5">
             <div class="card-content">

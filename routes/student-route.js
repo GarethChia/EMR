@@ -1661,16 +1661,16 @@ router.put('/edit-fall/:recordID/:fallID', ensureAuthenticated, (req,res) => {
 
 // mdp page
 router.get('/mdp', ensureAuthenticated, (req, res) => {
-	StudentMDP.find({user: req.user.id, patientID: req.session.patient.patientID})
-	.then(newMDP => {
-		MasterMDP.findOne().then(newMasterMDP => {
+	StudentMDP.find({user: req.user.id, patientID: req.session.patient.patientID}).sort({'datetime':1})
+	.then(newMDP => { // mdp that they have created
+		//MasterMDP.findOne({patientID: req.session.patient.patientID}).then(newMasterMDP => {
 			res.render('mdp-notes/student/mdp', {
-				newMasterMDP: newMasterMDP,
+				//newMasterMDP: newMasterMDP,
 				newMDP: newMDP,
 				patient: req.session.patient,
 				showMenu: true
 			});
-		});
+		//});
 	})
 })
 // add MDP page

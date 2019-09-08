@@ -1875,8 +1875,8 @@ router.delete('/doctor/orders/del-order/:orderID', ensureAuthenticated, ensureAu
 
 // MDP page
 router.get('/mdp', ensureAuthenticated, ensureAuthorised, (req, res) => {
-	MasterMDP.find({user: req.user.id, patientID: req.session.patient.patientID})
-	.then(newMDP => {
+	MasterMDP.find({user: req.user.id, patientID: req.session.patient.patientID}).sort({'datetime':1})
+	.then(newMDP => { // mdp that they have created
 		res.render('mdp-notes/master/mdp', {
 			newMDP: newMDP,
 			patient: req.session.patient,

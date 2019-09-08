@@ -10,10 +10,10 @@ const MasterMDPSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: 'emr-users' 	// collection name in mongodb
     },
-    nursingAssessmentID: {
+    /*nursingAssessmentID: {
       type: Schema.Types.ObjectId,
       ref: 'nursing-assessment'
-    },
+    },*/
     mdpID: {type: String, default: ''},
     date:	{type: String, default:''},
     time:		 {type: String, default: ''},
