@@ -1523,7 +1523,7 @@ router.get('/HistoryTaking', ensureAuthenticated, (req, res) => {
 			}
 			else
 			{
-				console.log("Edit MDP is not empty: "+editHistory);
+				console.log("History Taking is not empty: "+editHistory);
 				res.render('HistoryTaking/student/add_HistoryTaking', {
 					newHistory: newHistory,
 					userType: userType,
@@ -1536,7 +1536,8 @@ router.get('/HistoryTaking', ensureAuthenticated, (req, res) => {
 			
 		})	
 	})
-})
+	})
+
 //Add HistoryTaking
 router.post('/add-history', ensureAuthenticated, (req, res) => {
 	historyId = (new standardID('AAA0000')).generate();

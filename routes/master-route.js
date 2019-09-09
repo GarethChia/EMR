@@ -837,11 +837,29 @@ router.put('/edit-braden/:bradenID', ensureAuthenticated, ensureAuthorised, (req
 router.get('/HistoryTaking', ensureAuthenticated, ensureAuthorised, (req, res) => {
 	MasterHistory.find({ user: req.user.id, patientID: req.session.patient.patientID})
 	.then(newHistory => {
-		res.render('HistoryTaking/master/add_HistoryTaking', {
-			newHistory: newHistory,
-			patient: req.session.patient,
-			showMenu: true
-		});
+		MasterHistory.findOne({ user: req.user.id, patientID: req.session.patient.patientID})
+	.then(editHistory => {
+		if(editHistory == null){
+			res.render('HistoryTaking/master/add_HistoryTaking', {
+				newHistory: newHistory,
+				editHistory: editHistory,
+				patient: req.session.patient,
+				showMenu: true
+			});
+		}
+		else
+		{
+			console.log("History is not empty: "+editHistory);
+			res.render('HistoryTaking/master/add_HistoryTaking', {
+				newHistory: newHistory,
+				editHistory: editHistory,
+				patient: req.session.patient,
+				showMenu: true
+			});
+		}
+		
+	 })
+		
 	})
 })
 //Add HistoryTaking
