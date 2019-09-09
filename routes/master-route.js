@@ -836,11 +836,16 @@ router.put('/edit-braden/:bradenID', ensureAuthenticated, ensureAuthorised, (req
 router.get('/HistoryTaking', ensureAuthenticated, ensureAuthorised, (req, res) => {
 	MasterHistory.find({ user: req.user.id, patientID: req.session.patient.patientID})
 	.then(newHistory => {
+		MasterHistory.findOne({ user: req.user.id, patientID: req.session.patient.patientID})
+	.then(editHistory => {
 		res.render('HistoryTaking/master/add_HistoryTaking', {
 			newHistory: newHistory,
+			editHistory: editHistory,
 			patient: req.session.patient,
 			showMenu: true
 		});
+	 })
+		
 	})
 })
 //Add HistoryTaking

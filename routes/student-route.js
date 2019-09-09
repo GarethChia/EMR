@@ -1536,6 +1536,7 @@ router.get('/HistoryTaking', ensureAuthenticated, (req, res) => {
 			
 		})	
 	})
+	})
 })
 //Add HistoryTaking
 router.post('/add-history', ensureAuthenticated, (req, res) => {
