@@ -1685,15 +1685,17 @@ router.get('/mdp', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
 	StudentMDP.find({user: req.user.id, patientID: req.session.patient.patientID}).sort({'datetime':1})
 	.then(newMDP => { // mdp that they have created
-		//MasterMDP.findOne({patientID: req.session.patient.patientID}).then(newMasterMDP => {
+		console.log("student mdp: "+ newMDP);
+		MasterMDP.find({patientID: req.session.patient.patientID}).then(newMasterMDP => {
+			console.log("master mdp: "+ newMasterMDP);
 			res.render('mdp-notes/student/mdp', {
-				//newMasterMDP: newMasterMDP,
+				newMasterMDP: newMasterMDP,
 				newMDP: newMDP,
 				userType: userType,
 				patient: req.session.patient,
 				showMenu: true
 			});
-		//});
+		});
 	})
 })
 // add MDP page
@@ -1703,6 +1705,7 @@ router.post('/add-mdp', ensureAuthenticated,(req, res) => {
 	new StudentMDP({
 		patientID: req.session.patient.patientID,
 		user: req.user.id,
+		createdBy: req.user.firstName,
 		mdpID: mdpID,
 		date: moment(req.body.dateMDP, 'DD/MM/YYYY').format('YYYY-MM-DD'),
 		time: req.body.timeMDP,

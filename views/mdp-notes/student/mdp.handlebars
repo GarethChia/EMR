@@ -1,6 +1,6 @@
 <br/>
 <div id="io">
-    <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">MDP Notes</div>
+    <div class="card-panel purple lighten-1 white-text" style="padding:5px; font-size: 20px">My MDP Notes</div>
     <div style="overflow-x:auto; max-height: 16em;">
         <table id="ioRecords" class="hover order-column">
             <thead>
@@ -9,20 +9,14 @@
                     <th>Health Provider</th>
                     <th>Progress Notes</th>
                     <th>User</th>
-                    {{#unless userType}}
                     <th>Delete</th>
-                    {{/unless}}
                 </tr>
             </thead>
             <tbody>
                 {{#if newMDP}}
                     {{#each newMDP}}
                     <tr style="height: 60px">
-                        {{#unless ../userType}}
                         <td><a href="/student/mdp/{{mdpID}}">{{formatDatetime datetime}}</a></td>
-                        {{else}}
-                        <td><a href="/student/io/{{../recordID}}/{{mdpID}}">{{formatDatetime datetime}}</a></td>
-                        {{/unless}}
                         <td>{{healthProvider}}</td>
                         <td>{{progressNotes}}</td>
                         <td>{{selectUser}}</td>
@@ -40,12 +34,50 @@
                     </tr>
                     {{/each}}
                 {{else}}
-                <p id="noRecord">You have not created any MDP notes yet</p>
+                <tr style="height: 60px">
+                    <td colspan="5" class="center">
+                        <p id="noRecord">You have not created any MDP notes yet</p>
+                    </td>
+                </tr>
                 {{/if}}
             </tbody>
         </table>
     </div>
     <br>
+    <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">Master MDP Notes</div>
+    <div style="overflow-x:auto; max-height: 16em;">
+        <table id="ioRecords" class="hover order-column">
+            <thead>
+                <tr>
+                    <th>Datetime</th>
+                    <th>Health Provider</th>
+                    <th>Progress Notes</th>
+                    <th>User</th>
+                    <th>By</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#if newMasterMDP}}
+                    {{#each newMasterMDP}}
+                    <tr style="height: 60px">
+                        <td>{{formatDatetime datetime}}</td>
+                        <td>{{healthProvider}}</td>
+                        <td>{{progressNotes}}</td>
+                        <td>{{selectUser}}</td>
+                        <td>{{createdBy}}</td>
+                    </tr>
+                    {{/each}}
+                {{else}}
+                <tr style="height: 60px">
+                    <td colspan="5" class="center">
+                        <p id="noRecord">Masters have not created any MDP notes yet</p>
+                    </td>
+                </tr>
+                {{/if}}
+            </tbody>
+        </table>
+    </div>
+    <br/>
 
     <div class="row">
         <div class="col s12 m8"></div>

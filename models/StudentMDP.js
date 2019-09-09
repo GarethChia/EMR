@@ -10,6 +10,7 @@ const StudentMDPSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: 'emr-users' 	// collection name in mongodb
     },
+    createdBy: {type: String},
     /*nursingAssessmentID: {
       type: Schema.Types.ObjectId,
       ref: 'nursing-assessment'

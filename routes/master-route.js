@@ -19,6 +19,7 @@ const DoctorOrders = mongoose.model('doctorsOrders');
 //HistoryTaking model
 const MasterHistory = mongoose.model('masterHistoryTrack');
 const MasterMDP = mongoose.model('masterMDP');
+const StudentMDP = mongoose.model('studentMDP');
 const moment = require('moment');
 const csrf = require('csurf');
 const alertMessage = require('../helpers/messenger');
@@ -1877,11 +1878,21 @@ router.delete('/doctor/orders/del-order/:orderID', ensureAuthenticated, ensureAu
 router.get('/mdp', ensureAuthenticated, ensureAuthorised, (req, res) => {
 	MasterMDP.find({user: req.user.id, patientID: req.session.patient.patientID}).sort({'datetime':1})
 	.then(newMDP => { // mdp that they have created
-		res.render('mdp-notes/master/mdp', {
-			newMDP: newMDP,
-			patient: req.session.patient,
-			showMenu: true
-		});
+		//collection.findAll({a: {'$ne':b }}, function(err, cursor) {});
+		MasterMDP.find({user:{'$ne':req.user.id} , patientID: req.session.patient.patientID}).sort({'datetime':1})
+		.then(newOtherMasterMDP => { 
+			StudentMDP.find({patientID: req.session.patient.patientID}).sort({'datetime':1})
+			.then(newOtherStudentMDP => { 
+				res.render('mdp-notes/master/mdp', {
+					newMDP: newMDP,
+					newOtherMasterMDP: newOtherMasterMDP,
+					newOtherStudentMDP: newOtherStudentMDP,
+					patient: req.session.patient,
+					showMenu: true
+				});
+			})
+		})
+		
 	})
 })
 // add MDP page
@@ -1893,6 +1904,7 @@ router.post('/add-mdp', ensureAuthenticated, ensureAuthorised, (req, res) => {
 		user: req.user.id,
 		//nursingAssessmentID: patient.nursingAssessmentID,
 		mdpID: mdpID,
+		createdBy: req.user.firstName,
 		date: moment(req.body.dateMDP, 'DD/MM/YYYY').format('YYYY-MM-DD'),
 		time: req.body.timeMDP,
 		datetime: datetime,
