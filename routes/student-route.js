@@ -1663,12 +1663,14 @@ router.put('/edit-fall/:recordID/:fallID', ensureAuthenticated, (req,res) => {
 
 // mdp page
 router.get('/mdp', ensureAuthenticated, (req, res) => {
+	userType = req.user.userType == 'student';
 	StudentMDP.find({user: req.user.id, patientID: req.session.patient.patientID}).sort({'datetime':1})
 	.then(newMDP => { // mdp that they have created
 		//MasterMDP.findOne({patientID: req.session.patient.patientID}).then(newMasterMDP => {
 			res.render('mdp-notes/student/mdp', {
 				//newMasterMDP: newMasterMDP,
 				newMDP: newMDP,
+				userType: userType,
 				patient: req.session.patient,
 				showMenu: true
 			});
