@@ -29,7 +29,7 @@
     <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">History Taking</div>
     <div style="overflow-x:auto; max-height: 16em;">
         <table id="ioRecords" class="hover order-column">
-            <thead>
+            {{!-- <thead>
                 <tr>
                     <th>Chief Complains</th>
                     <th>History of Present Illness</th>
@@ -39,15 +39,15 @@
                     <th>Family History</th>
                     <th>Social History</th>
                     <th>Travel History</th>
-                    {{!-- {{#unless userType}}
+                  {{#unless userType}}
                     <th>Delete</th>
-                    {{/unless}} --}}
+                    {{/unless}} 
                 </tr>
-            </thead>
+            </thead> --}}
             <tbody>
                 {{#if newHistory}}
                     {{#each newHistory}}
-                    <tr style="height: 60px">
+                    {{!-- <tr style="height: 60px">
                         {{#unless ../userType}}
                         <td><a href="/student/HistoryTaking/{{historyId}}">{{historyId}}</a></td>
                         {{else}}
@@ -71,8 +71,8 @@
                             </form>
                         </td>
                         {{/unless}}
-                    </tr>
-                    {{/each}}
+                    </tr>--}}
+                    {{/each}} 
                 {{else}}
                 <p id="noRecord">You have not created any History Taking yet</p>
                 {{/if}}
@@ -86,11 +86,11 @@
     </div>
 
     {{#if editHistory}}
-    {{#unless userType}}
+    {{!-- {{#unless userType}} --}}
     <form action="/student/edit-history/{{editHistory.historyId}}?_method=PUT" method="POST" id="editHistory">
-    {{else}}    
-    <form action="/master/edit-history/{{recordID}}/{{editHistory.historyId}}?_method=PUT" method="POST" id="editHistory">
-    {{/unless}}
+    {{!-- {{else}}     --}}
+    {{!-- <form action="/master/edit-history/{{recordID}}/{{editHistory.historyId}}?_method=PUT" method="POST" id="editHistory"> --}}
+    {{!-- {{/unless}} --}}
     <input type="hidden" name="_method" value="PUT">
     {{else}}
     <form action="/student/add-history" method="POST" id="addHistory">
@@ -163,7 +163,7 @@
                             </td>
                             <td>
                                  <div class="col s12 m4 input-field">
-                                    <textarea id="surgicalH" name="surgicalH" class="materialize-textarea" value=""><{{editHistory.surgicalH}}/textarea>
+                                    <textarea id="surgicalH" name="surgicalH" class="materialize-textarea" value="">{{editHistory.surgicalH}}</textarea>
                                     <label for="surgicalH">Surgical History</label>
                                 </div>
                             </td>
@@ -217,7 +217,7 @@
 
                                 <div class="col s12 m4">
                                 {{#if editHistory}}
-                                    <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editHistory">Save
+                                    <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editHistory">Save Changes
                                 {{else}}
                                 
                                     <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addHistory">Save

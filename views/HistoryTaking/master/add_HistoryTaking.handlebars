@@ -29,7 +29,7 @@
     <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">History Taking</div>
     <div style="overflow-x:auto; max-height: 16em;">
         <table id="ioRecords" class="hover order-column">
-            <thead>
+           {{!-- <thead>
                 <tr>
                     <th>Patient Id</th>
                     <th>Chief Complains</th>
@@ -40,15 +40,15 @@
                     <th>Family History</th>
                     <th>Social History</th>
                     <th>Travel History</th>
-                    {{!-- {{#unless userType}}
+                     {{#unless userType}}
                     <th>Delete</th>
-                    {{/unless}} --}}
+                    {{/unless}} 
                 </tr>
-            </thead>
+            </thead>--}}
             <tbody>
                 {{#if newHistory}}
                     {{#each newHistory}}
-                    <tr style="height: 60px">
+                    {{!--<tr style="height: 60px">
                         {{#unless ../userType}}
                         <td><a href="/master/HistoryTaking/{{historyId}}">{{historyId}}</a></td>
                         {{else}}
@@ -72,7 +72,7 @@
                             </form>
                         </td>
                         {{/unless}}
-                    </tr>
+                    </tr>--}}
                     {{/each}}
                 {{else}}
                 <p id="noRecord">You have not created any History Taking yet</p>
@@ -110,7 +110,7 @@
                             </td>
                             <td>
                                 <div class="col s12 m4 input-field">
-                                    <textarea id="chiefComp" name="chiefComp" class="materialize-textarea" value="{{ editHistory.chiefComp }}"></textarea>
+                                    <textarea id="chiefComp" name="chiefComp" class="materialize-textarea" value="">{{ editHistory.chiefComp }}</textarea>
                                     <label for="chiefComp">Chief Complains</label>
                                 </div>
                             </td>
@@ -123,7 +123,7 @@
                             </td>
                             <td>
                                 <div class="col s12 m4 input-field">
-                                    <textarea id="historyPresent"name="historyPresent" class="materialize-textarea" value="{{ editHistory.historyPresent }}"></textarea>
+                                    <textarea id="historyPresent"name="historyPresent" class="materialize-textarea" value="">{{ editHistory.historyPresent }}</textarea>
                                     <label for="historyPresent">History Present Illness</label>
                                 </div>
                             </td>
@@ -137,7 +137,7 @@
                             </td>
                             <td>
                                 <div class="col s12 m4 input-field">
-                                    <textarea id="allergy" name="allergy" class="materialize-textarea" value="{{ editHistory.allergy }}"></textarea>
+                                    <textarea id="allergy" name="allergy" class="materialize-textarea" value="">{{ editHistory.allergy }}</textarea>
                                     <label for="allergy">Allergy Status</label>
                                 </div>
                             </td>
@@ -150,7 +150,7 @@
                             </td>
                             <td>
                                 <div class="col s12 m4 input-field">
-                                    <textarea id="medicalH" name="medicalH" class="materialize-textarea" value="{{ editHistory.medicalH }}"></textarea>
+                                    <textarea id="medicalH" name="medicalH" class="materialize-textarea" value="">{{ editHistory.medicalH }}</textarea>
                                     <label for="medicalH">Medical History</label>
                                 </div>
                             </td>
@@ -164,7 +164,7 @@
                             </td>
                             <td>
                                  <div class="col s12 m4 input-field">
-                                    <textarea id="surgicalH" name="surgicalH" class="materialize-textarea" value="{{ editHistory.surgicalH }}"></textarea>
+                                    <textarea id="surgicalH" name="surgicalH" class="materialize-textarea" value="">{{ editHistory.surgicalH }}</textarea>
                                     <label for="surgicalH">Surgical History</label>
                                 </div>
                             </td>
@@ -178,7 +178,7 @@
                             </td>
                             <td>
                                  <div class="col s12 m4 input-field">
-                                    <textarea id="familyH" name="familyH" class="materialize-textarea" value="{{ editHistory.familyH }}"></textarea>
+                                    <textarea id="familyH" name="familyH" class="materialize-textarea" value="">{{ editHistory.familyH }}</textarea>
                                     <label for="familyH">Family History</label>
                                 </div>
                             </td>
@@ -192,7 +192,7 @@
                             </td>
                             <td>
                                  <div class="col s12 m4 input-field">
-                                    <textarea id="socialH" name ="socialH" class="materialize-textarea" value="{{ editHistory.socialH }}"></textarea>
+                                    <textarea id="socialH" name ="socialH" class="materialize-textarea" value="">{{ editHistory.socialH }}</textarea>
                                     <label for="socialH">Social History</label>
                                 </div>
                             </td>
@@ -205,7 +205,7 @@
                             </td>
                             <td>
                                 <div class="col s12 m4 input-field">
-                                    <textarea id="travelH" name="travelH" class="materialize-textarea" value="{{editHistory.travelH}}"></textarea>
+                                    <textarea id="travelH" name="travelH" class="materialize-textarea" value="">{{editHistory.travelH}}</textarea>
                                     <label for="travelH">Travel History</label>
                                 </div>
                             </td>
