@@ -374,3 +374,6 @@
 		visibility: visible;
 	}
 }
+.select-dropdown{
+	overflow-y: auto !important;
+}

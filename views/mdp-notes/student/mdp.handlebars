@@ -27,7 +27,7 @@
                         <td>{{progressNotes}}</td>
                         <td>{{selectUser}}</td>
                         {{!-- <td>{{patientID}}</td> --}}
-                        {{#unless ../userType}}
+                        {{!-- {{#unless ../userType}} --}}
                         <td style="width: 65px"> <!-- the tr we're trying to get -->
                             <form action="/student/del-mdp/{{mdpID}}?_method=DELETE" method="post" id="delete-form">
                                 <input type="hidden" name="_method" value="DELETE">
@@ -36,7 +36,7 @@
                             </button>
                             </form>
                         </td>
-                        {{/unless}}
+                        {{!-- {{/unless}} --}}
                     </tr>
                     {{/each}}
                 {{else}}
@@ -111,14 +111,10 @@
             {{#if editMDP}}
             <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editMDP">Save
             {{else}}
-            {{#unless userType}}
             <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addMDP">Save
-            {{/unless}}
             {{/if}}
-            {{#unless userType}}
                 <i class="material-icons right">send</i>
             </button>
-            {{/unless}}
         </div>
     </div>
 </div>
