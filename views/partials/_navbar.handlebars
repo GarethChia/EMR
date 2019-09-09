@@ -49,12 +49,12 @@
 							</li>
 							<li>
 								{{#unless userType}}
-								<a href="/master/mdp">
+								<a class= "navmenu" href="/master/mdp">
 									MDP Notes
 									<i class="fas fa-notes-medical"></i>
 								</a>
 								{{else}}
-								<a href="/student/mdp">
+								<a class="navmenu" href="/student/mdp">
 									MDP Notes
 									<i class="fas fa-notes-medical"></i>
 								</a>
@@ -175,7 +175,7 @@
 							{{#unless userType}}
 							<li><a href="/master/HistoryTaking">History Taking</a></li>
 							{{else}}
-							<li><a href="/student/HistoryTaking">History Taking</a></li>
+							<li><a href="/student/HistoryTaking/{{recordID}}">History Taking</a></li>
 							{{/unless}}
 							<li><a href="#!">Care Plan</a></li> 
 							<li class="lighter-fonts"><a href="#!">Discharge Planning</a></li> 
@@ -223,6 +223,27 @@
 					</div>
 				</li>
 			</ul>
+		</li>
+		<li class="no-padding">
+			{{!-- <ul class="collapsible collapsible-accordian"> --}}
+				<li>
+					{{!-- <a class="collapsible-header">Doctor<i class="material-icons">arrow_drop_down</i></a>
+					<div class="collapsible-body"> --}}
+							{{#unless userType}}
+								<a class= "navmenu" href="/master/mdp">
+									MDP Notes
+									<i class="fas fa-notes-medical"></i>
+								</a>
+								{{else}}
+								<a class="navmenu" href="/student/mdp">
+									MDP Notes
+									<i class="fas fa-notes-medical"></i>
+								</a>
+							{{/unless}}
+					
+					{{!-- </div> --}}
+				</li>
+			{{!-- </ul> --}}
 		</li>
 	{{/if}}
 	{{!-- <li class="no-padding">
@@ -319,7 +340,7 @@
 	{{#unless userType}}
 	<li><a href="/master/HistoryTaking">History Taking</a></li>
 	{{else}}
-	<li><a href="/student/HistoryTaking">History Taking</a></li>
+	<li><a href="/student/HistoryTaking/{{recordID}}">History Taking</a></li>
 	{{/unless}}
 
 	<li><a href="#!">Care Plan</a></li>

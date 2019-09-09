@@ -49,7 +49,7 @@
                     {{#each newHistory}}
                     {{!-- <tr style="height: 60px">
                         {{#unless ../userType}}
-                        <td><a href="/student/HistoryTaking/{{historyId}}">{{historyId}}</a></td>
+                        <td><a href="/student/HistoryTaking/{{recordID}}/{{historyId}}">{{historyId}}</a></td>
                         {{else}}
                         <td><a href="/master/HistoryTaking/{{../recordID}}/{{historyId}}">{{historyId}}</a></td>
                         {{/unless}}
@@ -87,13 +87,13 @@
 
     {{#if editHistory}}
     {{!-- {{#unless userType}} --}}
-    <form action="/student/edit-history/{{editHistory.historyId}}?_method=PUT" method="POST" id="editHistory">
+    <form action="/student/edit-history/{{editHistory.patientID}}?_method=PUT" method="POST" id="editHistory">
     {{!-- {{else}}     --}}
     {{!-- <form action="/master/edit-history/{{recordID}}/{{editHistory.historyId}}?_method=PUT" method="POST" id="editHistory"> --}}
     {{!-- {{/unless}} --}}
     <input type="hidden" name="_method" value="PUT">
     {{else}}
-    <form action="/student/add-history" method="POST" id="addHistory">
+    <form action="/student/add-history/{{recordID}}" method="POST" id="addHistory">
     {{/if}}
         <div class="card purple lighten-5">
             <div class="card-content">

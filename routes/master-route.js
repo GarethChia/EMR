@@ -878,8 +878,10 @@ router.post('/add-history', ensureAuthenticated, ensureAuthorised, (req, res) =>
 		travelH: req.body.travelH,
 		historyId: historyId
 	}).save();
-	res.redirect('/master/HistoryTaking');//PROBLEM(saved but no output)
+		res.redirect('/master/HistoryTaking');
 })
+
+	
 //One HistoryTaking by ID
 router.get('/HistoryTaking/:historyId', ensureAuthenticated, ensureAuthorised, (req,res) => {
 	MasterHistory.find({ patientID: req.session.patient.patientID}).then(newHistory => {

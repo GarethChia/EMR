@@ -541,6 +541,7 @@ router.put('/save-customised-patient/:patientID', ensureAuthenticated, (req, res
 																	}).save();
 																})
 															}).then(newStudentPatient => {
+																
 																/*let alert = res.flashMessenger.success('New student patient record added');
 																 alert.titleIcon = 'far fa-thumbs-up';
 																 alert.canBeDismissed = true;
@@ -1506,15 +1507,16 @@ router.get('/fall/:recordID', ensureAuthenticated, (req, res) => {
 	})
 })
 // Open HistoryTakng page
-router.get('/HistoryTaking', ensureAuthenticated, (req, res) => {
+router.get('/HistoryTaking/:recordID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
-	StudentHistory.find({ user: req.user.id, patientID: req.session.patient.patientID})
+	StudentHistory.find({ user: req.user.id, patientID: req.params.recordID})
 	.then(newHistory => {
-		StudentHistory.findOne({ patientID: req.session.patient.patientID})
+		StudentHistory.findOne({ patientID: req.params.recordID})
 		.then(editHistory => {
 			if (editHistory == null)
 			{
 				res.render('HistoryTaking/student/add_HistoryTaking', {
+					recordID:req.params.recordID,
 					newHistory: newHistory,
 					userType: userType,
 					patient: req.session.patient,
@@ -1536,14 +1538,14 @@ router.get('/HistoryTaking', ensureAuthenticated, (req, res) => {
 			
 		})	
 	})
-	})
+})
 
 //Add HistoryTaking
-router.post('/add-history', ensureAuthenticated, (req, res) => {
+router.post('/add-history/:recordID', ensureAuthenticated, (req, res) => {
 	historyId = (new standardID('AAA0000')).generate();
 	new StudentHistory({
 		user: req.user.id,
-		patientID: req.session.patient.patientID,
+		patientID: req.params.recordID,
 		chiefComp: req.body.chiefComp,
 		historyPresent: req.body.historyPresent,
 		allergy: req.body.allergy,
@@ -1554,12 +1556,12 @@ router.post('/add-history', ensureAuthenticated, (req, res) => {
 		travelH: req.body.travelH,
 		historyId: historyId
 	}).save();
-	res.redirect('/student/HistoryTaking');//PROBLEM(saved but no output)
+		res.redirect('/student/HistoryTaking/' +req.params.recordID );
 })
 //One HistoryTaking by ID
-router.get('/HistoryTaking/:historyId', ensureAuthenticated, (req,res) => {
-	StudentHistory.find({ patientID: req.session.patient.patientID}).then(newHistory => {
-		StudentHistory.findOne({ historyId: req.params.historyId }).then(editHistory =>{
+router.get('/HistoryTaking/:recordID', ensureAuthenticated, (req,res) => {
+	StudentHistory.find({ patientID: req.params.recordID}).then(newHistory => {
+		StudentHistory.findOne({ patientID: req.params.recordID }).then(editHistory =>{
 			res.render('HistoryTaking/student/add_HistoryTaking',{
 				newHistory:newHistory,
 				editHistory: editHistory,
@@ -1572,8 +1574,9 @@ router.get('/HistoryTaking/:historyId', ensureAuthenticated, (req,res) => {
 })
 
 //Edit the HistoryTaking
-router.put('/edit-history/:historyId', ensureAuthenticated, (req,res) => {
-	StudentHistory.findOne({ historyId: req.params.historyId}).then(editHistory => {
+router.put('/edit-history/:recordID', ensureAuthenticated, (req,res) => {
+	StudentHistory.findOne({ patientID: req.params.recordID}).then(editHistory => {
+		
 		editHistory.chiefComp = req.body.chiefComp,
 		editHistory.historyPresent = req.body.historyPresent,
 		editHistory.allergy = req.body.allergy,
@@ -1585,7 +1588,7 @@ router.put('/edit-history/:historyId', ensureAuthenticated, (req,res) => {
 
 		editHistory.save();
 	});
-	res.redirect("/student/HistoryTaking");
+	res.redirect("/student/HistoryTaking/" + req.params.recordID);
 })
 	
 // // Open HistoryTakng page
