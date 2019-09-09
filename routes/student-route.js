@@ -1510,12 +1510,31 @@ router.get('/HistoryTaking', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
 	StudentHistory.find({ user: req.user.id, patientID: req.session.patient.patientID})
 	.then(newHistory => {
-		res.render('HistoryTaking/student/add_HistoryTaking', {
-			newHistory: newHistory,
-			userType: userType,
-			patient: req.session.patient,
-			showMenu: true
-		});
+		StudentHistory.findOne({ patientID: req.session.patient.patientID})
+		.then(editHistory => {
+			if (editHistory == null)
+			{
+				res.render('HistoryTaking/student/add_HistoryTaking', {
+					newHistory: newHistory,
+					userType: userType,
+					patient: req.session.patient,
+					showMenu: true,
+				});
+			}
+			else
+			{
+				console.log("Edit MDP is not empty: "+editHistory);
+				res.render('HistoryTaking/student/add_HistoryTaking', {
+					newHistory: newHistory,
+					userType: userType,
+					patient: req.session.patient,
+					showMenu: true,
+					editHistory: editHistory
+				});
+			}
+			
+			
+		})	
 	})
 })
 //Add HistoryTaking
