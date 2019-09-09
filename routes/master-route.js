@@ -1898,7 +1898,6 @@ router.delete('/doctor/orders/del-order/:orderID', ensureAuthenticated, ensureAu
 router.get('/mdp', ensureAuthenticated, ensureAuthorised, (req, res) => {
 	MasterMDP.find({user: req.user.id, patientID: req.session.patient.patientID}).sort({'datetime':1})
 	.then(newMDP => { // mdp that they have created
-		//collection.findAll({a: {'$ne':b }}, function(err, cursor) {});
 		MasterMDP.find({user:{'$ne':req.user.id} , patientID: req.session.patient.patientID}).sort({'datetime':1})
 		.then(newOtherMasterMDP => { 
 			StudentMDP.find({patientID: req.session.patient.patientID}).sort({'datetime':1})
@@ -1908,7 +1907,7 @@ router.get('/mdp', ensureAuthenticated, ensureAuthorised, (req, res) => {
 					newOtherMasterMDP: newOtherMasterMDP,
 					newOtherStudentMDP: newOtherStudentMDP,
 					patient: req.session.patient,
-					showMenu: true
+					showMenu: true,
 				});
 			})
 		})

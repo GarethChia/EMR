@@ -6,6 +6,7 @@ const NursingAssessmentModel = require('./NursingAssessmentModel');
 // Create Schema
 const StudentMDPSchema = new Schema({
     patientID: {type: String, require: true},
+    studentPatientID: {type: String, require: true},
     user: {
       type: Schema.Types.ObjectId,
       ref: 'emr-users' 	// collection name in mongodb

@@ -16,14 +16,14 @@
                 {{#if newMDP}}
                     {{#each newMDP}}
                     <tr style="height: 60px">
-                        <td><a href="/student/mdp/{{mdpID}}">{{formatDatetime datetime}}</a></td>
+                        <td><a href="/student/mdp/{{studentPatientID}}/{{mdpID}}">{{formatDatetime datetime}}</a></td>
                         <td>{{healthProvider}}</td>
                         <td>{{progressNotes}}</td>
                         <td>{{selectUser}}</td>
                         {{!-- <td>{{patientID}}</td> --}}
                         {{!-- {{#unless ../userType}} --}}
                         <td style="width: 65px"> <!-- the tr we're trying to get -->
-                            <form action="/student/del-mdp/{{mdpID}}?_method=DELETE" method="post" id="delete-form">
+                            <form action="/student/del-mdp/{{studentPatientID}}/{{mdpID}}?_method=DELETE" method="post" id="delete-form">
                                 <input type="hidden" name="_method" value="DELETE">
                             <button type="submit" class="btn red darken-3">
                                  <i class="material-icons">delete
@@ -84,14 +84,10 @@
     </div>
 
     {{#if editMDP}}
-    {{#unless userType}}
-    <form action="/student/edit-mdp/{{editMDP.mdpID}}?_method=PUT" method="POST" id="editMDP">
-    {{else}}    
-    <form action="/student/edit-mdp/{{recordID}}/{{editMDP.mdpID}}?_method=PUT" method="POST" id="editMDP">
-    {{/unless}}
+    <form action="/student/edit-mdp/{{editMDP.studentPatientID}}/{{editMDP.mdpID}}?_method=PUT" method="POST" id="editMDP">
     <input type="hidden" name="_method" value="PUT">
     {{else}}
-    <form action="/student/add-mdp" method="POST" id="addMDP">
+    <form action="/student/add-mdp/{{recordID}}" method="POST" id="addMDP">
     {{/if}}
         <div class="card purple lighten-5">
             <div class="card-content">

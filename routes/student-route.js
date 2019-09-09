@@ -1685,14 +1685,13 @@ router.put('/edit-fall/:recordID/:fallID', ensureAuthenticated, (req,res) => {
 })
 
 // mdp page
-router.get('/mdp', ensureAuthenticated, (req, res) => {
+router.get('/mdp/:recordID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
 	StudentMDP.find({user: req.user.id, patientID: req.session.patient.patientID}).sort({'datetime':1})
 	.then(newMDP => { // mdp that they have created
-		console.log("student mdp: "+ newMDP);
 		MasterMDP.find({patientID: req.session.patient.patientID}).then(newMasterMDP => {
-			console.log("master mdp: "+ newMasterMDP);
 			res.render('mdp-notes/student/mdp', {
+				recordID: req.params.recordID,
 				newMasterMDP: newMasterMDP,
 				newMDP: newMDP,
 				userType: userType,
@@ -1703,11 +1702,12 @@ router.get('/mdp', ensureAuthenticated, (req, res) => {
 	})
 })
 // add MDP page
-router.post('/add-mdp', ensureAuthenticated,(req, res) => {
+router.post('/add-mdp/:recordID', ensureAuthenticated,(req, res) => {
 	mdpID = (new standardID('AAA0000')).generate();
 	datetime = moment(req.body.dateMDP, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeMDP;
 	new StudentMDP({
 		patientID: req.session.patient.patientID,
+		studentPatientID: req.params.recordID,
 		user: req.user.id,
 		createdBy: req.user.firstName,
 		mdpID: mdpID,
@@ -1718,22 +1718,23 @@ router.post('/add-mdp', ensureAuthenticated,(req, res) => {
 		healthProvider: req.body.healthProvider,
 		progressNotes: req.body.progressNotes
 	}).save();
-	res.redirect('/student/mdp');
+	res.redirect('/student/mdp/'+req.params.recordID);
 })
 // delete MDP page
-router.delete('/del-mdp/:mdpID', ensureAuthenticated, (req, res) => {
+router.delete('/del-mdp/:recordID/:mdpID', ensureAuthenticated, (req, res) => {
 	StudentMDP.deleteOne({mdpID: req.params.mdpID}, function(err) {
 		if (err) {
 			console.log("cannot delete mdp details");
 		}
 	});
-	res.redirect('/student/mdp');
+	res.redirect('/student/mdp/'+ req.params.recordID);
 })
 
 // get single MDP info
-router.get('/mdp/:mdpID', ensureAuthenticated, (req, res) => {
+router.get('/mdp/:recordID/:mdpID', ensureAuthenticated, (req, res) => {
 	StudentMDP.find({ patientID: req.session.patient.patientID}).sort({'datetime':1}).then(newMDP => {
 		StudentMDP.findOne({ mdpID: req.params.mdpID}).then(editMDP => {
+			console.log("Hiiii: "+ editMDP);
 			editMDP.date = moment(editMDP.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
 			res.render('mdp-notes/student/mdp', {
 				newMDP: newMDP,
@@ -1746,7 +1747,7 @@ router.get('/mdp/:mdpID', ensureAuthenticated, (req, res) => {
 })
 
 // edit MDP informations
-router.put('/edit-mdp/:mdpID', ensureAuthenticated, (req,res) => {
+router.put('/edit-mdp/:recordID/:mdpID', ensureAuthenticated, (req,res) => {
 	datetime = moment(req.body.dateMDP, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeMDP;
 
 	StudentMDP.findOne({ mdpID: req.params.mdpID}).then(editMDP => {
@@ -1757,9 +1758,11 @@ router.put('/edit-mdp/:mdpID', ensureAuthenticated, (req,res) => {
 		editMDP.healthProvider = req.body.healthProvider,
 		editMDP.progressNotes = req.body.progressNotes
 
-		editMDP.save();
+		editMDP.save().then(editMDP => {
+			res.redirect("/student/mdp/"+editMDP.studentPatientID);
+		});
 	});
-	res.redirect("/student/mdp");
+	
 })
 
 module.exports = router;
