@@ -183,8 +183,12 @@
 <script>
 	document.addEventListener('DOMContentLoaded', () => {
 		
+		const painScore = document.querySelector('#painScore');
+
         M.FormSelect.init(painScore, {
             
-        })
+        });	
 	})
+
+	document.getElementById('painScore').value = "{{assessment.painScore}}";
 </script>
