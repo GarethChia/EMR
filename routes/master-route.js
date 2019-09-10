@@ -1240,7 +1240,7 @@ router.delete('/del-iv/:ivID', ensureAuthenticated, ensureAuthorised, (req, res)
 
 //Edit IV info
 router.put('/edit-iv/:ivID', ensureAuthenticated, ensureAuthorised, (req, res) => {
-	datetime = moment(req.bodyiv, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeiv;
+	datetime = moment(req.body.dateiv, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeiv;
 
 	MasterIV.findOne({ ivID: req.params.ivID }).then(editiv => {
 

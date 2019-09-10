@@ -1443,7 +1443,27 @@ router.get('/io/:recordID/:ioID', ensureAuthenticated, (req, res) => {
 		})
 	})
 })
+//add io info
+router.post('/add-io/:recordID', ensureAuthenticated, (req, res) => {
+	ioID = (new standardID('AAA0000')).generate();
+	datetime = moment(req.body.dateIO, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeIO;
+	
+	new MasterIO({
+		patientID: req.session.patient.patientID,
+		ioID: ioID,
+		date:	moment(req.body.dateIO, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		time: req.body.timeIO,
+		datetime: datetime,
+		intakefood: req.body.intakefood,
+		foodtype: req.body.foodtype,
+		foodportion: req.body.foodportion,
+		fluidtype: req.body.fluidtype,
+		fluidportion: req.body.fluidportion,
 
+	}).save();
+
+	res.redirect('/student/io/'+req.params.recordID);
+})
 //edit IO informations
 router.put('/edit-io/:recordID/:ioID', ensureAuthenticated, (req,res) => {
 	datetime = moment(req.body.dateIO, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeIO;
@@ -1533,11 +1553,33 @@ router.put('/edit-enteral/:recordID/:enteralID', ensureAuthenticated, (req, res)
 	res.redirect('/student/io/' + req.params.recordID);
 })
 
-//iv PART
+//add iv info
+router.post('/add-iv/:recordID', ensureAuthenticated, (req, res) => {
+	ivID = (new standardID('AAA0000')).generate();
+	datetime = moment(req.body.dateiv, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeiv;
+
+
+	new MasterIV({
+		patientID: req.session.patient.patientID,
+		ivID: ivID,
+		date: moment(req.body.dateiv, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		time: req.body.timeiv,
+		datetime: datetime,
+		coninf: req.body.coninf,
+		conamt: req.body.conamt,
+		intinf: req.body.intinf,
+		amtinf: req.body.amtinf,
+		ivflush: req.body.ivflush,
+
+	}).save();
+
+	res.redirect('/student/io/' +req.params.recordID);
+})
+
 //Get single iv info
 router.get('/iv/:recordID/:ivID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
-	MasterIV.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(newiv => {
+	MasterIV.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newiv => {
 		MasterIV.findOne({ ivID: req.params.ivID }).then(editiv => {
 
 			//Changes date format to DD/MM/YYYY
@@ -1554,7 +1596,7 @@ router.get('/iv/:recordID/:ivID', ensureAuthenticated, (req, res) => {
 
 //Edit IV info
 router.put('/edit-iv/:recordID/:ivID', ensureAuthenticated, (req, res) => {
-	datetime = moment(req.bodyiv, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeiv;
+	datetime = moment(req.body.dateiv, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeiv;
 
 	MasterIV.findOne({ ivID: req.params.ivID }).then(editiv => {
 
@@ -1573,10 +1615,37 @@ router.put('/edit-iv/:recordID/:ivID', ensureAuthenticated, (req, res) => {
 	res.redirect('/student/io/' + req.params.recordID);
 })
 
+//add output info
+router.post('/add-output/:recordID', ensureAuthenticated, (req, res) => {
+	outputID = (new standardID('AAA0000')).generate();
+	datetime = moment(req.body.dateoutput, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeoutput;
+
+
+	new MasterOutput({
+		patientID: req.session.patient.patientID,
+		outputID: outputID,
+		date: moment(req.body.dateoutput, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		time: req.body.timeoutput,
+		datetime: datetime,
+		urineamt: req.body.urineamt,
+		urineass: req.body.urineass,
+		stoolamt: req.body.stoolamt,
+		stoolass: req.body.stoolass,
+		vomitamt: req.body.vomitamt,
+		vomitass: req.body.vomitass,
+		bloodamt: req.body.bloodamt,
+		diaper: req.body.diaper,
+		otheramt: req.body.otheramt,
+		otherass: req.body.otherass,
+
+	}).save();
+
+	res.redirect('/student/io/'+ req.params.recordID);
+})
 //Get single output info
 router.get('/output/:recordID/:outputID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
-	MasterOutput.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(newoutput => {
+	MasterOutput.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newoutput => {
 		MasterOutput.findOne({ outputID: req.params.outputID }).then(editoutput => {
 
 			//Changes date format to DD/MM/YYYY

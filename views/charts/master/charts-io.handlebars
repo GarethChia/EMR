@@ -424,14 +424,18 @@
     </div>
 
     {{#if editIO}}
-    {{#unless userType}}
-    <form action="/master/edit-io/{{editIO.ioID}}?_method=PUT" method="POST" id="editIO">
-    {{else}}    
-    <form action="/student/edit-io/{{recordID}}/{{editIO.ioID}}?_method=PUT" method="POST" id="editIO">
-    {{/unless}}
-    <input type="hidden" name="_method" value="PUT">
+        {{#unless userType}}
+        <form action="/master/edit-io/{{editIO.ioID}}?_method=PUT" method="POST" id="editIO">
+        {{else}}    
+        <form action="/student/edit-io/{{recordID}}/{{editIO.ioID}}?_method=PUT" method="POST" id="editIO">
+        {{/unless}}
+    {{!-- <input type="hidden" name="_method" value="PUT"> --}}
     {{else}}
-    <form action="/master/add-io" method="POST" id="addIO">
+        {{#unless userType}}
+        <form action="/master/add-io" method="POST" id="addIO">
+        {{else}}
+        <form action="/student/add-io/{{recordID}}" method="POST" id="addIO">
+        {{/unless}}
     {{/if}}
         <div class="card purple lighten-5">
             <div class="card-content">
@@ -503,15 +507,14 @@
 
         <div class="col s12 m4">
             {{#if editIO}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editIO">Save
+                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editIO">Save
             {{else}}
-            {{#unless userType}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addIO">Save
-            {{/unless}}
+                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addIO">Save
             {{/if}}
             {{#unless userType}}
                 <i class="material-icons right">send</i>
-            </button>
+                {{else}}
+                <i class="material-icons right">send</i>
             {{/unless}}
         </div>
     </div>
@@ -780,9 +783,10 @@
     {{#if editiv}}
         {{#unless userType}}
         <form action="/master/edit-iv/{{editiv.ivID}}?_method=PUT" method="POST" id="editiv">
-    {{else}}
+        {{else}}
         <form action="/student/edit-iv/{{recordID}}/{{editiv.ivID}}?_method=PUT" method="POST" id="editiv">
         {{/unless}}
+        {{else}}
     {{!-- <input type="hidden" name="_method" value="PUT"> --}}
         {{#unless userType}}
             <form action="/master/add-iv" method="POST" id="addiv">
@@ -890,7 +894,7 @@
             
             <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addiv">Save
             {{/if}}
-               {{#unless userType}}
+            {{#unless userType}}
                 <i class="material-icons right">send</i>
                 {{else}}
                 <i class="material-icons right">send</i>
@@ -977,14 +981,18 @@
     </div>
 
     {{#if editoutput}}
-    {{#unless userType}}
-    <form action="/master/edit-output/{{editoutput.outputID}}?_method=PUT" method="POST" id="editoutput">
+        {{#unless userType}}
+        <form action="/master/edit-output/{{editoutput.outputID}}?_method=PUT" method="POST" id="editoutput">
+        {{else}}
+        <form action="/student/edit-output/{{recordID}}/{{editoutput.outputID}}?_method=PUT" method="POST" id="editoutput">
+        {{/unless}}
+    {{!-- <input type="hidden" name="_method" value="PUT"> --}}
     {{else}}
-    <form action="/student/edit-output/{{recordID}}/{{editoutput.outputID}}?_method=PUT" method="POST" id="editoutput">
-    {{/unless}}
-    <input type="hidden" name="_method" value="PUT">
-    {{else}}
-    <form action="/master/add-output" method="POST" id="addoutput">
+        {{#unless userType}}
+            <form action="/master/add-output" method="POST" id="addoutput">
+            {{else}}
+            <form action="/student/add-output/{{recordID}}" method="POST" id="addoutput">
+        {{/unless}}
     {{/if}}
         <div class="card purple lighten-5">
             <div class="card-content">
@@ -1089,13 +1097,12 @@
             {{#if editoutput}}
             <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editoutput">Save
             {{else}}
-            {{#unless userType}}
             <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addoutput">Save
-            {{/unless}}
             {{/if}}
             {{#unless userType}}
                 <i class="material-icons right">send</i>
-            </button>
+                {{else}}
+                <i class="material-icons right">send</i>
             {{/unless}}
         </div>
     </div>
