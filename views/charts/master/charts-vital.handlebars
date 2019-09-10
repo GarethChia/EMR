@@ -251,6 +251,8 @@
                     {{!-- <th>User</th> <!-- JR --> --}}
                     {{#unless userType}}
                     <th>Delete</th>
+                    {{else}}
+                    <th>Delete</th>
                     {{/unless}}
                 </tr>
             </thead>
@@ -277,6 +279,15 @@
                         {{#unless ../userType}}
                         <td style="width: 55px"> <!-- the tr we're trying to get -->
                             <form action="/master/del-vitals/{{vitalID}}?_method=DELETE" method="post" id="delete-form">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn red darken-3">
+                                    <i class="material-icons">delete</i>
+                                </button>
+                            </form>
+                        </td>
+                        {{else}}
+                        <td style="width: 55px"> <!-- the tr we're trying to get -->
+                            <form action="/student/del-vitals/{{../recordID}}/{{vitalID}}?_method=DELETE" method="post" id="delete-form">
                                 <input type="hidden" name="_method" value="DELETE">
                                 <button type="submit" class="btn red darken-3">
                                     <i class="material-icons">delete</i>
@@ -318,7 +329,11 @@
         {{/unless}}
     <input type="hidden" name="_method" value="PUT">
     {{else}}
-    <form action="/master/add-vital" method="POST" id="addVital">
+        {{#unless userType}}
+        <form action="/master/add-vital" method="POST" id="addVital">
+        {{else}}
+        <form action="/student/add-vital/{{recordID}}" method="POST" id="addVital">
+        {{/unless}}        
     {{/if}}
         <div class="card purple lighten-5">
             <div class="card-content">
@@ -434,9 +449,11 @@
             {{#if editVital}}
             <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editVital">Save
             {{else}}
-            {{#unless userType}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addVital">Save
-            {{/unless}}
+                {{#unless userType}}
+                    <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addVital">Save
+                {{else}}
+                    <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addVital">Save
+                {{/unless}}
             {{/if}}
             {{#unless userType}}
                 <i class="material-icons right">send</i>
@@ -467,6 +484,8 @@
                     <th>Response to Intervention(s)</th>
                     {{#unless userType}}
                     <th>Delete</th>
+                    {{else}}
+                    <th>Delete</th>
                     {{/unless}}
                 </tr>
             </thead>
@@ -493,6 +512,15 @@
                         {{#unless ../userType}}
                         <td style="width: 55px"> <!-- the tr we're trying to get -->
                             <form action="/master/del-pain/{{painID}}?_method=DELETE" method="post" id="delete-form">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn red darken-3">
+                                    <i class="material-icons">delete</i>
+                                </button>
+                            </form>
+                        </td>
+                        {{else}}
+                        <td style="width: 55px"> <!-- the tr we're trying to get -->
+                            <form action="/student/del-pain/{{../recordID}}/{{painID}}?_method=DELETE" method="post" id="delete-form">
                                 <input type="hidden" name="_method" value="DELETE">
                                 <button type="submit" class="btn red darken-3">
                                     <i class="material-icons">delete</i>
@@ -534,7 +562,11 @@
         {{/unless}}
     <input type="hidden" name="_method" value="PUT">
     {{else}}
-    <form action="/master/add-pain" method="POST" id="addPain">
+        {{#unless userType}}
+            <form action="/master/add-pain" method="POST" id="addPain">
+            {{else}}
+            <form action="/student/add-pain/{{recordID}}" method="POST" id="addPain">
+        {{/unless}}
     {{/if}}
         <div class="card purple lighten-5">
             <div class="card-content">
@@ -642,16 +674,12 @@
 
         <div class="col s12 m4">
             {{#if editPain}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editPain">Save
+                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editPain">Save
             {{else}}
-            {{#unless userType}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addPain">Save
-            {{/unless}}
+                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addPain">Save
             {{/if}}
-            {{#unless userType}}
                 <i class="material-icons right">send</i>
             </button>
-            {{/unless}}
         </div>
     </div>
 </div>
@@ -670,6 +698,8 @@
                     <th>FiO2 (%)</th>
                     <th>SpO2 (%)</th>
                     {{#unless userType}}
+                    <th>Delete</th>
+                    {{else}}
                     <th>Delete</th>
                     {{/unless}}
                 </tr>
@@ -691,6 +721,15 @@
                         {{#unless ../userType}}
                         <td style="width: 55px"> <!-- the tr we're trying to get -->
                             <form action="/master/del-oxygen/{{oxygenID}}?_method=DELETE" method="post" id="delete-form">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn red darken-3">
+                                    <i class="material-icons">delete</i>
+                                </button>
+                            </form>
+                        </td>
+                        {{else}}
+                        <td style="width: 55px"> <!-- the tr we're trying to get -->
+                            <form action="/student/del-oxygen/{{../recordID}}/{{oxygenID}}?_method=DELETE" method="post" id="delete-form">
                                 <input type="hidden" name="_method" value="DELETE">
                                 <button type="submit" class="btn red darken-3">
                                     <i class="material-icons">delete</i>
@@ -732,7 +771,11 @@
         {{/unless}}
     <input type="hidden" name="_method" value="PUT">
     {{else}}
-    <form action="/master/add-oxygen" method="POST" id="addOxy">
+        {{#unless userType}}
+        <form action="/master/add-oxygen" method="POST" id="addOxy">
+        {{else}}
+        <form action="/student/add-oxygen/{{recordID}}" method="POST" id="addOxy">
+        {{/unless}}
     {{/if}}
         <div class="card purple lighten-5">
             <div class="card-content">
@@ -824,9 +867,11 @@
             {{#if editOxy}}
             <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editOxy">Save
             {{else}}
-            {{#unless userType}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addOxy">Save
-            {{/unless}}
+                {{#unless userType}}
+                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addOxy">Save
+                {{else}}
+                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addOxy">Save
+                {{/unless}}
             {{/if}}
             {{#unless userType}}
                 <i class="material-icons right">send</i>
@@ -851,6 +896,8 @@
                     <th>BMI</th>
                     {{#unless userType}}
                     <th>Delete</th>
+                    {{else}}
+                    <th>Delete</th>
                     {{/unless}}
                 </tr>
             </thead>
@@ -872,6 +919,15 @@
                         {{#unless ../userType}}
                         <td style="width: 55px"> <!-- the tr we're trying to get -->
                             <form action="/master/del-wh/{{whID}}?_method=DELETE" method="post" id="delete-form">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn red darken-3">
+                                    <i class="material-icons">delete</i>
+                                </button>
+                            </form>
+                        </td>
+                        {{else}}
+                        <td style="width: 55px"> <!-- the tr we're trying to get -->
+                            <form action="/student/del-wh/{{../recordID}}/{{whID}}?_method=DELETE" method="post" id="delete-form">
                                 <input type="hidden" name="_method" value="DELETE">
                                 <button type="submit" class="btn red darken-3">
                                     <i class="material-icons">delete</i>
@@ -913,7 +969,11 @@
         {{/unless}}
     <input type="hidden" name="_method" value="PUT">
     {{else}}
-    <form action="/master/add-wh" method="POST" id="addWh" name="addWh">
+        {{#unless userType}}
+        <form action="/master/add-wh" method="POST" id="addWh" name="addWh">
+        {{else}}
+        <form action="/student/add-wh/{{recordID}}" method="POST" id="addWh" name="addWh">
+        {{/unless}}
     {{/if}}
         <div class="card purple lighten-5">
             <div class="card-content">
@@ -982,16 +1042,16 @@
 
         <div class="col s12 m4">
             {{#if editWh}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editWh">Save
+                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editWh">Save
             {{else}}
-            {{#unless userType}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addWh">Save
-            {{/unless}}
-            {{/if}}
-            {{#unless userType}}
-                <i class="material-icons right">send</i>
-            </button>
-            {{/unless}}
+                {{#unless userType}}
+                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addWh">Save
+                {{else}}
+                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addWh">Save
+                {{/unless}}
+                {{/if}}
+                    <i class="material-icons right">send</i>
+                </button>
         </div>
     </div>
 </div>

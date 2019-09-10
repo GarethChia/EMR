@@ -771,10 +771,10 @@ router.get('/chart/:recordID', ensureAuthenticated, (req, res) => {
  //Vital chart information
  router.get('/vital/:recordID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
-	MasterVital.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(vitalData => {
-		MasterPain.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(painData => {
-			MasterOxygen.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(oxyData => {
-				MasterWH.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(whData => {
+	MasterVital.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(vitalData => {
+		MasterPain.find({ patientID: req.session.patient.patientID}).sort({'datetime':1}).then(painData => {
+			MasterOxygen.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(oxyData => {
+				MasterWH.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(whData => {
 
 					sample = [];
 					sampleDate = [];
@@ -927,7 +927,7 @@ router.get('/chart/:recordID', ensureAuthenticated, (req, res) => {
 //Get single vital information
 router.get('/vital/:recordID/:vitalID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
-	MasterVital.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(newVital => {
+	MasterVital.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newVital => {
 		MasterVital.findOne({ vitalID: req.params.vitalID }).then(editVital => {
 
 			//Changes date format to DD/MM/YYYY
@@ -942,6 +942,16 @@ router.get('/vital/:recordID/:vitalID', ensureAuthenticated, (req, res) => {
 			})
 		})
 	})
+})
+
+//Delete vital information
+router.delete('/del-vitals/:recordID/:vitalID', ensureAuthenticated, (req, res) => {
+	MasterVital.deleteOne({vitalID: req.params.vitalID}, function(err) {
+		if (err) {
+			console.log('cannot delete vitals');
+		}
+	});
+	res.redirect('/student/vital/'+req.params.recordID);
 })
 
 //Edit vital information
@@ -973,10 +983,82 @@ router.put('/edit-vital/:recordID/:vitalID', ensureAuthenticated, (req,res) => {
 	res.redirect('/student/vital/' + req.params.recordID);
 })
 
+// post vital
+router.post('/add-vital/:recordID', ensureAuthenticated, (req, res) => {
+	vitalid = (new standardID('AAA0000')).generate();
+	datetime = moment(req.body.dateVital, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeVital;
+	bPressure = req.body.sbp + "/" + req.body.dbp;
+	abPressure = req.body.sbpArterial + "/" + req.body.dbpArterial;
+
+	new MasterVital({
+		patientID: req.session.patient.patientID,
+		vitalID: vitalid,
+		userID: req.user.id,
+		date: moment(req.body.dateVital, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		time: req.body.timeVital,
+		datetime: datetime,
+		temp: req.body.temp,
+		tempRoute: req.body.tempRoute,
+		heartRate: req.body.heartRate,
+		resp: req.body.resp,
+		sbp: req.body.sbp,
+		dbp: req.body.dbp,
+		sbpArterial: req.body.sbpArterial,
+		dbpArterial: req.body.dbpArterial,
+		bPressure: bPressure,
+		arterialBP: abPressure,
+		bpLocation: req.body.bpLocation,
+		bpMethod: req.body.bpMethod,
+		patientPosition: req.body.patientPosition,
+		userType: req.user.userType
+	}).save();
+
+	res.redirect('/student/vital/'+ req.params.recordID);
+})
+
+// add pain
+router.post('/add-pain/:recordID', ensureAuthenticated, (req, res) => {
+	painid = (new standardID('AAA0000')).generate();
+	datetime = moment(req.body.datePain, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timePain;
+
+	new MasterPain({
+		patientID: req.session.patient.patientID,
+		painID: painid,
+		userType: req.user.userType,
+		datetime: datetime,
+		date: moment(req.body.datePain, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		time: req.body.timePain,
+		painScale: req.body.painScale,
+		painScore: req.body.painScore,
+		onset: req.body.onset,
+		location: req.body.location,
+		duration: req.body.duration,
+		characteristics: req.body.characteristics,
+		associatedSymp: req.body.associatedSymp,
+		aggravatingFact: req.body.aggravatingFact,
+		relievingFact: req.body.relievingFact,
+		painIntervene: req.body.painIntervene,
+		responseIntervene: req.body.responseIntervene
+	}).save();
+
+	res.redirect('/student/vital/'+ req.params.recordID);
+
+})
+
+//Delete pain info
+router.delete('/del-pain/:recordID/:painID', ensureAuthenticated, (req, res) => {
+	MasterPain.deleteOne({ painID: req.params.painID }, function(err) {
+		if(err) {
+			console.log('cannot delete pain info');
+		}
+	})
+	res.redirect('/student/vital/'+ req.params.recordID);
+})
+
 //Get single pain info
 router.get('/pain/:recordID/:painID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
-	MasterPain.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(painData => {
+	MasterPain.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(painData => {
 		MasterPain.findOne({ painID: req.params.painID }).then(editPain => {
 
 			//Changes date format to DD/MM/YYYY
@@ -992,7 +1074,6 @@ router.get('/pain/:recordID/:painID', ensureAuthenticated, (req, res) => {
 		})
 	})
 })
-
 //Edit pain info
 router.put('/edit-pain/:recordID/:painID', ensureAuthenticated, (req, res) => {
 	datetime = moment(req.body.datePain, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timePain;
@@ -1021,7 +1102,7 @@ router.put('/edit-pain/:recordID/:painID', ensureAuthenticated, (req, res) => {
 //Get single oxygen information
 router.get('/oxygen/:recordID/:oxygenID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
-	MasterOxygen.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(oxyData => {
+	MasterOxygen.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(oxyData => {
 		MasterOxygen.findOne({ oxygenID: req.params.oxygenID }).then(editOxy => {
 
 			//Changes date format to DD/MM/YYYY
@@ -1036,6 +1117,28 @@ router.get('/oxygen/:recordID/:oxygenID', ensureAuthenticated, (req, res) => {
 			})
 		})
 	})
+})
+
+//Add oxygen information
+router.post('/add-oxygen/:recordID', ensureAuthenticated, (req, res) => {
+	oxygenid = (new standardID('AAA0000')).generate();
+	datetime = moment(req.body.dateOxy, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeOxy;
+
+	new MasterOxygen({
+		patientID: req.session.patient.patientID,
+		oxygenID: oxygenid,
+		userType: req.user.userType,
+		datetime: datetime,
+		date: moment(req.body.dateOxy, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		time: req.body.timeOxy,
+		o2Device: req.body.oxyDevice,
+		humidifier: req.body.humidifier,
+		o2Amt: req.body.oxyAmt,
+		fio2: req.body.fiOxy,
+		spo2: req.body.spOxy
+	}).save();
+
+	res.redirect('/student/vital/'+ req.params.recordID);
 })
 
 //Update oxygen information
@@ -1057,10 +1160,20 @@ router.put('/edit-oxygen/:recordID/:oxygenID', ensureAuthenticated, (req, res) =
 	res.redirect('/student/vital/' + req.params.recordID);
 })
 
+//Delete oxygen information
+router.delete('/del-oxygen/:recordID/:oxygenID', ensureAuthenticated, (req, res) => {
+	MasterOxygen.deleteOne({ oxygenID: req.params.oxygenID }, function(err) {
+		if(err) {
+			console.log('cannot delete oxygen information');
+		}
+	});
+	res.redirect('/student/vital/'+ req.params.recordID);
+})
+
 //Get single weight & height information
 router.get('/wh/:recordID/:whID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
-	MasterWH.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(whData => {
+	MasterWH.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(whData => {
 		MasterWH.findOne({ whID: req.params.whID }).then(editWh => {
 
 			//Changes date format to DD/MM/YYYY
@@ -1075,6 +1188,29 @@ router.get('/wh/:recordID/:whID', ensureAuthenticated, (req, res) => {
 			})
 		})
 	})
+})
+
+//Add weight & height information
+router.post('/add-wh/:recordID', ensureAuthenticated, (req, res) => {
+	whid = (new standardID('AAA0000')).generate();
+	datetime = moment(req.body.dateWh, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeWh;
+
+	new MasterWH({
+		patientID: req.session.patient.patientID,
+		whID: whid,
+		userType: req.user.userType,
+		datetime: datetime,
+		date: moment(req.body.dateWh, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		time: req.body.timeWh,
+		height: req.body.height,
+		heightEst: req.body.heightEst,
+		weight: req.body.weight,
+		weightEst: req.body.weightEst,
+		bsa: req.body.bsa,
+		bmi: req.body.bmi
+	}).save();
+
+	res.redirect('/student/vital/'+req.params.recordID);
 })
 
 //Edit weight & height information
@@ -1093,6 +1229,15 @@ router.put('/edit-wh/:recordID/:whID', ensureAuthenticated, (req, res) => {
 		editWH.bmi = req.body.bmi
 
 		editWH.save();
+	})
+	res.redirect('/student/vital/' + req.params.recordID);
+})
+//Delete weight & height information
+router.delete('/del-wh/:recordID/:whID', ensureAuthenticated, (req, res) => {
+	MasterWH.deleteOne({ whID: req.params.whID }, function(err) {
+		if (err) {
+			console.log('cannot delete weight & height information');
+		}
 	})
 	res.redirect('/student/vital/' + req.params.recordID);
 })
