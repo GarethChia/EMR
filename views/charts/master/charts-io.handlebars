@@ -408,6 +408,14 @@
                             </button>
                             </form>
                         </td>
+                        {{else}}
+                         <td style="width: 65px"> <!-- the tr we're trying to get -->
+                            <form action="/master/del-io/{{../recordID}}/{{ioID}}?_method=DELETE" method="post" id="delete-form">
+                                <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn red darken-3">
+                                 <i class="material-icons">delete
+                            </button>
+                            </form>
                         {{/unless}}
                     </tr>
                     {{/each}}
@@ -765,6 +773,15 @@
                             </button>
                             </form>
                         </td>
+                        {{else}}
+                            <td style="width: 65px"> <!-- the tr we're trying to get -->
+                                <form action="/student/del-iv/{{../recordID}}/{{ivID}}?_method=DELETE" method="post" id="delete-form">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn red darken-3">
+                                    <i class="material-icons">delete
+                                </button>
+                                </form>
+                            </td>
                         {{/unless}}
                     </tr>
                     {{/each}}
@@ -965,6 +982,15 @@
                             </button>
                             </form>
                         </td>
+                        {{else}}
+                            <td style="width: 65px"> <!-- the tr we're trying to get -->
+                                <form action="/student/del-output/{{../recordID}}/{{outputID}}?_method=DELETE" method="post" id="delete-form">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn red darken-3">
+                                    <i class="material-icons">delete
+                                </button>
+                                </form>
+                            </td>
                         {{/unless}}
                     </tr>
                     {{/each}}

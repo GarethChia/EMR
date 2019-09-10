@@ -1483,6 +1483,15 @@ router.put('/edit-io/:recordID/:ioID', ensureAuthenticated, (req,res) => {
 	});
 	res.redirect('/student/io/' + req.params.recordID);
 })
+//Delete IO information
+router.delete('/del-io/:recordID/:ioID', ensureAuthenticated, (req, res) => {
+	MasterIO.deleteOne({ioID: req.params.ioID}, function(err) {
+		if (err) {
+			console.log('Cannot delete IO details');
+		}
+	});
+	res.redirect('/student/io/' + req.params.recordID);
+})
 
 //add enteral info
 router.post('/add-enteral/:recordID', ensureAuthenticated, (req, res) => {
@@ -1575,7 +1584,15 @@ router.post('/add-iv/:recordID', ensureAuthenticated, (req, res) => {
 
 	res.redirect('/student/io/' +req.params.recordID);
 })
-
+//Delete iv information
+router.delete('/del-iv/:recordID/:ivID', ensureAuthenticated, (req, res) => {
+	MasterIV.deleteOne({ivID: req.params.ivID}, function(err) {
+		if (err) {
+			console.log('cannot delete IV details');
+		}
+	});
+	res.redirect('/student/io/' + req.params.recordID);
+})
 //Get single iv info
 router.get('/iv/:recordID/:ivID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
@@ -1642,6 +1659,16 @@ router.post('/add-output/:recordID', ensureAuthenticated, (req, res) => {
 
 	res.redirect('/student/io/'+ req.params.recordID);
 })
+//Delete output information
+router.delete('/del-output/:recordID/:outputID', ensureAuthenticated, (req, res) => {
+	MasterOutput.deleteOne({outputID: req.params.outputID}, function(err) {
+		if (err) {
+			console.log('Cannot delete Output details');
+		}
+	});
+	res.redirect('/student/io/' + req.params.recordID);
+})
+
 //Get single output info
 router.get('/output/:recordID/:outputID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
