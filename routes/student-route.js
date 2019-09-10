@@ -1278,10 +1278,10 @@ router.get('/doctor/orders/:recordID/:orderID', ensureAuthenticated, (req, res) 
 //Load IO page
 router.get('/io/:recordID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
-	MasterIO.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(newIO => {
-		MasterEnteral.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(newenteral => {
-			MasterIV.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(newiv => {	
-				MasterOutput.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(newoutput => {			
+	MasterIO.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newIO => {
+		MasterEnteral.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newenteral => {
+			MasterIV.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newiv => {	
+				MasterOutput.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newoutput => {			
 
 					iosample = [];
 					iosampleDate = [];
@@ -1464,10 +1464,42 @@ router.put('/edit-io/:recordID/:ioID', ensureAuthenticated, (req,res) => {
 	res.redirect('/student/io/' + req.params.recordID);
 })
 
+//add enteral info
+router.post('/add-enteral/:recordID', ensureAuthenticated, (req, res) => {
+	enteralID = (new standardID('AAA0000')).generate();
+	datetime = moment(req.body.dateenteral, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeenteral;
+
+
+	new MasterEnteral({
+		patientID: req.session.patient.patientID,
+		enteralID: enteralID,
+		date: moment(req.body.dateenteral, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		time: req.body.timeenteral,
+		datetime: datetime,
+		enteralfeed: req.body.enteralfeed,
+		formula: req.body.formula,
+		feedamt: req.body.feedamt,
+		flush: req.body.flush,
+
+	}).save();
+
+	res.redirect('/student/io/' + req.params.recordID);
+})
+
+//Delete Enteral information
+router.delete('/del-enteral/:recordID/:enteralID', ensureAuthenticated, (req, res) => {
+	MasterEnteral.deleteOne({enteralID: req.params.enteralID}, function(err) {
+		if (err) {
+			console.log('cannot delete Enteral details');
+		}
+	});
+	res.redirect('/student/io/' + req.params.recordID);
+})
+
 //Get single enteral info
 router.get('/enteral/:recordID/:enteralID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
-	MasterEnteral.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(newenteral => {
+	MasterEnteral.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newenteral => {
 		MasterEnteral.findOne({ enteralID: req.params.enteralID }).then(editenteral => {
 
 			//Changes date format to DD/MM/YYYY
@@ -1481,6 +1513,7 @@ router.get('/enteral/:recordID/:enteralID', ensureAuthenticated, (req, res) => {
     	})
   	})
 })
+
 
 //Edit Enteral info
 router.put('/edit-enteral/:recordID/:enteralID', ensureAuthenticated, (req, res) => {

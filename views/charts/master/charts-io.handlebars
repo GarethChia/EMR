@@ -536,6 +536,8 @@
                     {{!-- <th>Patient ID</th> --}}
                     {{#unless userType}}
                     <th>Delete</th>
+                    {{else}}
+                    <th>Delete</th>
                     {{/unless}}
                 </tr>
             </thead>
@@ -554,14 +556,23 @@
                         <td>{{flush}}</td>
                         {{!-- <td>{{patientID}}</td> --}}
                         {{#unless ../userType}}
-                        <td style="width: 65px"> <!-- the tr we're trying to get -->
-                            <form action="/master/del-enteral/{{enteralID}}?_method=DELETE" method="post" id="delete-form">
-                                <input type="hidden" name="_method" value="DELETE">
-                            <button type="submit" class="btn red darken-3">
-                                 <i class="material-icons">delete
-                            </button>
-                            </form>
-                        </td>
+                            <td style="width: 65px"> <!-- the tr we're trying to get -->
+                                <form action="/master/del-enteral/{{enteralID}}?_method=DELETE" method="post" id="delete-form">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn red darken-3">
+                                    <i class="material-icons">delete
+                                </button>
+                                </form>
+                            </td>
+                        {{else}}
+                            <td style="width: 65px"> <!-- the tr we're trying to get -->
+                                <form action="/student/del-enteral/{{../recordID}}/{{enteralID}}?_method=DELETE" method="post" id="delete-form">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn red darken-3">
+                                    <i class="material-icons">delete
+                                </button>
+                                </form>
+                            </td>
                         {{/unless}}
                     </tr>
                     {{/each}}
@@ -579,15 +590,18 @@
     </div>
 
     {{#if editenteral}}
-    {{#unless userType}}
-    <form action="/master/edit-enteral/{{editenteral.enteralID}}?_method=PUT" method="POST" id="editenteral">
+        {{#unless userType}}
+        <form action="/master/edit-enteral/{{editenteral.enteralID}}?_method=PUT" method="POST" id="editenteral">
+        {{else}}
+        <form action="/student/edit-enteral/{{recordID}}/{{editenteral.enteralID}}?_method=PUT" method="POST" id="editenteral">
+        {{/unless}}
+    {{!-- <input type="hidden" name="_method" value="PUT"> --}}
     {{else}}
-    <form action="/student/edit-enteral/{{recordID}}/{{editenteral.enteralID}}?_method=PUT" method="POST" id="editenteral">
-    {{/unless}}
-    <input type="hidden" name="_method" value="PUT">
-    <form action="/student/add-enteral" method="POST" id="addenteral">
-    {{else}}
-    <form action="/master/add-enteral" method="POST" id="addenteral">
+        {{#unless userType}}
+            <form action="/master/add-enteral" method="POST" id="addenteral">
+            {{else}}
+            <form action="/student/add-enteral/{{recordID}}" method="POST" id="addenteral">
+        {{/unless}}
     {{/if}}
         <div class="card purple lighten-5">
             <div class="card-content">
@@ -670,16 +684,18 @@
         <div class="col s12 m8"></div>
        <div class="col s12 m4">
             {{#if editenteral}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editenteral">Save
+                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editenteral">Save
             {{else}}
            
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addenteral">Save
-           
+                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addenteral">Save
             {{/if}}
             {{#unless userType}}
                 <i class="material-icons right">send</i>
-            </button>
+                {{else}}
+                <i class="material-icons right">send</i>
             {{/unless}}
+            </button>
+            
         </div>
         {{!-- <div class="col s12 m4">
             {{#if editenteral}}
