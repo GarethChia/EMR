@@ -775,18 +775,20 @@
 
     <div class="row">
         <div class="col s12 m8"></div>
-
     </div>
 
     {{#if editiv}}
-    {{#unless userType}}
-    <form action="/master/edit-iv/{{editiv.ivID}}?_method=PUT" method="POST" id="editiv">
+        {{#unless userType}}
+        <form action="/master/edit-iv/{{editiv.ivID}}?_method=PUT" method="POST" id="editiv">
     {{else}}
-    <form action="/student/edit-iv/{{recordID}}/{{editiv.ivID}}?_method=PUT" method="POST" id="editiv">
-    {{/unless}}
-    <input type="hidden" name="_method" value="PUT">
-    {{else}}
-    <form action="/master/add-iv" method="POST" id="addiv">
+        <form action="/student/edit-iv/{{recordID}}/{{editiv.ivID}}?_method=PUT" method="POST" id="editiv">
+        {{/unless}}
+    {{!-- <input type="hidden" name="_method" value="PUT"> --}}
+        {{#unless userType}}
+            <form action="/master/add-iv" method="POST" id="addiv">
+        {{else}}
+            <form action="/student/add-iv/{{recordID}}" method="POST" id="addiv">
+        {{/unless}}
     {{/if}}
         <div class="card purple lighten-5">
             <div class="card-content">
@@ -885,14 +887,15 @@
             {{#if editiv}}
             <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editiv">Save
             {{else}}
-            {{#unless userType}}
+            
             <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addiv">Save
-            {{/unless}}
             {{/if}}
-            {{#unless userType}}
+               {{#unless userType}}
                 <i class="material-icons right">send</i>
-            </button>
+                {{else}}
+                <i class="material-icons right">send</i>
             {{/unless}}
+            </button>
         </div>
     </div>
 
