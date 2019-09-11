@@ -374,7 +374,8 @@
         <table id="ioRecords" class="hover order-column">
             <thead>
                 <tr>
-                    <th>Datetime</th>
+                    <th>Date</th>
+                    <th>Time</th>
                     <th>Type of Food</th>
                     <th>Portion Taken</th>
                     <th>Type of Fluid Consumed</th>
@@ -390,10 +391,11 @@
                     {{#each newIO}}
                     <tr style="height: 60px">
                         {{#unless ../userType}}
-                        <td><a href="/master/io/{{ioID}}">{{formatDatetime datetime}}</a></td>
+                        <td><a href="/master/io/{{ioID}}">{{date}}</a></td>
                         {{else}}
-                        <td><a href="/student/io/{{../recordID}}/{{ioID}}">{{formatDatetime datetime}}</a></td>
+                        <td><a href="/student/io/{{../recordID}}/{{ioID}}">{{date}}</a></td>
                         {{/unless}}
+                        <td>{{time}}</td>
                         <td>{{foodtype}}</td>
                         <td>{{foodportion}}</td>
                         <td>{{fluidtype}}</td>
@@ -515,7 +517,7 @@
 
         <div class="col s12 m4">
             {{#if editIO}}
-                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editIO">Save
+                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editIO">Save Changes
             {{else}}
                 <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addIO">Save
             {{/if}}
@@ -539,7 +541,8 @@
         <table id="enteralRecords" class="hover order-column" >
             <thead>
                 <tr>
-                    <th>Datetime</th>
+                    <th>Date</th>
+                    <th>Time</th>
                     <th>Enteral Feeding</th>
                     <th>Type of Formula</th>
                     <th>Amount of Feeding (mL)</th>
@@ -557,10 +560,11 @@
                     {{#each newenteral}}
                     <tr style="height: 60px">
                         {{#unless ../userType}}
-                        <td><a href="/master/enteral/{{enteralID}}">{{formatDatetime datetime}}</a></td>
+                        <td><a href="/master/enteral/{{enteralID}}">{{date}}</a></td>
                         {{else}}
-                        <td><a href="/student/enteral/{{../recordID}}/{{enteralID}}">{{formatDatetime datetime}}</a></td>
+                        <td><a href="/student/enteral/{{../recordID}}/{{enteralID}}">{{date}}</a></td>
                         {{/unless}}
+                        <td>{{time}}</td>
                         <td>{{enteralfeed}}</td>
                         <td>{{formula}}</td>
                         <td>{{feedamt}}</td>
@@ -695,7 +699,7 @@
         <div class="col s12 m8"></div>
        <div class="col s12 m4">
             {{#if editenteral}}
-                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editenteral">Save
+                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editenteral">Save Changes
             {{else}}
            
                 <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addenteral">Save
@@ -736,7 +740,8 @@
         <table id="ivRecords" class="hover order-column" >
             <thead>
                 <tr>
-                    <th>Datetime</th>
+                    <th>Date</th>
+                    <th>Time</th>
                     <th>Type of I.V Infusion (continuous)</th>
                     <th>Amount Infused (continuous)</th>
                     <th>Type of I.V. Infusion (intermittent)</th>
@@ -754,10 +759,11 @@
                     {{#each newiv}}
                     <tr style="height: 60px">
                         {{#unless ../userType}}
-                        <td><a href="/master/iv/{{ivID}}">{{formatDatetime datetime}}</a></td>
+                        <td><a href="/master/iv/{{ivID}}">{{date}}</a></td>
                         {{else}}
-                        <td><a href="/student/iv/{{../recordID}}/{{ivID}}">{{formatDatetime datetime}}</a></td>
+                        <td><a href="/student/iv/{{../recordID}}/{{ivID}}">{{date}}</a></td>
                         {{/unless}}
+                        <td>{{time}}</td>
                         <td>{{coninf}}</td>
                         <td>{{conamt}}</td>
                         <td>{{intinf}}</td>
@@ -906,7 +912,7 @@
 
         <div class="col s12 m4">
             {{#if editiv}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editiv">Save
+            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editiv">Save Changes
             {{else}}
             
             <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addiv">Save
@@ -935,7 +941,8 @@
         <table id="outputRecords" class="hover order-column" >
             <thead>
                 <tr>
-                    <th>Datetime</th>
+                    <th>Date</th>
+                    <th>Time</th>
                     <th>Urine (mL)</th>
                     <th>Urine Assessment</th>
                     <th>Stool (amount)</th>
@@ -958,10 +965,11 @@
                     {{#each newoutput}}
                     <tr style="height: 60px">
                         {{#unless ../userType}}
-                        <td><a href="/master/output/{{outputID}}">{{formatDatetime datetime}}</a></td>
+                        <td><a href="/master/output/{{outputID}}">{{date}}</a></td>
                         {{else}}
-                        <td><a href="/student/output/{{../recordID}}/{{outputID}}">{{formatDatetime datetime}}</a></td>
+                        <td><a href="/student/output/{{../recordID}}/{{outputID}}">{{date}}</a></td>
                         {{/unless}}
+                        <td>{{time}}</td>
                         <td>{{urineamt}}</td>
                         <td>{{urineass}}</td>
                         <td>{{stoolamt}}</td>
@@ -1121,7 +1129,7 @@
 
         <div class="col s12 m4">
             {{#if editoutput}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editoutput">Save
+            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editoutput">Save Changes
             {{else}}
             <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addoutput">Save
             {{/if}}

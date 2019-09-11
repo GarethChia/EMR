@@ -28,7 +28,15 @@ const MasterFallSchema = new Schema({
 	ambu:		 {type: String, default: ''},
 	ivhl:		 {type: String, default: ''},
 	gait: 		 {type: String, default: ''},
-    mental:		 {type: String, default: ''},
+	mental:		 {type: String, default: ''},
+	
+	historySplit:	 {type: String, default: ''},
+	secondarySplit:	 {type: String, default: ''},
+	ambuSplit:		 {type: String, default: ''},
+	ivhlSplit:		 {type: String, default: ''},
+	gaitSplit: 		 {type: String, default: ''},
+	mentalSplit:		 {type: String, default: ''},
+	
 	totalmf:		 {type: String, default: ''},
 	
 });

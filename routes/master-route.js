@@ -782,18 +782,35 @@ router.post('/add-braden', ensureAuthenticated, ensureAuthorised, (req, res) => 
 		+ parseInt(req.body.nutrition.slice(-1)) 
 		+ parseInt(req.body.fns.slice(-1));
 
+		splitSensePerc = removeNumber.removeNumberFunction(req.body.sensePerc);
+		splitMoisture = removeNumber.removeNumberFunction(req.body.moisture);
+		splitActivity = removeNumber.removeNumberFunction(req.body.activity);
+		splitMobility = removeNumber.removeNumberFunction(req.body.mobility);
+		splitNutrition = removeNumber.removeNumberFunction(req.body.nutrition);
+		splitFns = removeNumber.removeNumberFunction(req.body.fns);
+
+
 		new MasterBraden({
 			patientID: req.session.patient.patientID,
 			bradenID: bradenID,
 			date: req.body.dateBraden,
 			datetime: datetime,
+			sensePercSplit: splitSensePerc,
+			moistureSplit: splitMoisture,
+			activitySplit: splitActivity,
+			mobilitySplit: splitMobility,
+			nutritionSplit: splitNutrition,
+			fnsSplit: splitFns,
+			total: total,
+
 			sensePerc: req.body.sensePerc,
+			activity:	req.body.activity,
 			moisture: req.body.moisture,
-			activity: req.body.activity,
 			mobility: req.body.mobility,
 			nutrition: req.body.nutrition,
 			fns: req.body.fns,
-			total: total,
+
+			
 
 
 		}).save();
@@ -1042,27 +1059,35 @@ router.post('/add-fall', ensureAuthenticated, ensureAuthorised, (req, res) => {
 	+ parseInt(req.body.ivhl.slice(-2)) 
 	+ parseInt(req.body.gait.slice(-2)) 
 	+ parseInt(req.body.mental.slice(-2));
-	splitHistory = req.body.history.slice(0,3);
-	splitSecondary = req.body.secondary.slice(0,3);
-	// splitAmbu = req.body.ambu.split(" ")[0];
-	//splitAmbu2 = splitFunction(req.body.ambu);
-	splitAmbu2 = removeNumber.removeNumberFunction(req.body.ambu);
-	// splitAmbu2 = req.body.ambu.split(" ")[1];
-	// totalAmbu = splitAmbu + " "+splitAmbu2;
-	splitIvhl = req.body.ivhl.slice(0,3);
-	splitGait = req.body.gait.split(" ")[0];
-	splitMental = req.body.mental.split(" ")[0];
+	//splitting to display only the sting value w/o (+0)
+	splitHistory = removeNumber.removeNumberFunction(req.body.history);
+	splitSecondary = removeNumber.removeNumberFunction(req.body.secondary);	
+	splitAmbu = removeNumber.removeNumberFunction(req.body.ambu);
+	splitIvhl = removeNumber.removeNumberFunction(req.body.ivhl);
+	splitGait = removeNumber.removeNumberFunction(req.body.gait);
+	splitMental = removeNumber.removeNumberFunction(req.body.mental);
+	
 	new MasterFall({
 		patientID: req.session.patient.patientID,
 		fallID: fallid,
 		date: req.body.dateFall,
 		datetime: datetime,
-		history: splitHistory,
-		secondary: splitSecondary,
-		ambu: splitAmbu2,
-		ivhl: splitIvhl,
-		gait: splitGait,
-		mental: splitMental,
+
+		history: req.body.history,
+		secondary: req.body.secondary,
+		ivhl: req.body.ivhl,
+		gait: req.body.gait,
+		mental: req.body.mental,
+		ambu: req.body.ambu,
+		
+		historySplit: splitHistory,
+		secondarySplit: splitSecondary,
+		ambuSplit: splitAmbu,
+		ivhlSplit: splitIvhl,
+		gaitSplit: splitGait,
+		mentalSplit: splitMental,
+
+
 		totalmf: totalmf,
 
 
@@ -1070,7 +1095,7 @@ router.post('/add-fall', ensureAuthenticated, ensureAuthorised, (req, res) => {
 
 	res.redirect('/master/fall');
 })
-
+//Remove function
 var removeNumber = {
     removeNumberFunction: function(str) {
 		var i;

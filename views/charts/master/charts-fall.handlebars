@@ -27,12 +27,12 @@
                 {{else}}
                 <td><a href="/student/fall/{{../recordID}}/{{fallID}}">{{datetime}}</a></td>
                 {{/unless}}
-                <td>{{history}}</td>
-                <td>{{secondary}}</td>
-                <td>{{ambu}}</td>
-                <td>{{ivhl}}</td>
-                <td>{{gait}}</td>
-                <td>{{mental}}</td>
+                <td>{{historySplit}}</td>
+                <td>{{secondarySplit}}</td>
+                <td>{{ambuSplit}}</td>
+                <td>{{ivhlSplit}}</td>
+                <td>{{gaitSplit}}</td>
+                <td>{{mentalSplit}}</td>
                 <td>{{totalmf}}</td>
                 {{!-- <td>{{patientID}}</td> --}}
                 {{#unless ../userType}}
@@ -62,15 +62,19 @@
 {{else}}
 <form action="/student/edit-fall/{{recordID}}/{{editFall.fallID}}?_method=PUT" method="POST" id="editFall">
 {{/unless}}
-<input type="hidden" name="_method" value="PUT">
 {{else}}
-<form action="/master/add-fall" method="POST" id="addFall">
+{{#unless userType}}
+    <form action="/master/add-fall" method="POST" id="addFall">
+    {{!-- <input type="hidden" name="_method" value="PUT"> --}}
+{{else}}
+    <form action="/student/add-fall/{{recordID}}" method="POST" id="addFall">
+    {{/unless}}
 {{/if}}
 
 <div id="fallid" class="row" >       
 
 <div class="col s12 m3 input-field">
-          <input id="dateFall" type="text" class="datepicker" name="dateFall" value="{{editFall.date}}">
+          <input id="dateFall" type="text" class="datepicker" name="dateFall" value="{{editFall.date}}" required> 
           <label for="dateFall">Date</label>
           <span class="helper-text">DD/MM/YYYY</span>
 
@@ -236,15 +240,16 @@
 
         <div class="col s12 m4">
             {{#if editFall}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editFall">Save
+            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editFall">Save Changes
             {{else}}
-            {{#unless userType}}
+           
             <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addFall">Save
-            {{/unless}}
+            
             {{/if}}
-            {{#unless userType}}
+           {{#unless userType}}
                 <i class="material-icons right">send</i>
-                </button>
+                {{else}}
+                <i class="material-icons right">send</i>
             {{/unless}}
         </div>
 </div>

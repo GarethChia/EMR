@@ -1734,7 +1734,7 @@ router.get('/braden/:recordID/:bradenID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
 	MasterBraden.find({ patientID: req.params.recordID }).then(newBraden => {
 		MasterBraden.findOne({ bradenID: req.params.bradenID }).then(editBraden => {
-			res.render('charts/master/charts-braden', {
+			res.render('charts/student/charts-braden', {
 				recordID: req.params.recordID,
 				userType: userType,
 				newBraden: newBraden,
@@ -1745,14 +1745,60 @@ router.get('/braden/:recordID/:bradenID', ensureAuthenticated, (req, res) => {
 		})
 	})
 })
+//add braden info
+router.post('/add-braden/:recordID', ensureAuthenticated, (req, res) => {
+	bradenID = (new standardID('AAA0000')).generate();
+	datetime = moment(req.body.dateBraden, 'DD/MM/YYYY').format('MM/DD/YYYY') + " ";
 
+	total = parseInt(req.body.sensePerc.slice(-1)) 
+	+ parseInt(req.body.moisture.slice(-1)) 
+	+ parseInt(req.body.activity.slice(-1))
+	+ parseInt(req.body.mobility.slice(-1)) 
+	+ parseInt(req.body.nutrition.slice(-1)) 
+	+ parseInt(req.body.fns.slice(-1));
+
+	splitSensePerc = removeNumber.removeNumberFunction(req.body.sensePerc);
+	splitMoisture = removeNumber.removeNumberFunction(req.body.moisture);
+	splitActivity = removeNumber.removeNumberFunction(req.body.activity);
+	splitMobility = removeNumber.removeNumberFunction(req.body.mobility);
+	splitNutrition = removeNumber.removeNumberFunction(req.body.nutrition);
+	splitFns = removeNumber.removeNumberFunction(req.body.fns);
+
+
+	new MasterBraden({
+		patientID: req.params.recordID,
+		bradenID: bradenID,
+		date: req.body.dateBraden,
+		datetime: datetime,
+		sensePerc: splitSensePerc,
+		moisture: splitMoisture,
+		activity: splitActivity,
+		mobility: splitMobility,
+		nutrition: splitNutrition,
+		fns: splitFns,
+		total: total,
+
+
+	}).save();
+
+	res.redirect('/student/braden/'+req.params.recordID);
+})
+//Delete braden information
+router.delete('/del-braden/:recordID/:bradenID', ensureAuthenticated, ensureAuthorised, (req, res) => {
+	MasterBraden.deleteOne({bradenID: req.params.bradenID}, function(err) {
+		if (err) {
+			console.log("cannot delete braden record");
+		}
+	});
+	res.redirect('/student/braden/'+ req.params.recordID);
+})
 //Edit braden information
 router.put('/edit-braden/:recordID/:bradenID', ensureAuthenticated, (req,res) => {
 	datetime = moment(req.body.dateBraden, 'DD/MM/YYYY').format('MM/DD/YYYY') + " ";
 	total = parseInt(req.body.sensePerc.slice(-1)) + parseInt(req.body.moisture.slice(-1)) + parseInt(req.body.activity.slice(-1))+ parseInt(req.body.mobility.slice(-1)) 
 		+ parseInt(req.body.nutrition.slice(-1)) + parseInt(req.body.fns.slice(-1));
 
-	MasterBraden.findOne({ bradenID: req.params.bradenID }).then(editBraden => {
+	MasterBraden.findOne({ bradenID: req.oarams.bradenID }).then(editBraden => {
 		editBraden.date = req.body.dateBraden,
 		editBraden.datetime = datetime,
 		editBraden.sensePerc = req.body.sensePerc,
@@ -1814,7 +1860,43 @@ router.get('/HistoryTaking/:recordID', ensureAuthenticated, (req, res) => {
 		})	
 	})
 })
+//Add fall
+router.post('/add-fall/:recordID', ensureAuthenticated, (req, res) => {
+	fallID = (new standardID('AAA0000')).generate();
+	datetime = moment(req.body.dateFall, 'DD/MM/YYYY').format('MM/DD/YYYY') + " ";
 
+	totalmf = parseInt(req.body.history.slice(-2))
+	+ parseInt(req.body.secondary.slice(-2)) 
+	+ parseInt(req.body.ambu.slice(-2))
+	+ parseInt(req.body.ivhl.slice(-2)) 
+	+ parseInt(req.body.gait.slice(-2)) 
+	+ parseInt(req.body.mental.slice(-2));
+	//splitting to display only the sting value w/o (+0)
+
+	splitHistory = removeNumber.removeNumberFunction(req.body.history);
+	splitSecondary = removeNumber.removeNumberFunction(req.body.secondary);	
+	splitAmbu = removeNumber.removeNumberFunction(req.body.ambu);
+	splitIvhl = removeNumber.removeNumberFunction(req.body.ivhl);
+	splitGait = removeNumber.removeNumberFunction(req.body.gait);
+	splitMental = removeNumber.removeNumberFunction(req.body.mental);
+	new MasterFall({
+		patientID: req.params.recordID,
+		fallID: fallID,
+		date: req.body.dateFall,
+		datetime: datetime,
+		history: splitHistory,
+		secondary: splitSecondary,
+		ambu: splitAmbu,
+		ivhl: splitIvhl,
+		gait: splitGait,
+		mental: splitMental,
+		totalmf: totalmf,
+
+
+	}).save();
+
+	res.redirect('/student/fall/'+ req.params.recordID);
+})
 //Add HistoryTaking
 router.post('/add-history/:recordID', ensureAuthenticated, (req, res) => {
 	historyId = (new standardID('AAA0000')).generate();
@@ -2039,5 +2121,21 @@ router.put('/edit-mdp/:recordID/:mdpID', ensureAuthenticated, (req,res) => {
 	});
 	
 })
+//Remove function
+var removeNumber = {
+    removeNumberFunction: function(str) {
+		var i;
+		var text = "";
+        var res = str.split(" ");
+		for (i = 0; i < res.length; i++) {
+			
+			if (!(res[i] == "+" || isNaN(res[i]) == false || res[i].charAt(0) == "+")){
+			text += res[i] + " ";
+			}
+		}
+		
+		return text;
+    }
+};
 
 module.exports = router;

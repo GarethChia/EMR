@@ -26,12 +26,12 @@
                 {{else}}
                 <td><a href="/student/braden/{{../recordID}}/{{bradenID}}">{{datetime}}</a></td>
                 {{/unless}}
-                <td>{{sensePerc}}</td>
-                <td>{{moisture}}</td>
-                <td>{{activity}}</td>
-                <td>{{mobility}}</td>
-                <td>{{nutrition}}</td>
-                <td>{{fns}}</td>
+                <td>{{sensePercSplit}}</td>
+                <td>{{moistureSplit}}</td>
+                <td>{{activitySplit}}</td>
+                <td>{{mobilitySplit}}</td>
+                <td>{{nutritionSplit}}</td>
+                <td>{{fnsSplit}}</td>
                 <td>{{total}}</td>
                 {{!-- <td>{{patientID}}</td> --}}
                 {{#unless ../userType}}
@@ -55,20 +55,24 @@
 <br>
 
 {{#if editBraden}}
-{{#unless userType}}
-<form action="/master/edit-braden/{{editBraden.bradenID}}?_method=PUT" method="POST" id="editBraden">
+    {{#unless userType}}
+    <form action="/master/edit-braden/{{editBraden.bradenID}}?_method=PUT" method="POST" id="editBraden">
+    {{else}}
+    <form action="/student/edit-braden/{{recordID}}/{{editBraden.bradenID}}?_method=PUT" method="POST" id="editBraden">
+    {{/unless}}
 {{else}}
-<form action="/student/edit-braden/{{recordID}}/{{editBraden.bradenID}}?_method=PUT" method="POST" id="editBraden">
-{{/unless}}
-<input type="hidden" name="_method" value="PUT">
-{{else}}
-<form action="/master/add-braden" method="POST" id="addBraden">
+    {{#unless userType}}
+{{!-- <input type="hidden" name="_method" value="PUT"> --}}
+        <form action="/master/add-braden" method="POST" id="addBraden">
+        {{else}}
+        <form action="/student/add-braden/{{recordID}}" method="POST" id="addBraden">
+    {{/unless}}
 {{/if}}
 
 <div id="bradenid" class="row" >       
 
 <div class="col s12 m3 input-field">
-          <input id="dateBraden" type="text" class="datepicker" name="dateBraden" value="{{editBraden.date}}">
+          <input id="dateBraden" type="text" class="datepicker" name="dateBraden" value="{{editBraden.date}}" required>
           <label for="dateBraden">Date</label>
           <span class="helper-text">DD/MM/YYYY</span>
 
@@ -357,15 +361,14 @@
 
         <div class="col s12 m4">
             {{#if editBraden}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editBraden">Save
+            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editBraden">Save Changes
             {{else}}
-            {{#unless userType}}
             <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addBraden">Save
-            {{/unless}}
             {{/if}}
             {{#unless userType}}
                 <i class="material-icons right">send</i>
-                </button>
+                {{else}}
+                <i class="material-icons right">send</i>
             {{/unless}}
         </div>
 </div>

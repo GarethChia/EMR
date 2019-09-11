@@ -29,6 +29,13 @@ const MasterBradenSchema = new Schema({
 	mobility:		 {type: String, default: ''},
 	nutrition: 		 {type: String, default: ''},
 	fns:		 {type: String, default: ''},
+
+	sensePercSplit:	 {type: String, default: ''},
+	activitySplit:	 {type: String, default: ''},
+	moistureSplit:		 {type: String, default: ''},
+	mobilitySplit:		 {type: String, default: ''},
+	nutritionSplit: 		 {type: String, default: ''},
+	fnsSplit:		 {type: String, default: ''},
 	total:		 {type: String, default: ''},
 	
 });

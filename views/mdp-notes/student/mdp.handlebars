@@ -5,7 +5,8 @@
         <table id="ioRecords" class="hover order-column">
             <thead>
                 <tr>
-                    <th>Datetime</th>
+                    <th>Date</th>
+                    <th>Time</th>
                     <th>Health Provider</th>
                     <th>Progress Notes</th>
                     <th>User</th>
@@ -16,7 +17,7 @@
                 {{#if newMDP}}
                     {{#each newMDP}}
                     <tr style="height: 60px">
-                        <td><a href="/student/mdp/{{studentPatientID}}/{{mdpID}}">{{formatDatetime datetime}}</a></td>
+                        <td><a href="/student/mdp/{{studentPatientID}}/{{mdpID}}">{{date}}</a></td>
                         <td>{{healthProvider}}</td>
                         <td>{{progressNotes}}</td>
                         <td>{{selectUser}}</td>
@@ -49,7 +50,8 @@
         <table id="ioRecords" class="hover order-column">
             <thead>
                 <tr>
-                    <th>Datetime</th>
+                    <th>Date</th>
+                    <th>Time</th>
                     <th>Health Provider</th>
                     <th>Progress Notes</th>
                     <th>User</th>
@@ -60,7 +62,9 @@
                 {{#if newMasterMDP}}
                     {{#each newMasterMDP}}
                     <tr style="height: 60px">
-                        <td>{{formatDatetime datetime}}</td>
+                        {{!-- <td>{{formatDatetime datetime}}</td> --}}
+                        <td>{{date}}</td>
+                        <td>{{time}}</td>
                         <td>{{healthProvider}}</td>
                         <td>{{progressNotes}}</td>
                         <td>{{selectUser}}</td>
