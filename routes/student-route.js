@@ -1718,7 +1718,8 @@ router.put('/edit-output/:recordID/:outputID', ensureAuthenticated, (req, res) =
 //open route to braden page
 router.get('/braden/:recordID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
-	MasterBraden.find({ patientID: req.params.recordID }).then(newBraden => {
+	MasterBraden.find({ patientID: req.session.patient.patientID }).then(newBraden => {
+		console.log(newBraden);
 		res.render('charts/master/charts-braden', {
 			recordID: req.params.recordID,
 			userType: userType,
@@ -1732,9 +1733,9 @@ router.get('/braden/:recordID', ensureAuthenticated, (req, res) => {
 //get single braden info
 router.get('/braden/:recordID/:bradenID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
-	MasterBraden.find({ patientID: req.params.recordID }).then(newBraden => {
+	MasterBraden.find({ patientID: req.session.patient.patientID }).then(newBraden => {
 		MasterBraden.findOne({ bradenID: req.params.bradenID }).then(editBraden => {
-			res.render('charts/student/charts-braden', {
+			res.render('charts/master/charts-braden', {
 				recordID: req.params.recordID,
 				userType: userType,
 				newBraden: newBraden,
@@ -1766,17 +1767,24 @@ router.post('/add-braden/:recordID', ensureAuthenticated, (req, res) => {
 
 
 	new MasterBraden({
-		patientID: req.params.recordID,
-		bradenID: bradenID,
-		date: req.body.dateBraden,
-		datetime: datetime,
-		sensePerc: splitSensePerc,
-		moisture: splitMoisture,
-		activity: splitActivity,
-		mobility: splitMobility,
-		nutrition: splitNutrition,
-		fns: splitFns,
-		total: total,
+		patientID: req.session.patient.patientID,
+			bradenID: bradenID,
+			date: req.body.dateBraden,
+			datetime: datetime,
+			sensePercSplit: splitSensePerc,
+			moistureSplit: splitMoisture,
+			activitySplit: splitActivity,
+			mobilitySplit: splitMobility,
+			nutritionSplit: splitNutrition,
+			fnsSplit: splitFns,
+			total: total,
+
+			sensePerc: req.body.sensePerc,
+			activity:	req.body.activity,
+			moisture: req.body.moisture,
+			mobility: req.body.mobility,
+			nutrition: req.body.nutrition,
+			fns: req.body.fns,
 
 
 	}).save();
@@ -1832,7 +1840,7 @@ router.get('/HistoryTaking/:recordID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
 	StudentHistory.find({ user: req.user.id, patientID: req.params.recordID})
 	.then(newHistory => {
-		StudentHistory.findOne({ patientID: req.params.recordID})
+		StudentHistory.findOne({ patientID: req.params.recordID })
 		.then(editHistory => {
 			if (editHistory == null)
 			{
@@ -1848,6 +1856,7 @@ router.get('/HistoryTaking/:recordID', ensureAuthenticated, (req, res) => {
 			{
 				console.log("History Taking is not empty: "+editHistory);
 				res.render('HistoryTaking/student/add_HistoryTaking', {
+					recordID:req.params.recordID,
 					newHistory: newHistory,
 					userType: userType,
 					patient: req.session.patient,
@@ -1884,12 +1893,21 @@ router.post('/add-fall/:recordID', ensureAuthenticated, (req, res) => {
 		fallID: fallID,
 		date: req.body.dateFall,
 		datetime: datetime,
-		history: splitHistory,
-		secondary: splitSecondary,
-		ambu: splitAmbu,
-		ivhl: splitIvhl,
-		gait: splitGait,
-		mental: splitMental,
+		history: req.body.history,
+		secondary: req.body.secondary,
+		ivhl: req.body.ivhl,
+		gait: req.body.gait,
+		mental: req.body.mental,
+		ambu: req.body.ambu,
+		
+		historySplit: splitHistory,
+		secondarySplit: splitSecondary,
+		ambuSplit: splitAmbu,
+		ivhlSplit: splitIvhl,
+		gaitSplit: splitGait,
+		mentalSplit: splitMental,
+
+
 		totalmf: totalmf,
 
 
@@ -1913,16 +1931,19 @@ router.post('/add-history/:recordID', ensureAuthenticated, (req, res) => {
 		travelH: req.body.travelH,
 		historyId: historyId
 	}).save();
-		res.redirect('/student/HistoryTaking/' +req.params.recordID );
+		res.redirect('/student/HistoryTaking/' + req.params.recordID );
 })
 //One HistoryTaking by ID
 router.get('/HistoryTaking/:recordID', ensureAuthenticated, (req,res) => {
+	userType = req.user.userType == 'student';
 	StudentHistory.find({ patientID: req.params.recordID}).then(newHistory => {
 		StudentHistory.findOne({ patientID: req.params.recordID }).then(editHistory =>{
 			res.render('HistoryTaking/student/add_HistoryTaking',{
 				newHistory:newHistory,
 				editHistory: editHistory,
 				patient: req.session.patient,
+				userType: userType,
+				recordID: req.params.recordID,
 				showMenu: true
 			})
 		
