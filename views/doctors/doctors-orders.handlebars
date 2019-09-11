@@ -9,7 +9,8 @@
     <table class="hover order-column">
         <thead>
             <tr>
-                <th>Datetime</th>
+                <th>Date</th>
+                <th>Time</th>
                 <th>Orders</th>
                 <th>Status</th>
                 <th></th>
@@ -23,10 +24,11 @@
                 {{#each docOrders}}
                 <tr>
                     {{#unless ../userType}}
-                    <td><a href="/master/doctor/orders/{{orderID}}">{{formatDatetime datetime}}</a></td>
+                    <td><a href="/master/doctor/orders/{{orderID}}">{{date}}</a></td>
                     {{else}}                    
-                    <td><a href="/student/doctor/orders/{{../recordID}}/{{orderID}}">{{formatDatetime datetime}}</a></td>
+                    <td><a href="/student/doctor/orders/{{../recordID}}/{{orderID}}">{{date}}</a></td>
                     {{/unless}}
+                    <td>{{time}}</td>
                     <td>{{orders}}</td>
                     <td>
                         <p>

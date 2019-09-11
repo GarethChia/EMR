@@ -237,7 +237,8 @@
         <table id="vitalRecords" class="hover order-column">
             <thead>
                 <tr>
-                    <th>Datetime</th>
+                    <th>Date</th>
+                    <th>Time</th>
                     <th>Temp (°C)</th>
                     <th>Temp Route</th>
                     <th>Heart Rate (BPM)</th>
@@ -261,10 +262,11 @@
                     {{#each newVital}}
                     <tr style="height: 60px">
                         {{#unless ../userType}}
-                        <td><a href="/master/vital/{{vitalID}}">{{formatDatetime datetime}}</a></td>
+                        <td><a href="/master/vital/{{vitalID}}">{{date}}</a></td>
                         {{else}}
-                        <td><a href="/student/vital/{{../recordID}}/{{vitalID}}">{{formatDatetime datetime}}</a></td>
+                        <td><a href="/student/vital/{{../recordID}}/{{vitalID}}">{{date}}</a></td>
                         {{/unless}}
+                        <td>{{time}}</td>
                         <td>{{temp}}</td>
                         <td>{{tempRoute}}</td>
                         <td>{{heartRate}}</td>
@@ -470,7 +472,8 @@
         <table id="painRecords" class="hover order-column">
             <thead>
                 <tr>
-                    <th>Datetime</th>
+                    <th>Date</th>
+                    <th>Time</th>
                     <th>Pain Scale</th>
                     <th>Pain Score (Site 1)</th>
                     <th>Onset</th>
@@ -494,10 +497,11 @@
                     {{#each painData}}
                     <tr style="height: 60px">
                         {{#unless ../userType}}
-                        <td><a href="/master/pain/{{painID}}">{{formatDatetime datetime}}</a></td>
+                        <td><a href="/master/pain/{{painID}}">{{date}}</a></td>
                         {{else}}
-                        <td><a href="/student/pain/{{../recordID}}/{{painID}}">{{formatDatetime datetime}}</a></td>
+                        <td><a href="/student/pain/{{../recordID}}/{{painID}}">{{date}}</a></td>
                         {{/unless}}
+                        <td>{{time}}</td>
                         <td>{{painScale}}</td>
                         <td>{{painScore}}</td>
                         <td>{{onset}}</td>
@@ -691,7 +695,8 @@
         <table id="oxyRecords" class="hover order-column">
             <thead>
                 <tr>
-                    <th>Datetime</th>
+                    <th>Date</th>
+                    <th>Time</th>
                     <th>O2 Device</th>
                     <th>Humidifier</th>
                     <th>O2 Amount</th>
@@ -709,10 +714,11 @@
                     {{#each oxyData}}
                     <tr style="height: 60px">
                         {{#unless ../userType}}
-                        <td><a href="/master/oxygen/{{oxygenID}}">{{formatDatetime datetime}}</a></td>
+                        <td><a href="/master/oxygen/{{oxygenID}}">{{date}}</a></td>
                         {{else}}
-                        <td><a href="/student/oxygen/{{../recordID}}/{{oxygenID}}">{{formatDatetime datetime}}</a></td>
+                        <td><a href="/student/oxygen/{{../recordID}}/{{oxygenID}}">{{date}}</a></td>
                         {{/unless}}
+                        <td>{{time}}</td>
                         <td>{{o2Device}}</td>
                         <td>{{humidifier}}</td>
                         <td>{{o2Amt}}</td>
@@ -887,7 +893,8 @@
         <table id="whRecords" class="hover order-column">
             <thead>
                 <tr>
-                    <th>Datetime</th>
+                    <th>Date</th>
+                    <th>Time</th>
                     <th>Height (m)</th>
                     <th>Estimated Height (m)</th>
                     <th>Weight (kg)</th>
@@ -906,10 +913,11 @@
                     {{#each whData}}
                     <tr>
                         {{#unless ../userType}}
-                        <td><a href="/master/wh/{{whID}}">{{formatDatetime datetime}}</a></td>
+                        <td><a href="/master/wh/{{whID}}">{{date}}</a></td>
                         {{else}}
-                        <td><a href="/student/wh/{{../recordID}}/{{whID}}">{{formatDatetime datetime}}</a></td>
+                        <td><a href="/student/wh/{{../recordID}}/{{whID}}">{{date}}</a></td>
                         {{/unless}}
+                        <td>{{time}}</td>
                         <td>{{height}}</td>
                         <td>{{heightEst}}</td>
                         <td>{{weight}}</td>
