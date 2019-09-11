@@ -1045,7 +1045,8 @@ router.post('/add-fall', ensureAuthenticated, ensureAuthorised, (req, res) => {
 	splitHistory = req.body.history.slice(0,3);
 	splitSecondary = req.body.secondary.slice(0,3);
 	// splitAmbu = req.body.ambu.split(" ")[0];
-	splitAmbu2 = splitFunction(req.body.ambu);
+	//splitAmbu2 = splitFunction(req.body.ambu);
+	splitAmbu2 = removeNumber.removeNumberFunction(req.body.ambu);
 	// splitAmbu2 = req.body.ambu.split(" ")[1];
 	// totalAmbu = splitAmbu + " "+splitAmbu2;
 	splitIvhl = req.body.ivhl.slice(0,3);
@@ -1069,6 +1070,22 @@ router.post('/add-fall', ensureAuthenticated, ensureAuthorised, (req, res) => {
 
 	res.redirect('/master/fall');
 })
+
+var removeNumber = {
+    removeNumberFunction: function(str) {
+		var i;
+		var text = "";
+        var res = str.split(" ");
+		for (i = 0; i < res.length; i++) {
+			
+			if (!(res[i] == "+" || isNaN(res[i]) == false || res[i].charAt(0) == "+")){
+			text += res[i] + " ";
+			}
+		}
+		
+		return text;
+    }
+};
 
 //Delete fall information
 router.delete('/del-fall/:fallID', ensureAuthenticated, ensureAuthorised, (req, res) => {
