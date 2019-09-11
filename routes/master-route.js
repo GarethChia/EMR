@@ -1042,18 +1042,26 @@ router.post('/add-fall', ensureAuthenticated, ensureAuthorised, (req, res) => {
 	+ parseInt(req.body.ivhl.slice(-2)) 
 	+ parseInt(req.body.gait.slice(-2)) 
 	+ parseInt(req.body.mental.slice(-2));
-
+	splitHistory = req.body.history.slice(0,3);
+	splitSecondary = req.body.secondary.slice(0,3);
+	// splitAmbu = req.body.ambu.split(" ")[0];
+	splitAmbu2 = splitFunction(req.body.ambu);
+	// splitAmbu2 = req.body.ambu.split(" ")[1];
+	// totalAmbu = splitAmbu + " "+splitAmbu2;
+	splitIvhl = req.body.ivhl.slice(0,3);
+	splitGait = req.body.gait.split(" ")[0];
+	splitMental = req.body.mental.split(" ")[0];
 	new MasterFall({
 		patientID: req.session.patient.patientID,
 		fallID: fallid,
 		date: req.body.dateFall,
 		datetime: datetime,
-		history: req.body.history,
-		secondary: req.body.secondary,
-		ambu: req.body.ambu,
-		ivhl: req.body.ivhl,
-		gait: req.body.gait,
-		mental: req.body.mental,
+		history: splitHistory,
+		secondary: splitSecondary,
+		ambu: splitAmbu2,
+		ivhl: splitIvhl,
+		gait: splitGait,
+		mental: splitMental,
 		totalmf: totalmf,
 
 
@@ -1082,16 +1090,15 @@ router.put('/edit-fall/:fallID', ensureAuthenticated, ensureAuthorised, (req,res
 		+ parseInt(req.body.ivhl.slice(-2)) 
 		+ parseInt(req.body.gait.slice(-2)) 
 		+ parseInt(req.body.mental.slice(-2));
-		
 		MasterFall.findOne({ fallID: req.params.fallID }).then(editFall => {
 			editFall.date = req.body.dateFall,
 			editFall.datetime = datetime,
 			editFall.history = req.body.history,
-			editFall.secondary = req.body.secondary,
-			editFall.ambu = req.body.ambu,
-			editFall.ivhl = req.body.ivhl,
-			editFall.gait = req.body.gait,
-			editFall.mental = req.body.mental,
+			editFall.secondary = req.body.secondary.slice(0,3),
+			editFall.ambu = req.body.ambu.split(" "),
+			editFall.ivhl = req.body.ivhl.split(" "),
+			editFall.gait = req.body.gait.split(" "),
+			editFall.mental = req.body.mental.split(" "),
 			editFall.totalmf = totalmf
 		
 			editFall.save();

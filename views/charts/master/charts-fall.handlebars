@@ -287,6 +287,38 @@
 }
 </style>
 
+<script
+		src="https://code.jquery.com/jquery-3.3.1.min.js"
+		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+		crossorigin="anonymous">
+</script>
+
+<script>
+    function splitFunction(string str) {
+  //var str = "Bed Rest/Nurse Assistant +0";
+  var res = document.getElementById("#ambu").split(" ");
+  	var i;
+  	var text;
+	for (i = 0; i < res.length; i++) {
+  		
+        if (res[i] == "+"){
+        
+        }
+        else if (isNaN(res[i]) == false)
+        {
+            
+        }
+        else
+        {
+        	text += res[i] + "<br>";
+        }
+	}
+    //document.getElementById("demo").innerHTML = text;
+    return text;
+}
+
+//splitAmbu2 = myFunction(req.body.ambu);
+</script>
 <script>
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -297,6 +329,7 @@
         const ivhl = document.querySelector('#ivhl');
         const gait = document.querySelector('#gait');
         const mental = document.querySelector('#mental');
+        const ambu1 = $("#ambu option:selected").text();
 
         M.Datepicker.init(dateFall, {
             maxDate: new Date(),
@@ -320,6 +353,9 @@
             
         })
         M.FormSelect.init(mental, {
+            
+        })
+        M.FormSelect.init(ambu1, {
             
         })
     })
