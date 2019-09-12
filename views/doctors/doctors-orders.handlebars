@@ -38,8 +38,23 @@
                             </label>
                         </p>
                     </td>
+                    {{!-- <td>
+                        <i class="fa fa-picture-o fa-2x" style="{{isResulted status}}" ></i>
+                    </td> --}}
                     <td>
-                        <i class="fa fa-picture-o fa-2x" style="{{isResulted status}}"></i>
+                        <a class="waves-effect waves-light btn modal-trigger" href="#doctorOrdersImage{{orderID}}" style="{{isResulted status}}">
+                            <i class="fa fa-picture-o fa-2x" id="picture{{orderID}}"></i>
+                        </a>
+                        <div id="doctorOrdersImage{{orderID}}" class="modal">
+                            <div class="modal-content">
+                                <div class="col s12 m12">
+                                    <img class="materialboxed" id="ordersImage" style="display: block;margin-left: auto;margin-right: auto; max-height: 20em; min-height: 20em;" src="/assets/img/upload/{{uploadUrl}}">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+                            </div>
+                        </div>
                     </td>
                     {{#unless ../userType}}
                     <td>
@@ -187,5 +202,8 @@
         }) --}}
 
     })
-
+    document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.modal');
+        var instances = M.Modal.init(elems, {});    
+    });
 </script>

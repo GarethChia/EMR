@@ -1245,7 +1245,8 @@ router.delete('/del-wh/:recordID/:whID', ensureAuthenticated, (req, res) => {
 //Starting route for doctor's orders
 router.get('/doctor/orders/:recordID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
-	DoctorOrders.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(docOrders => {
+	//DoctorOrders.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(docOrders => {
+	DoctorOrders.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(docOrders => {
 		res.render('doctors/doctors-orders', {
 			recordID: req.params.recordID,
 			userType: userType,
@@ -1259,7 +1260,8 @@ router.get('/doctor/orders/:recordID', ensureAuthenticated, (req, res) => {
 //Get single doctor's orders
 router.get('/doctor/orders/:recordID/:orderID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
-	DoctorOrders.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(docOrders => {
+	//DoctorOrders.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(docOrders => {
+	DoctorOrders.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(docOrders => {
 		DoctorOrders.findOne({ orderID: req.params.orderID }).then(editOrder => {
 
 			editOrder.date = moment(editOrder.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
