@@ -572,6 +572,18 @@
             <form action="/student/add-pain/{{recordID}}" method="POST" id="addPain">
         {{/unless}}
     {{/if}}
+    <div class="card purple lighten-5" id="imgModal">
+        <div class="card-content">
+            <div id="imgModalWong" >
+                <p>number1</p>
+                <img src="/assets/img/wongbakerImage.jpg">
+            </div>
+            <div id="imgModalFLAAC" >
+                    <p>number2</p>
+                    <img src="/assets/img/FLACCImage.JPG">
+            </div>
+        </div>
+    </div>
         <div class="card purple lighten-5">
             <div class="card-content">
                 <div id="painInfo">
@@ -672,6 +684,7 @@
             </div>
         </div>
     </form>
+
 
     <div class="row">
         <div class="col s12 m8"></div>
@@ -1070,8 +1083,64 @@
 		crossorigin="anonymous">
 </script>
 <script>
+    /** function getval(sel)
+    {
+        $("img").hide();
+            console.log(sel.value);
+            if(sel.value == 'Wong-Baker')
+            {
+                $('#imgModalWong').show();
+                $("#imgModalFLAAC").hide();
+            }
+            if(sel.value == 'FLACC')
+            {
+                $('#imgModalFLAAC').show()
+                $("#imgModalWong").hide();
+            }
+            else
+            {
+                $("#imgModalFLAAC").hide();
+                $("#imgModalWong").hide();
+            }
+        } **/
+        //$("img").hide();
+        $(document).ready(function(){
+            $("#imgModalFLAAC").hide();
+            $("#imgModalWong").hide();
+            $("#imgModal").hide();
+
+            $("#painScale").change(function(){
+                
+                var sel = this.value;
+                console.log(sel);
+                if(sel == 'Wong-Baker')
+                {
+                    $("#imgModal").show();
+                    $('#imgModalWong').show();
+                    $("#imgModalFLAAC").hide();
+                }
+                else if(sel == 'FLACC')
+                {
+                    $("#imgModal").show();
+                    $('#imgModalFLAAC').show()
+                    $("#imgModalWong").hide();
+                }
+                else
+                {
+                    $("#imgModal").hide();
+                    $("#imgModalFLAAC").hide();
+                    $("#imgModalWong").hide();
+                }
+            })
+        });
+    
+        
+    
+</script>
+<script>
 $(document).ready(function(){
- 
+    //$("#imgModalFLAAC").hide();
+    //$("#imgModalWong").hide();
   $("#height").keyup(function(){
       var height = $("#height").val();
       var weight = $("#weight").val();

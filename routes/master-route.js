@@ -852,7 +852,7 @@ router.put('/edit-braden/:bradenID', ensureAuthenticated, ensureAuthorised, (req
 
 // Open HistoryTakng page
 router.get('/HistoryTaking', ensureAuthenticated, ensureAuthorised, (req, res) => {
-	MasterHistory.find({ user: req.user.id, patientID: req.session.patient.patientID})
+	MasterHistory.find({masterpatientID: req.session.patient.patientID})
 	.then(newHistory => {
 		MasterHistory.findOne({ user: req.user.id, patientID: req.session.patient.patientID})
 	.then(editHistory => {
@@ -884,6 +884,7 @@ router.post('/add-history', ensureAuthenticated, ensureAuthorised, (req, res) =>
 	historyId = (new standardID('AAA0000')).generate();
 	new MasterHistory({
 		user: req.user.id,
+		by: req.user.firstName,
 		patientID: req.session.patient.patientID,
 		chiefComp: req.body.chiefComp,
 		historyPresent: req.body.historyPresent,

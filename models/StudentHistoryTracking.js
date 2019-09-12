@@ -25,7 +25,9 @@ const StudentHistorySchema = new Schema({
 	familyH:	 {type: String, default:''},
 	socialH:	 {type: String, default: ''},
     travelH:	 {type: String, default: ''},
-    historyId:  {type: String, default:''},
+	historyId:  {type: String, default:''},
+	by: {type: String, default:''},
+	
 	
 });
 

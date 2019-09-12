@@ -22,15 +22,19 @@
 .tooltip:hover .tooltiptext {
   visibility: visible;
 }
-\
+.textTable{
+    max-width:200px;
+    word-wrap:break-word;
+}
 </style>
 <br/>
 <div id="io">
     <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">History Taking</div>
     <div style="overflow-x:auto; max-height: 16em;">
         <table id="ioRecords" class="hover order-column">
-            {{!-- <thead>
+            <thead>
                 <tr>
+                    <th>Created By</th>
                     <th>Chief Complains</th>
                     <th>History of Present Illness</th>
                     <th>Allergy Status</th>
@@ -39,14 +43,24 @@
                     <th>Family History</th>
                     <th>Social History</th>
                     <th>Travel History</th>
-                  {{#unless userType}}
+                  {{!-- {{#unless userType}}
                     <th>Delete</th>
-                    {{/unless}} 
+                    {{/unless}}  --}}
                 </tr>
-            </thead> --}}
+            </thead>
             <tbody>
                 {{#if newHistory}}
                     {{#each newHistory}}
+                    <tr style="height: 60px;">
+                        <td>{{by}}</td>
+                        <td class="textTable">{{chiefComp}}</td>
+                        <td class="textTable">{{historyPresent}}</td>
+                        <td class="textTable">{{allergy}}</td>
+                        <td class="textTable">{{medicalH}}</td>
+                        <td class="textTable">{{surgicalH}}</td>
+                        <td class="textTable">{{familyH}}</td>
+                        <td class="textTable">{{socialH}}</td>
+                        <td class="textTable">{{travelH}}</td>
                     {{!-- <tr style="height: 60px">
                         {{#unless ../userType}}
                         <td><a href="/student/HistoryTaking/{{recordID}}/{{historyId}}">{{historyId}}</a></td>
@@ -72,6 +86,7 @@
                         </td>
                         {{/unless}}
                     </tr>--}}
+                    </tr>
                     {{/each}} 
                 {{else}}
                 <p id="noRecord">You have not created any History Taking yet</p>
