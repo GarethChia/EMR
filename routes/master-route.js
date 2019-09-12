@@ -1978,7 +1978,6 @@ router.post('/add-mdp', ensureAuthenticated, ensureAuthorised, (req, res) => {
 		time: req.body.timeMDP,
 		datetime: datetime,
 		selectUser: req.body.selectUser,
-		healthProvider: req.body.healthProvider,
 		progressNotes: req.body.progressNotes
 	}).save();
 	res.redirect('/master/mdp');

@@ -7,9 +7,8 @@
                 <tr>
                     <th>Date</th>
                     <th>Time</th>
-                    <th>Health Provider</th>
                     <th>Progress Notes</th>
-                    <th>User</th>
+                    <th>Health Provider</th>
                     <th>Delete</th>
                 </tr>
             </thead>
@@ -18,7 +17,7 @@
                     {{#each newMDP}}
                     <tr style="height: 60px">
                         <td><a href="/student/mdp/{{studentPatientID}}/{{mdpID}}">{{date}}</a></td>
-                        <td>{{healthProvider}}</td>
+                        <td>{{time}}</td>
                         <td>{{progressNotes}}</td>
                         <td>{{selectUser}}</td>
                         {{!-- <td>{{patientID}}</td> --}}
@@ -52,9 +51,8 @@
                 <tr>
                     <th>Date</th>
                     <th>Time</th>
-                    <th>Health Provider</th>
                     <th>Progress Notes</th>
-                    <th>User</th>
+                    <th>Health Provider</th>
                     <th>By</th>
                 </tr>
             </thead>
@@ -65,7 +63,6 @@
                         {{!-- <td>{{formatDatetime datetime}}</td> --}}
                         <td>{{date}}</td>
                         <td>{{time}}</td>
-                        <td>{{healthProvider}}</td>
                         <td>{{progressNotes}}</td>
                         <td>{{selectUser}}</td>
                         <td>{{createdBy}}</td>
@@ -117,16 +114,11 @@
                                         <option value="Nurse">Nurse</option>
                                         <option value="Allied Health">Allied Health</option>
                                     </select>
-                                    <label for="selectUser">Users</label>
+                                    <label for="selectUser">Health Provider</label>
                             </div>
                     </div>
                     <div class="row">
-                        <div class="col s12 m4 input-field">
-                            <input id="healthProvider" type="text" name="healthProvider" value="{{editMDP.healthProvider}}">
-                            <label for="healthProvider">Name of Health Provider</label>
-                            <span class="helper-text"></span>
-                        </div>
-                        <div class="col s12 m4 input-field">
+                        <div class="col s12 m8 input-field">
                             <textarea id="progressNotes" class="materialize-textarea" name="progressNotes">{{editMDP.progressNotes}}</textarea>
                             <label for="progressNotes">Progress notes</label>
                         </div>
