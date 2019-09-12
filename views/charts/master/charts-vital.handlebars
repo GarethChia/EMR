@@ -572,17 +572,57 @@
             <form action="/student/add-pain/{{recordID}}" method="POST" id="addPain">
         {{/unless}}
     {{/if}}
-    <div class="card purple lighten-5" id="imgModal">
-        <div class="card-content">
-            <div id="imgModalWong" >
-                <p>number1</p>
-                <img src="/assets/img/wongbakerImage.jpg">
-            </div>
-            <div id="imgModalFLAAC" >
-                    <p>number2</p>
-                    <img src="/assets/img/FLACCImage.JPG">
-            </div>
-        </div>
+    <div class="card purple lighten-5" >
+       
+            <table>
+                <tr>
+                    <td >
+                          <div class="col s12 m2 input-field">
+                            <select id="painScale" name="painScale">
+                                <option value="" disabled selected>Scale</option>
+                                <option value="Numerical Rating Scale">Numerical Rating Scale</option>
+                                <option value="Wong-Baker">Wong-Baker</option>
+                                <option value="FLACC">FLACC</option>
+                            </select>
+                            <label for="painScale">Pain Scale</label>
+                        </div>
+
+                    </td>
+                    <td>
+                        <div class="col s12 m2 input-field">
+                            <select id="painScore" name="painScore">
+                                <option value="" disabled selected>Score</option>
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                            <label for="painScore">Pain Score</label>
+                        </div>
+                       
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{!-- Modal popup when user is selected --}}
+                    <div id="imgModalWong" >
+                        {{!-- <p>number1</p> --}}
+                        <img src="/assets/img/wongbakerImage.jpg">
+                    </div>
+                    <div id="imgModalFLAAC" >
+                            {{!-- <p>number2</p> --}}
+                            <img src="/assets/img/FLACCImage.JPG">
+                    </div>
+                    </td>
+                </tr>   
+            </table>
     </div>
         <div class="card purple lighten-5">
             <div class="card-content">
@@ -602,7 +642,7 @@
                             <span class="helper-text">hh:ss</span>
                         </div>
 
-                        <div class="col s12 m2 input-field">
+                        {{!-- <div class="col s12 m2 input-field">
                             <select id="painScale" name="painScale">
                                 <option value="" disabled selected>Scale</option>
                                 <option value="Numerical Rating Scale">Numerical Rating Scale</option>
@@ -628,7 +668,7 @@
                                 <option value="10">10</option>
                             </select>
                             <label for="painScore">Pain Score</label>
-                        </div>
+                        </div> --}}
 
                         <div class="col s12 m4 input-field">
                             <input id="onset" type="text" class="onset" name="onset" value="{{editPain.onset}}">
@@ -1107,7 +1147,6 @@
         $(document).ready(function(){
             $("#imgModalFLAAC").hide();
             $("#imgModalWong").hide();
-            $("#imgModal").hide();
 
             $("#painScale").change(function(){
                 
@@ -1115,19 +1154,16 @@
                 console.log(sel);
                 if(sel == 'Wong-Baker')
                 {
-                    $("#imgModal").show();
                     $('#imgModalWong').show();
                     $("#imgModalFLAAC").hide();
                 }
                 else if(sel == 'FLACC')
                 {
-                    $("#imgModal").show();
                     $('#imgModalFLAAC').show()
                     $("#imgModalWong").hide();
                 }
                 else
                 {
-                    $("#imgModal").hide();
                     $("#imgModalFLAAC").hide();
                     $("#imgModalWong").hide();
                 }
