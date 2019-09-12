@@ -21,7 +21,6 @@ const StudentMDPSchema = new Schema({
     time:		 {type: String, default: ''},
     datetime: {type: String, default: ''},
     selectUser: {type: String, default:''},
-    healthProvider: {type: String, default: ''},
     progressNotes: {type: String, default: ''}
 });
 
