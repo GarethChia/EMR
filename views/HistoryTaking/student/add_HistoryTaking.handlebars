@@ -118,109 +118,113 @@
                     <table>
                          <tr>
                             <td>
-                                <div class="col s12 m4 ">
+                                <div>
                                    Chief Complains
                                 </div>
                             </td>
                             <td>
-                                <div class="col s12 m4 input-field">
+                                <div class=>
                                     <textarea id="chiefComp" name="chiefComp" class="materialize-textarea" value="">{{editHistory.chiefComp}}</textarea>
-                                    <label for="chiefComp">Chief Complains</label>
+                                    <label for="chiefComp">The primary symptom that a patient states as the reason for seeking medical care</label>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <div class="col s12 m4 ">
+                                <div>
                                    History of Present Illness
                                 </div>
                             </td>
                             <td>
-                                <div class="col s12 m4 input-field">
+                                <div>
                                     <textarea id="historyPresent"name="historyPresent" class="materialize-textarea" value="">{{editHistory.historyPresent}}</textarea>
-                                    <label for="historyPresent">History Present Illness</label>
+                                    <label for="historyPresent">A detailed interview (e.g., using OLDCART) prompted by the chief complaint or presenting symptom</label>
                                 </div>
                             </td>
                         </tr>
                 
                           <tr>
                             <td>
-                                <div class="col s12 m4 ">
+                                <div>
                                    Allergy Status
                                 </div>
                             </td>
                             <td>
-                                <div class="col s12 m4 input-field">
+                                <div>
                                     <textarea id="allergy" name="allergy" class="materialize-textarea" value="">{{editHistory.allergy}}</textarea>
-                                    <label for="allergy">Allergy Status</label>
+                                    <label for="allergy">Identify any allergies (drugs, food, substance) the patient may have, details of what happens (e.g., rashes, anaphylaxis),<br> and treatment for the allergy episodes</label>
                                 </div>
                             </td>
                         </tr>
                           <tr>
                             <td>
-                                <div class="col s12 m4 ">
+                                <div>
                                     Medical History
                                 </div>
                             </td>
                             <td>
-                                <div class="col s12 m4 input-field">
+                                <div>
                                     <textarea id="medicalH" name="medicalH" class="materialize-textarea" value="">{{editHistory.medicalH}}</textarea>
-                                    <label for="medicalH">Medical History</label>
+                                    <label for="medicalH">Significant past diseases/illnesses, including present and past, prescribed and over-the-counter medicines</label>
                                 </div>
                             </td>
                             
                         </tr>
                           <tr>
                             <td>
-                                <div class="col s12 m4 ">
+                                <div>
                                     Surgical History
                                 </div>
                             </td>
                             <td>
-                                 <div class="col s12 m4 input-field">
+                                 <div>
                                     <textarea id="surgicalH" name="surgicalH" class="materialize-textarea" value="">{{editHistory.surgicalH}}</textarea>
-                                    <label for="surgicalH">Surgical History</label>
+                                    <label for="surgicalH">Significant past surgery, including treatment, follow-up and complications; trauma/injuries</label>
                                 </div>
                             </td>
                             
                         </tr>
                           <tr>
                             <td>
-                                <div class="col s12 m4 ">
+                                <div>
                                     Family History
                                 </div>
                             </td>
                             <td>
-                                 <div class="col s12 m4 input-field">
+                                 <div>
                                     <textarea id="familyH" name="familyH" class="materialize-textarea" value="">{{editHistory.familyH}}</textarea>
-                                    <label for="familyH">Family History</label>
+                                    <label for="familyH">About diseases/disorders from which the direct blood relatives of the patient have suffered</label>
                                 </div>
                             </td>
                             
                         </tr>
                           <tr>
                             <td>
-                                <div class="col s12 m4 ">
+                                <div>
                                     Social History
                                 </div>
                             </td>
                             <td>
-                                 <div class="col s12 m4 input-field">
+                                 <div>
                                     <textarea id="socialH" name ="socialH" class="materialize-textarea" value="">{{editHistory.socialH}}</textarea>
-                                    <label for="socialH">Social History</label>
+                                    <label for="socialH">The patient's education, occupation, usual daily activities, 
+                                        functional status, relationships with friends and family,<br> social supports and stresses, 
+                                        financial status/insurance coverage, lifestyle such as use of cigarettes, alcohol, 
+                                        diet or exercises that have known health consequences</label>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <div class="col s12 m4 ">
+                                <div>
                                     Travel History
                                 </div>
                             </td>
                             <td>
-                                <div class="col s12 m4 input-field">
+                                <div>
                                     <textarea id="travelH" name="travelH" class="materialize-textarea" value="">{{editHistory.travelH}}</textarea>
-                                    <label for="travelH">Travel History</label>
+                                    <label for="travelH">Travel departure & start dates; specific areas of travel (eg., every Country, every City/Rural region visited);
+                                        <br> nature of terrain - rural/urban/forest/mountains; duration of visit at each destination</label>
                                 </div>
                             </td>
                         </tr>
@@ -228,9 +232,9 @@
                             <td>
                             </td>
                             <td>
-                                <div class="col s12 m8"></div>
+                                <div></div>
 
-                                <div class="col s12 m4">
+                                <div>
                                 {{#if editHistory}}
                                     <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editHistory">Save Changes
                                 {{else}}
