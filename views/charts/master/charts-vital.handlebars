@@ -575,9 +575,10 @@
     <div class="card purple lighten-5" >
        
             <table>
-                <tr>
-                    <td >
-                          <div class="col s12 m2 input-field">
+                <tr style="border: none; !IMPORTANT">
+                    <td style="border: none; !IMPORTANT" >
+                        <div class="row">
+                          <div class="col s12 m12 input-field">
                             <select id="painScale" name="painScale">
                                 <option value="" disabled selected>Scale</option>
                                 <option value="Numerical Rating Scale">Numerical Rating Scale</option>
@@ -585,11 +586,13 @@
                                 <option value="FLACC">FLACC</option>
                             </select>
                             <label for="painScale">Pain Scale</label>
+                            </div>
                         </div>
 
                     </td>
-                    <td>
-                        <div class="col s12 m2 input-field">
+                    <td  style="border: none; !IMPORTANT">
+                        <div class="row">
+                        <div class="col s12 m12 input-field">
                             <select id="painScore" name="painScore">
                                 <option value="" disabled selected>Score</option>
                                 <option value="0">0</option>
@@ -606,11 +609,11 @@
                             </select>
                             <label for="painScore">Pain Score</label>
                         </div>
-                       
+                       </div>
                     </td>
                 </tr>
-                <tr>
-                    <td>
+                <tr style="border: none; !IMPORTANT">
+                    <td colspan = "2" style="border: none; !IMPORTANT"> 
                         {{!-- Modal popup when user is selected --}}
                     <div id="imgModalWong" >
                         {{!-- <p>number1</p> --}}
@@ -673,6 +676,7 @@
                         <div class="col s12 m4 input-field">
                             <input id="onset" type="text" class="onset" name="onset" value="{{editPain.onset}}">
                             <label for="onset">Onset</label>
+                            
                         </div>
                     </div>
 
