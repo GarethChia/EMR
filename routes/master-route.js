@@ -834,7 +834,21 @@ router.put('/edit-braden/:bradenID', ensureAuthenticated, ensureAuthorised, (req
 	total = parseInt(req.body.sensePerc.slice(-1)) + parseInt(req.body.moisture.slice(-1)) + parseInt(req.body.activity.slice(-1))+ parseInt(req.body.mobility.slice(-1)) 
 		+ parseInt(req.body.nutrition.slice(-1)) + parseInt(req.body.fns.slice(-1));
 
+	splitSensePerc = removeNumber.removeNumberFunction(req.body.sensePerc);
+	splitMoisture = removeNumber.removeNumberFunction(req.body.moisture);
+	splitActivity = removeNumber.removeNumberFunction(req.body.activity);
+	splitMobility = removeNumber.removeNumberFunction(req.body.mobility);
+	splitNutrition = removeNumber.removeNumberFunction(req.body.nutrition);
+	splitFns = removeNumber.removeNumberFunction(req.body.fns);
+
 	MasterBraden.findOne({ bradenID: req.params.bradenID }).then(editBraden => {
+		editBraden.sensePercSplit = splitSensePerc,
+		editBraden.moistureSplit = splitMoisture,
+		editBraden.activitySplit = splitActivity,
+		editBraden.mobilitySplit = splitMobility,
+		editBraden.nutritionSplit = splitNutrition,
+		editBraden.fnsSplit = splitFns,
+
 		editBraden.date = req.body.dateBraden,
 		editBraden.datetime = datetime,
 		editBraden.sensePerc = req.body.sensePerc,
@@ -1024,11 +1038,11 @@ router.put('/edit-history/:historyId', ensureAuthenticated, ensureAuthorised, (r
 //open fall page
 router.get('/fall', ensureAuthenticated, ensureAuthorised, (req, res) => {
 	MasterFall.find({ patientID: req.session.patient.patientID }).then(newFall => {
-		res.render('charts/master/charts-Fall', {
+		res.render('charts/master/charts-fall', {
 			newFall: newFall,
 			patient: req.session.patient,
 			showMenu: true
-		});
+		})
 	})
 })
 
@@ -1133,6 +1147,14 @@ router.put('/edit-fall/:fallID', ensureAuthenticated, ensureAuthorised, (req,res
 		+ parseInt(req.body.ivhl.slice(-2)) 
 		+ parseInt(req.body.gait.slice(-2)) 
 		+ parseInt(req.body.mental.slice(-2));
+
+		splitHistory = removeNumber.removeNumberFunction(req.body.history);
+		splitSecondary = removeNumber.removeNumberFunction(req.body.secondary);	
+		splitAmbu = removeNumber.removeNumberFunction(req.body.ambu);
+		splitIvhl = removeNumber.removeNumberFunction(req.body.ivhl);
+		splitGait = removeNumber.removeNumberFunction(req.body.gait);
+		splitMental = removeNumber.removeNumberFunction(req.body.mental);
+
 		MasterFall.findOne({ fallID: req.params.fallID }).then(editFall => {
 			editFall.date = req.body.dateFall,
 			editFall.datetime = datetime,
@@ -1142,6 +1164,14 @@ router.put('/edit-fall/:fallID', ensureAuthenticated, ensureAuthorised, (req,res
 			editFall.ivhl = req.body.ivhl.split(" "),
 			editFall.gait = req.body.gait.split(" "),
 			editFall.mental = req.body.mental.split(" "),
+
+			editFall.historySplit = splitHistory,
+			editFall.secondarySplit = splitSecondary,
+			editFall.ambuSplit = splitAmbu,
+			editFall.ivhlSplit = splitIvhl,
+			editFall.gaitSplit = splitGait,
+			editFall.mentalSplit = splitMental,
+
 			editFall.totalmf = totalmf
 		
 			editFall.save();
