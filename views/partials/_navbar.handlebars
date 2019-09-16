@@ -282,7 +282,7 @@
 <!-- Drop down menu items -->
 {{!-- Patient -> ... --}}
 <ul id="Patient" class="dropdown-content">
-	<li><a href="/master/edit/{{patient.patientID}}" style="color: #3333ff">Biographical Data</a></li>
+	<li><a href="/master/edit/{{patient.patientID}}">Biographical Data</a></li>
 	{{!--<li>
 		<a class="dropdown-trigger navmenu" href="#!" data-target="History">History
 			<i class="fas fa-sort-down"></i>
@@ -309,12 +309,12 @@
 	{{#unless userType}}
 	{{!-- <li><a href="#!">Notes</a></li> --}}
 	<li class="divider"></li>
-	<li><a href="/master/doctor/orders" style="color: #3333ff">Orders</a></li>
+	<li><a href="/master/doctor/orders">Orders</a></li>
 	{{!-- <li><a href="#!">Order Results</a></li> --}}
 	{{else}}
 	{{!-- <li><a href="#!">Notes</a></li> --}}
 	<li class="divider"></li>
-	<li><a href="/student/doctor/orders/{{recordID}}" style="color: #3333ff">Orders</a></li>
+	<li><a href="/student/doctor/orders/{{recordID}}">Orders</a></li>
 	{{!-- <li><a href="#!">Order Results</a></li> --}}
 	{{/unless}}
 	{{!-- <li>
@@ -336,19 +336,19 @@
 
 {{!-- Nurse -> ... --}}
 <ul id="Nurse" class="dropdown-content">
-	<li><a href="/master/show-nursing-assessment/{{patient.patientID}}"	 style="color: #3333ff">Assessment</a></li>
+	<li><a href="/master/show-nursing-assessment/{{patient.patientID}}"	 style="color: #3333ff;">Assessment</a></li>
 	{{#unless userType}}
-	<li><a href="/master/HistoryTaking" style="color: #3333ff">History Taking</a></li>
+	<li><a href="/master/HistoryTaking">History Taking</a></li>
 	{{else}}
-	<li><a href="/student/HistoryTaking/{{recordID}}" style="color: #3333ff">History Taking</a></li>
+	<li><a href="/student/HistoryTaking/{{recordID}}">History Taking</a></li>
 	{{/unless}}
 
-	<li><a href="#!" style="color: #3333ff">Care Plan</a></li>
+	<li><a href="#!">Care Plan</a></li>
 	<li class="lighter-fonts"><a href="#!">Discharge Planning</a></li>
 	<li class="lighter-fonts"><a href="#!">Education</a></li>
 	<li class="divider"></li>
 	<li>
-		<a class="dropdown-trigger navmenu" href="#!" data-target="Charts" style="color: #3333ff">Charts
+		<a class="dropdown-trigger navmenu" href="#!" data-target="Charts">Charts
 			<i class="fas fa-sort-down"></i>
 		</a>
 	</li>
@@ -357,35 +357,35 @@
 {{!-- Nurse -> Charts ->... --}}
 <ul id="Charts" class="dropdown-content" style="overflow-y: auto !important;">
 	{{#unless userType}}
-	<li><a href="/master/io" style="color: #3333ff">IO</a></li>
-	<li><a href="/master/vital" style="color: #3333ff">Vital</a></li>
-	<li><a href="#!" style="color: #3333ff">Diabetic</a></li>
-	<li><a href="#!" style="color: #3333ff">CLC</a></li>
-	<li><a href="#!" style="color: #3333ff">Neurovascular</a></li>
-	<li><a href="#!" style="color: #3333ff">Bladder Washout</a></li>
-	<li><a href="/master/fall" style="color: #3333ff">Morse Fall Scale</a></li>
-	<li><a href="/master/braden" style="color: #3333ff">Braden Scale</a></li>
-	<li><a href="#!" style="color: #3333ff">Wound Chart</a></li>
-	<li><a href="#!" style="color: #3333ff">Flowsheet</a></li>
+	<li><a href="/master/io">IO</a></li>
+	<li><a href="/master/vital">Vital</a></li>
+	<li><a href="#!">Diabetic</a></li>
+	<li><a href="#!">CLC</a></li>
+	<li><a href="#!"Neurovascular</a></li>
+	<li><a href="#!">Bladder Washout</a></li>
+	<li><a href="/master/fall">Morse Fall Scale</a></li>
+	<li><a href="/master/braden">Braden Scale</a></li>
+	<li><a href="#!">Wound Chart</a></li>
+	<li><a href="#!">Flowsheet</a></li>
 	{{else}} {{!-- If usertype is master --}}
-	<li><a href="/student/io/{{recordID}}" style="color: #3333ff">IO</a></li>
-	<li><a href="/student/vital/{{recordID}}" style="color: #3333ff">Vital</a></li>
-	<li><a href="#!" style="color: #3333ff">Diabetic</a></li>
-	<li><a href="#!" style="color: #3333ff">CLC</a></li>
-	<li><a href="#!" style="color: #3333ff">Neurovascular</a></li>
-	<li><a href="#!" style="color: #3333ff">Bladder Washout</a></li>
-	<li><a href="/student/fall/{{recordID}}" style="color: #3333ff">Morse Fall Scale</a></li>
-	<li><a href="/student/braden/{{recordID}}" style="color: #3333ff">Braden Scale</a></li>
-	<li><a href="#!" style="color: #3333ff">Wound Chart</a></li>
-	<li><a href="#!" style="color: #3333ff">Flowsheet</a></li>
+	<li><a href="/student/io/{{recordID}}">IO</a></li>
+	<li><a href="/student/vital/{{recordID}}">Vital</a></li>
+	<li><a href="#!">Diabetic</a></li>
+	<li><a href="#!">CLC</a></li>
+	<li><a href="#!">Neurovascular</a></li>
+	<li><a href="#!">Bladder Washout</a></li>
+	<li><a href="/student/fall/{{recordID}}">Morse Fall Scale</a></li>
+	<li><a href="/student/braden/{{recordID}}">Braden Scale</a></li>
+	<li><a href="#!">Wound Chart</a></li>
+	<li><a href="#!">Flowsheet</a></li>
 	{{/unless}}
 </ul>
 
 
 <ul id="User" class="dropdown-content">
-	<li><a href="#!" style="color: #3333ff">Settings</a></li>
+	<li><a href="#!">Settings</a></li>
 	<li class="divider"></li>
 	<li><a href="https://login.microsoftonline.com/common/oauth2/logout?post_logout_redirect_uri=https://localhost
-	/logout" style="color: #3333ff"
+	/logout"
 	>Logout</a></li>
 </ul>
