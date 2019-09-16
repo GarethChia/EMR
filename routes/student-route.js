@@ -2129,6 +2129,7 @@ router.delete('/del-mdp/:recordID/:mdpID', ensureAuthenticated, (req, res) => {
 
 // get single MDP info
 router.get('/mdp/:recordID/:mdpID', ensureAuthenticated, (req, res) => {
+	userType = req.user.userType == 'student';
 	StudentMDP.find({ patientID: req.session.patient.patientID, user: req.user.id}).sort({'datetime':1}).then(newMDP => {
 		StudentMDP.findOne({ mdpID: req.params.mdpID}).then(editMDP => {
 			MasterMDP.aggregate([
@@ -2143,9 +2144,11 @@ router.get('/mdp/:recordID/:mdpID', ensureAuthenticated, (req, res) => {
 				}}
 			])
 			.then(newMasterMDP => {
-				console.log("Hiiii: "+ editMDP);
+				console.log("editMDP: "+ editMDP);
 				editMDP.date = moment(editMDP.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
 				res.render('mdp-notes/student/mdp', {
+					userType: userType,
+					recordID: req.params.recordID,
 					newMDP: newMDP,
 					editMDP: editMDP,
 					patient: req.session.patient,
