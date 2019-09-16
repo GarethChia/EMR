@@ -2074,22 +2074,7 @@ router.get('/mdp/:recordID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
 	StudentMDP.find({user: req.user.id, patientID: req.session.patient.patientID}).sort({'datetime':1})
 	.then(newMDP => { // mdp that they have created
-		//MasterMDP.find({patientID: req.session.patient.patientID}).then(newMasterMDP => {
 		MasterMDP.aggregate([
-			/*{ "$group": { '_id' : "$createdBy", "doc": {"$first":"$$ROOT"}}},
-			{"$replaceRoot": {"newRoot": "$doc"}}, */
-			/*{$sort: {
-				'date': -1
-			}},
-			{$group: {
-                "_id": "$createdBy",
-				"doc": {"$max":"$$ROOT"}
-            }},*/
-			/*{$project: {
-					"createdBy": "$_id",
-					"datetime": "$datetime",
-					"newRoot": "$doc"
-				}},*/
 			{"$sort": {
 				'datetime': -1
 			}},
@@ -2147,9 +2132,6 @@ router.get('/mdp/:recordID/:mdpID', ensureAuthenticated, (req, res) => {
 	StudentMDP.find({ patientID: req.session.patient.patientID, user: req.user.id}).sort({'datetime':1}).then(newMDP => {
 		StudentMDP.findOne({ mdpID: req.params.mdpID}).then(editMDP => {
 			MasterMDP.aggregate([
-				/*{ "$group": { '_id' : "$createdBy", "doc": {"$first":"$$ROOT"}}},
-				{"$replaceRoot": {"newRoot": "$doc"}}, */
-				// { "$group": { '_id' : "$createdBy", "datetime": {"$max":"$datetime"} }}
 				{"$sort": {
 					'datetime': -1
 				}},
