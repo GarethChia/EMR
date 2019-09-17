@@ -1067,10 +1067,25 @@
                             <span class="helper-text"></span>
                         </div>
 
-                        <div class="col s12 m3 input-field">
+                        <div class="col s10 m2 input-field">
                             <input id="stoolass" type="text" name="stoolass" value="{{editoutput.stoolass}}">
                             <label for="stoolass">Stool Assessment</label>
                             <span class="helper-text"></span>
+                        </div>
+                        <div class="col s10 m1 input-field">
+                            <a class="waves-effect waves-light btn modal-trigger" href="#bristolStoolChart">
+                                <i class="fa fa-info fa-lg" aria-hidden="true"></i>
+                            </a>
+                            <div id="bristolStoolChart" class="modal">
+                                <div class="modal-content">
+                                <p>
+                                    <img class="materialboxed" id="ordersImage" style="display: block;margin-left: auto;margin-right: auto; max-height: 30em; min-height: 30em;" src="/assets/img/bristol-stool-chart.jpeg">
+                                </p>
+                                </div>
+                                <div class="modal-footer">
+                                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+                                </div>
+                            </div>
                         </div>
                 </div>
 
@@ -1179,8 +1194,9 @@
         const dateoutput = document.querySelector('#dateoutput');
         const timeoutput = document.querySelector('#timeoutput');
 
-
-
+        //Img
+        const elems = document.querySelectorAll('.materialboxed');
+        const instances = M.Materialbox.init(elems, {});
 
         //IO Instances
                 M.Datepicker.init(dateIO, {
@@ -1285,4 +1301,9 @@
         document.getElementById('tab4').className += " active";
     {{/if}}    
 
+    // modal
+    document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.modal');
+        var instances = M.Modal.init(elems, {});
+    });
  </script>
