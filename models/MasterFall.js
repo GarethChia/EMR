@@ -38,7 +38,7 @@ const MasterFallSchema = new Schema({
 	mentalSplit:		 {type: String, default: ''},
 	
 	totalmf:		 {type: String, default: ''},
-	
+	by:	 {type: String, default: ''}
 });
 
 mongoose.model('masterFall', MasterFallSchema, 'master-fall');

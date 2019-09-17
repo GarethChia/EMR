@@ -25,7 +25,8 @@
                 {{#unless ../userType}}
                 <td><a href="/master/fall/{{fallID}}">{{datetime}}</a></td>
                 {{else}}
-                <td><a href="/student/fall/{{../recordID}}/{{fallID}}">{{datetime}}</a></td>
+                {{!-- <td><a href="/student/fall/{{../recordID}}/{{fallID}}">{{datetime}}</a></td> --}}
+                <td id="editRights{{fallID}}"></td>
                 {{/unless}}
                 <td>{{historySplit}}</td>
                 <td>{{secondarySplit}}</td>
@@ -355,5 +356,22 @@
 
 </script>
 
-
+<script>
+    {{#each newFall}}
+    console.log("{{by}}");
+    console.log("{{../azureId}} == {{by}}");
+        if ("{{../azureId}}" == "{{by}}")
+        {
+            document.getElementById('editRights{{fallID}}').innerHTML += "<tr>";
+            document.getElementById('editRights{{fallID}}').innerHTML += "<td><a href='/student/fall/{{../recordID}}/{{fallID}}'> {{datetime}} </a></td> ";
+            document.getElementById('editRights{{fallID}}').innerHTML += "</tr>";
+        }
+        else
+        {
+            document.getElementById('editRights{{fallID}}').innerHTML += "<tr>";
+            document.getElementById('editRights{{fallID}}').innerHTML += "<td> {{datetime}} </td> ";
+            document.getElementById('editRights{{fallID}}').innerHTML += "</tr>";
+        }
+    {{/each}}
+</script>
 

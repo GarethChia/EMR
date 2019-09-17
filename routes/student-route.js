@@ -1743,6 +1743,7 @@ router.get('/braden/:recordID/:bradenID', ensureAuthenticated, (req, res) => {
 
 		MasterBraden.findOne({ bradenID: req.params.bradenID }).then(editBraden => {
 			res.render('charts/master/charts-braden', {
+				azureId: req.user.azure_oid,
 				recordID: req.params.recordID,
 				userType: userType,
 				newBraden: newBraden,
@@ -1849,8 +1850,11 @@ router.put('/edit-braden/:recordID/:bradenID', ensureAuthenticated, (req,res) =>
 //open fall page
 router.get('/fall/:recordID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
-	MasterFall.find({ patientID: req.params.recordID }).then(newFall => {
+	MasterFall.find({ patientID: req.session.patient.patientID }).then(newFall => {
+
+	// MasterFall.find({ patientID: req.params.recordID }).then(newFall => {
 		res.render('charts/master/charts-Fall', {
+			azureId: req.user.azure_oid,
 			recordID: req.params.recordID,
 			userType: userType,
 			newFall: newFall,
@@ -1880,7 +1884,8 @@ router.post('/add-fall/:recordID', ensureAuthenticated, (req, res) => {
 	splitGait = removeNumber.removeNumberFunction(req.body.gait);
 	splitMental = removeNumber.removeNumberFunction(req.body.mental);
 	new MasterFall({
-		patientID: req.params.recordID,
+		// patientID: req.params.recordID,
+		patientID: req.session.patient.patientID,
 		fallID: fallID,
 		date: req.body.dateFall,
 		datetime: datetime,
@@ -1897,7 +1902,7 @@ router.post('/add-fall/:recordID', ensureAuthenticated, (req, res) => {
 		ivhlSplit: splitIvhl,
 		gaitSplit: splitGait,
 		mentalSplit: splitMental,
-
+		by: req.user.azure_oid,
 
 		totalmf: totalmf,
 
@@ -2052,9 +2057,12 @@ router.put('/edit-history/:recordID', ensureAuthenticated, (req,res) => {
 //get single fall info
 router.get('/fall/:recordID/:fallID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
-	MasterFall.find({ patientID: req.params.recordID }).then(newFall => {
+	// MasterFall.find({ patientID: req.params.recordID }).then(newFall => {
+		MasterFall.find({ patientID: req.session.patient.patientID }).then(newFall => {
+
 		MasterFall.findOne({ fallID: req.params.fallID }).then(editFall => {
 			res.render('charts/master/charts-fall', {
+				azureId: req.user.azure_oid,
 				recordID: req.params.recordID,
 				userType: userType,
 				newFall: newFall,
