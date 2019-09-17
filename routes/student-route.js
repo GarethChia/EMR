@@ -1720,11 +1720,12 @@ router.put('/edit-output/:recordID/:outputID', ensureAuthenticated, (req, res) =
 //open route to braden page
 router.get('/braden/:recordID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
-	// MasterBraden.find({ patientID: req.session.patient.patientID }).then(newBraden => {
-		MasterBraden.find({ patientID: req.params.recordID }).then(newBraden => {
+	MasterBraden.find({ patientID: req.session.patient.patientID }).then(newBraden => {
+		// MasterBraden.find({ patientID: req.params.recordID }).then(newBraden => {
 	
 		console.log(newBraden);
 		res.render('charts/master/charts-braden', {
+			azureId: req.user.azure_oid,
 			recordID: req.params.recordID,
 			userType: userType,
 			newBraden: newBraden,
@@ -1737,8 +1738,8 @@ router.get('/braden/:recordID', ensureAuthenticated, (req, res) => {
 //get single braden info
 router.get('/braden/:recordID/:bradenID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
-	// MasterBraden.find({ patientID: req.session.patient.patientID }).then(newBraden => {
-		MasterBraden.find({ patientID: req.params.recordID }).then(newBraden => {
+	MasterBraden.find({ patientID: req.session.patient.patientID }).then(newBraden => {
+		// MasterBraden.find({ patientID: req.params.recordID }).then(newBraden => {
 
 		MasterBraden.findOne({ bradenID: req.params.bradenID }).then(editBraden => {
 			res.render('charts/master/charts-braden', {
@@ -1753,50 +1754,51 @@ router.get('/braden/:recordID/:bradenID', ensureAuthenticated, (req, res) => {
 	})
 })
 //add braden info
-// router.post('/add-braden/:recordID', ensureAuthenticated, (req, res) => {
-// 	bradenID = (new standardID('AAA0000')).generate();
-// 	datetime = moment(req.body.dateBraden, 'DD/MM/YYYY').format('MM/DD/YYYY') + " ";
+router.post('/add-braden/:recordID', ensureAuthenticated, (req, res) => {
+	bradenID = (new standardID('AAA0000')).generate();
+	datetime = moment(req.body.dateBraden, 'DD/MM/YYYY').format('MM/DD/YYYY') + " ";
 
-// 	total = parseInt(req.body.sensePerc.slice(-1)) 
-// 	+ parseInt(req.body.moisture.slice(-1)) 
-// 	+ parseInt(req.body.activity.slice(-1))
-// 	+ parseInt(req.body.mobility.slice(-1)) 
-// 	+ parseInt(req.body.nutrition.slice(-1)) 
-// 	+ parseInt(req.body.fns.slice(-1));
+	total = parseInt(req.body.sensePerc.slice(-1)) 
+	+ parseInt(req.body.moisture.slice(-1)) 
+	+ parseInt(req.body.activity.slice(-1))
+	+ parseInt(req.body.mobility.slice(-1)) 
+	+ parseInt(req.body.nutrition.slice(-1)) 
+	+ parseInt(req.body.fns.slice(-1));
 
-// 	splitSensePerc = removeNumber.removeNumberFunction(req.body.sensePerc);
-// 	splitMoisture = removeNumber.removeNumberFunction(req.body.moisture);
-// 	splitActivity = removeNumber.removeNumberFunction(req.body.activity);
-// 	splitMobility = removeNumber.removeNumberFunction(req.body.mobility);
-// 	splitNutrition = removeNumber.removeNumberFunction(req.body.nutrition);
-// 	splitFns = removeNumber.removeNumberFunction(req.body.fns);
-
-
-// 	new MasterBraden({
-// 			patientID: req.session.patient.patientID,
-// 			bradenID: bradenID,
-// 			date: req.body.dateBraden,
-// 			datetime: datetime,
-// 			sensePercSplit: splitSensePerc,
-// 			moistureSplit: splitMoisture,
-// 			activitySplit: splitActivity,
-// 			mobilitySplit: splitMobility,
-// 			nutritionSplit: splitNutrition,
-// 			fnsSplit: splitFns,
-// 			total: total,
-
-// 			sensePerc: req.body.sensePerc,
-// 			activity:	req.body.activity,
-// 			moisture: req.body.moisture,
-// 			mobility: req.body.mobility,
-// 			nutrition: req.body.nutrition,
-// 			fns: req.body.fns,
+	splitSensePerc = removeNumber.removeNumberFunction(req.body.sensePerc);
+	splitMoisture = removeNumber.removeNumberFunction(req.body.moisture);
+	splitActivity = removeNumber.removeNumberFunction(req.body.activity);
+	splitMobility = removeNumber.removeNumberFunction(req.body.mobility);
+	splitNutrition = removeNumber.removeNumberFunction(req.body.nutrition);
+	splitFns = removeNumber.removeNumberFunction(req.body.fns);
 
 
-// 	}).save();
+	new MasterBraden({
+			patientID: req.session.patient.patientID,
+			bradenID: bradenID,
+			by: req.user.azure_oid,
+			date: req.body.dateBraden,
+			datetime: datetime,
+			sensePercSplit: splitSensePerc,
+			moistureSplit: splitMoisture,
+			activitySplit: splitActivity,
+			mobilitySplit: splitMobility,
+			nutritionSplit: splitNutrition,
+			fnsSplit: splitFns,
+			total: total,
 
-// 	res.redirect('/student/braden/'+req.params.recordID);
-// })
+			sensePerc: req.body.sensePerc,
+			activity:	req.body.activity,
+			moisture: req.body.moisture,
+			mobility: req.body.mobility,
+			nutrition: req.body.nutrition,
+			fns: req.body.fns,
+
+
+	}).save();
+
+	res.redirect('/student/braden/'+req.params.recordID);
+})
 
 //Delete braden information
 // router.delete('/del-braden/:recordID/:bradenID', ensureAuthenticated, ensureAuthorised, (req, res) => {
@@ -1859,51 +1861,51 @@ router.get('/fall/:recordID', ensureAuthenticated, (req, res) => {
 })
 
 //Add fall
-// router.post('/add-fall/:recordID', ensureAuthenticated, (req, res) => {
-// 	fallID = (new standardID('AAA0000')).generate();
-// 	datetime = moment(req.body.dateFall, 'DD/MM/YYYY').format('MM/DD/YYYY') + " ";
+router.post('/add-fall/:recordID', ensureAuthenticated, (req, res) => {
+	fallID = (new standardID('AAA0000')).generate();
+	datetime = moment(req.body.dateFall, 'DD/MM/YYYY').format('MM/DD/YYYY') + " ";
 
-// 	totalmf = parseInt(req.body.history.slice(-2))
-// 	+ parseInt(req.body.secondary.slice(-2)) 
-// 	+ parseInt(req.body.ambu.slice(-2))
-// 	+ parseInt(req.body.ivhl.slice(-2)) 
-// 	+ parseInt(req.body.gait.slice(-2)) 
-// 	+ parseInt(req.body.mental.slice(-2));
-// 	//splitting to display only the sting value w/o (+0)
+	totalmf = parseInt(req.body.history.slice(-2))
+	+ parseInt(req.body.secondary.slice(-2)) 
+	+ parseInt(req.body.ambu.slice(-2))
+	+ parseInt(req.body.ivhl.slice(-2)) 
+	+ parseInt(req.body.gait.slice(-2)) 
+	+ parseInt(req.body.mental.slice(-2));
+	//splitting to display only the sting value w/o (+0)
 
-// 	splitHistory = removeNumber.removeNumberFunction(req.body.history);
-// 	splitSecondary = removeNumber.removeNumberFunction(req.body.secondary);	
-// 	splitAmbu = removeNumber.removeNumberFunction(req.body.ambu);
-// 	splitIvhl = removeNumber.removeNumberFunction(req.body.ivhl);
-// 	splitGait = removeNumber.removeNumberFunction(req.body.gait);
-// 	splitMental = removeNumber.removeNumberFunction(req.body.mental);
-// 	new MasterFall({
-// 		patientID: req.params.recordID,
-// 		fallID: fallID,
-// 		date: req.body.dateFall,
-// 		datetime: datetime,
-// 		history: req.body.history,
-// 		secondary: req.body.secondary,
-// 		ivhl: req.body.ivhl,
-// 		gait: req.body.gait,
-// 		mental: req.body.mental,
-// 		ambu: req.body.ambu,
+	splitHistory = removeNumber.removeNumberFunction(req.body.history);
+	splitSecondary = removeNumber.removeNumberFunction(req.body.secondary);	
+	splitAmbu = removeNumber.removeNumberFunction(req.body.ambu);
+	splitIvhl = removeNumber.removeNumberFunction(req.body.ivhl);
+	splitGait = removeNumber.removeNumberFunction(req.body.gait);
+	splitMental = removeNumber.removeNumberFunction(req.body.mental);
+	new MasterFall({
+		patientID: req.params.recordID,
+		fallID: fallID,
+		date: req.body.dateFall,
+		datetime: datetime,
+		history: req.body.history,
+		secondary: req.body.secondary,
+		ivhl: req.body.ivhl,
+		gait: req.body.gait,
+		mental: req.body.mental,
+		ambu: req.body.ambu,
 		
-// 		historySplit: splitHistory,
-// 		secondarySplit: splitSecondary,
-// 		ambuSplit: splitAmbu,
-// 		ivhlSplit: splitIvhl,
-// 		gaitSplit: splitGait,
-// 		mentalSplit: splitMental,
+		historySplit: splitHistory,
+		secondarySplit: splitSecondary,
+		ambuSplit: splitAmbu,
+		ivhlSplit: splitIvhl,
+		gaitSplit: splitGait,
+		mentalSplit: splitMental,
 
 
-// 		totalmf: totalmf,
+		totalmf: totalmf,
 
 
-// 	}).save();
+	}).save();
 
-// 	res.redirect('/student/fall/'+ req.params.recordID);
-// })
+	res.redirect('/student/fall/'+ req.params.recordID);
+})
 
 
 // Open HistoryTakng page

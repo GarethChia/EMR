@@ -37,6 +37,7 @@ const MasterBradenSchema = new Schema({
 	nutritionSplit: 		 {type: String, default: ''},
 	fnsSplit:		 {type: String, default: ''},
 	total:		 {type: String, default: ''},
+	by:	{type: String, default: ''}
 	
 });
 
