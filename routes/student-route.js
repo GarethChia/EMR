@@ -2241,4 +2241,74 @@ var removeNumber = {
     }
 };
 
+//nursing-assessment
+// retrieves the  nursing assessment record to edit
+//:patientID may be unncessary in this case because patient object is stored in session
+router.get('/show-nursing-assessment/:patientID', ensureAuthenticated, (req, res) => {
+	
+	PatientStudentModel.findOne({
+		patientID: req.params.patientID		// gets current patient
+	})
+	.then(retrievedPatient => {
+		if(JSON.stringify(retrievedPatient.user._id) === JSON.stringify(req.user.id)) {
+			NursingAssessmentModel.findById(retrievedPatient.nursingAssessmentID,{
+				// new way of calling method
+			}).then(assessment => {
+				//let toaster = new Toaster('Retrieving nursing assessment record');
+				req.session.assessment = assessment; // save to session for saving updated info
+				res.render('master/master-edit-nursing-assessment', {
+					assessment: assessment,
+					patient: retrievedPatient,
+					user: req.user,
+					showMenu: true
+				});
+			});
+		}else {
+			console.log('User that created record is different from this user');
+			//alertMessage.flashMessage(res, 'User that created record is different from current user', 'fas fa-exclamation',
+			// true);
+			toaster.setErrorMessage(' ', 'User that created record is different from this user');
+			res.redirect('/student/list-patients');
+		}
+		// console.log("****************Hi: "+JSON.stringify(retrievedPatient.user._id));
+		// console.log("****************************"+JSON.stringify(req.user.id))
+		// console.log();
+	});
+});
+
+
+// saves edited/updated nursing assessment form
+// router.put('/save-nursing-assessment/:patientID/:nursingAssessmentID', ensureAuthenticated, (req, res) => {
+// 	console.log('Assessment id: ' + req.session.assessment._id);
+	
+// 	// Todo: check authorised user
+// 	NursingAssessmentModel.findByIdAndUpdate(
+// 		// the id of the item to find
+// 		req.params.nursingAssessmentID,
+// 		req.body, // will default all boolean radio buttons to false even if no selection is made
+// 		{new: true},
+// 		// the callback function
+// 		(err, assessment) => {
+// 			// Handle any possible database errors
+// 			if (err) {
+// 				return res.status(500).send(err);
+// 			}
+// 			//alertMessage.flashMessage(res, 'Nursing assessment updated', 'far fa-thumbs-up', true);
+// 			toaster.setSuccessMessage(' ', 'Nursing Assessment Updated');
+// 			res.render('master/master-edit-nursing-assessment', {
+// 				assessment: assessment,
+// 				patient: req.session.patient,
+// 				user: req.user,
+// 				toaster,
+// 				showMenu: true
+// 			});
+// 			/*if (req.user.userType === 'staff'){
+			
+// 			} else {
+// 				res.redirect('/student/list-patients');
+// 			}*/
+			
+// 		}
+// 	);
+// });
 module.exports = router;

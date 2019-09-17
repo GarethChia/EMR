@@ -171,7 +171,11 @@
 					<a class="collapsible-header">Nurse<i class="material-icons">arrow_drop_down</i></a>
 					<div class="collapsible-body">
 						<ul>
+							{{#unless userType}}
 							<li><a href="/master/show-nursing-assessment/{{patient.patientID}}">Assessment</a></li>
+							{{else}}
+							<li><a href="/student/show-nursing-assessment/{{patient.patientID}}">Assessment</a></li>
+							{{/unless}}
 							{{#unless userType}}
 							<li><a href="/master/HistoryTaking">History Taking</a></li>
 							{{else}}
@@ -336,7 +340,12 @@
 
 {{!-- Nurse -> ... --}}
 <ul id="Nurse" class="dropdown-content">
+	{{#unless userType}}
 	<li><a href="/master/show-nursing-assessment/{{patient.patientID}}">Assessment</a></li>
+	{{else}}
+	<li><a href="/student/show-nursing-assessment/{{patient.patientID}}">Assessment</a></li>
+
+	{{/unless}}
 	{{#unless userType}}
 	<li><a href="/master/HistoryTaking">History Taking</a></li>
 	{{else}}
