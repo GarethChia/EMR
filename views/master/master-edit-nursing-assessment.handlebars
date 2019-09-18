@@ -2,8 +2,11 @@
 {{>_add-btn}}
 
 {{!--{{assessmentSaveLink user.userType}}--}}
-
+{{#unless userType}}
 <form action="/master/save-nursing-assessment/{{patient.patientID}}/{{patient.nursingAssessmentID}}?_method=PUT" method="post">
+{{else}}
+<form action="/student/save-nursing-assessment/{{recordID}}/{{patient.patientID}}/{{patient.nursingAssessmentID}}?_method=PUT" method="post">
+{{/unless}}
 	<input type="hidden" name="_method" value="PUT">
 	<input type="hidden" name="_csrf" value="{{csrfToken}}">
 

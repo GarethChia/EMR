@@ -2133,7 +2133,7 @@ router.get('/mdp/:recordID', ensureAuthenticated, (req, res) => {
 			}}
 		])
 			.then(newMasterMDP => {
-			console.log("************ group value: "+ JSON.stringify(newMasterMDP));
+			console.log("************ newMasterMDP: "+ JSON.stringify(newMasterMDP));
 			res.render('mdp-notes/student/mdp', {
 				recordID: req.params.recordID,
 				newMasterMDP: newMasterMDP,
@@ -2244,8 +2244,9 @@ var removeNumber = {
 //nursing-assessment
 // retrieves the  nursing assessment record to edit
 //:patientID may be unncessary in this case because patient object is stored in session
-router.get('/show-nursing-assessment/:patientID', ensureAuthenticated, (req, res) => {
+router.get('/show-nursing-assessment/:recordID/:patientID', ensureAuthenticated, (req, res) => {
 	
+	userType = req.user.userType == 'student';
 	PatientStudentModel.findOne({
 		patientID: req.params.patientID		// gets current patient
 	})
@@ -2256,11 +2257,14 @@ router.get('/show-nursing-assessment/:patientID', ensureAuthenticated, (req, res
 			}).then(assessment => {
 				//let toaster = new Toaster('Retrieving nursing assessment record');
 				req.session.assessment = assessment; // save to session for saving updated info
+
 				res.render('master/master-edit-nursing-assessment', {
 					assessment: assessment,
 					patient: retrievedPatient,
 					user: req.user,
-					showMenu: true
+					showMenu: true,
+					userType: userType,
+					recordID: req.params.recordID
 				});
 			});
 		}else {
@@ -2278,37 +2282,40 @@ router.get('/show-nursing-assessment/:patientID', ensureAuthenticated, (req, res
 
 
 // saves edited/updated nursing assessment form
-// router.put('/save-nursing-assessment/:patientID/:nursingAssessmentID', ensureAuthenticated, (req, res) => {
-// 	console.log('Assessment id: ' + req.session.assessment._id);
+router.put('/save-nursing-assessment/:recordID/:patientID/:nursingAssessmentID', ensureAuthenticated, (req, res) => {
+	console.log('Assessment id: ' + req.session.assessment._id);
 	
-// 	// Todo: check authorised user
-// 	NursingAssessmentModel.findByIdAndUpdate(
-// 		// the id of the item to find
-// 		req.params.nursingAssessmentID,
-// 		req.body, // will default all boolean radio buttons to false even if no selection is made
-// 		{new: true},
-// 		// the callback function
-// 		(err, assessment) => {
-// 			// Handle any possible database errors
-// 			if (err) {
-// 				return res.status(500).send(err);
-// 			}
-// 			//alertMessage.flashMessage(res, 'Nursing assessment updated', 'far fa-thumbs-up', true);
-// 			toaster.setSuccessMessage(' ', 'Nursing Assessment Updated');
-// 			res.render('master/master-edit-nursing-assessment', {
-// 				assessment: assessment,
-// 				patient: req.session.patient,
-// 				user: req.user,
-// 				toaster,
-// 				showMenu: true
-// 			});
-// 			/*if (req.user.userType === 'staff'){
+	// Todo: check authorised user
+	userType = req.user.userType == 'student';
+	NursingAssessmentModel.findByIdAndUpdate(
+		// the id of the item to find
+		req.params.nursingAssessmentID,
+		req.body, // will default all boolean radio buttons to false even if no selection is made
+		{new: true},
+		// the callback function
+		(err, assessment) => {
+			// Handle any possible database errors
+			if (err) {
+				return res.status(500).send(err);
+			}
+			//alertMessage.flashMessage(res, 'Nursing assessment updated', 'far fa-thumbs-up', true);
+			toaster.setSuccessMessage(' ', 'Nursing Assessment Updated');
+			res.render('master/master-edit-nursing-assessment', {
+				assessment: assessment,
+				patient: req.session.patient,
+				user: req.user,
+				toaster,
+				showMenu: true,
+				userType: userType,
+				recordID: req.params.recordID
+			});
+			/*if (req.user.userType === 'staff'){
 			
-// 			} else {
-// 				res.redirect('/student/list-patients');
-// 			}*/
+			} else {
+				res.redirect('/student/list-patients');
+			}*/
 			
-// 		}
-// 	);
-// });
+		}
+	);
+});
 module.exports = router;

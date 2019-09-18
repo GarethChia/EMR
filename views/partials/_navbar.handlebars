@@ -174,7 +174,7 @@
 							{{#unless userType}}
 							<li><a href="/master/show-nursing-assessment/{{patient.patientID}}">Assessment</a></li>
 							{{else}}
-							<li><a href="/student/show-nursing-assessment/{{patient.patientID}}">Assessment</a></li>
+							<li><a href="/student/show-nursing-assessment/{{recordID}}/{{patient.patientID}}">Assessment</a></li>
 							{{/unless}}
 							{{#unless userType}}
 							<li><a href="/master/HistoryTaking">History Taking</a></li>
@@ -343,7 +343,7 @@
 	{{#unless userType}}
 	<li><a href="/master/show-nursing-assessment/{{patient.patientID}}">Assessment</a></li>
 	{{else}}
-	<li><a href="/student/show-nursing-assessment/{{patient.patientID}}">Assessment</a></li>
+	<li><a href="/student/show-nursing-assessment/{{recordID}}/{{patient.patientID}}">Assessment</a></li>
 
 	{{/unless}}
 	{{#unless userType}}
