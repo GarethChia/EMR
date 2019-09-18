@@ -33,12 +33,24 @@
 				<li>
 					<a href="#pain">Pain</a>
 				</li>
+				{{#unless userType}}
 				<li>
-					<a href="/master/fall">Braden Scale</a>
+					<a href="/master/fall">Morse Fall Scale</a>
 				</li>
+				{{else}}
 				<li>
-					<a href="/master/braden">Morse Fall Scale</a>
+					<a href="/student/fall/{{recordID}}">Morse Fall Scale</a>
 				</li>
+				{{/unless}}
+				{{#unless userType}}
+				<li>
+					<a href="/master/braden">Braden</a>
+				</li>
+				{{else}}
+				<li>
+					<a href="/student/braden/{{recordID}}">Braden</a>
+				</li>
+				{{/unless}}
 			</ul>
 		</div>
 	</nav>
