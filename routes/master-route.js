@@ -1978,30 +1978,52 @@ router.delete('/doctor/orders/del-order/:orderID', ensureAuthenticated, ensureAu
 router.get('/mdp', ensureAuthenticated, ensureAuthorised, (req, res) => {
 	MasterMDP.find({user: req.user.id, patientID: req.session.patient.patientID}).sort({'datetime':1})
 	.then(newMDP => { // mdp that they have created
-		MasterMDP.find({user:{'$ne':req.user.id} , patientID: req.session.patient.patientID}).sort({'datetime':1})
-		.then(newOtherMasterMDP => { 
-			StudentMDP.aggregate(
+		/*MasterMDP.find({user:{'$ne':req.user.id} , patientID: req.session.patient.patientID}).sort({'datetime':1})
+		.then(newOtherMasterMDP => { */
+		MasterMDP.aggregate(
 			[
 				{"$sort": {
 					'datetime': -1
 				}},
-				{ "$match" : { 'patientID' : req.session.patient.patientID } },
+				{ "$match" : 
+					{ 'patientID' : req.session.patient.patientID,
+						'createdBy':
+						{ 
+							$ne: req.user.firstName // user did not work, use firstName
+						} 
+					} 
+				},
 				{ "$group": { '_id' : "$createdBy",  "doc": {"$first":"$$ROOT"}}},
 				{"$replaceRoot": {"newRoot": "$doc"}},
 				{"$sort": {
 					'datetime': -1
 				}}
 			])
-			.then(newOtherStudentMDP => {
-			console.log("************ group value: "+ JSON.stringify(newOtherStudentMDP));
-			res.render('mdp-notes/master/mdp', {
-				newMDP: newMDP,
-				newOtherMasterMDP: newOtherMasterMDP,
-				newOtherStudentMDP: newOtherStudentMDP,
-				patient: req.session.patient,
-				showMenu: true,
-			});
+			.then(newOtherMasterMDP => {
+
+				StudentMDP.aggregate(
+				[
+					{"$sort": {
+						'datetime': -1
+					}},
+					{ "$match" : { 'patientID' : req.session.patient.patientID } },
+					{ "$group": { '_id' : "$createdBy",  "doc": {"$first":"$$ROOT"}}},
+					{"$replaceRoot": {"newRoot": "$doc"}},
+					{"$sort": {
+						'datetime': -1
+					}}
+				])
+				.then(newOtherStudentMDP => {
+				console.log("************ group value: "+ JSON.stringify(newOtherStudentMDP));
+				res.render('mdp-notes/master/mdp', {
+					newMDP: newMDP,
+					newOtherMasterMDP: newOtherMasterMDP,
+					newOtherStudentMDP: newOtherStudentMDP,
+					patient: req.session.patient,
+					showMenu: true,
+				});
 			})	
+		//})
 		})
 	})
 })
