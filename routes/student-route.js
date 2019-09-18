@@ -2318,4 +2318,30 @@ router.put('/save-nursing-assessment/:recordID/:patientID/:nursingAssessmentID',
 		}
 	);
 });
+
+// Retrieves existing patient master page to edit
+router.get('/edit/:recordID/:patientID', ensureAuthenticated, (req, res) => {
+	userType = req.user.userType == 'student';
+	PatientStudentModel.findOne({
+		patientID: req.params.patientID			// gets current user
+	})
+	.populate('user')							// gets user from emr-users collection
+	.then(patient => {
+		// check if logged in user is owner of this patient record
+		if(JSON.stringify(patient.user._id) === JSON.stringify(req.user.id)) {
+			//req.session.patient = patient;				// adds object to session
+			res.render('student/student-edit-patient', { // calls handlebars
+				patient: patient,
+				userType: userType,
+				recordID: req.params.recordID,
+				showMenu: true							// shows menu using unless
+			});
+		} else {
+			console.log('Invalid User: not allowed to edit patient');
+			//alertMessage.flashMessage(res, 'User that created record is different from this user', 'fas
+			// fa-exclamation', true);
+			toaster.setErrorMessage('User that created record is different from this user');
+		}
+	});
+});
 module.exports = router;

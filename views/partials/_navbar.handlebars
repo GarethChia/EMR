@@ -122,9 +122,15 @@
 										</ul>
 									</div>
 								</li>-->
+								{{#unless userType}}
 								<li>
 									<a href="/master/edit/{{patient.patientID}}">Biographical Data</a>
 								</li>
+								{{else}}
+								<li>
+									<a href="/student/edit/{{recordID}}/{{patient.patientID}}">Biographical Data</a>
+								</li>
+								{{/unless}}
 								{{!--<li>
 									<a class="dropdown-trigger navmenu" href="#!" data-target="History">History
 										<i class="fas fa-sort-down"></i>
@@ -286,7 +292,16 @@
 <!-- Drop down menu items -->
 {{!-- Patient -> ... --}}
 <ul id="Patient" class="dropdown-content">
-	<li><a href="/master/edit/{{patient.patientID}}">Biographical Data</a></li>
+	{{#unless userType}}
+	<li>
+		<a href="/master/edit/{{patient.patientID}}">Biographical Data</a>
+	</li>
+	{{else}}
+	<li>
+		<a href="/student/edit/{{recordID}}/{{patient.patientID}}">Biographical Data</a>
+	</li>
+	{{/unless}}
+	{{!-- <li><a href="/master/edit/{{patient.patientID}}">Biographical Data</a></li> --}}
 	{{!--<li>
 		<a class="dropdown-trigger navmenu" href="#!" data-target="History">History
 			<i class="fas fa-sort-down"></i>
