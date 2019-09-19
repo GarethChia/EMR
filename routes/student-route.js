@@ -118,6 +118,7 @@ router.get('/showown/:recordID/:patientID', ensureAuthenticated, (req, res) => {
 
 // Save student edited patient record, selected from Student Records table at the top
 router.put('/save-student-edited-patient/:recordID', ensureAuthenticated, (req, res) => {
+	userType = req.user.userType == 'student';
 	PatientStudentModel.findOne({
 		recordID: req.params.recordID
 	})
@@ -191,7 +192,9 @@ router.put('/save-student-edited-patient/:recordID', ensureAuthenticated, (req, 
 				res.render('student/student-edit-patient', { // calls student-edie-patient.handlebars
 					patient: patient,
 					toaster,
-					showMenu: true
+					showMenu: true,
+					userType: userType,
+					recordID: req.params.recordID
 				});
 			});
 		}

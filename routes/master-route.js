@@ -1989,7 +1989,7 @@ router.get('/mdp', ensureAuthenticated, ensureAuthorised, (req, res) => {
 					{ 'patientID' : req.session.patient.patientID,
 						'createdBy':
 						{ 
-							$ne: req.user.firstName // user did not work, use firstName
+							$ne: req.user.firstName // user did not work, use firstName-
 						} 
 					} 
 				},
