@@ -366,8 +366,11 @@
 	{{else}}
 	<li><a href="/student/HistoryTaking/{{recordID}}">History Taking</a></li>
 	{{/unless}}
-
-	<li><a href="#!">Care Plan</a></li>
+	{{#unless userType}}
+	<li><a href="/master/CarePlan">Care Plan</a></li>
+	{{else}}
+	<li><a href="/student/CarePlan/{{recordID}}">Care Plan</a></li>
+	{{/unless}}
 	<li class="lighter-fonts"><a href="#!">Discharge Planning</a></li>
 	<li class="lighter-fonts"><a href="#!">Education</a></li>
 	<li class="divider"></li>
@@ -383,7 +386,7 @@
 	{{#unless userType}}
 	<li><a href="/master/io">IO</a></li>
 	<li><a href="/master/vital">Vital</a></li>
-	<li><a href="#!">Diabetic</a></li>
+	<li><a href="/master/diabetic">Diabetic</a></li>
 	<li><a href="#!">CLC</a></li>
 	<li><a href="#!">Neurovascular</a></li>
 	<li><a href="#!">Bladder Washout</a></li>
@@ -394,7 +397,7 @@
 	{{else}} {{!-- If usertype is master --}}
 	<li><a href="/student/io/{{recordID}}">IO</a></li>
 	<li><a href="/student/vital/{{recordID}}">Vital</a></li>
-	<li><a href="#!>Diabetic</a></li>
+	<li><a href="/student/diabetic/{{recordID}}">Diabetic</a></li>
 	<li><a href="#!">CLC</a></li>
 	<li><a href="#!">Neurovascular</a></li>
 	<li><a href="#!">Bladder Washout</a></li>

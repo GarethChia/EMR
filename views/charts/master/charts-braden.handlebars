@@ -24,8 +24,8 @@
                 {{#unless ../userType}}
                 <td><a href="/master/braden/{{bradenID}}">{{datetime}}</a></td>
                 {{else}}
-                {{!-- <td><a href="/student/braden/{{../recordID}}/{{bradenID}}">{{datetime}}</a></td> --}}
-                <td id="editRights{{bradenID}}"></td>
+                <td><a href="/student/braden/{{../recordID}}/{{bradenID}}">{{datetime}}</a></td>
+                {{!-- <td id="editRights{{bradenID}}"></td> --}}
                 {{/unless}}
                 <td>{{sensePercSplit}}</td>
                 <td>{{moistureSplit}}</td>
@@ -474,7 +474,7 @@
 
 </script>
 
-<script>
+{{!-- <script>
     {{#each newBraden}}
     console.log("{{by}}");
     console.log("{{../azureId}} == {{by}}");
@@ -491,4 +491,4 @@
             document.getElementById('editRights{{bradenID}}').innerHTML += "</tr>";
         }
     {{/each}}
-</script>
+</script> --}}

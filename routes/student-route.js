@@ -512,6 +512,7 @@ router.put('/save-customised-patient/:patientID', ensureAuthenticated, (req, res
 													}).then(ioSuccess => {
 														MasterBraden.find({ patientID: req.params.patientID }).then(bradenData => {
 															bradenData.forEach(braden => {
+																
 																new MasterBraden({
 																	patientID: recordID,
 																	bradenID: (new standardID('AAA0000')).generate(),
@@ -523,12 +524,21 @@ router.put('/save-customised-patient/:patientID', ensureAuthenticated, (req, res
 																	mobility: braden.mobility,
 																	nutrition: braden.nutrition,
 																	fns: braden.fns,
+
+																	sensePercSplit: braden.sensePercSplit,
+																	moistureSplit: braden.moistureSplit,
+																	activitySplit: braden.activitySplit,
+																	mobilitySplit: braden.mobilitySplit,
+																	nutritionSplit: braden.nutritionSplit,
+																	fnsSplit: braden.fnsSplit,
+
 																	total: braden.total
 																}).save();
 															})
 														}).then(bradenSuccess => {
 															MasterFall.find({ patientID: req.params.patientID }).then(fallData => {
 																fallData.forEach(fall => {
+																	
 																	new MasterFall({
 																		patientID: recordID,
 																		fallID: (new standardID('AAA0000')).generate(),
@@ -540,6 +550,14 @@ router.put('/save-customised-patient/:patientID', ensureAuthenticated, (req, res
 																		ivhl: fall.ivhl,
 																		gait: fall.gait,
 																		mental: fall.mental,
+
+																		historySplit: fall.historySplit,
+																		secondarySplit: fall.secondarySplit,
+																		ambuSplit: fall.ambuSplit,
+																		ivhlSplit: fall.ivhlSplit,
+																		gaitSplit: fall.gaitSplit,
+																		mentalSplit: fall.mentalSplit,
+
 																		totalmf: fall.totalmf
 																	}).save();
 																})
@@ -1723,12 +1741,12 @@ router.put('/edit-output/:recordID/:outputID', ensureAuthenticated, (req, res) =
 //open route to braden page
 router.get('/braden/:recordID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
-	MasterBraden.find({ patientID: req.session.patient.patientID }).then(newBraden => {
-		// MasterBraden.find({ patientID: req.params.recordID }).then(newBraden => {
+	// MasterBraden.find({ patientID: req.session.patient.patientID }).then(newBraden => {
+		MasterBraden.find({ patientID: req.params.recordID }).then(newBraden => {
 	
 		console.log(newBraden);
 		res.render('charts/master/charts-braden', {
-			azureId: req.user.azure_oid,
+			// azureId: req.user.azure_oid,
 			recordID: req.params.recordID,
 			userType: userType,
 			newBraden: newBraden,
@@ -1741,12 +1759,12 @@ router.get('/braden/:recordID', ensureAuthenticated, (req, res) => {
 //get single braden info
 router.get('/braden/:recordID/:bradenID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
-	MasterBraden.find({ patientID: req.session.patient.patientID }).then(newBraden => {
-		// MasterBraden.find({ patientID: req.params.recordID }).then(newBraden => {
+	// MasterBraden.find({ patientID: req.session.patient.patientID }).then(newBraden => {
+		MasterBraden.find({ patientID: req.params.recordID }).then(newBraden => {
 
 		MasterBraden.findOne({ bradenID: req.params.bradenID }).then(editBraden => {
 			res.render('charts/master/charts-braden', {
-				azureId: req.user.azure_oid,
+				// azureId: req.user.azure_oid,
 				recordID: req.params.recordID,
 				userType: userType,
 				newBraden: newBraden,
@@ -1778,9 +1796,10 @@ router.post('/add-braden/:recordID', ensureAuthenticated, (req, res) => {
 
 
 	new MasterBraden({
-			patientID: req.session.patient.patientID,
+			// patientID: req.session.patient.patientID,
+			patientID: req.params.recordID,
 			bradenID: bradenID,
-			by: req.user.azure_oid,
+			// by: req.user.azure_oid,
 			date: req.body.dateBraden,
 			datetime: datetime,
 			sensePercSplit: splitSensePerc,
@@ -1853,11 +1872,12 @@ router.put('/edit-braden/:recordID/:bradenID', ensureAuthenticated, (req,res) =>
 //open fall page
 router.get('/fall/:recordID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
-	MasterFall.find({ patientID: req.session.patient.patientID }).then(newFall => {
+	// MasterFall.find({ patientID: req.session.patient.patientID }).then(newFall => {
 
-	// MasterFall.find({ patientID: req.params.recordID }).then(newFall => {
+	MasterFall.find({ patientID: req.params.recordID }).then(newFall => {
+		console.log(newFall);
 		res.render('charts/master/charts-Fall', {
-			azureId: req.user.azure_oid,
+			// azureId: req.user.azure_oid,
 			recordID: req.params.recordID,
 			userType: userType,
 			newFall: newFall,
@@ -1887,8 +1907,8 @@ router.post('/add-fall/:recordID', ensureAuthenticated, (req, res) => {
 	splitGait = removeNumber.removeNumberFunction(req.body.gait);
 	splitMental = removeNumber.removeNumberFunction(req.body.mental);
 	new MasterFall({
-		// patientID: req.params.recordID,
-		patientID: req.session.patient.patientID,
+		patientID: req.params.recordID,
+		// patientID: req.session.patient.patientID,
 		fallID: fallID,
 		date: req.body.dateFall,
 		datetime: datetime,
@@ -1905,7 +1925,7 @@ router.post('/add-fall/:recordID', ensureAuthenticated, (req, res) => {
 		ivhlSplit: splitIvhl,
 		gaitSplit: splitGait,
 		mentalSplit: splitMental,
-		by: req.user.azure_oid,
+		// by: req.user.azure_oid,
 
 		totalmf: totalmf,
 
@@ -2060,8 +2080,8 @@ router.put('/edit-history/:recordID', ensureAuthenticated, (req,res) => {
 //get single fall info
 router.get('/fall/:recordID/:fallID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
-	// MasterFall.find({ patientID: req.params.recordID }).then(newFall => {
-		MasterFall.find({ patientID: req.session.patient.patientID }).then(newFall => {
+	MasterFall.find({ patientID: req.params.recordID }).then(newFall => {
+		// MasterFall.find({ patientID: req.session.patient.patientID }).then(newFall => {
 
 		MasterFall.findOne({ fallID: req.params.fallID }).then(editFall => {
 			res.render('charts/master/charts-fall', {
