@@ -1,0 +1,162 @@
+<br/>
+<div id="CarePlan">
+    <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">Care Plan</div>
+    <br/>
+    <form>
+        <div class="row">
+            <div class="col s12 m6 input-field">
+                <select id="selectUser" name="selectUser" required>
+                    <option value="" disabled selected>Please select the student</option>
+                    <option value="Doctor">Lin Peishan</option>
+                </select>
+                <label for="selectUser">Student</label>
+            </div>
+        </div>
+    </form>
+    <div style="overflow-x:auto; max-height: 16em;">
+        <table id="ioRecords" class="hover order-column">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    {{!-- <th>Problem Identified</th>
+                    <th>Assessment</th>
+                    <th>Goal and Expected Outcomes</th>
+                    <th>Interventions</th>
+                    <th>Rationale</th>
+                    <th>Evaluations</th> --}}
+                </tr>
+            </thead>
+            <tbody>
+                {{#if newCarePlan}}
+                    {{#each newCarePlan}}
+                    <tr style="height: 60px">
+                        <td><a href="/master/CarePlan/{{carePlanID}}">{{date}}</a></td>
+                        <td>{{time}}</td>
+                        {{!-- <td>{{problemIdentified}}</td>
+                        <td>{{assessment}}</td>
+                        <td>{{goalAndExpectedOutcomes}}</td>
+                        <td>{{interventions}}</td>
+                        <td>{{rationale}}</td>
+                        <td>{{evaluations}}</td> --}}
+                        {{!-- <td style="width: 65px"> <!-- the tr we're trying to get -->
+                            <form action="/student/del-mdp/{{studentPatientID}}/{{mdpID}}?_method=DELETE" method="post" id="delete-form">
+                                <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn red darken-3">
+                                 <i class="material-icons">delete
+                            </button>
+                            </form>
+                        </td> --}}
+                    </tr>
+                    {{/each}}
+                {{else}}
+                <tr style="height: 60px">
+                    <td colspan="2" class="center">
+                        <p id="noRecord">You have not created any Care Plan yet</p>
+                    </td>
+                </tr>
+                {{/if}}
+            </tbody>
+        </table>
+    </div>
+    
+    <br/>
+
+    <div class="row">
+        <div class="col s12 m8"></div>
+    </div>
+    
+    <form action="/student/add-CarePlan/{{recordID}}" method="POST">
+        <div class="card purple lighten-5">
+            <div class="card-content">
+                <div id="ioInfo">
+                    <span class="purple-text darken-2">Care Plan</span>
+                
+                    <div class="row">
+                            <div class="col s12 m4 input-field">
+                                <input id="dateCarePlan" type="text" class="datepicker" name="dateCarePlan" value="{{editCarePlan.date}}" required>
+                                <label for="dateCarePlan">Date</label>
+                                <span class="helper-text">dd/mm/yyyy</span>
+                            </div>
+
+                            <div class="col s12 m4 input-field">
+                                <input id="timeCarePlan" type="text" class="timepicker" name="timeCarePlan" value="{{editCarePlan.time}}" required>
+                                <label for="timeCarePlan">Time</label>
+                                <span class="helper-text">hh:ss</span>
+                            </div>
+                            {{!-- <div class="col s12 m4 input-field">
+                                    <select id="selectUser" name="selectUser" required>
+                                        <option value="" disabled selected>Please select</option>
+                                        <option value="Doctor">Doctor</option>
+                                        <option value="Nurse">Nurse</option>
+                                        <option value="Allied Health">Allied Health</option>
+                                    </select>
+                                    <label for="selectUser">Health Provider</label>
+                            </div> --}}
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m6 input-field">
+                            <textarea id="problemIdentified" class="materialize-textarea" name="problemIdentified" required>{{editCarePlan.problemIdentified}}</textarea>
+                            <label for="problemIdentified">Problem Identified</label>
+                        </div>
+                        <div class="col s12 m6 input-field">
+                            <textarea id="assessment" class="materialize-textarea" name="assessment" required>{{editCarePlan.assessment}}</textarea>
+                            <label for="assessment">Assessment</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m6 input-field">
+                            <textarea id="goalAndExpectedOutcomes" class="materialize-textarea" name="goalAndExpectedOutcomes" required>{{editCarePlan.goalAndExpectedOutcomes}}</textarea>
+                            <label for="goalAndExpectedOutcomes">Goal & Expected Outcomes</label>
+                        </div>
+                        <div class="col s12 m6 input-field">
+                            <textarea id="interventions" class="materialize-textarea" name="interventions" required>{{editCarePlan.interventions}}</textarea>
+                            <label for="interventions">Interventions</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m6 input-field">
+                            <textarea id="rationale" class="materialize-textarea" name="rationale" required>{{editCarePlan.rationale}}</textarea>
+                            <label for="rationale">Rationale</label>
+                        </div>
+                        <div class="col s12 m6 input-field">
+                            <textarea id="evaluations" class="materialize-textarea" name="evaluations" required>{{editCarePlan.evaluations}}</textarea>
+                            <label for="evaluations">Evaluation</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<br/>
+
+<script
+    src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous">
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Care Plan
+        const dateCarePlan = document.querySelector('#dateCarePlan');
+        const timeCarePlan = document.querySelector('#timeCarePlan');
+        const selectUser = document.querySelector('#selectUser');
+
+        // Care Plan Instances
+        M.Datepicker.init(dateCarePlan, {
+            maxDate: new Date(),
+            format: 'dd/mm/yyyy',
+            disableWeekends: true
+        });
+        M.Timepicker.init(timeCarePlan, {
+            twelveHour: false,
+            showClearBtn: true
+        });
+
+        M.FormSelect.init(selectUser, {
+            
+        })                
+    })  
+
+ </script>

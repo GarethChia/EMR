@@ -18,8 +18,11 @@ const DoctorOrders = mongoose.model('doctorsOrders');
 
 //HistoryTaking model
 const MasterHistory = mongoose.model('masterHistoryTrack');
+// MDP
 const MasterMDP = mongoose.model('masterMDP');
 const StudentMDP = mongoose.model('studentMDP');
+// Care Plan
+const StudentCarePlan = mongoose.model('studentCarePlan');
 const moment = require('moment');
 const csrf = require('csurf');
 const alertMessage = require('../helpers/messenger');
@@ -2102,5 +2105,64 @@ router.put('/edit-mdp/:mdpID', ensureAuthenticated, ensureAuthorised, (req,res) 
 	});
 	res.redirect("/master/mdp");
 })
+
+// Care Plan
+router.get('/CarePlan', ensureAuthenticated, (req, res) => {
+	userType = req.user.userType == 'student';
+	// StudentMDP.find({user: req.user.id, patientID: req.session.patient.patientID}).sort({'datetime':1})
+	// .then(newMDP => { // mdp that they have created
+		// MasterMDP.aggregate([
+		// 	{"$sort": {
+		// 		'datetime': -1
+		// 	}},
+		// 	{ "$match" : { 'patientID' : req.session.patient.patientID } },
+		// 	{ "$group": { '_id' : "$createdBy",  "doc": {"$first":"$$ROOT"} }},
+		// 	{ "$replaceRoot": {"newRoot": "$doc" }},
+		// 	{"$sort": {
+		// 		'datetime': -1
+		// 	}}
+		// ])
+		// 	.then(newMasterMDP => {
+			// console.log("************ newMasterMDP: "+ JSON.stringify(newMasterMDP));
+		StudentCarePlan.find({patientID: req.session.patient.patientID}).sort({'datetime': 1})
+		.then(newCarePlan => {
+			res.render('care-plan/master/care-plan', {
+				recordID: req.params.recordID,
+				// newMasterMDP: newMasterMDP,
+				newCarePlan: newCarePlan,
+				userType: userType,
+				patient: req.session.patient,
+				showMenu: true
+			});
+		})
+			
+		// });
+		//});
+	// })
+})
+
+// get single Care Plan info
+router.get('/CarePlan/:carePlanID', ensureAuthenticated, (req, res) => {
+	userType = req.user.userType == 'student';
+	
+	StudentCarePlan.find({ patientID: req.session.patient.patientID}).sort({'datetime':1})
+	.then(newCarePlan => {
+		StudentCarePlan.findOne({ carePlanID: req.params.carePlanID })
+		.then(editCarePlan => {
+			
+			editCarePlan.date = moment(editCarePlan.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
+			
+			res.render('care-plan/master/care-plan', {
+				userType: userType,
+				recordID: req.params.recordID,
+				newCarePlan: newCarePlan,
+				editCarePlan: editCarePlan,
+				patient: req.session.patient,
+				showMenu: true
+			});
+		});
+	});
+})
+
 
 module.exports = router;
