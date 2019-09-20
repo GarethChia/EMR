@@ -15,7 +15,6 @@ const MasterOxygen = mongoose.model('masterOxygen');
 const MasterPain = mongoose.model('masterPain');
 const MasterWH = mongoose.model('masterWh');
 const DoctorOrders = mongoose.model('doctorsOrders');
-
 //HistoryTaking model
 const MasterHistory = mongoose.model('masterHistoryTrack');
 // MDP
@@ -2106,6 +2105,134 @@ router.put('/edit-mdp/:mdpID', ensureAuthenticated, ensureAuthorised, (req,res) 
 	res.redirect("/master/mdp");
 })
 
+//Load Diabetic page
+router.get('/diabetic', ensureAuthenticated, ensureAuthorised, (req, res) => {
+	MasterDiabetic.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newDiabetic => {
+
+					diabeticsample = [];
+					diabeticsampleDate = [];
+					let diabeticFlow = Object.assign([], newDiabetic);
+					
+					diabeticCount = -1;
+					
+					diabeticnoRecord = 'No existing record';
+
+					newDiabetic.forEach(diabetic => {
+						if (!(diabeticsample.includes(diabetic.datetime))) {
+							diabeticsample.push(diabetic.datetime);
+							diabeticsampleDate.push(diabetic.date);
+						}
+					});
+					diabeticsample.sort();
+					diabeticsampleDate.sort();
+
+					for (i = 0; i < diabeticsample.length; i++) {
+						
+
+						//Counter for empty data
+						//.length here refers to last index of the array
+						if (diabeticCount !== (diabeticFlow.length - 1)) {
+							diabeticCount++;
+						}
+						//Insert empty data when value doesnt match
+						//Count here does the index count of flow array
+						if(diabeticFlow !='') 
+						{
+							if (diabeticsample[i] < diabeticFlow[diabeticCount].datetime) {
+								diabeticFlow.splice(diabeticCount, 0, {datetime: ''});
+							} else if (diabeticsample[i] > diabeticFlow[diabeticCount].datetime) {
+								diabeticFlow.splice(diabeticCount + 1, 0, {datetime: ''});
+							}
+						} 
+						else
+						{
+							diabeticFlow.push({datetime: '', poc: diabeticnoRecord});
+						}
+
+						
+					};
+					res.render('charts/master/charts-diabetic', {
+						// recordID: req.params.recordID,
+						// userType: userType,
+						diabeticdateVal: diabeticsample,
+						diabeticFlow: diabeticFlow,
+						newDiabetic: newDiabetic,
+						patient: req.session.patient,
+						showMenu: true
+        			})
+	})
+})
+
+//get single Diabetic info
+router.get('/diabetic/:diabeticID', ensureAuthenticated, ensureAuthorised, (req, res) => {
+	// MasterBraden.find({ patientID: req.session.patient.patientID }).then(newBraden => {
+	MasterDiabetic.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newDiabetic => {
+		MasterDiabetic.findOne({ diabeticID: req.params.diabeticID }).then(editDiabetic => {
+
+			editDiabetic.date = moment(editDiabetic.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
+			res.render('charts/master/charts-diabetic', {
+				// azureId: req.user.azure_oid,
+				newDiabetic: newDiabetic,
+				editDiabetic: editDiabetic,
+				patient: req.session.patient,
+				showMenu: true			
+			})
+		})
+	})
+})
+//add diabetic info
+router.post('/add-diabetic', ensureAuthenticated,ensureAuthorised, (req, res) => {
+	diabeticID = (new standardID('AAA0000')).generate();
+	datetime = moment(req.body.dateDiabetic, 'DD/MM/YYYY').format('MM/DD/YYYY') + " "+ req.body.timeDiabetic;
+
+
+	new MasterDiabetic({
+			// patientID: req.session.patient.patientID,
+			patientID: req.session.patient.patientID,
+			diabeticID: diabeticID,
+			date: moment(req.body.dateDiabetic, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+			time: req.body.timeDiabetic,
+			datetime: datetime,
+			poc: req.body.poc,
+			bgl: req.body.bgl,
+			insulintype: req.body.insulintype,
+			insulinamt: req.body.insulinamt,
+			hypoagent: req.body.hypoagent,
+
+	}).save();
+
+	res.redirect('/master/diabetic');
+})
+
+//Edit diabetic information
+router.put('/edit-diabetic/:diabeticID', ensureAuthenticated,ensureAuthorised, (req,res) => {
+	datetime = moment(req.body.dateDiabetic, 'DD/MM/YYYY').format('MM/DD/YYYY') + " "+ req.body.timeDiabetic;
+
+	MasterDiabetic.findOne({ diabeticID: req.params.diabeticID }).then(editDiabetic => {
+		editDiabetic.date = moment(req.body.dateDiabetic, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		editDiabetic.time = req.body.timeDiabetic,
+		editDiabetic.datetime = datetime,
+		editDiabetic.poc = req.body.poc,
+		editDiabetic.bgl = req.body.bgl,
+		editDiabetic.insulintype = req.body.insulintype,
+		editDiabetic.insulinamt = req.body.insulinamt,
+		editDiabetic.hypoagent = req.body.hypoagent,
+
+		editDiabetic.save();
+	});
+	res.redirect('/master/diabetic');
+})
+//Delete diabetic information
+router.delete('/del-diabetic/:diabeticID', ensureAuthenticated, ensureAuthorised, (req, res) => {
+	MasterIO.deleteOne({diabeticID: req.params.diabeticID}, function(err) {
+		if (err) {
+			console.log('cannot delete diabetic details');
+		}
+	});
+	res.redirect('/master/diabetic');
+})
+
+//END OF DIABETIC
 // Care Plan
 router.get('/CarePlan', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';

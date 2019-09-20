@@ -37,10 +37,10 @@ require('./models/MasterOutput');
 require('./models/MasterOxygen');
 require('./models/MasterMDP');
 require('./models/StudentMDP');
-//History Taking
 require('./models/MasterHistoryTracking');
 require('./models/StudentHistoryTracking');
 require('./models/StudentCarePlan');
+require('./models/MasterDiabetic');
 
 // load keys
 const key = fs.readFileSync('./server.key');
