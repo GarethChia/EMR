@@ -1,0 +1,450 @@
+<style>
+    td, th {
+        text-align: center
+    }
+    .tabs .indicator {
+        background-color: #6A1B9A;
+    }
+    .tabs .tab a:focus, .tabs .tab a:focus.active {
+        background: transparent;
+    }
+
+    #diabeticflowsheettTable th {
+        border-right: 1px solid rgba(0, 0, 0, 0.12);
+        border-bottom: none;
+    }
+    #diabeticflowsheettTable tr {
+        border-bottom: none;
+    }
+    #diabeticflowsheettTable tr td {
+        border-right: 1px solid rgba(0, 0, 0, 0.12);
+    }
+</style>
+
+
+<br>
+<div class="row">
+    <div class="col s12">
+        <div class="tabs">
+            <li class="tab col s2 offset-s1" id="flowsheetTab"><a class="purple-text text-darken-3" id="tab0" href="#diabeticflowsheet">Diabetic Flowsheet</a></li>
+            <li class="tab col s2" id="diabetictab"><a class="purple-text text-darken-3" id="tab1" href="#diabetic">Diabetic</a></li>
+            
+            {{!-- <li class="tab col s2" id="tabletab"><a class="purple-text text-darken-3" id="tab5" href="#table">Net IO</a></li> --}}
+        </div>
+    </div>
+</div>
+
+
+ {{!-- IO Flowsheet code start --}}
+ <div id="diabeticflowsheet">
+    <div class="card-panel purple darken-3 white-text" style="padding: 5px; font-size: 20px; text-align: center"> Diabetic Flowsheet</div>
+    
+    <div style="overflow-x: auto; max-height: 48em;">
+        <table id="diabeticflowsheettTable">
+            <tr>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Datetime</th>
+                {{#each diabeticdateVal}}
+                <th style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">{{formatDatetime this}}</th>
+                {{/each}}
+            </tr>
+
+            <tr>
+                <th width="10%">Point Of Care</th>
+                {{#each diabeticFlow}}
+                <td class="poc">{{poc}}</td>
+                {{/each}}
+            </tr>
+
+            <tr>
+                <th width="10%">Blood Glucose Level(mmol/L)</th>
+                {{#each diabeticFlow}}
+                <td class="bgl">{{bgl}}</td>
+                {{/each}}
+            </tr>
+
+            <tr>
+                <th width="10%">Type of Insulin</th>
+                {{#each diabeticFlow}}
+                <td>{{insulintype}}</td>
+                {{/each}}
+            </tr>
+
+            <tr>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Amount of Insulin Given</th>
+                {{#each diabeticFlow}}
+                {{!-- <td>{{insulinamt}}</td> --}}
+                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)" class="insulinamt">{{insulinamt}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Hypoglycaemic Agent(Oral)</th>
+                {{#each diabeticFlow}}
+                {{!-- <td>{{hypoagent}}</td> --}}
+                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)" class="hypoagent">{{hypoagent}}</td>
+                {{/each}}
+            </tr>
+      
+        </table>
+    </div>
+</div>
+<script>
+    // Intake PO
+    var fluidConsumed = document.getElementsByClassName("fluidConsumed");
+    var intakePO = document.getElementsByClassName("intakePO");
+
+    // Intake Enteral
+    var amountOfFeeding = document.getElementsByClassName("amountOfFeeding");
+    var flush = document.getElementsByClassName("flush");
+    var intakeEnteral = document.getElementsByClassName("intakeEnteral");
+
+    // Intake I.V
+    var amountInfusedContinuous = document.getElementsByClassName("amountInfusedContinuous");
+    var amountInfusedIntermittent = document.getElementsByClassName("amountInfusedIntermittent");
+    var ivFlush = document.getElementsByClassName("ivFlush");
+    var intakeIV = document.getElementsByClassName("intakeIV");
+
+    // Output
+    var urine = document.getElementsByClassName("urine");
+    var vomitus = document.getElementsByClassName("vomitus");
+    var blood = document.getElementsByClassName("blood");
+    var diaperWeight = document.getElementsByClassName("diaperWeight");
+    var other = document.getElementsByClassName("other");
+    var outputFlow = document.getElementsByClassName("outputFlow");
+    
+    for (i = 0; i < fluidConsumed.length; i++) { 
+        var totalIntakePO = 0;
+        var totalIntakeEnteral = 0;
+        var totalIntakeIV = 0;
+        var output = 0;
+        
+        // display total intakePO
+        if (!(isNaN(parseInt(fluidConsumed[i].innerHTML)))) 
+        { 
+            totalIntakePO += parseInt(fluidConsumed[i].innerHTML);
+            intakePO[i].innerHTML = totalIntakePO;
+        }
+        // display total intake enteral
+        if (!(isNaN(parseInt(amountOfFeeding[i].innerHTML)))) 
+        { 
+            totalIntakeEnteral += parseInt(amountOfFeeding[i].innerHTML);
+            intakeEnteral[i].innerHTML = totalIntakeEnteral;
+        }
+        if (!(isNaN(parseInt(flush[i].innerHTML)))) 
+        { 
+            totalIntakeEnteral += parseInt(flush[i].innerHTML);
+            intakeEnteral[i].innerHTML = totalIntakeEnteral;
+        }
+        // display total Intake I.V
+        if (!(isNaN(parseInt(amountInfusedContinuous[i].innerHTML)))) 
+        { 
+            totalIntakeIV += parseInt(amountInfusedContinuous[i].innerHTML);
+            intakeIV[i].innerHTML = totalIntakeIV;
+        }
+        if (!(isNaN(parseInt(amountInfusedIntermittent[i].innerHTML)))) 
+        { 
+            totalIntakeIV += parseInt(amountInfusedIntermittent[i].innerHTML);
+            intakeIV[i].innerHTML = totalIntakeIV;
+        }
+        if (!(isNaN(parseInt(ivFlush[i].innerHTML)))) 
+        { 
+            totalIntakeIV += parseInt(ivFlush[i].innerHTML);
+            intakeIV[i].innerHTML = totalIntakeIV;
+        }
+        // display total Output
+        if (!(isNaN(parseInt(urine[i].innerHTML)))) 
+        { 
+            output += parseInt(urine[i].innerHTML);
+            outputFlow[i].innerHTML = output;
+        }
+        if (!(isNaN(parseInt(vomitus[i].innerHTML)))) 
+        { 
+            output += parseInt(vomitus[i].innerHTML);
+            outputFlow[i].innerHTML = output;
+        }
+        if (!(isNaN(parseInt(blood[i].innerHTML)))) 
+        { 
+            output += parseInt(blood[i].innerHTML);
+            outputFlow[i].innerHTML = output;
+        }
+        if (!(isNaN(parseInt(diaperWeight[i].innerHTML)))) 
+        { 
+            output += parseInt(diaperWeight[i].innerHTML);
+            outputFlow[i].innerHTML = output;
+        }
+        if (!(isNaN(parseInt(other[i].innerHTML)))) 
+        { 
+            output += parseInt(other[i].innerHTML);
+            outputFlow[i].innerHTML = output;
+        }
+    }
+
+    // nett balance & total balance
+    var nettBalance = document.getElementsByClassName("nettBalance");
+    var total = 0;
+
+    for (i = 0; i < nettBalance.length; i++)
+    {
+        var totalInput = 0;
+        var totalOutput = 0;
+        // intake PO, intake Enteral, intake I.V, output
+        if (!(isNaN(parseInt(intakePO[i].innerHTML)))) 
+        {
+            totalInput += parseInt(intakePO[i].innerHTML);
+        }
+        if (!(isNaN(parseInt(intakeEnteral[i].innerHTML)))) 
+        {
+            totalInput += parseInt(intakeEnteral[i].innerHTML);
+        }
+        if (!(isNaN(parseInt(intakeIV[i].innerHTML)))) 
+        {
+            totalInput += parseInt(intakeIV[i].innerHTML);
+        }
+        if (!(isNaN(parseInt(outputFlow[i].innerHTML)))) 
+        {
+            totalOutput += parseInt(outputFlow[i].innerHTML);
+        }
+        nettBalance[i].innerHTML = totalInput - totalOutput;
+        total += (totalInput - totalOutput);
+    }
+
+    var totalBalance = document.getElementById("totalBalance");
+    totalBalance.colSpan = nettBalance.length;
+    totalBalance.style.textAlign = "center";
+    totalBalance.innerHTML += total;
+</script>
+
+{{!-- Diabetic code start --}}
+<div id="diabetic">
+<div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">Diabetic</div>
+    <div style="overflow-x:auto; max-height: 16em;">
+        <table id="ioRecords" class="hover order-column">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Point Of Care</th>
+                    <th>Blood Glucose Level (mmol/L)</th>
+                    <th>Type of Insulin</th>
+                    <th>Amount of Insulin Given</th>
+                    <th>Hypoglycaemic Agent</th>
+
+                    {{!-- <th>Patient ID</th> --}}
+                    {{#unless userType}}
+                    {{!-- <th>Delete</th> --}}
+                    {{/unless}}
+                </tr>
+            </thead>
+            <tbody>
+                {{#if newDiabetic}}
+                    {{#each newDiabetic}}
+                    <tr style="height: 60px">
+                        {{#unless ../userType}}
+                        <td><a href="/master/diabetic/{{diabeticID}}">{{date}}</a></td>
+                        {{else}}
+                        <td><a href="/student/diabetic/{{../recordID}}/{{diabeticID}}">{{date}}</a></td>
+                        {{/unless}}
+                        <td>{{time}}</td>
+                        <td>{{poc}}</td>
+                        <td>{{bgl}}</td>
+                        <td>{{insulintype}}</td>
+                        <td>{{insulinamt}}</td>
+                        <td>{{hypoagent}}</td>
+
+                        {{!-- <td>{{patientID}}</td> --}}
+                        {{#unless ../userType}}
+                        {{!-- <td style="width: 65px"> <!-- the tr we're trying to get -->
+                            <form action="/master/del-diabetic/{{diabeticID}}?_method=DELETE" method="post" id="delete-form">
+                                <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn red darken-3">
+                                 <i class="material-icons">delete
+                            </button>
+                            </form>
+                        </td> --}}
+                        {{else}}
+                         {{!-- <td style="width: 65px"> <!-- the tr we're trying to get -->
+                            <form action="/master/del-io/{{../recordID}}/{{ioID}}?_method=DELETE" method="post" id="delete-form">
+                                <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn red darken-3">
+                                 <i class="material-icons">delete
+                            </button> --}}
+                            </form>
+                        {{/unless}}
+                    </tr>
+                    {{/each}}
+                {{else}}
+                <p id="noRecord">You have not created any Diabetic records yet</p>
+                {{/if}}
+            </tbody>
+        </table>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col s12 m8"></div>
+    </div>
+
+    {{#if editDiabetic}}
+        {{#unless userType}}
+        <form action="/master/edit-diabetic/{{editDiabetic.diabeticID}}?_method=PUT" method="POST" id="editDiabetic">
+        {{else}}    
+        <form action="/student/edit-diabetic/{{recordID}}/{{editDiabetic.diabeticID}}?_method=PUT" method="POST" id="editDiabetic">
+        {{/unless}}
+    {{!-- <input type="hidden" name="_method" value="PUT"> --}}
+    {{else}}
+        {{#unless userType}}
+        <form action="/master/add-diabetic" method="POST" id="addDiabetic">
+        {{else}}
+        <form action="/student/add-diabetic/{{recordID}}" method="POST" id="addDiabetic">
+        {{/unless}}
+    {{/if}}
+        <div class="card purple lighten-5">
+            <div class="card-content">
+                <div id="diabeticInfo">
+                    <span class="purple-text darken-2">Diabetic Details</span>
+
+                <div class="row">
+                        <div class="col s12 m4 input-field">
+                            <input id="dateDiabetic" type="text" class="datepicker" name="dateDiabetic" value="{{editDiabetic.date}}" required>
+                            <label for="dateDiabetic">Date</label>
+                            <span class="helper-text">dd/mm/yyyy</span>
+                        </div>
+
+                        <div class="col s12 m4 input-field">
+                            <input id="timeDiabetic" type="text" class="timepicker" name="timeDiabetic" value="{{editDiabetic.time}}" required>
+                            <label for="timeDiabetic">Time</label>
+                            <span class="helper-text">hh:ss</span>
+                        </div>
+
+                        {{!-- <div class="col s12 m4 input-field">
+                            <input id="poc" type="text" name="poc" value="{{editDiabetic.poc}}">
+                            <label for="poc">Poc</label>
+                            <span class="helper-text"></span>
+                        </div> --}}
+
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col s12 m4 input-field">
+                            <select id="poc" name="poc">
+                                <option value="" disabled selected>Point Of Care</option>
+                                <option value="BB - Before Breakfast">BB - Before Breakfast</option>
+                                <option value="AB - After Breakfast">AB - After Breakfast</option>
+                                <option value="BL - Before Lunch">BL - Before Lunch</option>
+                                <option value="AL - After Lunch">AL - After Lunch</option>
+                                <option value="BD - Before Dinner">BD - Before Dinner</option>
+                                <option value="AD - After Dinner">AD - After Dinner</option>
+                                <option value="BT - Bed Time">BT - Bed Time</option>
+                                <option value="OT - Other Time">OT - Other Time</option>
+
+
+                            </select>
+                     <label for="poc">Point Of Care</label>
+
+                    </div>
+                    
+                        <div class="col s12 m4 input-field">
+                            <input id="bgl" type="text" name="bgl" value="{{editDiabetic.bgl}}">
+                            <label for="bgl">Blood Glucose Level</label>
+                            <span class="helper-text"></span>
+                        </div>
+                        <div class="col s12 m4 input-field">
+                            <input id="insulintype" type="text" name="insulintype" value="{{editDiabetic.insulintype}}">
+                            <label for="insulintype">Type of Insulin</label>
+                            <span class="helper-text"></span>
+                        </div>
+                        <div class="col s12 m4 input-field">
+                            <input id="insulinamt" type="number" name="insulinamt" value="{{editDiabetic.insulinamt}}">
+                            <label for="insulinamt">Amount of Insulin Given</label>
+                            <span class="helper-text"></span>
+                        </div>
+                        <div class="col s12 m4 input-field">
+                            <input id="hypoagent" type="text" name="hypoagent" value="{{editDiabetic.hypoagent}}">
+                            <label for="hypoagent">Hypoglycaemic Agent</label>
+                            <span class="helper-text"></span>
+                        </div>                   
+                </div>
+
+
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="row">
+        <div class="col s12 m8"></div>
+
+        <div class="col s12 m4">
+            {{#if editDiabetic}}
+                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editDiabetic">Save Changes
+            {{else}}
+                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addDiabetic">Save
+            {{/if}}
+            {{#unless userType}}
+                <i class="material-icons right">send</i>
+                {{else}}
+                <i class="material-icons right">send</i>
+            {{/unless}}
+        </div>
+    </div>
+</div>
+
+{{!-- Diabetic code end --}}
+
+
+
+<script
+		src="https://code.jquery.com/jquery-3.3.1.min.js"
+		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+		crossorigin="anonymous">
+</script>
+
+<script>
+
+    $(document).ready(() => {
+        $('.tabs').tabs();
+        
+    })
+    
+
+        document.addEventListener('DOMContentLoaded', () => {
+        //diabetic
+        const dateDiabetic = document.querySelector('#dateDiabetic');
+        const timeDiabetic = document.querySelector('#timeDiabetic');
+        const pointofcare = document.querySelector('#poc');
+
+        
+        //Img
+        const elems = document.querySelectorAll('.materialboxed');
+        const instances = M.Materialbox.init(elems, {});
+
+        //IO Instances
+                M.Datepicker.init(dateDiabetic, {
+                    maxDate: new Date(),
+                    format: 'dd/mm/yyyy',
+                    disableWeekends: true
+                });
+                M.Timepicker.init(timeDiabetic, {
+                    twelveHour: false,
+                    showClearBtn: true
+                });
+
+                M.FormSelect.init(poc, {
+                    
+                })      
+        })
+
+
+    {{#if editDiabetic}}
+        document.getElementById('poc').value = "{{editDiabetic.poc}}";
+        document.getElementById('flowsheetTab').className += "disabled";
+        document.getElementById('diabetictab').className += "active";
+    {{/if}}
+
+    // modal
+    document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.modal');
+        var instances = M.Modal.init(elems, {});
+    });
+ </script>
