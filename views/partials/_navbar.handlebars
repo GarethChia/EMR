@@ -187,7 +187,11 @@
 							{{else}}
 							<li><a href="/student/HistoryTaking/{{recordID}}">History Taking</a></li>
 							{{/unless}}
-							<li><a href="#!">Care Plan</a></li> 
+							{{#unless userType}}
+							<li><a href="/master/CarePlan">Care Plan</a></li>
+							{{else}}
+							<li><a href="/student/CarePlan/{{recordID}}">Care Plan</a></li>
+							{{/unless}} 
 							<li class="lighter-fonts"><a href="#!">Discharge Planning</a></li> 
 							<li class="lighter-fonts"><a class="disabled" href="#!">Education</a></li>
 							<li class="divider"></li>

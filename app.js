@@ -39,6 +39,7 @@ require('./models/MasterMDP');
 require('./models/StudentMDP');
 require('./models/MasterHistoryTracking');
 require('./models/StudentHistoryTracking');
+require('./models/StudentCarePlan');
 require('./models/MasterDiabetic');
 
 // load keys
