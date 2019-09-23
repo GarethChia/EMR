@@ -24,6 +24,7 @@ const MasterHistory = mongoose.model('masterHistoryTrack');
 const StudentHistory = mongoose.model('studentHistoryTrack');
 // Care Plan
 const StudentCarePlan = mongoose.model('studentCarePlan');
+const MasterDiabetic = mongoose.model('masterDiabetic');
 
 const moment = require('moment');
 const alertMessage = require('../helpers/messenger');
