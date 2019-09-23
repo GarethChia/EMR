@@ -19,7 +19,6 @@ const DoctorOrders = mongoose.model('doctorsOrders');
 // MDP
 const StudentMDP = mongoose.model('studentMDP');
 const MasterMDP = mongoose.model('masterMDP');
-// HistoryTaking
 const MasterHistory = mongoose.model('masterHistoryTrack');
 const StudentHistory = mongoose.model('studentHistoryTrack');
 // Care Plan

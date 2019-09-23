@@ -15,13 +15,14 @@ const MasterOxygen = mongoose.model('masterOxygen');
 const MasterPain = mongoose.model('masterPain');
 const MasterWH = mongoose.model('masterWh');
 const DoctorOrders = mongoose.model('doctorsOrders');
-//HistoryTaking model
 const MasterHistory = mongoose.model('masterHistoryTrack');
 // MDP
 const MasterMDP = mongoose.model('masterMDP');
 const StudentMDP = mongoose.model('studentMDP');
 // Care Plan
 const StudentCarePlan = mongoose.model('studentCarePlan');
+const MasterDiabetic = mongoose.model('masterDiabetic');
+
 const moment = require('moment');
 const csrf = require('csurf');
 const alertMessage = require('../helpers/messenger');
