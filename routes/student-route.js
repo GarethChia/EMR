@@ -2518,7 +2518,8 @@ router.post('/add-diabetic/:recordID', ensureAuthenticated, (req, res) => {
 router.put('/edit-diabetic/:recordID/:diabeticID', ensureAuthenticated, (req,res) => {
 	datetime = moment(req.body.dateDiabetic, 'DD/MM/YYYY').format('MM/DD/YYYY') + " "+ req.body.timeDiabetic;
 	
-	
+	splitpoc = req.body.poc.slice(0,2);
+
 	MasterDiabetic.findOne({ diabeticID: req.params.diabeticID }).then(editDiabetic => {
 		editDiabetic.date = moment(req.body.dateDiabetic, 'DD/MM/YYYY').format('YYYY-MM-DD'),
 		editDiabetic.time = req.body.timeDiabetic,
