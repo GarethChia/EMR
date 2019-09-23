@@ -442,11 +442,14 @@ router.put('/save-customised-patient/:patientID', ensureAuthenticated, (req, res
 											}).save();
 										})
 									}).then(orders => {
-										MasterIO.find({ patientID: req.params.patientID }).then(ioDatas => {
-											MasterEnteral.find({ patientID: req.params.patientID }).then(enteralDatas => {
-												MasterIV.find({ patientID: req.params.patientID }).then(ivDatas => {
-													MasterOutput.find({ patientID: req.params.patientID }).then(outputDatas => {
-														
+										// MasterIO.find({ patientID: req.params.patientID }).then(ioDatas => {
+										// 	MasterEnteral.find({ patientID: req.params.patientID }).then(enteralDatas => {
+										// 		MasterIV.find({ patientID: req.params.patientID }).then(ivDatas => {
+										// 			MasterOutput.find({ patientID: req.params.patientID }).then(outputDatas => {
+											MasterIO.find({ patientID: req.session.patient.patientID }).then(ioDatas => {
+												MasterEnteral.find({ patientID: req.session.patient.patientID }).then(enteralDatas => {
+													MasterIV.find({ patientID: req.session.patient.patientID }).then(ivDatas => {
+														MasterOutput.find({ patientID: req.session.patient.patientID }).then(outputDatas => {
 														ioDatas.forEach(io => {
 															new MasterIO({
 																patientID: recordID,
@@ -1325,10 +1328,14 @@ router.get('/doctor/orders/:recordID/:orderID', ensureAuthenticated, (req, res) 
 //Load IO page
 router.get('/io/:recordID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
-	MasterIO.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newIO => {
-		MasterEnteral.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newenteral => {
-			MasterIV.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newiv => {	
-				MasterOutput.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newoutput => {			
+	// MasterIO.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newIO => {
+	// 	MasterEnteral.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newenteral => {
+	// 		MasterIV.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newiv => {	
+	// 			MasterOutput.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newoutput => {
+		MasterIO.find({patientID: req.params.recordID}).sort({'datetime':1}).then(newIO => {
+			MasterEnteral.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(newenteral => {
+				MasterIV.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(newiv => {	
+					MasterOutput.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(newoutput => {						
 
 					iosample = [];
 					iosampleDate = [];
@@ -1496,7 +1503,8 @@ router.post('/add-io/:recordID', ensureAuthenticated, (req, res) => {
 	datetime = moment(req.body.dateIO, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeIO;
 	
 	new MasterIO({
-		patientID: req.session.patient.patientID,
+		// patientID: req.session.patient.patientID,
+		patientID: req.params.recordID,
 		ioID: ioID,
 		date:	moment(req.body.dateIO, 'DD/MM/YYYY').format('YYYY-MM-DD'),
 		time: req.body.timeIO,
