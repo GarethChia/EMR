@@ -51,7 +51,7 @@
             <tr>
                 <th width="10%">Point Of Care</th>
                 {{#each diabeticFlow}}
-                <td class="poc">{{poc}}</td>
+                <td class="poc">{{splitpoc}}</td>
                 {{/each}}
             </tr>
 
@@ -244,7 +244,7 @@
                         <td><a href="/student/diabetic/{{../recordID}}/{{diabeticID}}">{{date}}</a></td>
                         {{/unless}}
                         <td>{{time}}</td>
-                        <td>{{poc}}</td>
+                        <td>{{splitpoc}}</td>
                         <td>{{bgl}}</td>
                         <td>{{insulintype}}</td>
                         <td>{{insulinamt}}</td>

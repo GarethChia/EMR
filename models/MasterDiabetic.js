@@ -28,7 +28,10 @@ const MasterDiabeticSchema = new Schema({
 	bgl:	 {type: String, default: ''},
 	insulintype:		 {type: String, default: ''},
     insulinamt:   {type: String, default: ''},		
-    hypoagent:   {type: String, default: ''},	
+	hypoagent:   {type: String, default: ''},	
+	splitpoc:	 {type: String, default: ''},
+
+	
 });
 
 mongoose.model('masterDiabetic', MasterDiabeticSchema, 'master-diabetic');

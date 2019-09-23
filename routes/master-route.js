@@ -2185,6 +2185,7 @@ router.post('/add-diabetic', ensureAuthenticated,ensureAuthorised, (req, res) =>
 	diabeticID = (new standardID('AAA0000')).generate();
 	datetime = moment(req.body.dateDiabetic, 'DD/MM/YYYY').format('MM/DD/YYYY') + " "+ req.body.timeDiabetic;
 
+	splitpoc = req.body.poc.slice(0,2);
 
 	new MasterDiabetic({
 			// patientID: req.session.patient.patientID,
@@ -2198,6 +2199,8 @@ router.post('/add-diabetic', ensureAuthenticated,ensureAuthorised, (req, res) =>
 			insulintype: req.body.insulintype,
 			insulinamt: req.body.insulinamt,
 			hypoagent: req.body.hypoagent,
+			splitpoc: splitpoc,
+
 
 	}).save();
 
@@ -2217,6 +2220,7 @@ router.put('/edit-diabetic/:diabeticID', ensureAuthenticated,ensureAuthorised, (
 		editDiabetic.insulintype = req.body.insulintype,
 		editDiabetic.insulinamt = req.body.insulinamt,
 		editDiabetic.hypoagent = req.body.hypoagent,
+		editDiabetic.splitpoc = splitpoc,
 
 		editDiabetic.save();
 	});
