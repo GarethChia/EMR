@@ -205,7 +205,7 @@
 												{{#unless userType}}
 												<li><a href="/master/io">IO</a></li>
 												<li><a href="/master/vital">Vital</a></li>
-												<li><a href="#!">Diabetic</a></li> 
+												<li><a href="/master/diabetic">Diabetic</a></li>
 												<li><a href="#!">CLC</a></li> 
 												<li><a href="#!">Neurovascular</a></li> 
 												<li><a href="#!">Bladder Washout</a></li>
@@ -217,7 +217,7 @@
 												{{else}} {{!-- If usertype is master --}}
 												<li><a href="/student/io/{{recordID}}">IO</a></li>
 												<li><a href="/student/vital/{{recordID}}">Vital</a></li>
-												<li><a href="#!">Diabetic</a></li>
+												<li><a href="/student/diabetic/{{recordID}}">Diabetic</a></li>
 												<li><a href="#!">CLC</a></li>
 												<li><a href="#!">Neurovascular</a></li>
 												<li><a href="#!">Bladder Washout</a></li>
