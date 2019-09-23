@@ -26,7 +26,7 @@
 <div class="row">
     <div class="col s12">
         <div class="tabs">
-            <li class="tab col s2 offset-s1" id="flowsheetTab"><a class="purple-text text-darken-3" id="tab0" href="#diabeticflowsheet">Diabetic Flowsheet</a></li>
+            <li class="tab col s2 offset-s4" id="flowsheetTab"><a class="purple-text text-darken-3" id="tab0" href="#diabeticflowsheet">Diabetic Flowsheet</a></li>
             <li class="tab col s2" id="diabetictab"><a class="purple-text text-darken-3" id="tab1" href="#diabetic">Diabetic</a></li>
             
             {{!-- <li class="tab col s2" id="tabletab"><a class="purple-text text-darken-3" id="tab5" href="#table">Net IO</a></li> --}}
@@ -51,6 +51,9 @@
             <tr>
                 <th width="10%">Point Of Care</th>
                 {{#each diabeticFlow}}
+                {{!-- display shortform BB,AB,BD and etc, the function
+                 is in student/master route by using splice. Create another col
+                 named splitpoc in mongodb to store the split data teehee --}}
                 <td class="poc">{{splitpoc}}</td>
                 {{/each}}
             </tr>
@@ -70,10 +73,11 @@
             </tr>
 
             <tr>
-                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Amount of Insulin Given</th>
+                <th width="10%">Amount of Insulin Given</th>
+                {{!-- <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Amount of Insulin Given</th> --}}
                 {{#each diabeticFlow}}
-                {{!-- <td>{{insulinamt}}</td> --}}
-                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)" class="insulinamt">{{insulinamt}}</td>
+                <td>{{insulinamt}}</td>
+                {{!-- <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)" class="insulinamt">{{insulinamt}}</td> --}}
                 {{/each}}
             </tr>
             <tr>
@@ -220,7 +224,7 @@
                     </div>
                     
                         <div class="col s12 m4 input-field">
-                            <input id="bgl" type="text" name="bgl" value="{{editDiabetic.bgl}}">
+                            <input id="bgl" type="number" name="bgl" value="{{editDiabetic.bgl}}">
                             <label for="bgl">Blood Glucose Level</label>
                             <span class="helper-text"></span>
                         </div>
