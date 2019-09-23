@@ -572,18 +572,20 @@ router.put('/save-customised-patient/:patientID', ensureAuthenticated, (req, res
 																}).then(diabeticsucc => {
 																	MasterDiabetic.find({ patientID: req.params.patientID }).then(diabeticDatas => {
 																		diabeticDatas.forEach(diabetic => {
-																			
+																			// splitpoc = req.body.poc.splice(0,2);
 																			new MasterDiabetic({
 																				patientID: recordID,
 																				diabeticID:  (new standardID('AAA0000')).generate(),
 																				date: diabetic.date,
 																				datetime: diabetic.datetime,
-																				poc: diabetic.sensePerc,
-																				bgl: diabetic.moisture,
-																				insulintype: diabetic.activity,
-																				insulinamt: diabetic.mobility,
-																				hypoagent: diabetic.nutrition,
-																				
+																				time: diabetic.time,
+																				poc: diabetic.poc,
+																				bgl: diabetic.bgl,
+																				insulintype: diabetic.insulintype,
+																				insulinamt: diabetic.insulinamt,
+																				hypoagent: diabetic.hypoagent,
+																				splitpoc: diabetic.splitpoc,
+
 																			}).save();
 																		})
 													
@@ -839,6 +841,8 @@ router.get('/chart/:recordID', ensureAuthenticated, (req, res) => {
 					oxyCount = -1;
 					whCount = 0;
 					colCount = 0;
+					
+
 					noRecord = 'No existing record';
 
 					vitalData.forEach(vital => {
@@ -2617,13 +2621,14 @@ router.get('/diabetic/:recordID/:diabeticID', ensureAuthenticated, (req, res) =>
 router.post('/add-diabetic/:recordID', ensureAuthenticated, (req, res) => {
 	diabeticID = (new standardID('AAA0000')).generate();
 	datetime = moment(req.body.dateDiabetic, 'DD/MM/YYYY').format('MM/DD/YYYY') + " "+ req.body.timeDiabetic;
+	splitpoc = req.body.poc.slice(0,2);
 
 
 	new MasterDiabetic({
 			// patientID: req.session.patient.patientID,
 			patientID: req.params.recordID,
 			diabeticID: diabeticID,
-			date: moment(req.body.dateIO, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+			date: moment(req.body.dateDiabetic, 'DD/MM/YYYY').format('YYYY-MM-DD'),
 			datetime: datetime,
 			time: req.body.timeDiabetic,
 			poc: req.body.poc,
@@ -2631,6 +2636,7 @@ router.post('/add-diabetic/:recordID', ensureAuthenticated, (req, res) => {
 			insulintype: req.body.insulintype,
 			insulinamt: req.body.insulinamt,
 			hypoagent: req.body.hypoagent,
+			splitpoc: splitpoc,
 
 	}).save();
 
@@ -2640,7 +2646,7 @@ router.post('/add-diabetic/:recordID', ensureAuthenticated, (req, res) => {
 //Edit diabetic information
 router.put('/edit-diabetic/:recordID/:diabeticID', ensureAuthenticated, (req,res) => {
 	datetime = moment(req.body.dateDiabetic, 'DD/MM/YYYY').format('MM/DD/YYYY') + " "+ req.body.timeDiabetic;
-	
+	splitpoc = req.body.poc.slice(0,2);
 	
 	MasterDiabetic.findOne({ diabeticID: req.params.diabeticID }).then(editDiabetic => {
 		editDiabetic.date = moment(req.body.dateDiabetic, 'DD/MM/YYYY').format('YYYY-MM-DD'),
@@ -2651,6 +2657,7 @@ router.put('/edit-diabetic/:recordID/:diabeticID', ensureAuthenticated, (req,res
 		editDiabetic.insulintype = req.body.insulintype,
 		editDiabetic.insulinamt = req.body.insulinamt,
 		editDiabetic.hypoagent = req.body.hypoagent,
+		editDiabetic.splitpoc = splitpoc,
 
 		editDiabetic.save();
 	});
