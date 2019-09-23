@@ -2499,7 +2499,7 @@ router.post('/add-diabetic/:recordID', ensureAuthenticated, (req, res) => {
 			// patientID: req.session.patient.patientID,
 			patientID: req.params.recordID,
 			diabeticID: diabeticID,
-			date: moment(req.body.dateIO, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+			date: moment(req.body.dateDiabetic, 'DD/MM/YYYY').format('YYYY-MM-DD'),
 			datetime: datetime,
 			time: req.body.timeDiabetic,
 			poc: req.body.poc,
