@@ -89,9 +89,23 @@
                     </div>
                     <div class="row">
                         <div class="col s12 m6 input-field">
-                            <textarea id="problemIdentified" class="materialize-textarea" name="problemIdentified" required>{{editCarePlan.problemIdentified}}</textarea>
+                            <select id="problemIdentified" name="problemIdentified">
+                                <option value="" disabled selected>Portion Taken</option>
+                                <option value="1 Share">1 Share</option>
+                                <option value="3 Quarters">3 Quarters</option>
+                                <option value="2 Thirds">2 Thirds</option>
+                                <option value="Half Share">Half Share</option>
+                                <option value="1 Third">1 Third</option>
+                                <option value="1 Quarter">1 Quarter</option>
+                                <option value="A Few Spoonfuls">A Few Spoonfuls</option>
+
+                            </select>
                             <label for="problemIdentified">Problem Identified</label>
                         </div>
+                        {{!-- <div class="col s12 m6 input-field">
+                            <textarea id="problemIdentified" class="materialize-textarea" name="problemIdentified" required>{{editCarePlan.problemIdentified}}</textarea>
+                            <label for="problemIdentified">Problem Identified</label>
+                        </div> --}}
                         <div class="col s12 m6 input-field">
                             <textarea id="assessment" class="materialize-textarea" name="assessment" required>{{editCarePlan.assessment}}</textarea>
                             <label for="assessment">Assessment</label>
@@ -162,7 +176,14 @@
 
         M.FormSelect.init(selectUser, {
             
-        })                
+        })
+
+         M.FormSelect.init(problemIdentified, {
+            
+        })
     })  
+    {{#if editCarePlan}}
+        document.getElementById("problemIdentified").value = "{{editCarePlan.problemIdentified}}";
+    {{/if}}
 
  </script>

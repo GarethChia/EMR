@@ -7,7 +7,7 @@
             <div class="col s12 m6 input-field">
                 <select id="selectUser" name="selectUser" required>
                     <option value="" disabled selected>Please select the student</option>
-                    <option value="Doctor">Lin Peishan</option>
+                    {{!-- <option value="Doctor">Lin Peishan</option> --}}
                 </select>
                 <label for="selectUser">Student</label>
             </div>
@@ -19,6 +19,7 @@
                 <tr>
                     <th>Date</th>
                     <th>Time</th>
+                    <th>Problem</th>
                     {{!-- <th>Problem Identified</th>
                     <th>Assessment</th>
                     <th>Goal and Expected Outcomes</th>
@@ -31,8 +32,9 @@
                 {{#if newCarePlan}}
                     {{#each newCarePlan}}
                     <tr style="height: 60px">
-                        <td><a href="/master/CarePlan/{{carePlanID}}">{{date}}</a></td>
+                        <td><a href="/master/CarePlan/{{createdBy}}/{{carePlanID}}">{{date}}</a></td>
                         <td>{{time}}</td>
+                        <td>{{problemIdentified}}</td>
                         {{!-- <td>{{problemIdentified}}</td>
                         <td>{{assessment}}</td>
                         <td>{{goalAndExpectedOutcomes}}</td>
@@ -51,8 +53,8 @@
                     {{/each}}
                 {{else}}
                 <tr style="height: 60px">
-                    <td colspan="2" class="center">
-                        <p id="noRecord">You have not created any Care Plan yet</p>
+                    <td colspan="3" class="center">
+                        <p id="noRecord">You have not selected any Care Plan yet</p>
                     </td>
                 </tr>
                 {{/if}}
@@ -96,9 +98,23 @@
                     </div>
                     <div class="row">
                         <div class="col s12 m6 input-field">
-                            <textarea id="problemIdentified" class="materialize-textarea" name="problemIdentified" required>{{editCarePlan.problemIdentified}}</textarea>
+                            <select id="problemIdentified" name="problemIdentified">
+                                <option value="" disabled selected>Portion Taken</option>
+                                <option value="1 Share">1 Share</option>
+                                <option value="3 Quarters">3 Quarters</option>
+                                <option value="2 Thirds">2 Thirds</option>
+                                <option value="Half Share">Half Share</option>
+                                <option value="1 Third">1 Third</option>
+                                <option value="1 Quarter">1 Quarter</option>
+                                <option value="A Few Spoonfuls">A Few Spoonfuls</option>
+
+                            </select>
                             <label for="problemIdentified">Problem Identified</label>
                         </div>
+                        {{!-- <div class="col s12 m6 input-field">
+                            <textarea id="problemIdentified" class="materialize-textarea" name="problemIdentified" required>{{editCarePlan.problemIdentified}}</textarea>
+                            <label for="problemIdentified">Problem Identified</label>
+                        </div> --}}
                         <div class="col s12 m6 input-field">
                             <textarea id="assessment" class="materialize-textarea" name="assessment" required>{{editCarePlan.assessment}}</textarea>
                             <label for="assessment">Assessment</label>
@@ -142,6 +158,7 @@
         const dateCarePlan = document.querySelector('#dateCarePlan');
         const timeCarePlan = document.querySelector('#timeCarePlan');
         const selectUser = document.querySelector('#selectUser');
+        const problemIdentified = document.querySelector('#problemIdentified');
 
         // Care Plan Instances
         M.Datepicker.init(dateCarePlan, {
@@ -156,7 +173,28 @@
 
         M.FormSelect.init(selectUser, {
             
-        })                
-    })  
+        })              
+        M.FormSelect.init(problemIdentified, {
+            
+        })
+    }) 
 
+    // display students who has created their care plan
+    {{#if studentCarePlanName}} 
+        {{#each studentCarePlanName}}
+        $("#selectUser").append("<option value='https://localhost/master/CarePlan/{{createdBy}}'>{{createdBy}}</option>"); 
+        {{/each}}
+    {{/if}} 
+    
+     $('#selectUser').change(function(){ 
+        window.location.href = $(this).val();
+    });
+    
+    {{#if name}}
+        document.getElementById("selectUser").value = "https://localhost/master/CarePlan/{{name}}";
+    {{/if}}
+
+    {{#if editCarePlan}}
+        document.getElementById("problemIdentified").value = "{{editCarePlan.problemIdentified}}";
+    {{/if}}
  </script>

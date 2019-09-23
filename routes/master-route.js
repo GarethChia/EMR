@@ -2234,58 +2234,97 @@ router.delete('/del-diabetic/:diabeticID', ensureAuthenticated, ensureAuthorised
 
 //END OF DIABETIC
 // Care Plan
-router.get('/CarePlan', ensureAuthenticated, (req, res) => {
+router.get('/CarePlan', ensureAuthenticated, (req, res) => { // to display the students who has created their care plan
 	userType = req.user.userType == 'student';
-	// StudentMDP.find({user: req.user.id, patientID: req.session.patient.patientID}).sort({'datetime':1})
-	// .then(newMDP => { // mdp that they have created
-		// MasterMDP.aggregate([
-		// 	{"$sort": {
-		// 		'datetime': -1
-		// 	}},
-		// 	{ "$match" : { 'patientID' : req.session.patient.patientID } },
-		// 	{ "$group": { '_id' : "$createdBy",  "doc": {"$first":"$$ROOT"} }},
-		// 	{ "$replaceRoot": {"newRoot": "$doc" }},
-		// 	{"$sort": {
-		// 		'datetime': -1
-		// 	}}
-		// ])
-		// 	.then(newMasterMDP => {
-			// console.log("************ newMasterMDP: "+ JSON.stringify(newMasterMDP));
-		StudentCarePlan.find({patientID: req.session.patient.patientID}).sort({'datetime': 1})
+
+	StudentCarePlan.aggregate([ // display students who has created their care plan
+		{"$sort": {
+			'datetime': -1
+		}},
+		{ "$match" : { 'patientID' : req.session.patient.patientID } },
+		{ "$group": { '_id' : "$createdBy", "doc": {"$first": "$$ROOT"}}},
+		{"$replaceRoot": {"newRoot": "$doc"}},
+		{"$sort": {
+			'datetime': -1	
+		}}
+	])
+	.then(studentCarePlanName => {
+		console.log("************ studentCarePlanName: "+ JSON.stringify(studentCarePlanName));
+		res.render('care-plan/master/care-plan', {
+			studentCarePlanName: studentCarePlanName,
+			recordID: req.params.recordID,
+			userType: userType,
+			patient: req.session.patient,
+			showMenu: true
+		});
+	});
+})
+
+router.get('/CarePlan/:name', ensureAuthenticated, (req, res) => {
+	userType = req.user.userType == 'student';
+	var name = req.params.name;
+	console.log("name: "+ name);
+	StudentCarePlan.aggregate([ // display students who has created their care plan
+		{"$sort": {
+			'datetime': -1
+		}},
+		{ "$match" : { 'patientID' : req.session.patient.patientID } },
+		{ "$group": { '_id' : "$createdBy", "doc": {"$first": "$$ROOT"}}},
+		{"$replaceRoot": {"newRoot": "$doc"}},
+		{"$sort": {
+			'datetime': -1	
+		}}
+	])
+	.then(studentCarePlanName => {
+		StudentCarePlan.find({patientID: req.session.patient.patientID, createdBy: name}).sort({'datetime': 1})
 		.then(newCarePlan => {
+
 			res.render('care-plan/master/care-plan', {
+				name: req.params.name,
+				newCarePlan: newCarePlan,	
+				studentCarePlanName: studentCarePlanName,
 				recordID: req.params.recordID,
-				// newMasterMDP: newMasterMDP,
-				newCarePlan: newCarePlan,
 				userType: userType,
 				patient: req.session.patient,
 				showMenu: true
 			});
 		})
-			
-		// });
-		//});
-	// })
+	});
 })
 
 // get single Care Plan info
-router.get('/CarePlan/:carePlanID', ensureAuthenticated, (req, res) => {
+router.get('/CarePlan/:name/:carePlanID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
 	
-	StudentCarePlan.find({ patientID: req.session.patient.patientID}).sort({'datetime':1})
-	.then(newCarePlan => {
-		StudentCarePlan.findOne({ carePlanID: req.params.carePlanID })
-		.then(editCarePlan => {
-			
-			editCarePlan.date = moment(editCarePlan.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
-			
-			res.render('care-plan/master/care-plan', {
-				userType: userType,
-				recordID: req.params.recordID,
-				newCarePlan: newCarePlan,
-				editCarePlan: editCarePlan,
-				patient: req.session.patient,
-				showMenu: true
+	StudentCarePlan.aggregate([ // display students who has created their care plan
+		{"$sort": {
+			'datetime': -1
+		}},
+		{ "$match" : { 'patientID' : req.session.patient.patientID } },
+		{ "$group": { '_id' : "$createdBy", "doc": {"$first": "$$ROOT"}}},
+		{"$replaceRoot": {"newRoot": "$doc"}},
+		{"$sort": {
+			'datetime': -1	
+		}}
+	])
+	.then(studentCarePlanName => {
+		StudentCarePlan.find({ patientID: req.session.patient.patientID, createdBy: req.params.name}).sort({'datetime':1})
+		.then(newCarePlan => {
+			StudentCarePlan.findOne({ carePlanID: req.params.carePlanID })
+			.then(editCarePlan => {
+				
+				editCarePlan.date = moment(editCarePlan.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
+				
+				res.render('care-plan/master/care-plan', {
+					studentCarePlanName: studentCarePlanName,
+					name: req.params.name,
+					userType: userType,
+					recordID: req.params.recordID,
+					newCarePlan: newCarePlan,
+					editCarePlan: editCarePlan,
+					patient: req.session.patient,
+					showMenu: true
+				});
 			});
 		});
 	});
