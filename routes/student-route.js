@@ -571,22 +571,19 @@ router.put('/save-customised-patient/:patientID', ensureAuthenticated, (req, res
 																	}).save();
 																	})
 																}).then(diabeticsucc => {
-																	MasterDiabetic.find({ patientID: req.session.patient.patientID }).then(diabeticDatas => {
+																	MasterDiabetic.find({ patientID: req.params.patientID }).then(diabeticDatas => {
 																		diabeticDatas.forEach(diabetic => {
-																			console.log(diabetic);
+																			
 																			new MasterDiabetic({
 																				patientID: recordID,
 																				diabeticID:  (new standardID('AAA0000')).generate(),
 																				date: diabetic.date,
 																				datetime: diabetic.datetime,
-																				time:diabetic.time,
-																				poc: diabetic.poc,
-																				bgl: diabetic.bgl,
-																				insulintype: diabetic.insulintype,
-																				insulinamt: diabetic.insulinamt,
-																				hypoagent: diabetic.hypoagent,
-																				splitpoc: diabetic.splitpoc,
-
+																				poc: diabetic.sensePerc,
+																				bgl: diabetic.moisture,
+																				insulintype: diabetic.activity,
+																				insulinamt: diabetic.mobility,
+																				hypoagent: diabetic.nutrition,
 																				
 																			}).save();
 																		})
@@ -823,10 +820,14 @@ router.get('/chart/:recordID', ensureAuthenticated, (req, res) => {
  //Vital chart information
  router.get('/vital/:recordID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
-	MasterVital.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(vitalData => {
-		MasterPain.find({ patientID: req.session.patient.patientID}).sort({'datetime':1}).then(painData => {
-			MasterOxygen.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(oxyData => {
-				MasterWH.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(whData => {
+	// MasterVital.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(vitalData => {
+	// 	MasterPain.find({ patientID: req.session.patient.patientID}).sort({'datetime':1}).then(painData => {
+	// 		MasterOxygen.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(oxyData => {
+	// 			MasterWH.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(whData => {
+		MasterVital.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(vitalData => {
+			MasterPain.find({ patientID: req.params.recordID}).sort({'datetime':1}).then(painData => {
+				MasterOxygen.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(oxyData => {
+					MasterWH.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(whData => {
 
 					sample = [];
 					sampleDate = [];
@@ -979,7 +980,9 @@ router.get('/chart/:recordID', ensureAuthenticated, (req, res) => {
 //Get single vital information
 router.get('/vital/:recordID/:vitalID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
-	MasterVital.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newVital => {
+
+	// MasterVital.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newVital => {
+	MasterVital.find({ patientID: req.params.recordID}).sort({'datetime':1}).then(newVital => {
 		MasterVital.findOne({ vitalID: req.params.vitalID }).then(editVital => {
 
 			//Changes date format to DD/MM/YYYY
@@ -1043,7 +1046,8 @@ router.post('/add-vital/:recordID', ensureAuthenticated, (req, res) => {
 	abPressure = req.body.sbpArterial + "/" + req.body.dbpArterial;
 
 	new MasterVital({
-		patientID: req.session.patient.patientID,
+		// patientID: req.session.patient.patientID,
+		patientID: req.params.recordID,
 		vitalID: vitalid,
 		userID: req.user.id,
 		date: moment(req.body.dateVital, 'DD/MM/YYYY').format('YYYY-MM-DD'),
@@ -1074,7 +1078,8 @@ router.post('/add-pain/:recordID', ensureAuthenticated, (req, res) => {
 	datetime = moment(req.body.datePain, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timePain;
 
 	new MasterPain({
-		patientID: req.session.patient.patientID,
+		// patientID: req.session.patient.patientID,
+		patientID: req.params.recordID,
 		painID: painid,
 		userType: req.user.userType,
 		datetime: datetime,
@@ -1110,7 +1115,8 @@ router.delete('/del-pain/:recordID/:painID', ensureAuthenticated, (req, res) => 
 //Get single pain info
 router.get('/pain/:recordID/:painID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
-	MasterPain.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(painData => {
+	// MasterPain.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(painData => {
+	MasterPain.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(painData => {
 		MasterPain.findOne({ painID: req.params.painID }).then(editPain => {
 
 			//Changes date format to DD/MM/YYYY
@@ -1154,7 +1160,8 @@ router.put('/edit-pain/:recordID/:painID', ensureAuthenticated, (req, res) => {
 //Get single oxygen information
 router.get('/oxygen/:recordID/:oxygenID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
-	MasterOxygen.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(oxyData => {
+	// MasterOxygen.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(oxyData => {
+	MasterOxygen.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(oxyData => {
 		MasterOxygen.findOne({ oxygenID: req.params.oxygenID }).then(editOxy => {
 
 			//Changes date format to DD/MM/YYYY
@@ -1177,7 +1184,8 @@ router.post('/add-oxygen/:recordID', ensureAuthenticated, (req, res) => {
 	datetime = moment(req.body.dateOxy, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeOxy;
 
 	new MasterOxygen({
-		patientID: req.session.patient.patientID,
+		// patientID: req.session.patient.patientID,
+		patientID: req.params.recordID,
 		oxygenID: oxygenid,
 		userType: req.user.userType,
 		datetime: datetime,
@@ -1225,7 +1233,8 @@ router.delete('/del-oxygen/:recordID/:oxygenID', ensureAuthenticated, (req, res)
 //Get single weight & height information
 router.get('/wh/:recordID/:whID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
-	MasterWH.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(whData => {
+	// MasterWH.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(whData => {
+	MasterWH.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(whData => {
 		MasterWH.findOne({ whID: req.params.whID }).then(editWh => {
 
 			//Changes date format to DD/MM/YYYY
@@ -1248,7 +1257,8 @@ router.post('/add-wh/:recordID', ensureAuthenticated, (req, res) => {
 	datetime = moment(req.body.dateWh, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeWh;
 
 	new MasterWH({
-		patientID: req.session.patient.patientID,
+		// patientID: req.session.patient.patientID,
+		patientID: req.params.recordID,
 		whID: whid,
 		userType: req.user.userType,
 		datetime: datetime,
@@ -2608,13 +2618,13 @@ router.get('/diabetic/:recordID/:diabeticID', ensureAuthenticated, (req, res) =>
 router.post('/add-diabetic/:recordID', ensureAuthenticated, (req, res) => {
 	diabeticID = (new standardID('AAA0000')).generate();
 	datetime = moment(req.body.dateDiabetic, 'DD/MM/YYYY').format('MM/DD/YYYY') + " "+ req.body.timeDiabetic;
-	splitpoc = req.body.poc.slice(0,2);
+
 
 	new MasterDiabetic({
 			// patientID: req.session.patient.patientID,
 			patientID: req.params.recordID,
 			diabeticID: diabeticID,
-			date: moment(req.body.dateDiabetic, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+			date: moment(req.body.dateIO, 'DD/MM/YYYY').format('YYYY-MM-DD'),
 			datetime: datetime,
 			time: req.body.timeDiabetic,
 			poc: req.body.poc,
@@ -2622,7 +2632,6 @@ router.post('/add-diabetic/:recordID', ensureAuthenticated, (req, res) => {
 			insulintype: req.body.insulintype,
 			insulinamt: req.body.insulinamt,
 			hypoagent: req.body.hypoagent,
-			splitpoc: splitpoc,
 
 	}).save();
 
@@ -2633,8 +2642,7 @@ router.post('/add-diabetic/:recordID', ensureAuthenticated, (req, res) => {
 router.put('/edit-diabetic/:recordID/:diabeticID', ensureAuthenticated, (req,res) => {
 	datetime = moment(req.body.dateDiabetic, 'DD/MM/YYYY').format('MM/DD/YYYY') + " "+ req.body.timeDiabetic;
 	
-	splitpoc = req.body.poc.slice(0,2);
-
+	
 	MasterDiabetic.findOne({ diabeticID: req.params.diabeticID }).then(editDiabetic => {
 		editDiabetic.date = moment(req.body.dateDiabetic, 'DD/MM/YYYY').format('YYYY-MM-DD'),
 		editDiabetic.time = req.body.timeDiabetic,
@@ -2644,7 +2652,6 @@ router.put('/edit-diabetic/:recordID/:diabeticID', ensureAuthenticated, (req,res
 		editDiabetic.insulintype = req.body.insulintype,
 		editDiabetic.insulinamt = req.body.insulinamt,
 		editDiabetic.hypoagent = req.body.hypoagent,
-		editDiabetic.splitpoc = splitpoc,
 
 		editDiabetic.save();
 	});
