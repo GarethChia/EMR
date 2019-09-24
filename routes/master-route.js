@@ -2283,8 +2283,29 @@ router.get('/CarePlan/:name', ensureAuthenticated, (req, res) => {
 		}}
 	])
 	.then(studentCarePlanName => {
-		StudentCarePlan.find({patientID: req.session.patient.patientID, createdBy: name}).sort({'datetime': 1})
+		/*StudentCarePlan.find({patientID: req.session.patient.patientID, createdBy: name}).sort({'datetime': 1})
+		.then(newCarePlan => {*/
+		StudentCarePlan.aggregate([ // display students who has created their care plan
+			{"$sort": {
+				'datetime': -1
+			}},
+			{ "$match" : { 'patientID' : req.session.patient.patientID, 'createdBy': req.params.name } },
+			{ "$group": { 
+				'_id' : {
+					"createdBy":"$createdBy",
+					"problemIdentified":"$problemIdentified"
+				}, 
+				"doc": {
+					"$first": "$$ROOT"
+				}
+			}},
+			{"$replaceRoot": {"newRoot": "$doc"}},
+			{"$sort": {
+				'datetime': -1	
+			}}
+		])
 		.then(newCarePlan => {
+			console.log("newCarePlan: "+ JSON.stringify(newCarePlan));
 
 			res.render('care-plan/master/care-plan', {
 				name: req.params.name,
@@ -2315,8 +2336,29 @@ router.get('/CarePlan/:name/:carePlanID', ensureAuthenticated, (req, res) => {
 		}}
 	])
 	.then(studentCarePlanName => {
-		StudentCarePlan.find({ patientID: req.session.patient.patientID, createdBy: req.params.name}).sort({'datetime':1})
+		/*StudentCarePlan.find({ patientID: req.session.patient.patientID, createdBy: req.params.name}).sort({'datetime':1})
+		.then(newCarePlan => {*/
+		StudentCarePlan.aggregate([ // display students who has created their care plan
+			{"$sort": {
+				'datetime': -1
+			}},
+			{ "$match" : { 'patientID' : req.session.patient.patientID, 'createdBy': req.params.name  } },
+			{ "$group": { 
+				'_id' : {
+					"createdBy":"$createdBy",
+					"problemIdentified":"$problemIdentified"
+				}, 
+				"doc": {
+					"$first": "$$ROOT"
+				}
+			}},
+			{"$replaceRoot": {"newRoot": "$doc"}},
+			{"$sort": {
+				'datetime': -1	
+			}}
+		])
 		.then(newCarePlan => {
+			console.log("newCarePlan: "+ JSON.stringify(newCarePlan));
 			StudentCarePlan.findOne({ carePlanID: req.params.carePlanID })
 			.then(editCarePlan => {
 				

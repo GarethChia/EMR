@@ -2400,7 +2400,7 @@ router.get('/CarePlan/:recordID/:carePlanID', ensureAuthenticated, (req, res) =>
 
 // edit Care Plan informations
 router.put('/edit-CarePlan/:recordID/:carePlanID', ensureAuthenticated, (req,res) => {
-	datetime = moment(req.body.dateMDP, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeMDP;
+	datetime = moment(req.body.dateCarePlan, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeMDP;
 
 	StudentCarePlan.findOne({ carePlanID: req.params.carePlanID}).then(editCarePlan => {
 		editCarePlan.date = moment(req.body.dateCarePlan, 'DD/MM/YYYY').format('YYYY-MM-DD'),
