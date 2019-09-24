@@ -20,6 +20,7 @@ const StudentCarePlanSchema = new Schema({
     date:	{type: String, default:''},
     time:		 {type: String, default: ''},
     datetime: {type: String, default: ''},
+    categoryOfNursingIssues: {type: String, default:''},
     problemIdentified: {type: String, default:''},
     assessment: {type: String, default:''},
     goalAndExpectedOutcomes: {type: String, default: ''},

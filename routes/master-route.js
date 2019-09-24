@@ -2293,7 +2293,7 @@ router.get('/CarePlan/:name', ensureAuthenticated, (req, res) => {
 			{ "$group": { 
 				'_id' : {
 					"createdBy":"$createdBy",
-					"problemIdentified":"$problemIdentified"
+					"categoryOfNursingIssues":"$categoryOfNursingIssues"
 				}, 
 				"doc": {
 					"$first": "$$ROOT"
@@ -2346,7 +2346,7 @@ router.get('/CarePlan/:name/:carePlanID', ensureAuthenticated, (req, res) => {
 			{ "$group": { 
 				'_id' : {
 					"createdBy":"$createdBy",
-					"problemIdentified":"$problemIdentified"
+					"categoryOfNursingIssues":"$categoryOfNursingIssues"
 				}, 
 				"doc": {
 					"$first": "$$ROOT"

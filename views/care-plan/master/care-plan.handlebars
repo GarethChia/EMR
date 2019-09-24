@@ -34,7 +34,7 @@
                     <tr style="height: 60px">
                         <td><a href="/master/CarePlan/{{createdBy}}/{{carePlanID}}">{{date}}</a></td>
                         <td>{{time}}</td>
-                        <td>{{problemIdentified}}</td>
+                        <td>{{categoryOfNursingIssues}}</td>
                         {{!-- <td>{{problemIdentified}}</td>
                         <td>{{assessment}}</td>
                         <td>{{goalAndExpectedOutcomes}}</td>
@@ -98,7 +98,7 @@
                     </div>
                     <div class="row">
                         <div class="col s12 m6 input-field">
-                            <select id="problemIdentified" name="problemIdentified">
+                            <select id="categoryOfNursingIssues" name="categoryOfNursingIssues" disabled>
                                 <option value="" disabled selected>Select a problem</option>
                                 <option value="Mental status">Mental status</option>
                                 <option value="Airway">Airway</option>
@@ -118,12 +118,14 @@
                                 <option value="Other">Other</option>
 
                             </select>
-                            <label for="problemIdentified">Problem Identified</label>
+                            <label for="categoryOfNursingIssues">Category of nursing issues</label>
                         </div>
-                        {{!-- <div class="col s12 m6 input-field">
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m6 input-field">
                             <textarea id="problemIdentified" class="materialize-textarea" name="problemIdentified" required>{{editCarePlan.problemIdentified}}</textarea>
                             <label for="problemIdentified">Problem Identified</label>
-                        </div> --}}
+                        </div>
                         <div class="col s12 m6 input-field">
                             <textarea id="assessment" class="materialize-textarea" name="assessment" required>{{editCarePlan.assessment}}</textarea>
                             <label for="assessment">Assessment</label>
@@ -167,7 +169,7 @@
         const dateCarePlan = document.querySelector('#dateCarePlan');
         const timeCarePlan = document.querySelector('#timeCarePlan');
         const selectUser = document.querySelector('#selectUser');
-        const problemIdentified = document.querySelector('#problemIdentified');
+        const categoryOfNursingIssues = document.querySelector('#categoryOfNursingIssues');
 
         // Care Plan Instances
         M.Datepicker.init(dateCarePlan, {
@@ -183,7 +185,7 @@
         M.FormSelect.init(selectUser, {
             
         })              
-        M.FormSelect.init(problemIdentified, {
+        M.FormSelect.init(categoryOfNursingIssues, {
             
         })
     }) 
@@ -204,6 +206,6 @@
     {{/if}}
 
     {{#if editCarePlan}}
-        document.getElementById("problemIdentified").value = "{{editCarePlan.problemIdentified}}";
+        document.getElementById("categoryOfNursingIssues").value = "{{editCarePlan.categoryOfNursingIssues}}";
     {{/if}}
  </script>

@@ -2366,6 +2366,7 @@ router.post('/add-CarePlan/:recordID', ensureAuthenticated,(req, res) => {
 		time: req.body.timeCarePlan,
 		datetime: datetime,
 		problemIdentified: req.body.problemIdentified,
+		categoryOfNursingIssues: req.body.categoryOfNursingIssues,
 		assessment: req.body.assessment,
 		goalAndExpectedOutcomes: req.body.goalAndExpectedOutcomes,
 		interventions: req.body.interventions,
@@ -2400,13 +2401,14 @@ router.get('/CarePlan/:recordID/:carePlanID', ensureAuthenticated, (req, res) =>
 
 // edit Care Plan informations
 router.put('/edit-CarePlan/:recordID/:carePlanID', ensureAuthenticated, (req,res) => {
-	datetime = moment(req.body.dateCarePlan, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeMDP;
+	datetime = moment(req.body.dateCarePlan, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeCarePlan;
 
 	StudentCarePlan.findOne({ carePlanID: req.params.carePlanID}).then(editCarePlan => {
 		editCarePlan.date = moment(req.body.dateCarePlan, 'DD/MM/YYYY').format('YYYY-MM-DD'),
 		editCarePlan.time = req.body.timeCarePlan,
 		editCarePlan.datetime = datetime,
 		editCarePlan.problemIdentified = req.body.problemIdentified,
+		editCarePlan.categoryOfNursingIssues = req.body.categoryOfNursingIssues,
 		editCarePlan.assessment = req.body.assessment,
 		editCarePlan.goalAndExpectedOutcomes = req.body.goalAndExpectedOutcomes,
 		editCarePlan.interventions = req.body.interventions,
