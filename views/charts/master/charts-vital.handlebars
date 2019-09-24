@@ -612,6 +612,7 @@
                        </div>
                     </td>
                 </tr>
+
                 <tr style="border: none; !IMPORTANT">
                     <td colspan = "2" style="border: none; !IMPORTANT"> 
                         {{!-- Modal popup when user is selected --}}
@@ -1172,10 +1173,25 @@
                     $("#imgModalWong").hide();
                 }
             })
-        });
-    
+            {{#if editPain}}
+                console.log("hi");
+                if ("{{ editPain.painScale }}" == "Wong-Baker")
+                {
+                    console.log("WongBaker");
+                    $('#imgModalWong').show();
+                    $("#imgModalFLAAC").hide();
+                }
+                else if ("{{ editPain.painScale }}" == "FLACC")
+                {
+                    console.log("FLACC");
+                    $('#imgModalFLAAC').show()
+                    $("#imgModalWong").hide();
+                }
         
-    
+            {{/if}}
+        });
+
+
 </script>
 <script>
 $(document).ready(function(){
