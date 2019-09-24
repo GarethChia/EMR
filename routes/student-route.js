@@ -1572,7 +1572,7 @@ router.post('/add-enteral/:recordID', ensureAuthenticated, (req, res) => {
 
 
 	new MasterEnteral({
-		patientID: req.session.patient.patientID,
+		patientID: req.params.recordID,
 		enteralID: enteralID,
 		date: moment(req.body.dateenteral, 'DD/MM/YYYY').format('YYYY-MM-DD'),
 		time: req.body.timeenteral,
@@ -1641,7 +1641,7 @@ router.post('/add-iv/:recordID', ensureAuthenticated, (req, res) => {
 
 
 	new MasterIV({
-		patientID: req.session.patient.patientID,
+		patientID: req.params.recordID,
 		ivID: ivID,
 		date: moment(req.body.dateiv, 'DD/MM/YYYY').format('YYYY-MM-DD'),
 		time: req.body.timeiv,
@@ -1711,7 +1711,7 @@ router.post('/add-output/:recordID', ensureAuthenticated, (req, res) => {
 
 
 	new MasterOutput({
-		patientID: req.session.patient.patientID,
+		patientID: req.params.recordID,
 		outputID: outputID,
 		date: moment(req.body.dateoutput, 'DD/MM/YYYY').format('YYYY-MM-DD'),
 		time: req.body.timeoutput,
@@ -2423,7 +2423,8 @@ router.get('/show-nursing-assessment/:recordID/:patientID', ensureAuthenticated,
 	
 	userType = req.user.userType == 'student';
 	PatientStudentModel.findOne({
-		patientID: req.params.patientID		// gets current patient
+		//patientID: req.params.patientID		// gets current patient
+		recordID: req.params.recordID
 	})
 	.then(retrievedPatient => {
 		if(JSON.stringify(retrievedPatient.user._id) === JSON.stringify(req.user.id)) {
@@ -2498,7 +2499,8 @@ router.put('/save-nursing-assessment/:recordID/:patientID/:nursingAssessmentID',
 router.get('/edit/:recordID/:patientID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
 	PatientStudentModel.findOne({
-		patientID: req.params.patientID			// gets current user
+		// patientID: req.params.patientID			// gets current user
+		recordID: req.params.recordID
 	})
 	.populate('user')							// gets user from emr-users collection
 	.then(patient => {
