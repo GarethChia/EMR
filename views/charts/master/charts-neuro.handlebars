@@ -1,0 +1,333 @@
+<style>
+    td, th {
+        text-align: center
+    }
+    .tabs .indicator {
+        background-color: #6A1B9A;
+    }
+    .tabs .tab a:focus, .tabs .tab a:focus.active {
+        background: transparent;
+    }
+
+    #diabeticflowsheettTable th {
+        border-right: 1px solid rgba(0, 0, 0, 0.12);
+        border-bottom: none;
+    }
+    #diabeticflowsheettTable tr {
+        border-bottom: none;
+    }
+    #diabeticflowsheettTable tr td {
+        border-right: 1px solid rgba(0, 0, 0, 0.12);
+    }
+</style>
+
+
+<br>
+<div class="row">
+    <div class="col s12">
+        <div class="tabs">
+            <li class="tab col s3 offset-s4" id="flowsheetTab"><a class="purple-text text-darken-3" id="tab0" href="#neuroflowsheet">Neurovascular Flowsheet</a></li>
+            <li class="tab col s2" id="neurotab"><a class="purple-text text-darken-3" id="tab1" href="#neuro">Neurovascular</a></li>
+            
+            {{!-- <li class="tab col s2" id="tabletab"><a class="purple-text text-darken-3" id="tab5" href="#table">Net IO</a></li> --}}
+        </div>
+    </div>
+</div>
+
+
+ {{!-- IO Flowsheet code start --}}
+ <div id="neuroflowsheet">
+    <div class="card-panel purple darken-3 white-text" style="padding: 5px; font-size: 20px; text-align: center"> Neurovascular Flowsheet</div>
+    
+    <div style="overflow-x: auto; max-height: 48em;">
+        <table id="diabeticflowsheettTable">
+            <tr>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Datetime</th>
+                {{#each neurodateVal}}
+                <th style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">{{formatDatetime this}}</th>
+                {{/each}}
+            </tr>
+
+            <tr>
+                <th width="10%">Point Of Care</th>
+                {{#each neuroFlow}}
+                {{!-- display shortform BB,AB,BD and etc, the function
+                 is in student/master route by using splice. Create another col
+                 named splitpoc in mongodb to store the split data teehee --}}
+                <td class="poc">{{splitpoc}}</td>
+                {{/each}}
+            </tr>
+
+            <tr>
+                <th width="10%">Blood Glucose Level(mmol/L)</th>
+                {{#each neuroFlow}}
+                <td class="bgl">{{bgl}}</td>
+                {{/each}}
+            </tr>
+
+            <tr>
+                <th width="10%">Type of Insulin</th>
+                {{#each neuroFlow}}
+                <td>{{insulintype}}</td>
+                {{/each}}
+            </tr>
+
+            <tr>
+                <th width="10%">Amount of Insulin Given</th>
+                {{!-- <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Amount of Insulin Given</th> --}}
+                {{#each neuroFlow}}
+                <td>{{insulinamt}}</td>
+                {{!-- <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)" class="insulinamt">{{insulinamt}}</td> --}}
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Hypoglycaemic Agent(Oral)</th>
+                {{#each neuroFlow}}
+                {{!-- <td>{{hypoagent}}</td> --}}
+                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)" class="hypoagent">{{hypoagent}}</td>
+                {{/each}}
+            </tr>
+      
+        </table>
+    </div>
+</div>
+
+{{!-- Neuro code start --}}
+<div id="neuro">
+<div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">Neurovascular</div>
+    <div style="overflow-x:auto; max-height: 16em;">
+        <table id="ioRecords" class="hover order-column">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Point Of Care</th>
+                    <th>Blood Glucose Level (mmol/L)</th>
+                    <th>Type of Insulin</th>
+                    <th>Amount of Insulin Given</th>
+                    <th>Hypoglycaemic Agent</th>
+
+                    {{!-- <th>Patient ID</th> --}}
+                    {{#unless userType}}
+                    {{!-- <th>Delete</th> --}}
+                    {{/unless}}
+                </tr>
+            </thead>
+            <tbody>
+                {{#if newNeuro}}
+                    {{#each newNeuro}}
+                    <tr style="height: 60px">
+                        {{#unless ../userType}}
+                        <td><a href="/master/neuro/{{neuroID}}">{{date}}</a></td>
+                        {{else}}
+                        <td><a href="/student/neuro/{{../recordID}}/{{neuroID}}">{{date}}</a></td>
+                        {{/unless}}
+                        <td>{{time}}</td>
+                        <td>{{splitpoc}}</td>
+                        <td>{{bgl}}</td>
+                        <td>{{insulintype}}</td>
+                        <td>{{insulinamt}}</td>
+                        <td>{{hypoagent}}</td>
+
+                        {{!-- <td>{{patientID}}</td> --}}
+                        {{#unless ../userType}}
+                        {{!-- <td style="width: 65px"> <!-- the tr we're trying to get -->
+                            <form action="/master/del-diabetic/{{diabeticID}}?_method=DELETE" method="post" id="delete-form">
+                                <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn red darken-3">
+                                 <i class="material-icons">delete
+                            </button>
+                            </form>
+                        </td> --}}
+                        {{else}}
+                         {{!-- <td style="width: 65px"> <!-- the tr we're trying to get -->
+                            <form action="/master/del-io/{{../recordID}}/{{ioID}}?_method=DELETE" method="post" id="delete-form">
+                                <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn red darken-3">
+                                 <i class="material-icons">delete
+                            </button> --}}
+                            </form>
+                        {{/unless}}
+                    </tr>
+                    {{/each}}
+                {{else}}
+                <p id="noRecord">You have not created any Neurovascular records yet</p>
+                {{/if}}
+            </tbody>
+        </table>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col s12 m8"></div>
+    </div>
+
+    {{#if editNeuro}}
+        {{#unless userType}}
+        <form action="/master/edit-neuro/{{editNeuro.neuroID}}?_method=PUT" method="POST" id="editNeuro">
+        {{else}}    
+        <form action="/student/edit-neuro/{{recordID}}/{{editNeuro.neuroID}}?_method=PUT" method="POST" id="editNeuro">
+        {{/unless}}
+    {{!-- <input type="hidden" name="_method" value="PUT"> --}}
+    {{else}}
+        {{#unless userType}}
+        <form action="/master/add-neuro" method="POST" id="addNeuro">
+        {{else}}
+        <form action="/student/add-neuro/{{recordID}}" method="POST" id="addNeuro">
+        {{/unless}}
+    {{/if}}
+        <div class="card purple lighten-5">
+            <div class="card-content">
+                <div id="neuroInfo">
+                    <span class="purple-text darken-2">Neurovascular Details</span>
+
+                <div class="row">
+                        <div class="col s12 m4 input-field">
+                            <input id="dateNeuro" type="text" class="datepicker" name="dateNeuro" value="{{editNeuro.date}}" required>
+                            <label for="dateNeuro">Date</label>
+                            <span class="helper-text">dd/mm/yyyy</span>
+                        </div>
+
+                        <div class="col s12 m4 input-field">
+                            <input id="timeNeuro" type="text" class="timepicker" name="timeNeuro" value="{{editNeuro.time}}" required>
+                            <label for="timeNeuro">Time</label>
+                            <span class="helper-text">hh:ss</span>
+                        </div>
+
+                        {{!-- <div class="col s12 m4 input-field">
+                            <input id="poc" type="text" name="poc" value="{{editDiabetic.poc}}">
+                            <label for="poc">Poc</label>
+                            <span class="helper-text"></span>
+                        </div> --}}
+
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col s12 m4 input-field">
+                            <select id="poc" name="poc">
+                                <option value="" disabled selected>Point Of Care</option>
+                                <option value="BB - Before Breakfast">BB - Before Breakfast</option>
+                                <option value="AB - After Breakfast">AB - After Breakfast</option>
+                                <option value="BL - Before Lunch">BL - Before Lunch</option>
+                                <option value="AL - After Lunch">AL - After Lunch</option>
+                                <option value="BD - Before Dinner">BD - Before Dinner</option>
+                                <option value="AD - After Dinner">AD - After Dinner</option>
+                                <option value="BT - Bed Time">BT - Bed Time</option>
+                                <option value="OT - Other Time">OT - Other Time</option>
+
+
+                            </select>
+                     <label for="poc">Point Of Care</label>
+
+                    </div>
+                    
+                        <div class="col s12 m4 input-field">
+                            <input id="bgl" type="number" name="bgl" value="{{editNeuro.bgl}}">
+                            <label for="bgl">Blood Glucose Level</label>
+                            <span class="helper-text"></span>
+                        </div>
+                        <div class="col s12 m4 input-field">
+                            <input id="insulintype" type="text" name="insulintype" value="{{editNeuro.insulintype}}">
+                            <label for="insulintype">Type of Insulin</label>
+                            <span class="helper-text"></span>
+                        </div>
+                        <div class="col s12 m4 input-field">
+                            <input id="insulinamt" type="number" name="insulinamt" value="{{editNeuro.insulinamt}}">
+                            <label for="insulinamt">Amount of Insulin Given</label>
+                            <span class="helper-text"></span>
+                        </div>
+                        <div class="col s12 m4 input-field">
+                            <input id="insulinamt" type="number" name="insulinamt" value="{{editNeuro.insulinamt}}">
+                            <input id="insulinamt" type="number" name="insulinamt" value="{{editNeuro.insulinamt}}">
+                            <input id="insulinamt" type="number" name="insulinamt" value="{{editNeuro.insulinamt}}">
+                            <input id="hypoagent" type="text" name="hypoagent" value="{{editNeuro.hypoagent}}">
+                            <label for="hypoagent">Hypoglycaemic Agent</label>
+                            <span class="helper-text"></span>
+                        </div>                   
+                </div>
+
+
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="row">
+        <div class="col s12 m8"></div>
+
+        <div class="col s12 m4">
+            {{#if editNeuro}}
+                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editNeuro">Save Changes
+            {{else}}
+                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addNeuro">Save
+            {{/if}}
+            {{#unless userType}}
+                <i class="material-icons right">send</i>
+                {{else}}
+                <i class="material-icons right">send</i>
+            {{/unless}}
+        </div>
+    </div>
+</div>
+
+{{!-- Diabetic code end --}}
+
+
+
+<script
+		src="https://code.jquery.com/jquery-3.3.1.min.js"
+		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+		crossorigin="anonymous">
+</script>
+
+<script>
+
+    $(document).ready(() => {
+        $('.tabs').tabs();
+        
+    })
+    
+
+        document.addEventListener('DOMContentLoaded', () => {
+        //neurovascular
+        const dateNeuro = document.querySelector('#dateNeuro');
+        const timeNeuro = document.querySelector('#timeNeuro');
+        const pointofcare = document.querySelector('#poc');
+
+        
+        //Img
+        const elems = document.querySelectorAll('.materialboxed');
+        const instances = M.Materialbox.init(elems, {});
+
+        //IO Instances
+                M.Datepicker.init(dateNeuro, {
+                    maxDate: new Date(),
+                    format: 'dd/mm/yyyy',
+                    disableWeekends: true
+                });
+                M.Timepicker.init(timeNeuro, {
+                    twelveHour: false,
+                    showClearBtn: true
+                });
+
+                M.FormSelect.init(poc, {
+                    
+                })      
+        })
+
+
+    {{#if editNeuro}}
+        document.getElementById('poc').value = "{{editNeuro.poc}}";
+        document.getElementById('flowsheetTab').className += " disabled";
+        document.getElementById('tab1').className += " active";
+   
+    {{/if}}
+
+    // modal
+    document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.modal');
+        var instances = M.Modal.init(elems, {});
+    });
+ </script>

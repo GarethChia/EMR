@@ -22,6 +22,7 @@ const StudentMDP = mongoose.model('studentMDP');
 // Care Plan
 const StudentCarePlan = mongoose.model('studentCarePlan');
 const MasterDiabetic = mongoose.model('masterDiabetic');
+const MasterNeuro = mongoose.model('masterNeuro');
 
 const moment = require('moment');
 const csrf = require('csurf');
@@ -2025,7 +2026,7 @@ router.get('/mdp', ensureAuthenticated, ensureAuthorised, (req, res) => {
 					patient: req.session.patient,
 					showMenu: true,
 				});
-			})	
+			})
 		//})
 		})
 	})
@@ -2230,7 +2231,7 @@ router.put('/edit-diabetic/:diabeticID', ensureAuthenticated,ensureAuthorised, (
 })
 //Delete diabetic information
 router.delete('/del-diabetic/:diabeticID', ensureAuthenticated, ensureAuthorised, (req, res) => {
-	MasterIO.deleteOne({diabeticID: req.params.diabeticID}, function(err) {
+	MasterDiabetic.deleteOne({diabeticID: req.params.diabeticID}, function(err) {
 		if (err) {
 			console.log('cannot delete diabetic details');
 		}
@@ -2336,5 +2337,137 @@ router.get('/CarePlan/:name/:carePlanID', ensureAuthenticated, (req, res) => {
 	});
 })
 
+//Load Neurovascular page
+router.get('/neuro', ensureAuthenticated, ensureAuthorised, (req, res) => {
+	MasterNeuro.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newNeuro => {
 
+					neurosample = [];
+					neurosampleDate = [];
+					let neuroFlow = Object.assign([], newNeuro);
+								
+					neuroCount = -1;
+								
+					neuronoRecord = 'No existing record';
+
+					newNeuro.forEach(neuro => {
+						if (!(neurosample.includes(neuro.datetime))) {
+							neurosample.push(neuro.datetime);
+							neurosampleDate.push(neuro.date);
+						}
+					});
+					neurosample.sort();
+					neurosampleDate.sort();
+
+					for (i = 0; i < neurosample.length; i++) {
+						
+
+						//Counter for empty data
+						//.length here refers to last index of the array
+						if (neuroCount !== (neuroFlow.length - 1)) {
+							neuroCount++;
+						}
+						//Insert empty data when value doesnt match
+						//Count here does the index count of flow array
+						if(neuroFlow !='') 
+						{
+							if (neurosample[i] < neuroFlow[neuroCount].datetime) {
+								neuroFlow.splice(neuroCount, 0, {datetime: ''});
+							} else if (neurosample[i] > neuroFlow[neuroCount].datetime) {
+								neuroFlow.splice(neuroCount + 1, 0, {datetime: ''});
+							}
+						} 
+						else
+						{
+							neuroFlow.push({datetime: '', poc: neuronoRecord});
+						}
+
+						
+					};
+					res.render('charts/master/charts-neuro', {
+						// recordID: req.params.recordID,
+						// userType: userType,
+						neurodateVal: neurosample,
+						neuroFlow: neuroFlow,
+						newNeuro: newNeuro,
+						patient: req.session.patient,
+						showMenu: true
+        			})
+	})
+})
+
+//get single Neurovascular info
+router.get('/neuro/:neuroID', ensureAuthenticated, ensureAuthorised, (req, res) => {
+	// MasterBraden.find({ patientID: req.session.patient.patientID }).then(newBraden => {
+		MasterNeuro.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newNeuro => {
+			MasterNeuro.findOne({ neuroID: req.params.neuroID }).then(editNeuro => {
+
+			editNeuro.date = moment(editNeuro.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
+			res.render('charts/master/charts-diabetic', {
+				// azureId: req.user.azure_oid,
+				newNeuro: newNeuro,
+				editNeuro: editNeuro,
+				patient: req.session.patient,
+				showMenu: true			
+			})
+		})
+	})
+})
+//add Neurovascular info
+router.post('/add-neuro', ensureAuthenticated,ensureAuthorised, (req, res) => {
+	neuroID = (new standardID('AAA0000')).generate();
+	datetime = moment(req.body.dateNeuro, 'DD/MM/YYYY').format('MM/DD/YYYY') + " "+ req.body.timeNeuro;
+
+	//splitpoc = req.body.poc.slice(0,2);
+
+	new MasterNeuro({
+			// patientID: req.session.patient.patientID,
+			patientID: req.session.patient.patientID,
+			neuroID: neuroID,
+			date: moment(req.body.dateNeuro, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+			datetime: datetime,
+			time: req.body.timeNeuro,
+			poc: req.body.poc,
+			bgl: req.body.bgl,
+			insulintype: req.body.insulintype,
+			insulinamt: req.body.insulinamt,
+			hypoagent: req.body.hypoagent,
+			//splitpoc: splitpoc,
+
+
+	}).save();
+
+	res.redirect('/master/neuro');
+})
+
+//Edit Neurovascular information
+router.put('/edit-neuro/:neuroID', ensureAuthenticated,ensureAuthorised, (req,res) => {
+	datetime = moment(req.body.dateNeuro, 'DD/MM/YYYY').format('MM/DD/YYYY') + " "+ req.body.timeNeuro;
+	//splitpoc = req.body.poc.slice(0,2);
+
+	MasterDiabetic.findOne({ neuroID: req.params.neuroID }).then(editNeuro => {
+		editNeuro.date = moment(req.body.dateNeuro, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		editNeuro.time = req.body.timeNeuro,
+		editNeuro.datetime = datetime,
+		editNeuro.poc = req.body.poc,
+		editNeuro.bgl = req.body.bgl,
+		editNeuro.insulintype = req.body.insulintype,
+		editNeuro.insulinamt = req.body.insulinamt,
+		editNeuro.hypoagent = req.body.hypoagent,
+		editNeuro.splitpoc = splitpoc,
+
+		editDiabetic.save();
+	});
+	res.redirect('/master/neuro');
+})
+//Delete Neurovascular information
+router.delete('/del-neuro/:neuroID', ensureAuthenticated, ensureAuthorised, (req, res) => {
+	MasterNeuro.deleteOne({neuroID: req.params.neuroID}, function(err) {
+		if (err) {
+			console.log('cannot delete Neurovascular details');
+		}
+	});
+	res.redirect('/master/neuro');
+})
+
+//END OF Neurovascular
 module.exports = router;

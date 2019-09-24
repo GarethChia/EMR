@@ -41,7 +41,7 @@ require('./models/MasterHistoryTracking');
 require('./models/StudentHistoryTracking');
 require('./models/StudentCarePlan');
 require('./models/MasterDiabetic');
-
+require('./models/MasterNeuro');
 // load keys
 const key = fs.readFileSync('./server.key');
 const cert = fs.readFileSync( './server.cert' );
