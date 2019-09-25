@@ -147,9 +147,10 @@
 				<label>
 					<input id="noneAdapt" name="adaptiveAids" type="checkbox" value="None"
 						{{checked assessment.adaptiveAids 'None'}}
-						   onclick="resetExceptNone('adaptiveAids', 'None');hide('cathetherType')"/>
+						   onclick="resetExceptNone('adaptiveAids', 'noneAdapt'); if (this.checked) { hide('cathetherType') } else { show('cathetherType') }"/>
 					<span style="padding-left: 25px; padding-right: 10px">None</span>
 				</label>
+
 			</div>
 		</div>
 
@@ -178,3 +179,19 @@
 	</div>
 </div>
 </div>
+
+<script>
+	$( document ).ready(function() {
+		{{#if assessment}}
+			if ("{{assessment.adaptiveAids}}" == "None")
+			{
+				$("#cathetherType").hide();
+			}
+			else
+			{
+				$("#cathetherType").show();
+			}
+		{{/if}}
+	});
+	
+</script>
