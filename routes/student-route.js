@@ -2221,7 +2221,8 @@ router.get('/mdp/:recordID', ensureAuthenticated, (req, res) => {
 			{ "$group": { '_id' : "$createdBy",  "doc": {"$first":"$$ROOT"} }},
 			{ "$replaceRoot": {"newRoot": "$doc" }},
 			{"$sort": {
-				'datetime': -1
+				'datetime': -1,
+				'createdBy': 1
 			}}
 		])
 			.then(newMasterMDP => {
@@ -2279,7 +2280,8 @@ router.get('/mdp/:recordID/:mdpID', ensureAuthenticated, (req, res) => {
 				{ "$group": { '_id' : "$createdBy",  "doc": {"$first":"$$ROOT"}}},
 				{"$replaceRoot": {"newRoot": "$doc"}},
 				{"$sort": {
-					'datetime': -1
+					'datetime': -1,
+					'createdBy': 1
 				}}
 			])
 			.then(newMasterMDP => {

@@ -2000,7 +2000,8 @@ router.get('/mdp', ensureAuthenticated, ensureAuthorised, (req, res) => {
 				{ "$group": { '_id' : "$createdBy",  "doc": {"$first":"$$ROOT"}}},
 				{"$replaceRoot": {"newRoot": "$doc"}},
 				{"$sort": {
-					'datetime': -1
+					'datetime': -1,
+					'createdBy': 1
 				}}
 			])
 			.then(newOtherMasterMDP => {
@@ -2014,7 +2015,8 @@ router.get('/mdp', ensureAuthenticated, ensureAuthorised, (req, res) => {
 					{ "$group": { '_id' : "$createdBy",  "doc": {"$first":"$$ROOT"}}},
 					{"$replaceRoot": {"newRoot": "$doc"}},
 					{"$sort": {
-						'datetime': -1
+						'datetime': -1,
+						'createdBy': 1
 					}}
 				])
 				.then(newOtherStudentMDP => {
@@ -2074,7 +2076,8 @@ router.get('/mdp/:mdpID', ensureAuthenticated, ensureAuthorised, (req, res) => {
 				{ "$group": { '_id' : "$createdBy",  "doc": {"$first":"$$ROOT"}}},
 				{"$replaceRoot": {"newRoot": "$doc"}},
 				{"$sort": {
-					'datetime': -1
+					'datetime': -1,
+					'createdBy': 1
 				}}
 			]
 			).then(newOtherStudentMDP => { 
@@ -2273,7 +2276,7 @@ router.get('/CarePlan/:name', ensureAuthenticated, (req, res) => {
 	console.log("name: "+ name);
 	StudentCarePlan.aggregate([ // display students who has created their care plan
 		{"$sort": {
-			'datetime': -1
+			'datetime': -1,
 		}},
 		{ "$match" : { 'patientID' : req.session.patient.patientID } },
 		{ "$group": { '_id' : "$createdBy", "doc": {"$first": "$$ROOT"}}},
@@ -2301,7 +2304,8 @@ router.get('/CarePlan/:name', ensureAuthenticated, (req, res) => {
 			}},
 			{"$replaceRoot": {"newRoot": "$doc"}},
 			{"$sort": {
-				'datetime': -1	
+				'datetime': -1,
+				'categoryOfNursingIssues': 1
 			}}
 		])
 		.then(newCarePlan => {
@@ -2354,7 +2358,8 @@ router.get('/CarePlan/:name/:carePlanID', ensureAuthenticated, (req, res) => {
 			}},
 			{"$replaceRoot": {"newRoot": "$doc"}},
 			{"$sort": {
-				'datetime': -1	
+				'datetime': -1,
+				'categoryOfNursingIssues': 1	
 			}}
 		])
 		.then(newCarePlan => {
