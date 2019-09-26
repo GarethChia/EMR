@@ -42,6 +42,8 @@ const MasterNeuroSchema = new Schema({
 	painLeft:	{type: String, default: ''},
 	characteristicRight:	{type: String, default: ''},
 	characteristicLeft: 	{type: String, default: ''},
+	numericalRatingScaleRight:	{type: String, default: ''},
+	numericalRatingScaleLeft:	{type: String, default: ''}
 });
 
 mongoose.model('masterNeuro', MasterNeuroSchema, 'master-neuro');

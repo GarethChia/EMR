@@ -204,64 +204,307 @@
             <div class="card-content">
                 <div id="neuroInfo">
                     <span class="purple-text darken-2">Neurovascular Details</span>
+                    <div class="row">
+                            <div class="col s12 m4 input-field">
+                                <input id="dateNeuro" type="text" class="datepicker" name="dateNeuro" value="{{editNeuro.date}}" required>
+                                <label for="dateNeuro">Date</label>
+                                <span class="helper-text">dd/mm/yyyy</span>
+                            </div>
 
-                <div class="row">
-                        <div class="col s12 m4 input-field">
-                            <input id="dateNeuro" type="text" class="datepicker" name="dateNeuro" value="{{editNeuro.date}}" required>
-                            <label for="dateNeuro">Date</label>
-                            <span class="helper-text">dd/mm/yyyy</span>
-                        </div>
-
-                        <div class="col s12 m4 input-field">
-                            <input id="timeNeuro" type="text" class="timepicker" name="timeNeuro" value="{{editNeuro.time}}" required>
-                            <label for="timeNeuro">Time</label>
-                            <span class="helper-text">hh:ss</span>
-                        </div>
-
-                        {{!-- <div class="col s12 m4 input-field">
-                            <input id="poc" type="text" name="poc" value="{{editDiabetic.poc}}">
-                            <label for="poc">Poc</label>
-                            <span class="helper-text"></span>
-                        </div> --}}
-
-
-                </div>
-
-                <div class="row">
-
-                    <div class="col s12 m4 input-field">
-                            <select id="siteOfInjury" name="siteOfInjury">
-                                <option value="" disabled selected>Site of Injury</option>
-                                <option value="Right Arm">Right Arm</option>
-                                <option value="Left Arm">Left Arm</option>
-                                <option value="Right Leg">Right Leg</option>
-                                <option value="Left Leg">Left Leg</option>
-
-                            </select>
-                     <label for="siteOfInjury">Site of Injury</label>
-
-                    </div>         
-                </div>
-                <div class="row">
-                    <div class="col s12 m4 input-field">
-                            <select id="leftColour" name="leftColour">
-                                <option value="" disabled selected>Left</option>
-                                <option value="Right Arm">Pink</option>
-                                <option value="Left Arm">Pale</option>
-                                <option value="Right Leg">Blue</option>
-                                <option value="Left Leg">Mottled</option>
-                            </select>
-                    <label for="leftColour">Left</label>
+                            <div class="col s12 m4 input-field">
+                                <input id="timeNeuro" type="text" class="timepicker" name="timeNeuro" value="{{editNeuro.time}}" required>
+                                <label for="timeNeuro">Time</label>
+                                <span class="helper-text">hh:ss</span>
+                            </div>
                     </div>
-                    <div class="col s12 m4 input-field">
-                            <select id="rightColour" name="rightColour">
-                                <option value="" disabled selected>Left</option>
-                                <option value="Right Arm">Pink</option>
-                                <option value="Left Arm">Pale</option>
-                                <option value="Right Leg">Blue</option>
-                                <option value="Left Leg">Mottled</option>
+                    <div class="row">
+                        <div class="col s12 m4 input-field">
+                                <select id="siteOfInjury" name="siteOfInjury">
+                                    <option value="" disabled selected>Site of Injury</option>
+                                    <option value="Right Arm">Right Arm</option>
+                                    <option value="Left Arm">Left Arm</option>
+                                    <option value="Right Leg">Right Leg</option>
+                                    <option value="Left Leg">Left Leg</option>
+
+                                </select>
+                        <label for="siteOfInjury">Site of Injury</label>
+
+                        </div>         
+                    </div> 
+                </div>
+            </div>
+        </div>
+        <div class="card purple lighten-5">
+            <div class="card-content">
+                <div id="neuroInfo">
+
+                    <span class="purple-text darken-2">Colour</span>
+                    <div class="row">
+                        <div class="col s12 m4 input-field">
+                                <select id="leftColour" name="leftColour">
+                                    <option value="" disabled selected>Colour</option>
+                                    <option value="Pink">Pink</option>
+                                    <option value="Pale">Pale</option>
+                                    <option value="Blue">Blue</option>
+                                    <option value="Mottled">Mottled</option>
+                                </select>
+                        <label for="leftColour">Left</label>
+                        </div>
+                        <div class="col s12 m4 input-field">
+                                <select id="rightColour" name="rightColour">
+                                    <option value="" disabled selected>Colour</option>
+                                    <option value="Pink">Pink</option>
+                                    <option value="Pale">Pale</option>
+                                    <option value="Blue">Blue</option>
+                                    <option value="Mottled">Mottled</option>
+                                </select>
+                        <label for="rightColour">Right</label>
+                        </div>
+                    </div>
+
+                    <span class="purple-text darken-2">Temperature</span>
+                    <div class="row">
+                        <div class="col s12 m4 input-field">
+                                <select id="leftTemperature" name="leftTemperature">
+                                    <option value="" disabled selected>Temperature</option>
+                                    <option value="Warm">Warm</option>
+                                    <option value="Cool">Cool</option>
+                                    <option value="Cold">Cold</option>
+                                    <option value="Hot">Hot</option>
+                                </select>
+                        <label for="leftTemperature">Left</label>
+                        </div>
+                        <div class="col s12 m4 input-field">
+                                <select id="rightTemperature" name="rightTemperature">
+                                    <option value="" disabled selected>Temperature</option>
+                                    <option value="Warm">Warm</option>
+                                    <option value="Cool">Cool</option>
+                                    <option value="Cold">Cold</option>
+                                    <option value="Hot">Hot</option>
+                                </select>
+                        <label for="rightTemperature">Right</label>
+                        </div>
+                    </div>
+
+                    <span class="purple-text darken-2">Capillary Refill</span>
+                    <div class="row">
+                        <div class="col s12 m4 input-field">
+                                <select id="leftCapillaryRefill" name="leftCapillaryRefill">
+                                    <option value="" disabled selected>Capillary Refill</option>
+                                    <option value="1-2 Sec">1-2 Sec</option>
+                                    <option value="3 Sec">3 Sec</option>
+                                    <option value=">= 4 Sec">&gt;= 4 Sec</option>
+                                </select>
+                        <label for="leftCapillaryRefill">Left</label>
+                        </div>
+                        <div class="col s12 m4 input-field">
+                                <select id="rightCapillaryRefill" name="rightCapillaryRefill">
+                                    <option value="" disabled selected>Capillary Refill</option>
+                                    <option value="1-2 Sec">1-2 Sec</option>
+                                    <option value="3 Sec">3 Sec</option>
+                                    <option value=">= 4 Sec">&gt;= 4 Sec</option>
+                                </select>
+                        <label for="rightCapillaryRefill">Right</label>
+                        </div>
+                    </div>
+
+                    <span class="purple-text darken-2">Peripheral Pulse</span>
+                    <div class="row">
+                        <div class="col s12 m4 input-field">
+                                <select id="leftPeripheralPulse" name="leftPeripheralPulse">
+                                    <option value="" disabled selected>Peripheral Pulse</option>
+                                    <option value="Strong">Strong</option>
+                                    <option value="Weak">Weak</option>
+                                    <option value="Absent">Absent</option>
+                                </select>
+                        <label for="leftPeripheralPulse">Left</label>
+                        </div>
+                        <div class="col s12 m4 input-field">
+                                <select id="rightPeripheralPulse" name="rightPeripheralPulse">
+                                    <option value="" disabled selected>Peripheral Pulse</option>
+                                    <option value="Strong">Strong</option>
+                                    <option value="Weak">Weak</option>
+                                    <option value="Absent">Absent</option>
+                                </select>
+                        <label for="rightPeripheralPulse">Right</label>
+                        </div>
+                    </div>
+
+                    <span class="purple-text darken-2">Edema</span>
+                    <div class="row">
+                        <div class="col s12 m4 input-field">
+                                <select id="leftEdema" name="leftEdema">
+                                    <option value="" disabled selected>Edema</option>
+                                    <option value="None">None</option>
+                                    <option value="Slight">Slight</option>
+                                    <option value="Moderate">Moderate</option>
+                                    <option value="Marked">Marked</option>
+                                </select>
+                        <label for="leftEdema">Left</label>
+                        </div>
+                        <div class="col s12 m4 input-field">
+                                <select id="rightEdema" name="rightEdema">
+                                    <option value="" disabled selected>Edema</option>
+                                    <option value="None">None</option>
+                                    <option value="Slight">Slight</option>
+                                    <option value="Moderate">Moderate</option>
+                                    <option value="Marked">Marked</option>
+                                </select>
+                        <label for="rightEdema">Right</label>
+                        </div>
+                    </div>
+
+                    <span class="purple-text darken-2">Movement</span>
+                    <div class="row">
+                        <div class="col s12 m4 input-field">
+                                <select id="leftMovement" name="leftMovement">
+                                    <option value="" disabled selected>Movement</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Weak">Weak</option>
+                                    <option value="Absent">Absent</option>
+                                </select>
+                        <label for="leftMovement">Left</label>
+                        </div>
+                        <div class="col s12 m4 input-field">
+                                <select id="rightMovement" name="rightMovement">
+                                    <option value="" disabled selected>Movement</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Weak">Weak</option>
+                                    <option value="Absent">Absent</option>
+                                </select>
+                        <label for="rightMovement">Right</label>
+                        </div>
+                    </div>
+
+                    <span class="purple-text darken-2">Sensation</span>
+                    <div class="row">
+                        <div class="col s12 m4 input-field">
+                                <select id="leftSensation" name="leftSensation">
+                                    <option value="" disabled selected>Sensation</option>
+                                    <option value="Normal">Normal</option>
+                                    <option value="Numb">Numb</option>
+                                    <option value="Tingling">Tingling</option>
+                                    <option value="Absent">Absent</option>
+                                </select>
+                        <label for="leftSensation">Left</label>
+                        </div>
+                        <div class="col s12 m4 input-field">
+                            <select id="rightSensation" name="rightSensation">
+                                <option value="" disabled selected>Sensation</option>
+                                <option value="Normal">Normal</option>
+                                <option value="Numb">Numb</option>
+                                <option value="Tingling">Tingling</option>
+                                <option value="Absent">Absent</option>
                             </select>
-                    <label for="rightColour">Right</label>
+                        <label for="rightSensation">Right</label>
+                        </div>
+                    </div>
+
+                    <span class="purple-text darken-2">Type of pain scale</span>
+                    <div class="row">
+                        <div class="col s12 m4 input-field">
+                            <select id="leftTypeOfPainScale" name="leftTypeOfPainScale">
+                                <option value="" disabled selected>Type of pain scale</option>
+                                <option value="Numerical Rating Scale">Numerical Rating Scale</option>
+                                <option value="Wong-Baker">Wong-Baker</option>
+                                <option value="FLACC">FLACC</option>
+                            </select>
+                            <label for="leftTypeOfPainScale">Left</label>
+                        </div>
+                        <div class="col s12 m4 input-field">
+                            <select id="rightTypeOfPainScale" name="rightTypeOfPainScale">
+                                <option value="" disabled selected>Type of pain scale</option>
+                                <option value="Numerical Rating Scale">Numerical Rating Scale</option>
+                                <option value="Wong-Baker">Wong-Baker</option>
+                                <option value="FLACC">FLACC</option>
+                            </select>
+                            <label for="rightTypeOfPainScale">Right</label>
+                        </div>
+                    </div>
+
+                    <span class="purple-text darken-2">Numerical Rating Scale</span>
+                    <div class="row">
+                        <div class="col s12 m4 input-field">
+                            <select id="numericalRatingScaleLeft" name="numericalRatingScaleLeft">
+                                <option value="" disabled selected>Numerical Rating Scale</option>
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        <label for="numericalRatingScaleRight">Left</label>
+                        </div>
+                        <div class="col s12 m4 input-field">
+                            <select id="numericalRatingScaleRight" name="numericalRatingScaleRight">
+                                <option value="" disabled selected>Numerical Rating Scale</option>
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        <label for="numericalRatingScaleRight">Right</label>
+                        </div>
+                        
+                    </div>
+                    
+                    <span class="purple-text darken-2">Verbal Descriptive Scale</span>
+                    <div class="row">
+                        <div class="col s12 m4 input-field">
+                                <select id="leftVerbalDescriptiveScale" name="leftVerbalDescriptiveScale">
+                                    <option value="" disabled selected>Verbal Descriptive Scale</option>
+                                    <option value="Mild pain 3">Mild pain 3</option>
+                                    <option value="Moderate pain 6">Moderate pain 6</option>
+                                    <option value="Severe pain 9">Severe pain 9</option>
+                                </select>
+                        <label for="leftVerbalDescriptiveScale">Left</label>
+                        </div>
+                        <div class="col s12 m4 input-field">
+                                <select id="rightVerbalDescriptiveScale" name="rightVerbalDescriptiveScale">
+                                    <option value="" disabled selected>Verbal Descriptive Scale</option>
+                                    <option value="Mild pain 3">Mild pain 3</option>
+                                    <option value="Moderate pain 6">Moderate pain 6</option>
+                                    <option value="Severe pain 9">Severe pain 9</option>
+                                </select>
+                        <label for="rightVerbalDescriptiveScale">Left</label>
+                        </div>
+                    </div>
+
+                    <span class="purple-text darken-2">Characteristic</span>
+                    <div class="row">
+                        <div class="col s12 m4 input-field">
+                            <select id="leftCharacteristic" name="leftCharacteristic">
+                                <option value="" disabled selected>Characteristic</option>
+                                <option value="No pain">No pain</option>
+                                <option value="Dull pain">Dull pain</option>
+                                <option value="Sharp pain">Sharp pain</option>
+                                <option value="Radiating">Radiating</option>
+                            </select>
+                        <label for="leftCharacteristic">Left</label>
+                        </div>
+                        <div class="col s12 m4 input-field">
+                            <select id="rightCharacteristic" name="rightCharacteristic">
+                                <option value="" disabled selected>Characteristic</option>
+                                <option value="No pain">No pain</option>
+                                <option value="Dull pain">Dull pain</option>
+                                <option value="Sharp pain">Sharp pain</option>
+                                <option value="Radiating">Radiating</option>
+                            </select>
+                        <label for="rightCharacteristic">Right</label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -311,7 +554,27 @@
         const siteOfInjury = document.querySelector('#siteOfInjury');
         const leftColour = document.querySelector('#leftColour');
         const rightColour = document.querySelector('#rightColour');
-        
+        const leftTemperature = document.querySelector('#leftTemperature');
+        const rightTemperature = document.querySelector('#rightTemperature');
+        const leftCapillaryRefill = document.querySelector('#leftCapillaryRefill');
+        const rightCapillaryRefill = document.querySelector('#rightCapillaryRefill');
+        const leftPeripheralPulse = document.querySelector('#leftPeripheralPulse');
+        const rightPeripheralPulse = document.querySelector('#rightPeripheralPulse');
+        const leftEdema = document.querySelector('#leftEdema');
+        const rightEdema = document.querySelector('#rightEdema');
+        const leftMovement = document.querySelector('#leftMovement');
+        const rightMovement = document.querySelector('#rightMovement')
+        const leftSensation = document.querySelector('#leftSensation');
+        const rightSensation = document.querySelector('#rightSensation');
+        const leftTypeOfPainScale = document.querySelector('#leftTypeOfPainScale');
+        const rightTypeOfPainScale = document.querySelector('#rightTypeOfPainScale');
+        const numericalRatingScaleLeft = document.querySelector('#numericalRatingScaleLeft');
+        const numericalRatingScaleRight = document.querySelector('#numericalRatingScaleRight');
+        const leftVerbalDescriptiveScale = document.querySelector('#leftVerbalDescriptiveScale');
+        const rightVerbalDescriptiveScale = document.querySelector('#rightVerbalDescriptiveScale');
+        const leftCharacteristic = document.querySelector('#leftCharacteristic');
+        const rightCharacteristic = document.querySelector('#rightCharacteristic');
+
         //Img
         const elems = document.querySelectorAll('.materialboxed');
         const instances = M.Materialbox.init(elems, {});
@@ -337,6 +600,75 @@
 
                 M.FormSelect.init(rightColour, {
                     
+                })
+
+                M.FormSelect.init(leftTemperature, {
+                    
+                })
+
+                M.FormSelect.init(rightTemperature, {
+                    
+                })
+
+                M.FormSelect.init(leftCapillaryRefill, {
+                    
+                })
+
+                M.FormSelect.init(rightCapillaryRefill, {
+                    
+                })
+
+                M.FormSelect.init(leftPeripheralPulse, {
+                    
+                })
+
+                M.FormSelect.init(rightPeripheralPulse, {
+                    
+                })
+
+                M.FormSelect.init(leftEdema, {
+                    
+                })
+
+                M.FormSelect.init(rightEdema, {
+                    
+                })
+
+                M.FormSelect.init(leftMovement, {
+                    
+                })
+                M.FormSelect.init(rightMovement, {
+                    
+                })
+                M.FormSelect.init(leftSensation, {
+                    
+                })
+                M.FormSelect.init(rightSensation, {
+                    
+                })
+                M.FormSelect.init(leftTypeOfPainScale, {
+                    
+                })
+                M.FormSelect.init(rightTypeOfPainScale, {
+                    
+                })
+                M.FormSelect.init(numericalRatingScaleLeft, {
+                    
+                })
+                M.FormSelect.init(numericalRatingScaleRight, {
+                    
+                })
+                M.FormSelect.init(leftVerbalDescriptiveScale, {
+
+                })
+                M.FormSelect.init(rightVerbalDescriptiveScale, {
+
+                })
+                M.FormSelect.init(leftCharacteristic, {
+
+                })
+                M.FormSelect.init(rightCharacteristic, {
+
                 })
         })
 
