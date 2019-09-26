@@ -99,18 +99,42 @@
         <table id="ioRecords" class="hover order-column">
             <thead>
                 <tr>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Point Of Care</th>
-                    <th>Blood Glucose Level (mmol/L)</th>
-                    <th>Type of Insulin</th>
-                    <th>Amount of Insulin Given</th>
-                    <th>Hypoglycaemic Agent</th>
+                    <th rowspan="2">Date</th>
+                    <th rowspan="2">Time</th>
+                    <th colspan="2">Colour</th>
+                    <th colspan="2">Temperature</th>
+                    <th colspan="2">Capillary refill</th>
+                    <th colspan="2">Peripheral pulse</th>
+                    <th colspan="2">Edema</th>
+                    <th colspan="2">Movement</th>
+                    <th colspan="2">Sensation</th>
+                    <th colspan="2">Pain</th>
+                    <th colspan="2">Characteristic</th>
 
                     {{!-- <th>Patient ID</th> --}}
                     {{#unless userType}}
                     {{!-- <th>Delete</th> --}}
                     {{/unless}}
+                </tr>
+                <tr>
+                    <th>Right</th>
+                    <th>Left</th>
+                    <th>Right</th>
+                    <th>Left</th>
+                    <th>Right</th>
+                    <th>Left</th>
+                    <th>Right</th>
+                    <th>Left</th>
+                    <th>Right</th>
+                    <th>Left</th>
+                    <th>Right</th>
+                    <th>Left</th>
+                    <th>Right</th>
+                    <th>Left</th>
+                    <th>Right</th>
+                    <th>Left</th>
+                    <th>Right</th>
+                    <th>Left</th>
                 </tr>
             </thead>
             <tbody>
@@ -150,8 +174,8 @@
                         {{/unless}}
                     </tr>
                     {{/each}}
-                {{else}}
-                <p id="noRecord">You have not created any Neurovascular records yet</p>
+                {{!-- {{else}}
+                <p id="noRecord">You have not created any Neurovascular records yet</p> --}}
                 {{/if}}
             </tbody>
         </table>
@@ -206,49 +230,39 @@
                 <div class="row">
 
                     <div class="col s12 m4 input-field">
-                            <select id="poc" name="poc">
-                                <option value="" disabled selected>Point Of Care</option>
-                                <option value="BB - Before Breakfast">BB - Before Breakfast</option>
-                                <option value="AB - After Breakfast">AB - After Breakfast</option>
-                                <option value="BL - Before Lunch">BL - Before Lunch</option>
-                                <option value="AL - After Lunch">AL - After Lunch</option>
-                                <option value="BD - Before Dinner">BD - Before Dinner</option>
-                                <option value="AD - After Dinner">AD - After Dinner</option>
-                                <option value="BT - Bed Time">BT - Bed Time</option>
-                                <option value="OT - Other Time">OT - Other Time</option>
-
+                            <select id="siteOfInjury" name="siteOfInjury">
+                                <option value="" disabled selected>Site of Injury</option>
+                                <option value="Right Arm">Right Arm</option>
+                                <option value="Left Arm">Left Arm</option>
+                                <option value="Right Leg">Right Leg</option>
+                                <option value="Left Leg">Left Leg</option>
 
                             </select>
-                     <label for="poc">Point Of Care</label>
+                     <label for="siteOfInjury">Site of Injury</label>
 
-                    </div>
-                    
-                        <div class="col s12 m4 input-field">
-                            <input id="bgl" type="number" name="bgl" value="{{editNeuro.bgl}}">
-                            <label for="bgl">Blood Glucose Level</label>
-                            <span class="helper-text"></span>
-                        </div>
-                        <div class="col s12 m4 input-field">
-                            <input id="insulintype" type="text" name="insulintype" value="{{editNeuro.insulintype}}">
-                            <label for="insulintype">Type of Insulin</label>
-                            <span class="helper-text"></span>
-                        </div>
-                        <div class="col s12 m4 input-field">
-                            <input id="insulinamt" type="number" name="insulinamt" value="{{editNeuro.insulinamt}}">
-                            <label for="insulinamt">Amount of Insulin Given</label>
-                            <span class="helper-text"></span>
-                        </div>
-                        <div class="col s12 m4 input-field">
-                            <input id="insulinamt" type="number" name="insulinamt" value="{{editNeuro.insulinamt}}">
-                            <input id="insulinamt" type="number" name="insulinamt" value="{{editNeuro.insulinamt}}">
-                            <input id="insulinamt" type="number" name="insulinamt" value="{{editNeuro.insulinamt}}">
-                            <input id="hypoagent" type="text" name="hypoagent" value="{{editNeuro.hypoagent}}">
-                            <label for="hypoagent">Hypoglycaemic Agent</label>
-                            <span class="helper-text"></span>
-                        </div>                   
+                    </div>         
                 </div>
-
-
+                <div class="row">
+                    <div class="col s12 m4 input-field">
+                            <select id="leftColour" name="leftColour">
+                                <option value="" disabled selected>Left</option>
+                                <option value="Right Arm">Pink</option>
+                                <option value="Left Arm">Pale</option>
+                                <option value="Right Leg">Blue</option>
+                                <option value="Left Leg">Mottled</option>
+                            </select>
+                    <label for="leftColour">Left</label>
+                    </div>
+                    <div class="col s12 m4 input-field">
+                            <select id="rightColour" name="rightColour">
+                                <option value="" disabled selected>Left</option>
+                                <option value="Right Arm">Pink</option>
+                                <option value="Left Arm">Pale</option>
+                                <option value="Right Leg">Blue</option>
+                                <option value="Left Leg">Mottled</option>
+                            </select>
+                    <label for="rightColour">Right</label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -294,8 +308,9 @@
         //neurovascular
         const dateNeuro = document.querySelector('#dateNeuro');
         const timeNeuro = document.querySelector('#timeNeuro');
-        const pointofcare = document.querySelector('#poc');
-
+        const siteOfInjury = document.querySelector('#siteOfInjury');
+        const leftColour = document.querySelector('#leftColour');
+        const rightColour = document.querySelector('#rightColour');
         
         //Img
         const elems = document.querySelectorAll('.materialboxed');
@@ -312,14 +327,22 @@
                     showClearBtn: true
                 });
 
-                M.FormSelect.init(poc, {
+                M.FormSelect.init(siteOfInjury, {
                     
                 })      
+
+                M.FormSelect.init(leftColour, {
+                    
+                })
+
+                M.FormSelect.init(rightColour, {
+                    
+                })
         })
 
 
     {{#if editNeuro}}
-        document.getElementById('poc').value = "{{editNeuro.poc}}";
+        document.getElementById('siteOfInjury').value = "{{editNeuro.siteOfInjury}}";
         document.getElementById('flowsheetTab').className += " disabled";
         document.getElementById('tab1').className += " active";
    
