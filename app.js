@@ -42,6 +42,12 @@ require('./models/StudentHistoryTracking');
 require('./models/StudentCarePlan');
 require('./models/MasterDiabetic');
 require('./models/MasterNeuro');
+//clc
+require('./models/MasterGCS');
+require('./models/MasterClcVital');
+require('./models/MasterPupils');
+require('./models/MasterMotorStrength');
+
 // load keys
 const key = fs.readFileSync('./server.key');
 const cert = fs.readFileSync( './server.cert' );

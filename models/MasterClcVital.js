@@ -6,8 +6,8 @@ const NursingAssessmentModel = require('./NursingAssessmentModel');
 
 
 // Create Schema
-const MasterGcsSchema = new Schema({
-	patientID:  {type: String, require: true},
+const MasterClcVitalSchema = new Schema({
+	patientID:  {type: String, required: true},
 	userID: {
 		type: Schema.Types.ObjectId,
 		ref: 'emr-users' 	// collection name in mongodb
@@ -16,15 +16,19 @@ const MasterGcsSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: 'nursing-assessment'
 	},
-	gcsID:	 {type: String, default:''},
-	userType:	 {type: String, default:''},
 	datetime: 	{type: String, default:''},
 	date:	{type: String, default:''},
-	time:		 {type: String, default: ''},
-	eyeopen:	 {type: String, default: ''},
-	bestverbal:	 {type: String, default: ''},
-	bestmotor:		 {type: String, default: ''},
-    totalgcs:     {type: String, default: ''},
+	time:	{type: String, default:''},
+
+	studentName: 	{type: String, default:''},
+
+	clcvitalID:	 {type: String, default:''},
+	userType:	 {type: String, default:''},
+
+	heartRate:	 {type: String, default: ''},
+	resp:		 {type: String, default: ''},
+	sbp:		 {type: String, default: ''},
+	dbp:		 {type: String, default: ''},
 });
 
-mongoose.model('masterGcs', MasterGcsSchema, 'master-gcs');
+mongoose.model('masterClcVital', MasterClcVitalSchema, 'master-clcvital');
