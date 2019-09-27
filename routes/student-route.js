@@ -2697,58 +2697,57 @@ router.put('/edit-diabetic/:recordID/:diabeticID', ensureAuthenticated, (req,res
 router.get('/neuro/:recordID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
 	MasterNeuro.find({ patientID: req.params.recordID}).sort({'datetime':1}).then(newNeuro => {
+		neurosample = [];
+		neurosampleDate = [];
+		let neuroFlow = Object.assign([], newNeuro);
+		
+		neuroCount = -1;
+		
+		neuronoRecord = 'No existing record';
 
-					neurosample = [];
-					neurosampleDate = [];
-					let neuroFlow = Object.assign([], newNeuro);
-					
-					neuroCount = -1;
-					
-					neuronoRecord = 'No existing record';
+		newNeuro.forEach(neuro => {
+			if (!(neurosample.includes(neuro.datetime))) {
+				neurosample.push(neuro.datetime);
+				neurosampleDate.push(neuro.date);
+			}
+		});
+		neurosample.sort();
+		neurosampleDate.sort();
 
-					newNeuro.forEach(neuro => {
-						if (!(neurosample.includes(neuro.datetime))) {
-							neurosample.push(neuro.datetime);
-							neurosampleDate.push(neuro.date);
-						}
-					});
-					neurosample.sort();
-					neurosampleDate.sort();
+		for (i = 0; i < neurosample.length; i++) {
+			
+			
+			//Counter for empty data
+			//.length here refers to last index of the array
+			if (neuroCount !== (neuroFlow.length - 1)) {
+				neuroCount++;
+			}
+			//Insert empty data when value doesnt match
+			//Count here does the index count of flow array
+			if(neuroFlow !='') 
+			{
+				if (neurosample[i] < neuroFlow[neuroCount].datetime) {
+					neuroFlow.splice(neuroCount, 0, {datetime: ''});
+				} else if (neurosample[i] > neuroFlow[neuroCount].datetime) {
+					neuroFlow.splice(neuroCount + 1, 0, {datetime: ''});
+				}
+			} 
+			else
+			{
+				neuroFlow.push({datetime: '', poc: diabeticnoRecord});
+			}
 
-					for (i = 0; i < neurosample.length; i++) {
-						
-
-						//Counter for empty data
-						//.length here refers to last index of the array
-						if (neuroCount !== (neuroFlow.length - 1)) {
-							neuroCount++;
-						}
-						//Insert empty data when value doesnt match
-						//Count here does the index count of flow array
-						if(neuroFlow !='') 
-						{
-							if (neurosample[i] < neuroFlow[neuroCount].datetime) {
-								neuroFlow.splice(neuroCount, 0, {datetime: ''});
-							} else if (neurosample[i] > neuroFlow[neuroCount].datetime) {
-								neuroFlow.splice(neuroCount + 1, 0, {datetime: ''});
-							}
-						} 
-						else
-						{
-							neuroFlow.push({datetime: '', poc: diabeticnoRecord});
-						}
-
-						
-					};
-					res.render('charts/master/charts-neuro', {
-						recordID: req.params.recordID,
-						userType: userType,
-						neurodateVal: neurosample,
-						neuroFlow: neuroFlow,
-						newNeuro: newNeuro,
-						patient: req.session.patient,
-						showMenu: true
-        			})
+			
+		};
+		res.render('charts/master/charts-neuro', {
+			recordID: req.params.recordID,
+			userType: userType,
+			neurodateVal: neurosample,
+			neuroFlow: neuroFlow,
+			newNeuro: newNeuro,
+			patient: req.session.patient,
+			showMenu: true
+		})
 	})
 })
 
@@ -2764,7 +2763,7 @@ router.get('/neuro/:recordID/:neuroID', ensureAuthenticated, (req, res) => {
 				recordID: req.params.recordID,
 				userType: userType,
 				newNeuro: newNeuro,
-				editDiabetic: editDiabetic,
+				editNeuro: editNeuro,
 				patient: req.session.patient,
 				showMenu: true			
 			})
@@ -2782,15 +2781,58 @@ router.post('/add-neuro/:recordID', ensureAuthenticated, (req, res) => {
 			// patientID: req.session.patient.patientID,
 			patientID: req.params.recordID,
 			neuroID: neuroID,
-			date: moment(req.body.dateNeuro, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+			// userType: ,
 			datetime: datetime,
+			date: moment(req.body.dateNeuro, 'DD/MM/YYYY').format('YYYY-MM-DD'),
 			time: req.body.timeNeuro,
-			poc: req.body.poc,
-			bgl:	req.body.bgl,
-			insulintype: req.body.insulintype,
-			insulinamt: req.body.insulinamt,
-			hypoagent: req.body.hypoagent,
-			//splitpoc: splitpoc,
+			siteOfInjury: req.body.siteOfInjury,
+			colourLeft: req.body.leftColour,
+			colourRight: req.body.rightColour,
+			temperatureLeft: req.body.leftTemperature,
+			temperatureRight: req.body.rightTemperature,
+			capillaryRefillLeft: req.body.leftCapillaryRefill,
+			capillaryRefillRight: req.body.rightCapillaryRefill,
+			peripheralPulseLeft: req.body.leftPeripheralPulse,
+			peripheralPulseRight: req.body.rightPeripheralPulse,
+			edemaLeft: req.body.leftEdema,
+			edemaRight: req.body.rightEdema,
+			movementLeft: req.body.leftMovement,
+			movementRight: req.body.rightMovement,
+			sensationLeft: req.body.leftSensation,
+			sensationRight: req.body.rightSensation,
+			painLeft: req.body.leftTypeOfPainScale,
+			painRight: req.body.rightTypeOfPainScale,
+			numericalRatingScaleLeft: req.body.numericalRatingScaleLeft,
+			numericalRatingScaleRight: req.body.numericalRatingScaleRight,
+			verbalDescriptiveScaleLeft: req.body.leftVerbalDescriptiveScale,
+			verbalDescriptiveScaleRight: req.body.rightVerbalDescriptiveScale,
+			characteristicLeft: req.body.leftCharacteristic,
+			characteristicRight: req.body.rightCharacteristic
+			/*
+			siteOfInjury:	{type: String, default: ''},
+			colourLeft: {type: String, default: ''},
+			colourRight:	{type: String, default: ''},
+			temperatureLeft:	{type: String, default: ''},
+			temperatureRight:	{type: String, default: ''},
+			capillaryRefillLeft:	{type: String, default: ''},
+			capillaryRefillRight:	{type: String, default: ''},	
+			peripheralPulseLeft: {type: String, default: ''},
+			peripheralPulseRight:	{type: String, default: ''},
+			edemaLeft:	{type: String, default: ''},
+			edemaRight:	{type: String, default: ''},
+			movementLeft:	{type: String, default: ''},
+			movementRight: {type: String, default: ''},
+			sensationLeft:	{type: String, default: ''},
+			sensationRight: {type: String, default: ''},
+			painLeft:	{type: String, default: ''},
+			painRight:	{type: String, default: ''},
+			numericalRatingScaleLeft:	{type: String, default: ''},
+			numericalRatingScaleRight:	{type: String, default: ''},
+			verbalDescriptiveScaleLeft:		{type: String, default: ''},
+			verbalDescriptiveScaleRight:	{type: String, default: ''},
+			characteristicLeft: 	{type: String, default: ''},
+			characteristicRight:	{type: String, default: ''}	
+			*/
 
 	}).save();
 
@@ -2806,14 +2848,30 @@ router.put('/edit-neuro/:recordID/:neuroID', ensureAuthenticated, (req,res) => {
 		editNeuro.date = moment(req.body.dateNeuro, 'DD/MM/YYYY').format('YYYY-MM-DD'),
 		editNeuro.time = req.body.timeNeuro,
 		editNeuro.datetime = datetime,
-		editNeuro.poc = req.body.poc,
-		editNeuro.bgl = req.body.bgl,
-		editNeuro.insulintype = req.body.insulintype,
-		editNeuro.insulinamt = req.body.insulinamt,
-		editNeuro.hypoagent = req.body.hypoagent,
-		//editNeuro.splitpoc = splitpoc,
-
-		editDiabetic.save();
+		editNeuro.siteOfInjury = req.body.siteOfInjury,
+		editNeuro.colourLeft = req.body.leftColour,
+		editNeuro.colourRight = req.body.rightColour,
+		editNeuro.temperatureLeft = req.body.leftTemperature,
+		editNeuro.temperatureRight = req.body.rightTemperature,
+		editNeuro.capillaryRefillLeft = req.body.leftCapillaryRefill,
+		editNeuro.capillaryRefillRight = req.body.rightCapillaryRefill,
+		editNeuro.peripheralPulseLeft = req.body.leftPeripheralPulse,
+		editNeuro.peripheralPulseRight = req.body.rightPeripheralPulse,
+		editNeuro.edemaLeft = req.body.leftEdema,
+		editNeuro.edemaRight = req.body.rightEdema,
+		editNeuro.movementLeft = req.body.leftMovement,
+		editNeuro.movementRight = req.body.rightMovement,
+		editNeuro.sensationLeft = req.body.leftSensation,
+		editNeuro.sensationRight = req.body.rightSensation,
+		editNeuro.painLeft = req.body.leftTypeOfPainScale,
+		editNeuro.painRight = req.body.rightTypeOfPainScale,
+		editNeuro.numericalRatingScaleLeft = req.body.numericalRatingScaleLeft,
+		editNeuro.numericalRatingScaleRight = req.body.numericalRatingScaleRight,
+		editNeuro.verbalDescriptiveScaleLeft = req.body.leftVerbalDescriptiveScale,
+		editNeuro.verbalDescriptiveScaleRight = req.body.rightVerbalDescriptiveScale,
+		editNeuro.characteristicLeft = req.body.leftCharacteristic,
+		editNeuro.characteristicRight = req.body.rightCharacteristic
+		editNeuro.save();
 	});
 	res.redirect('/student/neuro/' + req.params.recordID);
 })

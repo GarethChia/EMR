@@ -19,6 +19,10 @@
     #diabeticflowsheettTable tr td {
         border-right: 1px solid rgba(0, 0, 0, 0.12);
     }
+    {{!-- th, td{
+        border-right: 1px solid rgba(0, 0, 0, 0.12);
+    } --}}
+    
 </style>
 
 
@@ -49,7 +53,7 @@
             </tr>
 
             <tr>
-                <th width="10%">Point Of Care</th>
+                <th width="10%">Site Of Injury</th>
                 {{#each neuroFlow}}
                 {{!-- display shortform BB,AB,BD and etc, the function
                  is in student/master route by using splice. Create another col
@@ -59,21 +63,21 @@
             </tr>
 
             <tr>
-                <th width="10%">Blood Glucose Level(mmol/L)</th>
+                <th width="10%">Colour</th>
                 {{#each neuroFlow}}
                 <td class="bgl">{{bgl}}</td>
                 {{/each}}
             </tr>
 
             <tr>
-                <th width="10%">Type of Insulin</th>
+                <th width="10%">Temperature</th>
                 {{#each neuroFlow}}
                 <td>{{insulintype}}</td>
                 {{/each}}
             </tr>
 
             <tr>
-                <th width="10%">Amount of Insulin Given</th>
+                <th width="10%">Capillary Refill</th>
                 {{!-- <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Amount of Insulin Given</th> --}}
                 {{#each neuroFlow}}
                 <td>{{insulinamt}}</td>
@@ -81,7 +85,49 @@
                 {{/each}}
             </tr>
             <tr>
-                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Hypoglycaemic Agent(Oral)</th>
+                <th width="10%">Peripheral Pulse</th>
+                {{#each neuroFlow}}
+                <td>{{insulintype}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Edema</th>
+                {{#each neuroFlow}}
+                <td>{{insulintype}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Movement</th>
+                {{#each neuroFlow}}
+                <td>{{insulintype}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Sensation</th>
+                {{#each neuroFlow}}
+                <td>{{insulintype}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Pain</th>
+                {{#each neuroFlow}}
+                <td>{{insulintype}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Numerical Rating Scale</th>
+                {{#each neuroFlow}}
+                <td>{{insulintype}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Verbal Descriptive Scale</th>
+                {{#each neuroFlow}}
+                <td>{{insulintype}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Characteristic</th>
                 {{#each neuroFlow}}
                 {{!-- <td>{{hypoagent}}</td> --}}
                 <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)" class="hypoagent">{{hypoagent}}</td>
@@ -95,21 +141,30 @@
 {{!-- Neuro code start --}}
 <div id="neuro">
 <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">Neurovascular</div>
-    <div style="overflow-x:auto; max-height: 16em;">
+    <div style="overflow-x:auto; max-height: 25em;">
         <table id="ioRecords" class="hover order-column">
             <thead>
                 <tr>
+                    {{!-- <th colspan="26">
+                        Site of injury: Right arm
+                    </th> --}}
+                </tr>
+                <tr>
                     <th rowspan="2">Date</th>
                     <th rowspan="2">Time</th>
-                    <th colspan="2">Colour</th>
-                    <th colspan="2">Temperature</th>
-                    <th colspan="2">Capillary refill</th>
-                    <th colspan="2">Peripheral pulse</th>
-                    <th colspan="2">Edema</th>
-                    <th colspan="2">Movement</th>
-                    <th colspan="2">Sensation</th>
-                    <th colspan="2">Pain</th>
-                    <th colspan="2">Characteristic</th>
+                    <th></th>
+                    {{!-- <th rowspan="2">Site of Injury</th> --}}
+                    <th>Colour</th>
+                    <th>Temperature</th>
+                    <th>Capillary refill</th>
+                    <th>Peripheral pulse</th>
+                    <th>Edema</th>
+                    <th>Movement</th>
+                    <th>Sensation</th>
+                    <th>Pain</th>
+                    <th>Numerical Rating Scale</th>
+                    <th>Verbal Descriptive Scale</th>
+                    <th>Characteristic</th>
 
                     {{!-- <th>Patient ID</th> --}}
                     {{#unless userType}}
@@ -117,6 +172,7 @@
                     {{/unless}}
                 </tr>
                 <tr>
+                    {{!-- <th>Left</th>
                     <th>Right</th>
                     <th>Left</th>
                     <th>Right</th>
@@ -135,6 +191,9 @@
                     <th>Left</th>
                     <th>Right</th>
                     <th>Left</th>
+                    <th>Right</th>
+                    <th>Left</th>
+                    <th>Right</th> --}}
                 </tr>
             </thead>
             <tbody>
@@ -142,17 +201,35 @@
                     {{#each newNeuro}}
                     <tr style="height: 60px">
                         {{#unless ../userType}}
-                        <td><a href="/master/neuro/{{neuroID}}">{{date}}</a></td>
+                        <td rowspan="2"><a href="/master/neuro/{{neuroID}}">{{date}}</a></td>
                         {{else}}
-                        <td><a href="/student/neuro/{{../recordID}}/{{neuroID}}">{{date}}</a></td>
+                        <td rowspan="2"><a href="/student/neuro/{{../recordID}}/{{neuroID}}">{{date}}</a></td>
                         {{/unless}}
-                        <td>{{time}}</td>
-                        <td>{{splitpoc}}</td>
-                        <td>{{bgl}}</td>
-                        <td>{{insulintype}}</td>
-                        <td>{{insulinamt}}</td>
-                        <td>{{hypoagent}}</td>
-
+                        <td rowspan="2">{{time}}</td>
+                        {{!-- <td>{{siteOfInjury}}</td> --}}
+                        <td>Left</td>
+                        <td>{{colourLeft}}</td>
+                        
+                        <td>{{temperatureLeft}}</td>
+                        
+                        <td>{{capillaryRefillLeft}}</td>
+                        
+                        <td>{{peripheralPulseLeft}}</td>
+                        
+                        <td>{{edemaLeft}}</td>
+                        
+                        <td>{{movementLeft}}</td>
+                        
+                        <td>{{sensationLeft}}</td>
+                        
+                        <td>{{painLeft}}</td>
+                        
+                        <td>{{numericalRatingScaleLeft}}</td>
+                        
+                        <td>{{verbalDescriptiveScaleLeft}}</td>
+                        
+                        <td>{{characteristicLeft}}</td>
+                        
                         {{!-- <td>{{patientID}}</td> --}}
                         {{#unless ../userType}}
                         {{!-- <td style="width: 65px"> <!-- the tr we're trying to get -->
@@ -172,6 +249,20 @@
                             </button> --}}
                             </form>
                         {{/unless}}
+                    </tr>
+                    <tr>
+                        <td>Right</td>
+                        <td>{{colourRight}}</td>
+                        <td>{{temperatureRight}}</td>
+                        <td>{{capillaryRefillRight}}</td>
+                        <td>{{peripheralPulseRight}}</td>
+                        <td>{{edemaRight}}</td>
+                        <td>{{movementRight}}</td>
+                        <td>{{sensationRight}}</td>
+                        <td>{{painRight}}</td>
+                        <td>{{numericalRatingScaleRight}}</td>
+                        <td>{{verbalDescriptiveScaleRight}}</td>
+                        <td>{{characteristicRight}}</td>
                     </tr>
                     {{/each}}
                 {{!-- {{else}}
@@ -220,7 +311,7 @@
                     <div class="row">
                         <div class="col s12 m4 input-field">
                                 <select id="siteOfInjury" name="siteOfInjury">
-                                    <option value="" disabled selected>Site of Injury</option>
+                                    <option value="" disabled selected>Please Select</option>
                                     <option value="Right Arm">Right Arm</option>
                                     <option value="Left Arm">Left Arm</option>
                                     <option value="Right Leg">Right Leg</option>
@@ -242,7 +333,7 @@
                     <div class="row">
                         <div class="col s12 m4 input-field">
                                 <select id="leftColour" name="leftColour">
-                                    <option value="" disabled selected>Colour</option>
+                                    <option value="" disabled selected>Please Select</option>
                                     <option value="Pink">Pink</option>
                                     <option value="Pale">Pale</option>
                                     <option value="Blue">Blue</option>
@@ -252,7 +343,7 @@
                         </div>
                         <div class="col s12 m4 input-field">
                                 <select id="rightColour" name="rightColour">
-                                    <option value="" disabled selected>Colour</option>
+                                    <option value="" disabled selected>Please Select</option>
                                     <option value="Pink">Pink</option>
                                     <option value="Pale">Pale</option>
                                     <option value="Blue">Blue</option>
@@ -266,7 +357,7 @@
                     <div class="row">
                         <div class="col s12 m4 input-field">
                                 <select id="leftTemperature" name="leftTemperature">
-                                    <option value="" disabled selected>Temperature</option>
+                                    <option value="" disabled selected>Please Select</option>
                                     <option value="Warm">Warm</option>
                                     <option value="Cool">Cool</option>
                                     <option value="Cold">Cold</option>
@@ -276,7 +367,7 @@
                         </div>
                         <div class="col s12 m4 input-field">
                                 <select id="rightTemperature" name="rightTemperature">
-                                    <option value="" disabled selected>Temperature</option>
+                                    <option value="" disabled selected>Please Select</option>
                                     <option value="Warm">Warm</option>
                                     <option value="Cool">Cool</option>
                                     <option value="Cold">Cold</option>
@@ -290,19 +381,19 @@
                     <div class="row">
                         <div class="col s12 m4 input-field">
                                 <select id="leftCapillaryRefill" name="leftCapillaryRefill">
-                                    <option value="" disabled selected>Capillary Refill</option>
+                                    <option value="" disabled selected>Please Select</option>
                                     <option value="1-2 Sec">1-2 Sec</option>
                                     <option value="3 Sec">3 Sec</option>
-                                    <option value=">= 4 Sec">&gt;= 4 Sec</option>
+                                    <option value="&gt;&#x3D; 4 Sec">&gt;&#x3D; 4 Sec</option>
                                 </select>
                         <label for="leftCapillaryRefill">Left</label>
                         </div>
                         <div class="col s12 m4 input-field">
                                 <select id="rightCapillaryRefill" name="rightCapillaryRefill">
-                                    <option value="" disabled selected>Capillary Refill</option>
+                                    <option value="" disabled selected>Please Select</option>
                                     <option value="1-2 Sec">1-2 Sec</option>
                                     <option value="3 Sec">3 Sec</option>
-                                    <option value=">= 4 Sec">&gt;= 4 Sec</option>
+                                    <option value="&gt;= 4 Sec">&gt;= 4 Sec</option>
                                 </select>
                         <label for="rightCapillaryRefill">Right</label>
                         </div>
@@ -312,7 +403,7 @@
                     <div class="row">
                         <div class="col s12 m4 input-field">
                                 <select id="leftPeripheralPulse" name="leftPeripheralPulse">
-                                    <option value="" disabled selected>Peripheral Pulse</option>
+                                    <option value="" disabled selected>Please Select</option>
                                     <option value="Strong">Strong</option>
                                     <option value="Weak">Weak</option>
                                     <option value="Absent">Absent</option>
@@ -321,7 +412,7 @@
                         </div>
                         <div class="col s12 m4 input-field">
                                 <select id="rightPeripheralPulse" name="rightPeripheralPulse">
-                                    <option value="" disabled selected>Peripheral Pulse</option>
+                                    <option value="" disabled selected>Please Select</option>
                                     <option value="Strong">Strong</option>
                                     <option value="Weak">Weak</option>
                                     <option value="Absent">Absent</option>
@@ -334,7 +425,7 @@
                     <div class="row">
                         <div class="col s12 m4 input-field">
                                 <select id="leftEdema" name="leftEdema">
-                                    <option value="" disabled selected>Edema</option>
+                                    <option value="" disabled selected>Please Select</option>
                                     <option value="None">None</option>
                                     <option value="Slight">Slight</option>
                                     <option value="Moderate">Moderate</option>
@@ -344,7 +435,7 @@
                         </div>
                         <div class="col s12 m4 input-field">
                                 <select id="rightEdema" name="rightEdema">
-                                    <option value="" disabled selected>Edema</option>
+                                    <option value="" disabled selected>Please Select</option>
                                     <option value="None">None</option>
                                     <option value="Slight">Slight</option>
                                     <option value="Moderate">Moderate</option>
@@ -358,7 +449,7 @@
                     <div class="row">
                         <div class="col s12 m4 input-field">
                                 <select id="leftMovement" name="leftMovement">
-                                    <option value="" disabled selected>Movement</option>
+                                    <option value="" disabled selected>Please Select</option>
                                     <option value="Active">Active</option>
                                     <option value="Weak">Weak</option>
                                     <option value="Absent">Absent</option>
@@ -367,7 +458,7 @@
                         </div>
                         <div class="col s12 m4 input-field">
                                 <select id="rightMovement" name="rightMovement">
-                                    <option value="" disabled selected>Movement</option>
+                                    <option value="" disabled selected>Please Select</option>
                                     <option value="Active">Active</option>
                                     <option value="Weak">Weak</option>
                                     <option value="Absent">Absent</option>
@@ -380,7 +471,7 @@
                     <div class="row">
                         <div class="col s12 m4 input-field">
                                 <select id="leftSensation" name="leftSensation">
-                                    <option value="" disabled selected>Sensation</option>
+                                    <option value="" disabled selected>Please Select</option>
                                     <option value="Normal">Normal</option>
                                     <option value="Numb">Numb</option>
                                     <option value="Tingling">Tingling</option>
@@ -390,7 +481,7 @@
                         </div>
                         <div class="col s12 m4 input-field">
                             <select id="rightSensation" name="rightSensation">
-                                <option value="" disabled selected>Sensation</option>
+                                <option value="" disabled selected>Please Select</option>
                                 <option value="Normal">Normal</option>
                                 <option value="Numb">Numb</option>
                                 <option value="Tingling">Tingling</option>
@@ -404,7 +495,7 @@
                     <div class="row">
                         <div class="col s12 m4 input-field">
                             <select id="leftTypeOfPainScale" name="leftTypeOfPainScale">
-                                <option value="" disabled selected>Type of pain scale</option>
+                                <option value="" disabled selected>Please Select</option>
                                 <option value="Numerical Rating Scale">Numerical Rating Scale</option>
                                 <option value="Wong-Baker">Wong-Baker</option>
                                 <option value="FLACC">FLACC</option>
@@ -413,7 +504,7 @@
                         </div>
                         <div class="col s12 m4 input-field">
                             <select id="rightTypeOfPainScale" name="rightTypeOfPainScale">
-                                <option value="" disabled selected>Type of pain scale</option>
+                                <option value="" disabled selected>Please Select</option>
                                 <option value="Numerical Rating Scale">Numerical Rating Scale</option>
                                 <option value="Wong-Baker">Wong-Baker</option>
                                 <option value="FLACC">FLACC</option>
@@ -426,7 +517,7 @@
                     <div class="row">
                         <div class="col s12 m4 input-field">
                             <select id="numericalRatingScaleLeft" name="numericalRatingScaleLeft">
-                                <option value="" disabled selected>Numerical Rating Scale</option>
+                                <option value="" disabled selected>Please Select</option>
                                 <option value="0">0</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -443,7 +534,7 @@
                         </div>
                         <div class="col s12 m4 input-field">
                             <select id="numericalRatingScaleRight" name="numericalRatingScaleRight">
-                                <option value="" disabled selected>Numerical Rating Scale</option>
+                                <option value="" disabled selected>Please Select</option>
                                 <option value="0">0</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -465,7 +556,7 @@
                     <div class="row">
                         <div class="col s12 m4 input-field">
                                 <select id="leftVerbalDescriptiveScale" name="leftVerbalDescriptiveScale">
-                                    <option value="" disabled selected>Verbal Descriptive Scale</option>
+                                    <option value="" disabled selected>Please Select</option>
                                     <option value="Mild pain 3">Mild pain 3</option>
                                     <option value="Moderate pain 6">Moderate pain 6</option>
                                     <option value="Severe pain 9">Severe pain 9</option>
@@ -474,7 +565,7 @@
                         </div>
                         <div class="col s12 m4 input-field">
                                 <select id="rightVerbalDescriptiveScale" name="rightVerbalDescriptiveScale">
-                                    <option value="" disabled selected>Verbal Descriptive Scale</option>
+                                    <option value="" disabled selected>Please Select</option>
                                     <option value="Mild pain 3">Mild pain 3</option>
                                     <option value="Moderate pain 6">Moderate pain 6</option>
                                     <option value="Severe pain 9">Severe pain 9</option>
@@ -487,7 +578,7 @@
                     <div class="row">
                         <div class="col s12 m4 input-field">
                             <select id="leftCharacteristic" name="leftCharacteristic">
-                                <option value="" disabled selected>Characteristic</option>
+                                <option value="" disabled selected>Please Select</option>
                                 <option value="No pain">No pain</option>
                                 <option value="Dull pain">Dull pain</option>
                                 <option value="Sharp pain">Sharp pain</option>
@@ -497,7 +588,7 @@
                         </div>
                         <div class="col s12 m4 input-field">
                             <select id="rightCharacteristic" name="rightCharacteristic">
-                                <option value="" disabled selected>Characteristic</option>
+                                <option value="" disabled selected>Please Select</option>
                                 <option value="No pain">No pain</option>
                                 <option value="Dull pain">Dull pain</option>
                                 <option value="Sharp pain">Sharp pain</option>
@@ -540,14 +631,13 @@
 </script>
 
 <script>
-
     $(document).ready(() => {
         $('.tabs').tabs();
         
     })
     
 
-        document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', () => {
         //neurovascular
         const dateNeuro = document.querySelector('#dateNeuro');
         const timeNeuro = document.querySelector('#timeNeuro');
@@ -580,101 +670,129 @@
         const instances = M.Materialbox.init(elems, {});
 
         //IO Instances
-                M.Datepicker.init(dateNeuro, {
-                    maxDate: new Date(),
-                    format: 'dd/mm/yyyy',
-                    disableWeekends: true
-                });
-                M.Timepicker.init(timeNeuro, {
-                    twelveHour: false,
-                    showClearBtn: true
-                });
+        M.Datepicker.init(dateNeuro, {
+            maxDate: new Date(),
+            format: 'dd/mm/yyyy',
+            disableWeekends: true
+        });
+        M.Timepicker.init(timeNeuro, {
+            twelveHour: false,
+            showClearBtn: true
+        });
 
-                M.FormSelect.init(siteOfInjury, {
-                    
-                })      
+        M.FormSelect.init(siteOfInjury, {
+            
+        })      
 
-                M.FormSelect.init(leftColour, {
-                    
-                })
-
-                M.FormSelect.init(rightColour, {
-                    
-                })
-
-                M.FormSelect.init(leftTemperature, {
-                    
-                })
-
-                M.FormSelect.init(rightTemperature, {
-                    
-                })
-
-                M.FormSelect.init(leftCapillaryRefill, {
-                    
-                })
-
-                M.FormSelect.init(rightCapillaryRefill, {
-                    
-                })
-
-                M.FormSelect.init(leftPeripheralPulse, {
-                    
-                })
-
-                M.FormSelect.init(rightPeripheralPulse, {
-                    
-                })
-
-                M.FormSelect.init(leftEdema, {
-                    
-                })
-
-                M.FormSelect.init(rightEdema, {
-                    
-                })
-
-                M.FormSelect.init(leftMovement, {
-                    
-                })
-                M.FormSelect.init(rightMovement, {
-                    
-                })
-                M.FormSelect.init(leftSensation, {
-                    
-                })
-                M.FormSelect.init(rightSensation, {
-                    
-                })
-                M.FormSelect.init(leftTypeOfPainScale, {
-                    
-                })
-                M.FormSelect.init(rightTypeOfPainScale, {
-                    
-                })
-                M.FormSelect.init(numericalRatingScaleLeft, {
-                    
-                })
-                M.FormSelect.init(numericalRatingScaleRight, {
-                    
-                })
-                M.FormSelect.init(leftVerbalDescriptiveScale, {
-
-                })
-                M.FormSelect.init(rightVerbalDescriptiveScale, {
-
-                })
-                M.FormSelect.init(leftCharacteristic, {
-
-                })
-                M.FormSelect.init(rightCharacteristic, {
-
-                })
+        M.FormSelect.init(leftColour, {
+            
         })
 
+        M.FormSelect.init(rightColour, {
+            
+        })
+
+        M.FormSelect.init(leftTemperature, {
+            
+        })
+
+        M.FormSelect.init(rightTemperature, {
+            
+        })
+
+        M.FormSelect.init(leftCapillaryRefill, {
+            
+        })
+
+        M.FormSelect.init(rightCapillaryRefill, {
+            
+        })
+
+        M.FormSelect.init(leftPeripheralPulse, {
+            
+        })
+
+        M.FormSelect.init(rightPeripheralPulse, {
+            
+        })
+
+        M.FormSelect.init(leftEdema, {
+            
+        })
+
+        M.FormSelect.init(rightEdema, {
+            
+        })
+
+        M.FormSelect.init(leftMovement, {
+            
+        })
+        M.FormSelect.init(rightMovement, {
+            
+        })
+        M.FormSelect.init(leftSensation, {
+            
+        })
+        M.FormSelect.init(rightSensation, {
+            
+        })
+        M.FormSelect.init(leftTypeOfPainScale, {
+            
+        })
+        M.FormSelect.init(rightTypeOfPainScale, {
+            
+        })
+        M.FormSelect.init(numericalRatingScaleLeft, {
+            
+        })
+        M.FormSelect.init(numericalRatingScaleRight, {
+            
+        })
+        M.FormSelect.init(leftVerbalDescriptiveScale, {
+
+        })
+        M.FormSelect.init(rightVerbalDescriptiveScale, {
+
+        })
+        M.FormSelect.init(leftCharacteristic, {
+
+        })
+        M.FormSelect.init(rightCharacteristic, {
+
+        })
+    })
+
+    function htmlDecode(input){
+        var e = document.createElement('div');
+        e.innerHTML = input;
+        return e.childNodes[0].nodeValue;
+    }
 
     {{#if editNeuro}}
+        
         document.getElementById('siteOfInjury').value = "{{editNeuro.siteOfInjury}}";
+        document.getElementById('leftColour').value = "{{editNeuro.colourLeft}}";
+        document.getElementById('rightColour').value = "{{editNeuro.colourRight}}";
+        document.getElementById('leftTemperature').value = "{{editNeuro.temperatureLeft}}";
+        document.getElementById('rightTemperature').value = "{{editNeuro.temperatureRight}}";
+        document.getElementById('leftCapillaryRefill').value =  htmlDecode("{{editNeuro.capillaryRefillLeft}}");
+        document.getElementById('rightCapillaryRefill').value = htmlDecode("{{editNeuro.capillaryRefillRight}}");
+        document.getElementById('leftPeripheralPulse').value = "{{editNeuro.peripheralPulseLeft}}";
+        document.getElementById('rightPeripheralPulse').value = "{{editNeuro.peripheralPulseRight}}";
+        document.getElementById('leftEdema').value = "{{editNeuro.edemaLeft}}";
+        document.getElementById('rightEdema').value = "{{editNeuro.edemaRight}}";
+        document.getElementById('leftMovement').value = "{{editNeuro.movementLeft}}";
+        document.getElementById('rightMovement').value = "{{editNeuro.movementRight}}";
+        document.getElementById('leftSensation').value = "{{editNeuro.sensationLeft}}";
+        document.getElementById('rightSensation').value = "{{editNeuro.sensationRight}}";
+        document.getElementById('leftTypeOfPainScale').value = "{{editNeuro.painLeft}}";
+        document.getElementById('rightTypeOfPainScale').value = "{{editNeuro.painRight}}";
+        document.getElementById('numericalRatingScaleLeft').value = "{{editNeuro.numericalRatingScaleLeft}}";
+        document.getElementById('numericalRatingScaleRight').value = "{{editNeuro.numericalRatingScaleRight}}";
+        document.getElementById('leftVerbalDescriptiveScale').value = "{{editNeuro.verbalDescriptiveScaleLeft}}";
+        document.getElementById('rightVerbalDescriptiveScale').value = "{{editNeuro.verbalDescriptiveScaleRight}}";
+        document.getElementById('leftCharacteristic').value = "{{editNeuro.characteristicLeft}}";
+        document.getElementById('rightCharacteristic').value = "{{editNeuro.characteristicRight}}";
         document.getElementById('flowsheetTab').className += " disabled";
         document.getElementById('tab1').className += " active";
    

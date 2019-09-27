@@ -2396,57 +2396,57 @@ router.get('/CarePlan/:name/:carePlanID', ensureAuthenticated, (req, res) => {
 router.get('/neuro', ensureAuthenticated, ensureAuthorised, (req, res) => {
 	MasterNeuro.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newNeuro => {
 
-					neurosample = [];
-					neurosampleDate = [];
-					let neuroFlow = Object.assign([], newNeuro);
-								
-					neuroCount = -1;
-								
-					neuronoRecord = 'No existing record';
+		neurosample = [];
+		neurosampleDate = [];
+		let neuroFlow = Object.assign([], newNeuro);
+					
+		neuroCount = -1;
+					
+		neuronoRecord = 'No existing record';
 
-					newNeuro.forEach(neuro => {
-						if (!(neurosample.includes(neuro.datetime))) {
-							neurosample.push(neuro.datetime);
-							neurosampleDate.push(neuro.date);
-						}
-					});
-					neurosample.sort();
-					neurosampleDate.sort();
+		newNeuro.forEach(neuro => {
+			if (!(neurosample.includes(neuro.datetime))) {
+				neurosample.push(neuro.datetime);
+				neurosampleDate.push(neuro.date);
+			}
+		});
+		neurosample.sort();
+		neurosampleDate.sort();
 
-					for (i = 0; i < neurosample.length; i++) {
-						
+		for (i = 0; i < neurosample.length; i++) {
+			
 
-						//Counter for empty data
-						//.length here refers to last index of the array
-						if (neuroCount !== (neuroFlow.length - 1)) {
-							neuroCount++;
-						}
-						//Insert empty data when value doesnt match
-						//Count here does the index count of flow array
-						if(neuroFlow !='') 
-						{
-							if (neurosample[i] < neuroFlow[neuroCount].datetime) {
-								neuroFlow.splice(neuroCount, 0, {datetime: ''});
-							} else if (neurosample[i] > neuroFlow[neuroCount].datetime) {
-								neuroFlow.splice(neuroCount + 1, 0, {datetime: ''});
-							}
-						} 
-						else
-						{
-							neuroFlow.push({datetime: '', poc: neuronoRecord});
-						}
+			//Counter for empty data
+			//.length here refers to last index of the array
+			if (neuroCount !== (neuroFlow.length - 1)) {
+				neuroCount++;
+			}
+			//Insert empty data when value doesnt match
+			//Count here does the index count of flow array
+			if(neuroFlow !='') 
+			{
+				if (neurosample[i] < neuroFlow[neuroCount].datetime) {
+					neuroFlow.splice(neuroCount, 0, {datetime: ''});
+				} else if (neurosample[i] > neuroFlow[neuroCount].datetime) {
+					neuroFlow.splice(neuroCount + 1, 0, {datetime: ''});
+				}
+			} 
+			else
+			{
+				neuroFlow.push({datetime: '', poc: neuronoRecord});
+			}
 
-						
-					};
-					res.render('charts/master/charts-neuro', {
-						// recordID: req.params.recordID,
-						// userType: userType,
-						neurodateVal: neurosample,
-						neuroFlow: neuroFlow,
-						newNeuro: newNeuro,
-						patient: req.session.patient,
-						showMenu: true
-        			})
+			
+		};
+		res.render('charts/master/charts-neuro', {
+			// recordID: req.params.recordID,
+			// userType: userType,
+			neurodateVal: neurosample,
+			neuroFlow: neuroFlow,
+			newNeuro: newNeuro,
+			patient: req.session.patient,
+			showMenu: true
+		})
 	})
 })
 
@@ -2457,7 +2457,7 @@ router.get('/neuro/:neuroID', ensureAuthenticated, ensureAuthorised, (req, res) 
 			MasterNeuro.findOne({ neuroID: req.params.neuroID }).then(editNeuro => {
 
 			editNeuro.date = moment(editNeuro.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
-			res.render('charts/master/charts-diabetic', {
+			res.render('charts/master/charts-neuro', {
 				// azureId: req.user.azure_oid,
 				newNeuro: newNeuro,
 				editNeuro: editNeuro,
@@ -2475,20 +2475,35 @@ router.post('/add-neuro', ensureAuthenticated,ensureAuthorised, (req, res) => {
 	//splitpoc = req.body.poc.slice(0,2);
 
 	new MasterNeuro({
-			// patientID: req.session.patient.patientID,
-			patientID: req.session.patient.patientID,
-			neuroID: neuroID,
-			date: moment(req.body.dateNeuro, 'DD/MM/YYYY').format('YYYY-MM-DD'),
-			datetime: datetime,
-			time: req.body.timeNeuro,
-			poc: req.body.poc,
-			bgl: req.body.bgl,
-			insulintype: req.body.insulintype,
-			insulinamt: req.body.insulinamt,
-			hypoagent: req.body.hypoagent,
-			//splitpoc: splitpoc,
-
-
+		patientID: req.session.patient.patientID,
+		neuroID: neuroID,
+		// userType: ,
+		datetime: datetime,
+		date: moment(req.body.dateNeuro, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		time: req.body.timeNeuro,
+		siteOfInjury: req.body.siteOfInjury,
+		colourLeft: req.body.leftColour,
+		colourRight: req.body.rightColour,
+		temperatureLeft: req.body.leftTemperature,
+		temperatureRight: req.body.rightTemperature,
+		capillaryRefillLeft: req.body.leftCapillaryRefill,
+		capillaryRefillRight: req.body.rightCapillaryRefill,
+		peripheralPulseLeft: req.body.leftPeripheralPulse,
+		peripheralPulseRight: req.body.rightPeripheralPulse,
+		edemaLeft: req.body.leftEdema,
+		edemaRight: req.body.rightEdema,
+		movementLeft: req.body.leftMovement,
+		movementRight: req.body.rightMovement,
+		sensationLeft: req.body.leftSensation,
+		sensationRight: req.body.rightSensation,
+		painLeft: req.body.leftTypeOfPainScale,
+		painRight: req.body.rightTypeOfPainScale,
+		numericalRatingScaleLeft: req.body.numericalRatingScaleLeft,
+		numericalRatingScaleRight: req.body.numericalRatingScaleRight,
+		verbalDescriptiveScaleLeft: req.body.leftVerbalDescriptiveScale,
+		verbalDescriptiveScaleRight: req.body.rightVerbalDescriptiveScale,
+		characteristicLeft: req.body.leftCharacteristic,
+		characteristicRight: req.body.rightCharacteristic
 	}).save();
 
 	res.redirect('/master/neuro');
@@ -2499,18 +2514,34 @@ router.put('/edit-neuro/:neuroID', ensureAuthenticated,ensureAuthorised, (req,re
 	datetime = moment(req.body.dateNeuro, 'DD/MM/YYYY').format('MM/DD/YYYY') + " "+ req.body.timeNeuro;
 	//splitpoc = req.body.poc.slice(0,2);
 
-	MasterDiabetic.findOne({ neuroID: req.params.neuroID }).then(editNeuro => {
+	MasterNeuro.findOne({ neuroID: req.params.neuroID }).then(editNeuro => {
 		editNeuro.date = moment(req.body.dateNeuro, 'DD/MM/YYYY').format('YYYY-MM-DD'),
 		editNeuro.time = req.body.timeNeuro,
 		editNeuro.datetime = datetime,
-		editNeuro.poc = req.body.poc,
-		editNeuro.bgl = req.body.bgl,
-		editNeuro.insulintype = req.body.insulintype,
-		editNeuro.insulinamt = req.body.insulinamt,
-		editNeuro.hypoagent = req.body.hypoagent,
-		editNeuro.splitpoc = splitpoc,
-
-		editDiabetic.save();
+		editNeuro.siteOfInjury = req.body.siteOfInjury,
+		editNeuro.colourLeft = req.body.leftColour,
+		editNeuro.colourRight = req.body.rightColour,
+		editNeuro.temperatureLeft = req.body.leftTemperature,
+		editNeuro.temperatureRight = req.body.rightTemperature,
+		editNeuro.capillaryRefillLeft = req.body.leftCapillaryRefill,
+		editNeuro.capillaryRefillRight = req.body.rightCapillaryRefill,
+		editNeuro.peripheralPulseLeft = req.body.leftPeripheralPulse,
+		editNeuro.peripheralPulseRight = req.body.rightPeripheralPulse,
+		editNeuro.edemaLeft = req.body.leftEdema,
+		editNeuro.edemaRight = req.body.rightEdema,
+		editNeuro.movementLeft = req.body.leftMovement,
+		editNeuro.movementRight = req.body.rightMovement,
+		editNeuro.sensationLeft = req.body.leftSensation,
+		editNeuro.sensationRight = req.body.rightSensation,
+		editNeuro.painLeft = req.body.leftTypeOfPainScale,
+		editNeuro.painRight = req.body.rightTypeOfPainScale,
+		editNeuro.numericalRatingScaleLeft = req.body.numericalRatingScaleLeft,
+		editNeuro.numericalRatingScaleRight = req.body.numericalRatingScaleRight,
+		editNeuro.verbalDescriptiveScaleLeft = req.body.leftVerbalDescriptiveScale,
+		editNeuro.verbalDescriptiveScaleRight = req.body.rightVerbalDescriptiveScale,
+		editNeuro.characteristicLeft = req.body.leftCharacteristic,
+		editNeuro.characteristicRight = req.body.rightCharacteristic
+		editNeuro.save();
 	});
 	res.redirect('/master/neuro');
 })
