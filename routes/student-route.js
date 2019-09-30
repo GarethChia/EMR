@@ -3419,7 +3419,7 @@ router.put('/edit-clcvital/:recordID/:clcvitalID', ensureAuthenticated, (req, re
 
 	MasterClcVital.findOne({ clcvitalID: req.params.clcvitalID }).then(editclcvital => {
 		editclcvital.date = moment(req.body.dateclcvital, 'DD/MM/YYYY').format('YYYY-MM-DD'),
-		editclcvital.time = req.body.timeGcs,
+		editclcvital.time = req.body.timeclcvital,
 		editclcvital.datetime = datetime,
 		editclcvital.heartRate = req.body.heartRate,
 		editclcvital.resp = req.body.resp,
