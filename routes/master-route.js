@@ -2709,6 +2709,10 @@ router.post('/add-gcs', ensureAuthenticated, ensureAuthorised, (req, res) => {
 	gcsID = (new standardID('AAA0000')).generate();
 	datetime = moment(req.body.dateGcs, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeGcs;
 	
+	totalgcs = parseInt(req.body.eyeopen.slice(-2))
+	+ parseInt(req.body.bestverbal.slice(-2)) 
+	+ parseInt(req.body.bestmotor.slice(-2));
+
 	new MasterGcs({
 		patientID: req.session.patient.patientID,
 		gcsID: gcsID,
@@ -2718,7 +2722,7 @@ router.post('/add-gcs', ensureAuthenticated, ensureAuthorised, (req, res) => {
 		eyeopen: req.body.eyeopen,
 		bestverbal: req.body.bestverbal,
 		bestmotor: req.body.bestmotor,
-		totalgcs: req.body.totalgcs,
+		totalgcs: totalgcs,
 
 	}).save();
 
@@ -2738,6 +2742,10 @@ router.delete('/del-gcs/:gcsID', ensureAuthenticated, ensureAuthorised, (req, re
 //edit gcs informations
 router.put('/edit-gcs/:gcsID', ensureAuthenticated, ensureAuthorised, (req,res) => {
 	datetime = moment(req.body.dateGcs, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeGcs;
+	
+	totalgcs = parseInt(req.body.eyeopen.slice(-2))
+	+ parseInt(req.body.bestverbal.slice(-2)) 
+	+ parseInt(req.body.bestmotor.slice(-2));
 
 	MasterGcs.findOne({ gcsID: req.params.gcsID }).then(editGcs => {
 		editGcs.date = moment(req.body.dateGcs, 'DD/MM/YYYY').format('YYYY-MM-DD'),
@@ -2746,7 +2754,7 @@ router.put('/edit-gcs/:gcsID', ensureAuthenticated, ensureAuthorised, (req,res) 
 		editGcs.eyeopen = req.body.eyeopen,
 		editGcs.bestverbal = req.body.bestverbal,
 		editGcs.bestmotor = req.body.bestmotor,
-
+		editGcs.totalgcs = totalgcs,
 		editGcs.save();
 	});
 	res.redirect('/master/clc');
@@ -2773,6 +2781,7 @@ router.post('/add-clcvital', ensureAuthenticated, ensureAuthorised, (req, res) =
 	clcvitalID = (new standardID('AAA0000')).generate();
 	datetime = moment(req.body.dateclcvital, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeclcvital;
 	
+	bloodp = req.body.sbp + "/" + req.body.dbp;
 	new  MasterClcVital({
 		patientID: req.session.patient.patientID,
 		clcvitalID: clcvitalID,
@@ -2783,6 +2792,7 @@ router.post('/add-clcvital', ensureAuthenticated, ensureAuthorised, (req, res) =
 		resp: req.body.resp,
 		sbp: req.body.sbp,
 		dbp: req.body.dbp,
+		bloodp: bloodp,
 
 	}).save();
 
@@ -2802,6 +2812,7 @@ router.delete('/del-clcvital/:clcvitalID', ensureAuthenticated, ensureAuthorised
 //edit clcvital informations
 router.put('/edit-clcvital/:clcvitalID', ensureAuthenticated, ensureAuthorised, (req,res) => {
 	datetime = moment(req.body.dateclcvital, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeclcvital;
+	bloodp = req.body.sbp + "/" + req.body.dbp;
 
 	MasterClcVital.findOne({ clcvitalID: req.params.clcvitalID }).then(editclcvital => {
 		editclcvital.date = moment(req.body.dateclcvital, 'DD/MM/YYYY').format('YYYY-MM-DD'),
@@ -2811,6 +2822,7 @@ router.put('/edit-clcvital/:clcvitalID', ensureAuthenticated, ensureAuthorised, 
 		editclcvital.resp = req.body.resp,
 		editclcvital.sbp = req.body.sbp,
 		editclcvital.dbp = req.body.dbp,
+		editclcvital.bloodp = bloodp,
 
 		editclcvital.save();
 	});
@@ -2903,7 +2915,11 @@ router.get('/clc-pupils/:pupilsID', ensureAuthenticated, ensureAuthorised, (req,
 router.post('/add-motorstrength', ensureAuthenticated, ensureAuthorised, (req, res) => {
 	motorstrengthID = (new standardID('AAA0000')).generate();
 	datetime = moment(req.body.datemotorstrength, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timemotorstrength;
-	
+	totalms = parseInt(req.body.strengthrightarm.slice(-2))
+	+ parseInt(req.body.strengthleftarm.slice(-2)) 
+	+ parseInt(req.body.strengthrightleg.slice(-2))
+	+ parseInt(req.body.strengthleftleg.slice(-2));
+
 	new  MasterMotorStrength({
 		patientID: req.session.patient.patientID,
 		motorstrengthID: motorstrengthID,
@@ -2914,6 +2930,8 @@ router.post('/add-motorstrength', ensureAuthenticated, ensureAuthorised, (req, r
 		strengthleftarm: req.body.strengthleftarm,
 		strengthrightleg: req.body.strengthrightleg,
 		strengthleftleg: req.body.strengthleftleg,
+		
+		totalms: totalms,
 
 	}).save();
 
@@ -2924,7 +2942,7 @@ router.post('/add-motorstrength', ensureAuthenticated, ensureAuthorised, (req, r
 router.delete('/del-motorstrength/:motorstrengthID', ensureAuthenticated, ensureAuthorised, (req, res) => {
 	MasterMotorStrength.deleteOne({motorstrengthID: req.params.motorstrengthID}, function(err) {
 		if (err) {
-			console.log('cannot delete Motor Strength details');
+			console.log('Cannot delete Motor Strength details');
 		}
 	});
 	res.redirect('/master/clc');
@@ -2933,6 +2951,11 @@ router.delete('/del-motorstrength/:motorstrengthID', ensureAuthenticated, ensure
 //edit motorstrength informations
 router.put('/edit-motorstrength/:motorstrengthID', ensureAuthenticated, ensureAuthorised, (req,res) => {
 	datetime = moment(req.body.datemotorstrength, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timemotorstrength;
+	
+	totalms = parseInt(req.body.strengthrightarm.slice(-2))
+	+ parseInt(req.body.strengthleftarm.slice(-2)) 
+	+ parseInt(req.body.strengthrightleg.slice(-2))
+	+ parseInt(req.body.strengthleftleg.slice(-2));
 
 	MasterMotorStrength.findOne({ motorstrengthID: req.params.motorstrengthID }).then(editmotorstrength => {
 		editmotorstrength.date = moment(req.body.datemotorstrength, 'DD/MM/YYYY').format('YYYY-MM-DD'),
@@ -2942,6 +2965,7 @@ router.put('/edit-motorstrength/:motorstrengthID', ensureAuthenticated, ensureAu
 		editmotorstrength.strengthleftarm = req.body.strengthleftarm,
 		editmotorstrength.strengthrightleg = req.body.strengthrightleg,
 		editmotorstrength.strengthleftleg = req.body.strengthleftleg,
+		editmotorstrength.totalms = totalms,
 
 		editmotorstrength.save();
 	});

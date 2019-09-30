@@ -78,12 +78,12 @@
                 <td class="bestmotor">{{bestmotor}}</td>
                 {{/each}}
             </tr>
-            {{!-- <tr>
-                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Fluid Consumed (mL)</th>
+            <tr>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Total</th>
                 {{#each gcsFlow}}
-                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)" class="flush">{{flush}}</td>
+                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)" class="totalgcs">{{totalgcs}}</td>
                 {{/each}}
-            </tr> --}}
+            </tr>
 
              {{!-- Vital --}}
 
@@ -94,71 +94,71 @@
                 {{/each}}
             </tr>
             <tr>
-                <th width="10%">Blood Pressure (SBP)</th>
+                <th width="10%">Blood Pressure (mmHg)</th>
                 {{#each clcvitalFlow}}
-                <td>{{sbp}}</td>
+                <td>{{bloodp}}</td>
                 {{/each}}
             </tr>
-            <tr>
+            {{!-- <tr>
                 <th width="10%">Blood Pressure (DBP)</th>
                 {{#each clcvitalFlow}}
                 <td>{{dbp}}</td>
                 {{/each}}
-            </tr>
+            </tr> --}}
             <tr>
                 <th width="10%">Heart Rate (BPM)</th>
                 {{#each clcvitalFlow}}
-                <td>{{heartRate}}</td>
+                <td class="heartRate">{{heartRate}}</td>
                 {{/each}}
             </tr>
             <tr>
                 <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Respiratory</th>
                 {{#each clcvitalFlow}}
-                <td class="heartRate">{{resp}}</td>
+                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)" >{{resp}}</td>
                 {{/each}}
             </tr>
 
             {{!-- pupils --}}
-
             <tr>
-                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Right Pupils</th>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Pupils</th>
                 {{#each pupilsFlow}}
                 <td class="Pupils"></td>
                 {{/each}}
             </tr>
+            {{!-- <tr>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Right</th>
+                {{#each pupilsFlow}}
+                <td class="Pupils"></td>
+                {{/each}}
+            </tr> --}}
             
             <tr>
-                <th width="10%">Size</th>
+                <th width="10%">Right Size</th>
                 {{#each pupilsFlow}}
                 <td>{{sizeright}}</td>
                 {{/each}}
             </tr>
             <tr>
-                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Reaction</th>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)"> Right Reaction</th>
                 {{#each pupilsFlow}}
                 <td class="reactionright">{{reactionright}}</td>
                 {{/each}}
             </tr>
-            <tr>
-                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Left Pupils</th>
+            {{!-- <tr>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Left</th>
                 {{#each pupilsFlow}}
                 <td class="Pupils"></td>
                 {{/each}}
-            </tr>
+            </tr> --}}
             <tr>
-                <th width="10%">Size</th>
+                <th width="10%">Left Size</th>
                 {{#each pupilsFlow}}
                 <td>{{sizeleft}}</td>
                 {{/each}}
             </tr>
-            {{!-- <tr>
-                <th width="10%">Amount Infused (intermittent)</th>
-                {{#each pupilsFlow}}
-                <td class="amountInfusedIntermittent">{{amtinf}}</td>
-                {{/each}}
-            </tr> --}}
+
             <tr>
-                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Reaction</th>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Left Reaction</th>
                 {{#each pupilsFlow}}
                 <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)" class="reactionleft">{{reactionleft}}</td>
                 {{/each}}
@@ -206,7 +206,7 @@
             <tr>
                 <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Total</th>
                 {{#each motorstrengthFlow}}
-                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">{{total}}</td>
+                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">{{totalms}}</td>
                 {{/each}}
             </tr>
             {{!-- <tr>
@@ -360,7 +360,7 @@
                     <th>Eyes Open</th>
                     <th>Best Verbal Response</th>
                     <th>Best Motor Response</th>
-                    <th>Total Score</th>
+                    <th>Total</th>
                     {{!-- <th>Fluid Consumed (mL)</th> --}}
                     {{!-- <th>Patient ID</th> --}}
                     {{#unless userType}}
@@ -549,8 +549,8 @@
                     <th>Time</th>
                     <th>Heart Rate (BPM) </th>
                     <th>Respiratory</th>
-                    <th>Blood Pressure (SBP)</th>
-                    <th>Blood Pressure (DBP)</th>
+                    <th>Blood Pressure (mmHg)</th>
+                    {{!-- <th>Blood Pressure (DBP)</th> --}}
                     {{!-- <th>Patient ID</th> --}}
                     {{#unless userType}}
                     <th>Delete</th>
@@ -571,8 +571,8 @@
                         <td>{{time}}</td>
                         <td>{{heartRate}}</td>
                         <td>{{resp}}</td>
-                        <td>{{sbp}}</td>
-                        <td>{{dbp}}</td>
+                        <td>{{bloodp}}</td>
+                        {{!-- <td>{{dbp}}</td> --}}
                         {{!-- <td>{{patientID}}</td> --}}
                         {{#unless ../userType}}
                             <td style="width: 65px"> <!-- the tr we're trying to get -->
@@ -625,7 +625,7 @@
         <div class="card purple lighten-5">
             <div class="card-content">
                 <div id="enteralInfo">
-                    <span class="purple-text darken-2">Intake Enteral</span>
+                    <span class="purple-text darken-2">Vital</span>
 
                 <div class="row">
                         <div class="col s12 m4 input-field">
@@ -639,46 +639,11 @@
                             <label for="timeclcvital">Time</label>
                             <span class="helper-text">hh:ss</span>
                         </div>
-
-                       {{!-- <div class="col s12 m4 input-field">
-                            <select id="enteralfeed" name="enteralfeed">
-                            <option value="" disabled selected>Enteral Feed</option>
-                            <option value="NG">NG</option>
-                            <option value="NJ">NJ</option>
-                            <option value="PEG">PEG</option>
-                            <option value="PEJ">PEJ</option>
-                            </select>
-                            <label for="enteralfeed">Enteral Feed</label>
-                        </div>                         --}}
-
                 </div>
 
                 <div class="row">
 
-                            {{!-- <div class="col s12 m4 input-field">
 
-                                <select id="formula" name="formula">
-                                    <option value="" disabled selected>Type of Formula</option>
-                                    <option value="ensure">Ensure</option>
-                                    <option value="Ensure Life">Ensure Life</option>                                
-                                    <option value="Ensure Plus">Ensure Plus</option>
-                                    <option value="Isocal">Isocal</option>
-                                    <option value="Resource Support">Resource Support</option>
-                                    <option value="Resource 2.0"> Resource 2.0</option>
-                                    <option value="Glucerna">Glucerna</option>
-                                    <option value="Nepro">Nepro</option>
-                                    <option value="Suplena">Suplen</option>
-                                    <option value="Pulmocare">Pulmocare</option>
-                                    <option value="Jevity">Jevity</option>                                                                
-                                    <option value="Oxepa">Oxepa</option>
-                                    <option value="Prosure">Prosure</option>
-                                    <option value="Propass">Propass</option>
-                                </select>
-                                    <label for="formula">Type of Formula</label>
-
-                             </div> --}}
-
-                    
                         <div class="col s12 m4 input-field">
                             <input id="heartRate" type="number" name="heartRate" value="{{editclcvital.heartRate}}">
                             <label for="heartRate">Heart Rate (BPM)</label>
@@ -690,6 +655,10 @@
                             <label for="resp">Respiration Rate</label>
                             <span class="helper-text"></span>
                         </div>
+                       
+
+                </div>
+                 <div class="row">
                         <div class="col s12 m4 input-field">
                             <input id="sbp" type="number" name="sbp" value="{{editclcvital.sbp}}">
                             <label for="sbp">Blood Pressure (SBP)</label>
@@ -700,8 +669,7 @@
                             <label for="dbp">Blood Pressure (SDP)</label>
                             <span class="helper-text"></span>
                         </div>
-
-                </div>
+                 </div>
 
 
                 </div>
@@ -853,7 +821,7 @@
                 <div class="row">
                         <div class="col s12 m4 input-field">
                             <select id="sizeright" name="sizeright">
-                            <option value="" disabled selected>size</option>
+                            <option value="" disabled selected>Right Pupil Size</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -863,25 +831,25 @@
                             <option value="7">7</option>
                             <option value="8">8</option>
                             </select>
-                            <label for="sizeright">Size</label>
+                            <label for="sizeright">Right Pupil Size</label>
                         </div>  
 
                         <div class="col s12 m4 input-field">
                             <select id="reactionright" name="reactionright">
-                            <option value="" disabled selected>Reaction</option>
+                            <option value="" disabled selected>Right Reaction</option>
                             <option value="Brisk">Brisk</option>
                             <option value="Sluggish">Sluggish</option>
                             <option value="Fixed">Fixed</option>
                             <option value="Eyes closed">Eyes Closed</option>
                             </select>
-                            <label for="reactionright">Reaction</label>
+                            <label for="reactionright">Right Reaction</label>
                         </div>  
 
                 </div>
                 <div class="row">
                         <div class="col s12 m4 input-field">
                             <select id="sizeleft" name="sizeleft">
-                            <option value="" disabled selected>size</option>
+                            <option value="" disabled selected>Left Pupil Size</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -891,18 +859,18 @@
                             <option value="7">7</option>
                             <option value="8">8</option>
                             </select>
-                            <label for="sizeleft">Size</label>
+                            <label for="sizeleft">Left Pupil Size</label>
                         </div>  
 
                         <div class="col s12 m4 input-field">
                             <select id="reactionleft" name="reactionleft">
-                            <option value="" disabled selected>Reaction</option>
+                            <option value="" disabled selected>Left Reaction</option>
                             <option value="Brisk">Brisk</option>
                             <option value="Sluggish">Sluggish</option>
                             <option value="Fixed">Fixed</option>
                             <option value="Eyes closed">Eyes Closed</option>
                             </select>
-                            <label for="reactionleft">Reaction</label>
+                            <label for="reactionleft">Left Reaction</label>
                         </div>  
 
                 </div>
@@ -951,6 +919,7 @@
                     <th>Strength Right Leg</th>
                     <th>Strength Left Arm</th>
                     <th>Strength Left Leg</th>
+                    <th>Total</th>
                     {{!-- <th>I.V Flush (mL)</th> --}}
                     {{!-- <th>Patient ID</th> --}}
                     {{#unless userType}}
@@ -973,6 +942,7 @@
                         <td>{{strengthrightleg}}</td>
                         <td>{{strengthleftarm}}</td>
                         <td>{{strengthleftleg}}</td>
+                        <td>{{totalms}}</td>
                         {{!-- <td>{{ivflush}}</td> --}}
                         {{!-- <td>{{patientID}}</td> --}}
                         {{#unless ../userType}}          
@@ -1014,7 +984,7 @@
         {{else}}
         <form action="/student/edit-motorstrength/{{recordID}}/{{editmotorstrength.motorstrengthID}}?_method=PUT" method="POST" id="editmotorstrength">
         {{/unless}}
-        {{else}}
+    {{else}}
     {{!-- <input type="hidden" name="_method" value="PUT"> --}}
         {{#unless userType}}
             <form action="/master/add-motorstrength" method="POST" id="addmotorstrength">
@@ -1046,7 +1016,7 @@
                 <div class="row">
                         <div class="col s12 m4 input-field">
                             <select id="strengthrightarm" name="strengthrightarm">
-                            <option value="" disabled selected>Right Arm Strength</option>
+                            <option value=" " disabled selected>Right Arm Strength</option>
                             <option value="No Movement +0">No Movement +0</option>
                             <option value="Minimal Strength +1">Minimal Strength +1</option>
                             <option value="&#60; Anti-Gravity Strength +2">&lt; Anti-Gravity Strength +2</option>
@@ -1059,7 +1029,7 @@
 
                         <div class="col s12 m4 input-field">
                             <select id="strengthleftarm" name="strengthleftarm">
-                            <option value="" disabled selected>Left Arm Strength</option>
+                            <option value=" " disabled selected>Left Arm Strength</option>
                             <option value="No Movement +0">No Movement +0</option>
                             <option value="Minimal Strength +1">Minimal Strength +1</option>
                             <option value="< Anti-Gravity Strength +2">&lt; Anti-Gravity Strength +2</option>
@@ -1074,7 +1044,7 @@
                 <div class="row">
                         <div class="col s12 m4 input-field">
                             <select id="strengthrightleg" name="strengthrightleg">
-                            <option value="" disabled selected>Right Leg Strength</option>
+                            <option value=" " disabled selected>Right Leg Strength</option>
                             <option value="No Movement +0">No Movement +0</option>
                             <option value="Minimal Strength +1">Minimal Strength +1</option>
                             <option value="< Anti-Gravity Strength +2">&lt; Anti-Gravity Strength +2</option>
@@ -1087,7 +1057,7 @@
 
                         <div class="col s12 m4 input-field">
                             <select id="strengthleftleg" name="strengthleftleg">
-                            <option value="" disabled selected>Left Leg Strength</option>
+                            <option value=" " disabled selected>Left Leg Strength</option>
                             <option value="No Movement +0">No Movement +0</option>
                             <option value="Minimal Strength +1">Minimal Strength +1</option>
                             <option value="< Anti-Gravity Strength +2">&lt; Anti-Gravity Strength +2</option>

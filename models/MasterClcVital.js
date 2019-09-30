@@ -29,6 +29,7 @@ const MasterClcVitalSchema = new Schema({
 	resp:		 {type: String, default: ''},
 	sbp:		 {type: String, default: ''},
 	dbp:		 {type: String, default: ''},
+	bloodp: 	 {type: String, default: ''},
 });
 
 mongoose.model('masterClcVital', MasterClcVitalSchema, 'master-clcvital');
