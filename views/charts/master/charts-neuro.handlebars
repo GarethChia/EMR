@@ -9,14 +9,14 @@
         background: transparent;
     }
 
-    #diabeticflowsheettTable th {
+    #neurovascularflowsheettTable th {
         border-right: 1px solid rgba(0, 0, 0, 0.12);
         border-bottom: none;
     }
-    #diabeticflowsheettTable tr {
+    #neurovascularflowsheettTable tr {
         border-bottom: none;
     }
-    #diabeticflowsheettTable tr td {
+    #neurovascularflowsheettTable tr td {
         border-right: 1px solid rgba(0, 0, 0, 0.12);
     }
     {{!-- th, td{
@@ -32,19 +32,17 @@
         <div class="tabs">
             <li class="tab col s3 offset-s4" id="flowsheetTab"><a class="purple-text text-darken-3" id="tab0" href="#neuroflowsheet">Neurovascular Flowsheet</a></li>
             <li class="tab col s2" id="neurotab"><a class="purple-text text-darken-3" id="tab1" href="#neuro">Neurovascular</a></li>
-            
-            {{!-- <li class="tab col s2" id="tabletab"><a class="purple-text text-darken-3" id="tab5" href="#table">Net IO</a></li> --}}
         </div>
     </div>
 </div>
 
 
- {{!-- IO Flowsheet code start --}}
+ {{!-- Neuro Flowsheet code start --}}
  <div id="neuroflowsheet">
     <div class="card-panel purple darken-3 white-text" style="padding: 5px; font-size: 20px; text-align: center"> Neurovascular Flowsheet</div>
     
     <div style="overflow-x: auto; max-height: 48em;">
-        <table id="diabeticflowsheettTable">
+        <table id="neurovascularflowsheettTable">
             <tr>
                 <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Datetime</th>
                 {{#each neurodateVal}}
@@ -55,35 +53,56 @@
             <tr>
                 <th width="10%">Site Of Injury</th>
                 {{#each neuroFlow}}
-                {{!-- display shortform BB,AB,BD and etc, the function
-                 is in student/master route by using splice. Create another col
-                 named splitpoc in mongodb to store the split data teehee --}}
-                <td class="poc">{{splitpoc}}</td>
+                <td class="poc">{{siteOfInjury}}</td>
                 {{/each}}
             </tr>
 
             <tr>
-                <th width="10%">Colour</th>
+                <th width="10%">Left Colour</th>
                 {{#each neuroFlow}}
                 <td class="bgl">{{bgl}}</td>
                 {{/each}}
             </tr>
 
             <tr>
-                <th width="10%">Temperature</th>
+                <th width="10%">Right Colour</th>
+                {{#each neuroFlow}}
+                <td class="bgl">{{bgl}}</td>
+                {{/each}}
+            </tr>
+
+            <tr>
+                <th width="10%">Left Temperature</th>
                 {{#each neuroFlow}}
                 <td>{{insulintype}}</td>
                 {{/each}}
             </tr>
 
             <tr>
-                <th width="10%">Capillary Refill</th>
+                <th width="10%">Right Temperature</th>
+                {{#each neuroFlow}}
+                <td>{{insulintype}}</td>
+                {{/each}}
+            </tr>
+
+            <tr>
+                <th width="10%">Left Capillary Refill</th>
                 {{!-- <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Amount of Insulin Given</th> --}}
                 {{#each neuroFlow}}
                 <td>{{insulinamt}}</td>
                 {{!-- <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)" class="insulinamt">{{insulinamt}}</td> --}}
                 {{/each}}
             </tr>
+
+            <tr>
+                <th width="10%">Right Capillary Refill</th>
+                {{!-- <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Amount of Insulin Given</th> --}}
+                {{#each neuroFlow}}
+                <td>{{insulinamt}}</td>
+                {{!-- <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)" class="insulinamt">{{insulinamt}}</td> --}}
+                {{/each}}
+            </tr>
+
             <tr>
                 <th width="10%">Peripheral Pulse</th>
                 {{#each neuroFlow}}
@@ -145,15 +164,10 @@
         <table id="ioRecords" class="hover order-column">
             <thead>
                 <tr>
-                    {{!-- <th colspan="26">
-                        Site of injury: Right arm
-                    </th> --}}
-                </tr>
-                <tr>
+                    <th>Site of injury</th>
                     <th rowspan="2">Date</th>
                     <th rowspan="2">Time</th>
                     <th></th>
-                    {{!-- <th rowspan="2">Site of Injury</th> --}}
                     <th>Colour</th>
                     <th>Temperature</th>
                     <th>Capillary refill</th>
@@ -165,48 +179,24 @@
                     <th>Numerical Rating Scale</th>
                     <th>Verbal Descriptive Scale</th>
                     <th>Characteristic</th>
-
-                    {{!-- <th>Patient ID</th> --}}
                     {{#unless userType}}
-                    {{!-- <th>Delete</th> --}}
+                    <th>Delete</th>
                     {{/unless}}
-                </tr>
-                <tr>
-                    {{!-- <th>Left</th>
-                    <th>Right</th>
-                    <th>Left</th>
-                    <th>Right</th>
-                    <th>Left</th>
-                    <th>Right</th>
-                    <th>Left</th>
-                    <th>Right</th>
-                    <th>Left</th>
-                    <th>Right</th>
-                    <th>Left</th>
-                    <th>Right</th>
-                    <th>Left</th>
-                    <th>Right</th>
-                    <th>Left</th>
-                    <th>Right</th>
-                    <th>Left</th>
-                    <th>Right</th>
-                    <th>Left</th>
-                    <th>Right</th>
-                    <th>Left</th>
-                    <th>Right</th> --}}
                 </tr>
             </thead>
             <tbody>
+                
                 {{#if newNeuro}}
+                    <!--Right Arm-->
                     {{#each newNeuro}}
                     <tr style="height: 60px">
+                        <td rowspan="2">{{siteOfInjury}}</td>
                         {{#unless ../userType}}
                         <td rowspan="2"><a href="/master/neuro/{{neuroID}}">{{date}}</a></td>
                         {{else}}
                         <td rowspan="2"><a href="/student/neuro/{{../recordID}}/{{neuroID}}">{{date}}</a></td>
                         {{/unless}}
                         <td rowspan="2">{{time}}</td>
-                        {{!-- <td>{{siteOfInjury}}</td> --}}
                         <td>Left</td>
                         <td>{{colourLeft}}</td>
                         
@@ -230,24 +220,15 @@
                         
                         <td>{{characteristicLeft}}</td>
                         
-                        {{!-- <td>{{patientID}}</td> --}}
                         {{#unless ../userType}}
-                        {{!-- <td style="width: 65px"> <!-- the tr we're trying to get -->
-                            <form action="/master/del-diabetic/{{diabeticID}}?_method=DELETE" method="post" id="delete-form">
+                        <td style="width: 65px" rowspan="2"> <!-- the tr we're trying to get -->
+                            <form action="/master/del-neuro/{{neuroID}}?_method=DELETE" method="post" id="delete-form">
                                 <input type="hidden" name="_method" value="DELETE">
                             <button type="submit" class="btn red darken-3">
                                  <i class="material-icons">delete
                             </button>
                             </form>
-                        </td> --}}
-                        {{else}}
-                         {{!-- <td style="width: 65px"> <!-- the tr we're trying to get -->
-                            <form action="/master/del-io/{{../recordID}}/{{ioID}}?_method=DELETE" method="post" id="delete-form">
-                                <input type="hidden" name="_method" value="DELETE">
-                            <button type="submit" class="btn red darken-3">
-                                 <i class="material-icons">delete
-                            </button> --}}
-                            </form>
+                        </td>  
                         {{/unless}}
                     </tr>
                     <tr>
@@ -264,9 +245,73 @@
                         <td>{{verbalDescriptiveScaleRight}}</td>
                         <td>{{characteristicRight}}</td>
                     </tr>
+                    <!--//Right Arm-->
+                    <!--Left Arm-->
+                    <!--//Right Arm-->
+                    <!--Right Leg-->
+                    <!--//Right Leg-->
+                    <!--Left Leg-->
+                    <!--//Left Leg-->
+                    {{!-- {{#each newNeuro}}
+                    <tr style="height: 60px">
+                        <td rowspan="2">{{siteOfInjury}}</td>
+                        {{#unless ../userType}}
+                        <td rowspan="2"><a href="/master/neuro/{{neuroID}}">{{date}}</a></td>
+                        {{else}}
+                        <td rowspan="2"><a href="/student/neuro/{{../recordID}}/{{neuroID}}">{{date}}</a></td>
+                        {{/unless}}
+                        <td rowspan="2">{{time}}</td>
+                        <td>Left</td>
+                        <td>{{colourLeft}}</td>
+                        
+                        <td>{{temperatureLeft}}</td>
+                        
+                        <td>{{capillaryRefillLeft}}</td>
+                        
+                        <td>{{peripheralPulseLeft}}</td>
+                        
+                        <td>{{edemaLeft}}</td>
+                        
+                        <td>{{movementLeft}}</td>
+                        
+                        <td>{{sensationLeft}}</td>
+                        
+                        <td>{{painLeft}}</td>
+                        
+                        <td>{{numericalRatingScaleLeft}}</td>
+                        
+                        <td>{{verbalDescriptiveScaleLeft}}</td>
+                        
+                        <td>{{characteristicLeft}}</td>
+                        
+                        {{#unless ../userType}}
+                        <td style="width: 65px" rowspan="2"> <!-- the tr we're trying to get -->
+                            <form action="/master/del-neuro/{{neuroID}}?_method=DELETE" method="post" id="delete-form">
+                                <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn red darken-3">
+                                 <i class="material-icons">delete
+                            </button>
+                            </form>
+                        </td>  
+                        {{/unless}}
+                    </tr>
+                    <tr>
+                        <td>Right</td>
+                        <td>{{colourRight}}</td>
+                        <td>{{temperatureRight}}</td>
+                        <td>{{capillaryRefillRight}}</td>
+                        <td>{{peripheralPulseRight}}</td>
+                        <td>{{edemaRight}}</td>
+                        <td>{{movementRight}}</td>
+                        <td>{{sensationRight}}</td>
+                        <td>{{painRight}}</td>
+                        <td>{{numericalRatingScaleRight}}</td>
+                        <td>{{verbalDescriptiveScaleRight}}</td>
+                        <td>{{characteristicRight}}</td>
+                    </tr> --}}
                     {{/each}}
-                {{!-- {{else}}
-                <p id="noRecord">You have not created any Neurovascular records yet</p> --}}
+                {{else}}
+                <p id="noRecord">You have not created any Neurovascular records yet</p>
                 {{/if}}
             </tbody>
         </table>
@@ -310,7 +355,7 @@
                     </div>
                     <div class="row">
                         <div class="col s12 m4 input-field">
-                                <select id="siteOfInjury" name="siteOfInjury">
+                                <select id="siteOfInjury" name="siteOfInjury" required>
                                     <option value="" disabled selected>Please Select</option>
                                     <option value="Right Arm">Right Arm</option>
                                     <option value="Left Arm">Left Arm</option>
@@ -332,7 +377,7 @@
                     <span class="purple-text darken-2">Colour</span>
                     <div class="row">
                         <div class="col s12 m4 input-field">
-                                <select id="leftColour" name="leftColour">
+                                <select id="leftColour" name="leftColour" required>
                                     <option value="" disabled selected>Please Select</option>
                                     <option value="Pink">Pink</option>
                                     <option value="Pale">Pale</option>
@@ -342,7 +387,7 @@
                         <label for="leftColour">Left</label>
                         </div>
                         <div class="col s12 m4 input-field">
-                                <select id="rightColour" name="rightColour">
+                                <select id="rightColour" name="rightColour" required>
                                     <option value="" disabled selected>Please Select</option>
                                     <option value="Pink">Pink</option>
                                     <option value="Pale">Pale</option>
@@ -356,7 +401,7 @@
                     <span class="purple-text darken-2">Temperature</span>
                     <div class="row">
                         <div class="col s12 m4 input-field">
-                                <select id="leftTemperature" name="leftTemperature">
+                                <select id="leftTemperature" name="leftTemperature" required>
                                     <option value="" disabled selected>Please Select</option>
                                     <option value="Warm">Warm</option>
                                     <option value="Cool">Cool</option>
@@ -366,7 +411,7 @@
                         <label for="leftTemperature">Left</label>
                         </div>
                         <div class="col s12 m4 input-field">
-                                <select id="rightTemperature" name="rightTemperature">
+                                <select id="rightTemperature" name="rightTemperature" required>
                                     <option value="" disabled selected>Please Select</option>
                                     <option value="Warm">Warm</option>
                                     <option value="Cool">Cool</option>
@@ -380,7 +425,7 @@
                     <span class="purple-text darken-2">Capillary Refill</span>
                     <div class="row">
                         <div class="col s12 m4 input-field">
-                                <select id="leftCapillaryRefill" name="leftCapillaryRefill">
+                                <select id="leftCapillaryRefill" name="leftCapillaryRefill" required>
                                     <option value="" disabled selected>Please Select</option>
                                     <option value="1-2 Sec">1-2 Sec</option>
                                     <option value="3 Sec">3 Sec</option>
@@ -389,7 +434,7 @@
                         <label for="leftCapillaryRefill">Left</label>
                         </div>
                         <div class="col s12 m4 input-field">
-                                <select id="rightCapillaryRefill" name="rightCapillaryRefill">
+                                <select id="rightCapillaryRefill" name="rightCapillaryRefill" required>
                                     <option value="" disabled selected>Please Select</option>
                                     <option value="1-2 Sec">1-2 Sec</option>
                                     <option value="3 Sec">3 Sec</option>
@@ -402,7 +447,7 @@
                     <span class="purple-text darken-2">Peripheral Pulse</span>
                     <div class="row">
                         <div class="col s12 m4 input-field">
-                                <select id="leftPeripheralPulse" name="leftPeripheralPulse">
+                                <select id="leftPeripheralPulse" name="leftPeripheralPulse" required>
                                     <option value="" disabled selected>Please Select</option>
                                     <option value="Strong">Strong</option>
                                     <option value="Weak">Weak</option>
@@ -411,7 +456,7 @@
                         <label for="leftPeripheralPulse">Left</label>
                         </div>
                         <div class="col s12 m4 input-field">
-                                <select id="rightPeripheralPulse" name="rightPeripheralPulse">
+                                <select id="rightPeripheralPulse" name="rightPeripheralPulse" required>
                                     <option value="" disabled selected>Please Select</option>
                                     <option value="Strong">Strong</option>
                                     <option value="Weak">Weak</option>
@@ -419,12 +464,37 @@
                                 </select>
                         <label for="rightPeripheralPulse">Right</label>
                         </div>
+                        <!--Pop-up for Peripheral Pulse-->
+                        <div class="col s10 m1 input-field">
+                            <a class="waves-effect waves-light btn modal-trigger" href="#PeripheralPulse">
+                                {{!-- <i class="fa fa-info fa-lg" aria-hidden="true"></i> --}}
+                                <i class="fa fa-child fa-lg" aria-hidden="true"></i>
+                                
+                            </a>
+                            <div id="PeripheralPulse" class="modal">
+                                <div class="modal-content">
+                                <p>
+                                    <h4>
+                                        <center>
+                                            Peripheral Pulse
+                                        </center>
+                                    </h4>
+                                    <hr/>
+                                    <img class="materialboxed" id="ordersImage" style="display: block;margin-left: auto;margin-right: auto; max-height: 30em; min-height: 15em;" src="/assets/img/peripheral-pulse.png">
+                                </p>
+                                </div>
+                                <div class="modal-footer">
+                                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!--// Pop-up for Peripheral Pulse-->
                     </div>
 
                     <span class="purple-text darken-2">Edema</span>
                     <div class="row">
                         <div class="col s12 m4 input-field">
-                                <select id="leftEdema" name="leftEdema">
+                                <select id="leftEdema" name="leftEdema" required>
                                     <option value="" disabled selected>Please Select</option>
                                     <option value="None">None</option>
                                     <option value="Slight">Slight</option>
@@ -434,7 +504,7 @@
                         <label for="leftEdema">Left</label>
                         </div>
                         <div class="col s12 m4 input-field">
-                                <select id="rightEdema" name="rightEdema">
+                                <select id="rightEdema" name="rightEdema" required>
                                     <option value="" disabled selected>Please Select</option>
                                     <option value="None">None</option>
                                     <option value="Slight">Slight</option>
@@ -448,7 +518,7 @@
                     <span class="purple-text darken-2">Movement</span>
                     <div class="row">
                         <div class="col s12 m4 input-field">
-                                <select id="leftMovement" name="leftMovement">
+                                <select id="leftMovement" name="leftMovement" required>
                                     <option value="" disabled selected>Please Select</option>
                                     <option value="Active">Active</option>
                                     <option value="Weak">Weak</option>
@@ -457,7 +527,7 @@
                         <label for="leftMovement">Left</label>
                         </div>
                         <div class="col s12 m4 input-field">
-                                <select id="rightMovement" name="rightMovement">
+                                <select id="rightMovement" name="rightMovement" required>
                                     <option value="" disabled selected>Please Select</option>
                                     <option value="Active">Active</option>
                                     <option value="Weak">Weak</option>
@@ -470,7 +540,7 @@
                     <span class="purple-text darken-2">Sensation</span>
                     <div class="row">
                         <div class="col s12 m4 input-field">
-                                <select id="leftSensation" name="leftSensation">
+                                <select id="leftSensation" name="leftSensation" required>
                                     <option value="" disabled selected>Please Select</option>
                                     <option value="Normal">Normal</option>
                                     <option value="Numb">Numb</option>
@@ -480,7 +550,7 @@
                         <label for="leftSensation">Left</label>
                         </div>
                         <div class="col s12 m4 input-field">
-                            <select id="rightSensation" name="rightSensation">
+                            <select id="rightSensation" name="rightSensation" required>
                                 <option value="" disabled selected>Please Select</option>
                                 <option value="Normal">Normal</option>
                                 <option value="Numb">Numb</option>
@@ -489,12 +559,59 @@
                             </select>
                         <label for="rightSensation">Right</label>
                         </div>
+                        <!--Pop-up for sensation 1-->
+                        <div class="col s10 m2 input-field">
+                            <a class="waves-effect waves-light btn modal-trigger" href="#sensation">
+                                <i class="fa fa-hand-paper fa-lg" aria-hidden="true"></i>
+                            </a>
+                            <div id="sensation" class="modal">
+                                <div class="modal-content">
+                                <p>
+                                    <h4>
+                                        <center>
+                                            Sensation
+                                        </center>
+                                    </h4>
+                                    <hr/>
+                                    <img class="materialboxed" id="ordersImage" style="display: block;margin-left: auto;margin-right: auto; max-height: 30em; min-height: 30em;" src="/assets/img/sensation.png">
+                                </p>
+                                </div>
+                                <div class="modal-footer">
+                                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+                                </div>
+                            </div>
+                            <a class="waves-effect waves-light btn modal-trigger" href="#motor-function">
+                                <i class="fab fa-accessible-icon fa-lg" aria-hidden="true"></i>
+                            </a>
+                            <div id="motor-function" class="modal">
+                                <div class="modal-content">
+                                    <p>
+                                        <h4>
+                                            <center>
+                                                Motor Function
+                                            </center>
+                                        </h4>
+                                        <hr/>
+                                        <img class="materialboxed" id="ordersImage" style="display: block;margin-left: auto;margin-right: auto; max-height: 30em; min-height: 30em; max-width: 50em;" src="/assets/img/motor-function.png">
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!--// Pop-up for sensation 1-->
+                        <!--Pop-up for sensation 2 -->
+                        <div class="col s10 m1 input-field">
+                            
+                        </div>
+                        <!--// Pop-up for sensation 2-->
                     </div>
 
                     <span class="purple-text darken-2">Type of pain scale</span>
                     <div class="row">
                         <div class="col s12 m4 input-field">
-                            <select id="leftTypeOfPainScale" name="leftTypeOfPainScale">
+                            <select id="leftTypeOfPainScale" name="leftTypeOfPainScale" required>
                                 <option value="" disabled selected>Please Select</option>
                                 <option value="Numerical Rating Scale">Numerical Rating Scale</option>
                                 <option value="Wong-Baker">Wong-Baker</option>
@@ -503,7 +620,7 @@
                             <label for="leftTypeOfPainScale">Left</label>
                         </div>
                         <div class="col s12 m4 input-field">
-                            <select id="rightTypeOfPainScale" name="rightTypeOfPainScale">
+                            <select id="rightTypeOfPainScale" name="rightTypeOfPainScale" required>
                                 <option value="" disabled selected>Please Select</option>
                                 <option value="Numerical Rating Scale">Numerical Rating Scale</option>
                                 <option value="Wong-Baker">Wong-Baker</option>
@@ -516,7 +633,7 @@
                     <span class="purple-text darken-2">Numerical Rating Scale</span>
                     <div class="row">
                         <div class="col s12 m4 input-field">
-                            <select id="numericalRatingScaleLeft" name="numericalRatingScaleLeft">
+                            <select id="numericalRatingScaleLeft" name="numericalRatingScaleLeft" required>
                                 <option value="" disabled selected>Please Select</option>
                                 <option value="0">0</option>
                                 <option value="1">1</option>
@@ -533,7 +650,7 @@
                         <label for="numericalRatingScaleRight">Left</label>
                         </div>
                         <div class="col s12 m4 input-field">
-                            <select id="numericalRatingScaleRight" name="numericalRatingScaleRight">
+                            <select id="numericalRatingScaleRight" name="numericalRatingScaleRight" required>
                                 <option value="" disabled selected>Please Select</option>
                                 <option value="0">0</option>
                                 <option value="1">1</option>
@@ -555,7 +672,7 @@
                     <span class="purple-text darken-2">Verbal Descriptive Scale</span>
                     <div class="row">
                         <div class="col s12 m4 input-field">
-                                <select id="leftVerbalDescriptiveScale" name="leftVerbalDescriptiveScale">
+                                <select id="leftVerbalDescriptiveScale" name="leftVerbalDescriptiveScale" required>
                                     <option value="" disabled selected>Please Select</option>
                                     <option value="Mild pain 3">Mild pain 3</option>
                                     <option value="Moderate pain 6">Moderate pain 6</option>
@@ -564,7 +681,7 @@
                         <label for="leftVerbalDescriptiveScale">Left</label>
                         </div>
                         <div class="col s12 m4 input-field">
-                                <select id="rightVerbalDescriptiveScale" name="rightVerbalDescriptiveScale">
+                                <select id="rightVerbalDescriptiveScale" name="rightVerbalDescriptiveScale" required>
                                     <option value="" disabled selected>Please Select</option>
                                     <option value="Mild pain 3">Mild pain 3</option>
                                     <option value="Moderate pain 6">Moderate pain 6</option>
@@ -577,7 +694,7 @@
                     <span class="purple-text darken-2">Characteristic</span>
                     <div class="row">
                         <div class="col s12 m4 input-field">
-                            <select id="leftCharacteristic" name="leftCharacteristic">
+                            <select id="leftCharacteristic" name="leftCharacteristic" required>
                                 <option value="" disabled selected>Please Select</option>
                                 <option value="No pain">No pain</option>
                                 <option value="Dull pain">Dull pain</option>
@@ -587,7 +704,7 @@
                         <label for="leftCharacteristic">Left</label>
                         </div>
                         <div class="col s12 m4 input-field">
-                            <select id="rightCharacteristic" name="rightCharacteristic">
+                            <select id="rightCharacteristic" name="rightCharacteristic" required>
                                 <option value="" disabled selected>Please Select</option>
                                 <option value="No pain">No pain</option>
                                 <option value="Dull pain">Dull pain</option>
@@ -620,7 +737,7 @@
     </div>
 </div>
 
-{{!-- Diabetic code end --}}
+{{!-- Neurovascular code end --}}
 
 
 
