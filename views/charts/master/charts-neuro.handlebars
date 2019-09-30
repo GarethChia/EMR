@@ -44,115 +44,216 @@
     <div style="overflow-x: auto; max-height: 48em;">
         <table id="neurovascularflowsheettTable">
             <tr>
-                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Datetime</th>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)" colspan="2">Datetime</th>
                 {{#each neurodateVal}}
                 <th style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">{{formatDatetime this}}</th>
                 {{/each}}
             </tr>
 
-            <tr>
-                <th width="10%">Site Of Injury</th>
+            <tr style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">
+                <th width="10%" colspan="2">Site Of Injury</th>
                 {{#each neuroFlow}}
                 <td class="poc">{{siteOfInjury}}</td>
                 {{/each}}
             </tr>
 
             <tr>
-                <th width="10%">Left Colour</th>
+                <th width="10%" rowspan="3">Colour</th>
+            </tr>
+
+            <tr>
+                <th>Left</th>
                 {{#each neuroFlow}}
-                <td class="bgl">{{bgl}}</td>
+                    <td>{{colourLeft}}</td>
+                {{/each}}
+            </tr>
+
+            <tr style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">
+                <th>Right</th>
+                {{#each neuroFlow}}
+                    <td>{{colourRight}}</td>
                 {{/each}}
             </tr>
 
             <tr>
-                <th width="10%">Right Colour</th>
+                <th width="10%" rowspan="3">Temperature</th>
+            </tr>
+
+            <tr>
+                <th>Left</th>
                 {{#each neuroFlow}}
-                <td class="bgl">{{bgl}}</td>
+                    <td>{{temperatureLeft}}</td>
+                {{/each}}
+            </tr>
+
+            <tr style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">
+                <th>Right</th>
+                {{#each neuroFlow}}
+                    <td>{{temperatureRight}}</td>
                 {{/each}}
             </tr>
 
             <tr>
-                <th width="10%">Left Temperature</th>
+                <th width="10%" rowspan="3">Capillary Refill</th>
+            </tr>
+
+            <tr>
+                <th>Left</th>
                 {{#each neuroFlow}}
-                <td>{{insulintype}}</td>
+                    <td>{{capillaryRefillLeft}}</td>
+                {{/each}}
+            </tr>
+
+            <tr style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">
+                <th>Right</th>
+                {{#each neuroFlow}}
+                    <td>{{capillaryRefillRight}}</td>
                 {{/each}}
             </tr>
 
             <tr>
-                <th width="10%">Right Temperature</th>
+                <th width="10%" rowspan="3">Peripheral Pulse</th>
+            </tr>
+
+            <tr>
+                <th>Left</th>
                 {{#each neuroFlow}}
-                <td>{{insulintype}}</td>
+                    <td>{{peripheralPulseLeft}}</td>
+                {{/each}}
+            </tr>
+
+            <tr style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">
+                <th>Right</th>
+                {{#each neuroFlow}}
+                    <td>{{peripheralPulseRight}}</td>
                 {{/each}}
             </tr>
 
             <tr>
-                <th width="10%">Left Capillary Refill</th>
-                {{!-- <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Amount of Insulin Given</th> --}}
+                <th width="10%" rowspan="3">Edema</th>
+            </tr>
+  
+            <tr>
+                <th>Left</th>
                 {{#each neuroFlow}}
-                <td>{{insulinamt}}</td>
-                {{!-- <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)" class="insulinamt">{{insulinamt}}</td> --}}
+                    <td>{{edemaLeft}}</td>
+                {{/each}}
+            </tr>
+
+            <tr style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">
+                <th>Right</th>
+                {{#each neuroFlow}}
+                    <td>{{edemaRight}}</td>
                 {{/each}}
             </tr>
 
             <tr>
-                <th width="10%">Right Capillary Refill</th>
-                {{!-- <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Amount of Insulin Given</th> --}}
+                <th width="10%" rowspan="3">Movement</th>
+            </tr>
+  
+            <tr>
+                <th>Left</th>
                 {{#each neuroFlow}}
-                <td>{{insulinamt}}</td>
-                {{!-- <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)" class="insulinamt">{{insulinamt}}</td> --}}
+                    <td>{{movementLeft}}</td>
+                {{/each}}
+            </tr>
+
+            <tr style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">
+                <th>Right</th>
+                {{#each neuroFlow}}
+                    <td>{{movementRight}}</td>
                 {{/each}}
             </tr>
 
             <tr>
-                <th width="10%">Peripheral Pulse</th>
-                {{#each neuroFlow}}
-                <td>{{insulintype}}</td>
-                {{/each}}
+                <th width="10%" rowspan="3">Sensation</th>
             </tr>
+  
             <tr>
-                <th width="10%">Edema</th>
+                <th>Left</th>
                 {{#each neuroFlow}}
-                <td>{{insulintype}}</td>
+                    <td>{{sensationLeft}}</td>
                 {{/each}}
             </tr>
+
+            <tr style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">
+                <th>Right</th>
+                {{#each neuroFlow}}
+                    <td>{{sensationRight}}</td>
+                {{/each}}
+            </tr>
+
             <tr>
-                <th width="10%">Movement</th>
-                {{#each neuroFlow}}
-                <td>{{insulintype}}</td>
-                {{/each}}
+                <th width="10%" rowspan="3">Pain</th>
             </tr>
+              
             <tr>
-                <th width="10%">Sensation</th>
+                <th>Left</th>
                 {{#each neuroFlow}}
-                <td>{{insulintype}}</td>
+                    <td>{{painLeft}}</td>
                 {{/each}}
             </tr>
+
+            <tr style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">
+                <th>Right</th>
+                {{#each neuroFlow}}
+                    <td>{{painRight}}</td>
+                {{/each}}
+            </tr>
+
             <tr>
-                <th width="10%">Pain</th>
-                {{#each neuroFlow}}
-                <td>{{insulintype}}</td>
-                {{/each}}
+                <th width="10%" rowspan="3">Numerical Rating Scale</th>
             </tr>
+              
             <tr>
-                <th width="10%">Numerical Rating Scale</th>
+                <th>Left</th>
                 {{#each neuroFlow}}
-                <td>{{insulintype}}</td>
+                    <td>{{numericalRatingScaleLeft}}</td>
                 {{/each}}
             </tr>
+
+            <tr style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">
+                <th>Right</th>
+                {{#each neuroFlow}}
+                    <td>{{numericalRatingScaleRight}}</td>
+                {{/each}}
+            </tr>
+
             <tr>
-                <th width="10%">Verbal Descriptive Scale</th>
-                {{#each neuroFlow}}
-                <td>{{insulintype}}</td>
-                {{/each}}
+                <th width="10%" rowspan="3">Verbal Descriptive Scale</th>
             </tr>
+              
             <tr>
-                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Characteristic</th>
+                <th>Left</th>
                 {{#each neuroFlow}}
-                {{!-- <td>{{hypoagent}}</td> --}}
-                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)" class="hypoagent">{{hypoagent}}</td>
+                    <td>{{verbalDescriptiveScaleLeft}}</td>
                 {{/each}}
             </tr>
-      
+
+            <tr style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">
+                <th>Right</th>
+                {{#each neuroFlow}}
+                    <td>{{verbalDescriptiveScaleRight}}</td>
+                {{/each}}
+            </tr>
+
+            <tr>
+                <th width="10%" rowspan="3">Characteristic</th>
+            </tr>
+              
+            <tr>
+                <th>Left</th>
+                {{#each neuroFlow}}
+                    <td>{{characteristicLeft}}</td>
+                {{/each}}
+            </tr>
+
+            <tr style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">
+                <th>Right</th>
+                {{#each neuroFlow}}
+                    <td>{{characteristicRight}}</td>
+                {{/each}}
+            </tr>
         </table>
     </div>
 </div>
