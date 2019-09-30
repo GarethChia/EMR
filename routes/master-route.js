@@ -2709,9 +2709,13 @@ router.post('/add-gcs', ensureAuthenticated, ensureAuthorised, (req, res) => {
 	gcsID = (new standardID('AAA0000')).generate();
 	datetime = moment(req.body.dateGcs, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeGcs;
 	
-	totalgcs = parseInt(req.body.eyeopen.slice(-2))
-	+ parseInt(req.body.bestverbal.slice(-2)) 
-	+ parseInt(req.body.bestmotor.slice(-2));
+	totalgcs = parseInt(req.body.eyeopen.slice(-1))
+	+ parseInt(req.body.bestverbal.slice(-1)) 
+	+ parseInt(req.body.bestmotor.slice(-1));
+
+	spliteyeopen = removeNumber.removeNumberFunction(req.body.eyeopen);
+	splitbestverbal = removeNumber.removeNumberFunction(req.body.bestverbal);
+	splitbestmotor = removeNumber.removeNumberFunction(req.body.bestmotor);
 
 	new MasterGcs({
 		patientID: req.session.patient.patientID,
@@ -2722,6 +2726,11 @@ router.post('/add-gcs', ensureAuthenticated, ensureAuthorised, (req, res) => {
 		eyeopen: req.body.eyeopen,
 		bestverbal: req.body.bestverbal,
 		bestmotor: req.body.bestmotor,
+
+		spliteyeopen:spliteyeopen,
+		splitbestverbal:splitbestverbal,
+		splitbestmotor:splitbestmotor,
+
 		totalgcs: totalgcs,
 
 	}).save();
@@ -2743,9 +2752,13 @@ router.delete('/del-gcs/:gcsID', ensureAuthenticated, ensureAuthorised, (req, re
 router.put('/edit-gcs/:gcsID', ensureAuthenticated, ensureAuthorised, (req,res) => {
 	datetime = moment(req.body.dateGcs, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeGcs;
 	
-	totalgcs = parseInt(req.body.eyeopen.slice(-2))
-	+ parseInt(req.body.bestverbal.slice(-2)) 
-	+ parseInt(req.body.bestmotor.slice(-2));
+	totalgcs = parseInt(req.body.eyeopen.slice(-1))
+	+ parseInt(req.body.bestverbal.slice(-1)) 
+	+ parseInt(req.body.bestmotor.slice(-1));
+
+	spliteyeopen = removeNumber.removeNumberFunction(req.body.eyeopen);
+	splitbestverbal = removeNumber.removeNumberFunction(req.body.bestverbal);
+	splitbestmotor = removeNumber.removeNumberFunction(req.body.bestmotor);
 
 	MasterGcs.findOne({ gcsID: req.params.gcsID }).then(editGcs => {
 		editGcs.date = moment(req.body.dateGcs, 'DD/MM/YYYY').format('YYYY-MM-DD'),
@@ -2755,6 +2768,10 @@ router.put('/edit-gcs/:gcsID', ensureAuthenticated, ensureAuthorised, (req,res) 
 		editGcs.bestverbal = req.body.bestverbal,
 		editGcs.bestmotor = req.body.bestmotor,
 		editGcs.totalgcs = totalgcs,
+
+		editGcs.spliteyeopen = spliteyeopen,
+		editGcs.splitbestverbal = splitbestverbal,
+		editGcs.splitbestmotor = splitbestmotor,
 		editGcs.save();
 	});
 	res.redirect('/master/clc');
@@ -2816,7 +2833,7 @@ router.put('/edit-clcvital/:clcvitalID', ensureAuthenticated, ensureAuthorised, 
 
 	MasterClcVital.findOne({ clcvitalID: req.params.clcvitalID }).then(editclcvital => {
 		editclcvital.date = moment(req.body.dateclcvital, 'DD/MM/YYYY').format('YYYY-MM-DD'),
-		editclcvital.time = req.body.timeGcs,
+		editclcvital.time = req.body.timeclcvital,
 		editclcvital.datetime = datetime,
 		editclcvital.heartRate = req.body.heartRate,
 		editclcvital.resp = req.body.resp,
@@ -2915,11 +2932,17 @@ router.get('/clc-pupils/:pupilsID', ensureAuthenticated, ensureAuthorised, (req,
 router.post('/add-motorstrength', ensureAuthenticated, ensureAuthorised, (req, res) => {
 	motorstrengthID = (new standardID('AAA0000')).generate();
 	datetime = moment(req.body.datemotorstrength, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timemotorstrength;
-	totalms = parseInt(req.body.strengthrightarm.slice(-2))
-	+ parseInt(req.body.strengthleftarm.slice(-2)) 
-	+ parseInt(req.body.strengthrightleg.slice(-2))
-	+ parseInt(req.body.strengthleftleg.slice(-2));
+	
+	totalms = parseInt(req.body.strengthrightarm.slice(-1))
+	+ parseInt(req.body.strengthleftarm.slice(-1)) 
+	+ parseInt(req.body.strengthrightleg.slice(-1))
+	+ parseInt(req.body.strengthleftleg.slice(-1));
 
+	splitstrengthrightarm = removeNumber.removeNumberFunction(req.body.strengthrightarm);
+	splitstrengthleftarm = removeNumber.removeNumberFunction(req.body.strengthleftarm);
+	splitstrengthrightleg = removeNumber.removeNumberFunction(req.body.strengthrightleg);
+	splitstrengthleftleg = removeNumber.removeNumberFunction(req.body.strengthleftleg);
+	
 	new  MasterMotorStrength({
 		patientID: req.session.patient.patientID,
 		motorstrengthID: motorstrengthID,
@@ -2930,6 +2953,11 @@ router.post('/add-motorstrength', ensureAuthenticated, ensureAuthorised, (req, r
 		strengthleftarm: req.body.strengthleftarm,
 		strengthrightleg: req.body.strengthrightleg,
 		strengthleftleg: req.body.strengthleftleg,
+
+		splitstrengthrightarm: splitstrengthrightarm,
+		splitstrengthleftarm: splitstrengthleftarm,
+		splitstrengthrightleg: splitstrengthrightleg,
+		splitstrengthleftleg: splitstrengthleftleg,
 		
 		totalms: totalms,
 
@@ -2952,10 +2980,15 @@ router.delete('/del-motorstrength/:motorstrengthID', ensureAuthenticated, ensure
 router.put('/edit-motorstrength/:motorstrengthID', ensureAuthenticated, ensureAuthorised, (req,res) => {
 	datetime = moment(req.body.datemotorstrength, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timemotorstrength;
 	
-	totalms = parseInt(req.body.strengthrightarm.slice(-2))
-	+ parseInt(req.body.strengthleftarm.slice(-2)) 
-	+ parseInt(req.body.strengthrightleg.slice(-2))
-	+ parseInt(req.body.strengthleftleg.slice(-2));
+	totalms = parseInt(req.body.strengthrightarm.slice(-1))
+	+ parseInt(req.body.strengthleftarm.slice(-1)) 
+	+ parseInt(req.body.strengthrightleg.slice(-1))
+	+ parseInt(req.body.strengthleftleg.slice(-1));
+
+	splitstrengthrightarm = removeNumber.removeNumberFunction(req.body.strengthrightarm);
+	splitstrengthleftarm = removeNumber.removeNumberFunction(req.body.strengthleftarm);
+	splitstrengthrightleg = removeNumber.removeNumberFunction(req.body.strengthrightleg);
+	splitstrengthleftleg = removeNumber.removeNumberFunction(req.body.strengthleftleg);
 
 	MasterMotorStrength.findOne({ motorstrengthID: req.params.motorstrengthID }).then(editmotorstrength => {
 		editmotorstrength.date = moment(req.body.datemotorstrength, 'DD/MM/YYYY').format('YYYY-MM-DD'),
@@ -2966,6 +2999,12 @@ router.put('/edit-motorstrength/:motorstrengthID', ensureAuthenticated, ensureAu
 		editmotorstrength.strengthrightleg = req.body.strengthrightleg,
 		editmotorstrength.strengthleftleg = req.body.strengthleftleg,
 		editmotorstrength.totalms = totalms,
+		
+		editmotorstrength.splitstrengthrightarm = splitstrengthrightarm,
+		editmotorstrength.splitstrengthleftarm = splitstrengthleftarm,
+		editmotorstrength.splitstrengthrightleg = splitstrengthrightleg,
+		editmotorstrength.splitstrengthleftleg = splitstrengthleftleg,
+		
 
 		editmotorstrength.save();
 	});

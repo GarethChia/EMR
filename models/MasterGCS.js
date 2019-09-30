@@ -24,6 +24,10 @@ const MasterGcsSchema = new Schema({
 	eyeopen:	 {type: String, default: ''},
 	bestverbal:	 {type: String, default: ''},
 	bestmotor:		 {type: String, default: ''},
+
+	spliteyeopen:	 {type: String, default: ''},
+	splitbestverbal:	 {type: String, default: ''},
+	splitbestmotor:		 {type: String, default: ''},
     totalgcs:     {type: String, default: ''},
 });
 

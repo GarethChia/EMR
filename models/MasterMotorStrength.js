@@ -26,6 +26,10 @@ const MasterMotorStrengthSchema = new Schema({
 	strengthrightleg:		 {type: String, default: ''},
 	strengthleftleg:		 {type: String, default: ''},
 	totalms: 	{type: String, default: ''},
+	splitstrengthrightarm:	 {type: String, default: ''},
+	splitstrengthleftarm:	 {type: String, default: ''},
+	splitstrengthrightleg:		 {type: String, default: ''},
+	splitstrengthleftleg:		 {type: String, default: ''},
 });
 
 mongoose.model('masterMotorStrength', MasterMotorStrengthSchema, 'master-motorstrength');

@@ -645,6 +645,9 @@ router.put('/save-customised-patient/:patientID', ensureAuthenticated, (req, res
 																								eyeopen: gcs.eyeopen,
 																								bestverbal: gcs.bestverbal,
 																								bestmotor: gcs.bestmotor,
+																								spliteyeopen:gcs.spliteyeopen,
+																								splitbestverbal:gcs.splitbestverbal,
+																								splitbestmotor:gcs.splitbestmotor,
 																								totalgcs: gcs.totalgcs
 																							}).save();
 																						})
@@ -689,6 +692,11 @@ router.put('/save-customised-patient/:patientID', ensureAuthenticated, (req, res
 																								strengthleftarm: motorstrengthData.strengthleftarm,
 																								strengthrightleg: motorstrengthData.strengthrightleg,
 																								strengthleftleg: motorstrengthData.strengthleftleg,
+
+																								splitstrengthrightarm: motorstrengthData.splitstrengthrightarm,
+																								splitstrengthleftarm: motorstrengthData.splitstrengthleftarm,
+																								splitstrengthrightleg: motorstrengthData.splitstrengthrightleg,
+																								splitstrengthleftleg: motorstrengthData.splitstrengthleftleg,
 																								totalms: motorstrengthData.totalms
 																						
 																							}).save();
@@ -3235,7 +3243,7 @@ router.get('/clc/:recordID', ensureAuthenticated, (req, res) => {
 							}
 							else 
 							{
-								motorstrengthFlow.push({datetime: '', strengthrightarm: ionoRecord});
+								motorstrengthFlow.push({datetime: '', splitstrengthrightarm: ionoRecord});
 							}
 						};
 	
@@ -3287,6 +3295,10 @@ router.post('/add-gcs/:recordID', ensureAuthenticated, (req, res) => {
 	totalgcs = parseInt(req.body.eyeopen.slice(-2))
 	+ parseInt(req.body.bestverbal.slice(-2)) 
 	+ parseInt(req.body.bestmotor.slice(-2));
+
+	spliteyeopen = removeNumber.removeNumberFunction(req.body.eyeopen);
+	splitbestverbal = removeNumber.removeNumberFunction(req.body.bestverbal);
+	splitbestmotor = removeNumber.removeNumberFunction(req.body.bestmotor);
 	
 	new MasterGcs({
 		// patientID: req.session.patient.patientID,
@@ -3298,6 +3310,11 @@ router.post('/add-gcs/:recordID', ensureAuthenticated, (req, res) => {
 		eyeopen: req.body.eyeopen,
 		bestverbal: req.body.bestverbal,
 		bestmotor: req.body.bestmotor,
+
+		spliteyeopen:spliteyeopen,
+		splitbestverbal:splitbestverbal,
+		splitbestmotor:splitbestmotor,
+
 		totalgcs: totalgcs,
 	}).save();
 
@@ -3311,6 +3328,10 @@ router.put('/edit-gcs/:recordID/:gcsID', ensureAuthenticated, (req,res) => {
 	+ parseInt(req.body.bestverbal.slice(-2)) 
 	+ parseInt(req.body.bestmotor.slice(-2));
 
+	spliteyeopen = removeNumber.removeNumberFunction(req.body.eyeopen);
+	splitbestverbal = removeNumber.removeNumberFunction(req.body.bestverbal);
+	splitbestmotor = removeNumber.removeNumberFunction(req.body.bestmotor);
+
 	MasterGcs.findOne({ gcsID: req.params.gcsID }).then(editGcs => {
 		editGcs.date = moment(req.body.dateGcs, 'DD/MM/YYYY').format('YYYY-MM-DD'),
 		editGcs.time = req.body.timeGcs,
@@ -3319,6 +3340,10 @@ router.put('/edit-gcs/:recordID/:gcsID', ensureAuthenticated, (req,res) => {
 		editGcs.bestverbal = req.body.bestverbal,
 		editGcs.bestmotor = req.body.bestmotor,
 		editGcs.totalgcs = totalgcs,
+
+		editGcs.spliteyeopen = spliteyeopen,
+		editGcs.splitbestverbal = splitbestverbal,
+		editGcs.splitbestmotor = splitbestmotor,
 		editGcs.save();
 	});
 	res.redirect('/student/clc/' + req.params.recordID);
@@ -3477,11 +3502,16 @@ router.put('/edit-pupils/:recordID/:pupilsID', ensureAuthenticated, (req, res) =
 router.post('/add-motorstrength/:recordID', ensureAuthenticated, (req, res) => {
 	motorstrengthID = (new standardID('AAA0000')).generate();
 	datetime = moment(req.body.datemotorstrength, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timemotorstrength;
+	
 	totalms = parseInt(req.body.strengthrightarm.slice(-2))
 	+ parseInt(req.body.strengthleftarm.slice(-2)) 
 	+ parseInt(req.body.strengthrightleg.slice(-2))
 	+ parseInt(req.body.strengthleftleg.slice(-2));
 
+	splitstrengthrightarm = removeNumber.removeNumberFunction(req.body.strengthrightarm);
+	splitstrengthleftarm = removeNumber.removeNumberFunction(req.body.strengthleftarm);
+	splitstrengthrightleg = removeNumber.removeNumberFunction(req.body.strengthrightleg);
+	splitstrengthleftleg = removeNumber.removeNumberFunction(req.body.strengthleftleg);
 	new MasterMotorStrength({
 		patientID: req.params.recordID,
 		motorstrengthID: motorstrengthID,
@@ -3492,6 +3522,11 @@ router.post('/add-motorstrength/:recordID', ensureAuthenticated, (req, res) => {
 		strengthleftarm: req.body.strengthleftarm,
 		strengthrightleg: req.body.strengthrightleg,
 		strengthleftleg: req.body.strengthleftleg,
+
+		splitstrengthrightarm: splitstrengthrightarm,
+		splitstrengthleftarm: splitstrengthleftarm,
+		splitstrengthrightleg: splitstrengthrightleg,
+		splitstrengthleftleg: splitstrengthleftleg,
 		
 		totalms: totalms,
 
@@ -3538,6 +3573,10 @@ router.put('/edit-motorstrength/:recordID/:motorstrengthID', ensureAuthenticated
 	+ parseInt(req.body.strengthrightleg.slice(-2))
 	+ parseInt(req.body.strengthleftleg.slice(-2));
 
+	splitstrengthrightarm = removeNumber.removeNumberFunction(req.body.strengthrightarm);
+	splitstrengthleftarm = removeNumber.removeNumberFunction(req.body.strengthleftarm);
+	splitstrengthrightleg = removeNumber.removeNumberFunction(req.body.strengthrightleg);
+	splitstrengthleftleg = removeNumber.removeNumberFunction(req.body.strengthleftleg);
 
 	MasterMotorStrength.findOne({ motorstrengthID: req.params.motorstrengthID }).then(editmotorstrength => {
 
@@ -3549,6 +3588,11 @@ router.put('/edit-motorstrength/:recordID/:motorstrengthID', ensureAuthenticated
 		editmotorstrength.strengthrightleg = req.body.strengthrightleg,
 		editmotorstrength.strengthleftleg = req.body.strengthleftleg,
 		editmotorstrength.totalms = totalms,
+
+		editmotorstrength.splitstrengthrightarm = splitstrengthrightarm,
+		editmotorstrength.splitstrengthleftarm = splitstrengthleftarm,
+		editmotorstrength.splitstrengthrightleg = splitstrengthrightleg,
+		editmotorstrength.splitstrengthleftleg = splitstrengthleftleg,
 
 		editmotorstrength.save();
 	})

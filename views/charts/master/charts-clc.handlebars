@@ -63,19 +63,19 @@
             <tr>
                 <th width="10%">Eyes Open</th>
                 {{#each gcsFlow}}
-                <td>{{eyeopen}}</td>
+                <td>{{spliteyeopen}}</td>
                 {{/each}}
             </tr>
             <tr>
                 <th width="10%">Best Verbal Response</th>
                 {{#each gcsFlow}}
-                <td>{{bestverbal}}</td>
+                <td>{{splitbestverbal}}</td>
                 {{/each}}
             </tr>
             <tr>
                 <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Best Motor Response</th>
                 {{#each gcsFlow}}
-                <td class="bestmotor">{{bestmotor}}</td>
+                <td class="bestmotor">{{splitbestmotor}}</td>
                 {{/each}}
             </tr>
             <tr>
@@ -175,13 +175,13 @@
             <tr>
                 <th width="10%">Right Arm Strength</th>
                 {{#each motorstrengthFlow}}
-                <td class="urine">{{strengthrightarm}}</td>
+                <td class="urine">{{splitstrengthrightarm}}</td>
                 {{/each}}
             </tr>
             <tr>
                 <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Left Arm Strength</th>
                 {{#each motorstrengthFlow}}
-                <td>{{strengthleftarm}}</td>
+                <td>{{splitstrengthleftarm}}</td>
                 {{/each}}
             </tr>
             <tr>
@@ -193,13 +193,13 @@
             <tr>
                 <th width="10%">Right Leg Strength</th>
                 {{#each motorstrengthFlow}}
-                <td>{{strengthrightleg}}</td>
+                <td>{{splitstrengthrightleg}}</td>
                 {{/each}}
             </tr>
             <tr>
                 <th width="10%">Left Leg Strength</th>
                 {{#each motorstrengthFlow}}
-                <td>{{strengthleftleg}}</td>
+                <td>{{splitstrengthleftleg}}</td>
                 {{/each}}
             </tr>
 
@@ -378,9 +378,9 @@
                         <td><a href="/student/clc-gcs/{{../recordID}}/{{gcsID}}">{{date}}</a></td>
                         {{/unless}}
                         <td>{{time}}</td>
-                        <td>{{eyeopen}}</td>
-                        <td>{{bestverbal}}</td>
-                        <td>{{bestmotor}}</td>
+                        <td>{{spliteyeopen}}</td>
+                        <td>{{splitbestverbal}}</td>
+                        <td>{{splitbestmotor}}</td>
                         <td>{{totalgcs}}</td>
                         {{!-- <td>{{fluidportion}}</td> --}}
                         {{!-- <td>{{patientID}}</td> --}}
@@ -458,40 +458,37 @@
                 <div class="row">
 
                     <div class="col s12 m4 input-field">
-                            <select id="eyeopen" name="eyeopen">
-                                <option value="+0" disabled selected>Eyes Open</option>
-                                <option value="Spontaneous +4">Spontaneous +4</option>
-                                <option value="To Speech +3">To Speech +3</option>
-                                <option value="To Pain +2">To Pain +2</option>
+                            <select id="eyeopen" name="eyeopen" required>
+                                <option value="+0" disabled >Eyes Open</option>
                                 <option value="None +1">None +1</option>
-
+                                <option value="To Pain +2">To Pain +2</option>
+                                <option value="To Speech +3">To Speech +3</option>
+                                <option value="Spontaneous +4">Spontaneous +4</option>
                             </select>
                      <label for="eyeopen">Eyes Open</label>
 
                     </div>
                      <div class="col s12 m4 input-field">
-                            <select id="bestverbal" name="bestverbal">
-                                <option value="+0" disabled selected>Best Verbal Response</option>
-                                <option value="Oriented +5">Oriented +5</option>
-                                <option value="Confused +4">Confused +4</option>
-                                <option value="Inappropriate Words +3">Inappropriate Words +3</option>
-                                <option value="Incomprehensive Sounds +2">Incomprehensive Sounds +2</option>
+                            <select id="bestverbal" name="bestverbal" required>
+                                <option value="+0" disabled>Best Verbal Response</option>
                                 <option value="None +1">None +1</option>
-
+                                <option value="Incomprehensive Sounds +2">Incomprehensive Sounds +2</option>
+                                <option value="Inappropriate Words +3">Inappropriate Words +3</option>
+                                <option value="Confused +4">Confused +4</option>
+                                <option value="Oriented +5">Oriented +5</option>
                             </select>
                      <label for="bestverbal">Best Verbal Response</label>
 
                     </div>
                      <div class="col s12 m4 input-field">
-                            <select id="bestmotor" name="bestmotor">
-                                <option value="+0" disabled selected>Best Motor Response</option>
-                                <option value="Obey Commands +6">Obey Commands +6</option>                                
-                                <option value="Localised Pain +5">Localised Pain +5</option>
-                                <option value="Flexion to pain +4">Flexion to pain +4</option>
-                                <option value="Abnormal FLexion +3">Abnormal FLexion +3</option>
-                                <option value="Extension to pain +2">Extension to pain +2</option>
+                            <select id="bestmotor" name="bestmotor" required>
+                                <option value="+0" disabled>Best Motor Response</option>
                                 <option value="None +1">None +1</option>
-
+                                <option value="Extension to pain +2">Extension to pain +2</option>
+                                <option value="Abnormal FLexion +3">Abnormal FLexion +3</option>
+                                <option value="Flexion to pain +4">Flexion to pain +4</option>
+                                <option value="Localised Pain +5">Localised Pain +5</option>
+                                <option value="Obey Commands +6">Obey Commands +6</option>                                
                             </select>
                      <label for="bestmotor">Best Motor Response</label>
 
@@ -645,13 +642,13 @@
 
 
                         <div class="col s12 m4 input-field">
-                            <input id="heartRate" type="number" name="heartRate" value="{{editclcvital.heartRate}}">
+                            <input id="heartRate" type="number" name="heartRate" value="{{editclcvital.heartRate}}" required>
                             <label for="heartRate">Heart Rate (BPM)</label>
                             <span class="helper-text"></span>
                         </div>
 
                         <div class="col s12 m4 input-field">
-                            <input id="resp" type="number" name="resp" value="{{editclcvital.resp}}">
+                            <input id="resp" type="number" name="resp" value="{{editclcvital.resp}}" required>
                             <label for="resp">Respiration Rate</label>
                             <span class="helper-text"></span>
                         </div>
@@ -660,12 +657,12 @@
                 </div>
                  <div class="row">
                         <div class="col s12 m4 input-field">
-                            <input id="sbp" type="number" name="sbp" value="{{editclcvital.sbp}}">
+                            <input id="sbp" type="number" name="sbp" value="{{editclcvital.sbp}}"required>
                             <label for="sbp">Blood Pressure (SBP)</label>
                             <span class="helper-text"></span>
                         </div>
                         <div class="col s12 m4 input-field">
-                            <input id="dbp" type="number" name="dbp" value="{{editclcvital.dbp}}">
+                            <input id="dbp" type="number" name="dbp" value="{{editclcvital.dbp}}"required>
                             <label for="dbp">Blood Pressure (SDP)</label>
                             <span class="helper-text"></span>
                         </div>
@@ -743,7 +740,7 @@
                         {{#unless ../userType}}
                         <td><a href="/master/clc-pupils/{{pupilsID}}">{{date}}</a></td>
                         {{else}}
-                        <td><a href="/student/clc-pupils/{{../recordID}}/{{ivID}}">{{date}}</a></td>
+                        <td><a href="/student/clc-pupils/{{../recordID}}/{{pupilsID}}">{{date}}</a></td>
                         {{/unless}}
                         <td>{{time}}</td>
                         <td>{{sizeright}}</td>
@@ -820,8 +817,8 @@
                 </div>
                 <div class="row">
                         <div class="col s12 m4 input-field">
-                            <select id="sizeright" name="sizeright">
-                            <option value="" disabled selected>Right Pupil Size</option>
+                            <select id="sizeright" name="sizeright" required>
+                            <option value="0" disabled selected>Right Pupil Size</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -835,8 +832,8 @@
                         </div>  
 
                         <div class="col s12 m4 input-field">
-                            <select id="reactionright" name="reactionright">
-                            <option value="" disabled selected>Right Reaction</option>
+                            <select id="reactionright" name="reactionright" required>
+                            <option value="0" disabled selected>Right Reaction</option>
                             <option value="Brisk">Brisk</option>
                             <option value="Sluggish">Sluggish</option>
                             <option value="Fixed">Fixed</option>
@@ -848,8 +845,8 @@
                 </div>
                 <div class="row">
                         <div class="col s12 m4 input-field">
-                            <select id="sizeleft" name="sizeleft">
-                            <option value="" disabled selected>Left Pupil Size</option>
+                            <select id="sizeleft" name="sizeleft" required>
+                            <option value="0" disabled selected>Left Pupil Size</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -863,8 +860,8 @@
                         </div>  
 
                         <div class="col s12 m4 input-field">
-                            <select id="reactionleft" name="reactionleft">
-                            <option value="" disabled selected>Left Reaction</option>
+                            <select id="reactionleft" name="reactionleft" required>
+                            <option value="0" disabled selected>Left Reaction</option>
                             <option value="Brisk">Brisk</option>
                             <option value="Sluggish">Sluggish</option>
                             <option value="Fixed">Fixed</option>
@@ -938,10 +935,10 @@
                         <td><a href="/student/clc-motorstrength/{{../recordID}}/{{motorstrengthID}}">{{date}}</a></td>
                         {{/unless}}
                         <td>{{time}}</td>
-                        <td>{{strengthrightarm}}</td>
-                        <td>{{strengthrightleg}}</td>
-                        <td>{{strengthleftarm}}</td>
-                        <td>{{strengthleftleg}}</td>
+                        <td>{{splitstrengthrightarm}}</td>
+                        <td>{{splitstrengthrightleg}}</td>
+                        <td>{{splitstrengthleftarm}}</td>
+                        <td>{{splitstrengthleftleg}}</td>
                         <td>{{totalms}}</td>
                         {{!-- <td>{{ivflush}}</td> --}}
                         {{!-- <td>{{patientID}}</td> --}}
@@ -1015,8 +1012,8 @@
                 </div>
                 <div class="row">
                         <div class="col s12 m4 input-field">
-                            <select id="strengthrightarm" name="strengthrightarm">
-                            <option value=" " disabled selected>Right Arm Strength</option>
+                            <select id="strengthrightarm" name="strengthrightarm" required>
+                            <option value="0" disabled>Right Arm Strength</option>
                             <option value="No Movement +0">No Movement +0</option>
                             <option value="Minimal Strength +1">Minimal Strength +1</option>
                             <option value="&#60; Anti-Gravity Strength +2">&lt; Anti-Gravity Strength +2</option>
@@ -1028,8 +1025,8 @@
                         </div>  
 
                         <div class="col s12 m4 input-field">
-                            <select id="strengthleftarm" name="strengthleftarm">
-                            <option value=" " disabled selected>Left Arm Strength</option>
+                            <select id="strengthleftarm" name="strengthleftarm" required>
+                            <option value="0" disabled>Left Arm Strength</option>
                             <option value="No Movement +0">No Movement +0</option>
                             <option value="Minimal Strength +1">Minimal Strength +1</option>
                             <option value="< Anti-Gravity Strength +2">&lt; Anti-Gravity Strength +2</option>
@@ -1043,8 +1040,8 @@
                 </div>
                 <div class="row">
                         <div class="col s12 m4 input-field">
-                            <select id="strengthrightleg" name="strengthrightleg">
-                            <option value=" " disabled selected>Right Leg Strength</option>
+                            <select id="strengthrightleg" name="strengthrightleg" required>
+                            <option value="0" disabled>Right Leg Strength</option>
                             <option value="No Movement +0">No Movement +0</option>
                             <option value="Minimal Strength +1">Minimal Strength +1</option>
                             <option value="< Anti-Gravity Strength +2">&lt; Anti-Gravity Strength +2</option>
@@ -1056,8 +1053,8 @@
                         </div>  
 
                         <div class="col s12 m4 input-field">
-                            <select id="strengthleftleg" name="strengthleftleg">
-                            <option value=" " disabled selected>Left Leg Strength</option>
+                            <select id="strengthleftleg" name="strengthleftleg" required>
+                            <option value="0" disabled>Left Leg Strength</option>
                             <option value="No Movement +0">No Movement +0</option>
                             <option value="Minimal Strength +1">Minimal Strength +1</option>
                             <option value="< Anti-Gravity Strength +2">&lt; Anti-Gravity Strength +2</option>
@@ -1117,25 +1114,34 @@
     })
 
         document.addEventListener('DOMContentLoaded', () => {
-        //IO
-        const dateIO = document.querySelector('#dateIO');
-        const timeIO = document.querySelector('#timeIO');
-        const foodportion = document.querySelector('#foodportion');
+        //GCS
+        const dateGcs = document.querySelector('#dateGcs');
+        const timeGcs = document.querySelector('#timeGcs');
+        const eyeopen = document.querySelector('#eyeopen');
+        const bestverbal = document.querySelector('#bestverbal');
+        const bestmotor = document.querySelector('#bestmotor');
 
-        //Enteral
-        const dateenteral = document.querySelector('#dateenteral');
-        const timeenteral = document.querySelector('#timeenteral');
-        const enteralfeed = document.querySelector('#enteralfeed');
-        const formula = document.querySelector('#formula');
 
-        //IV
-        const dateiv = document.querySelector('#dateiv');
-        const timeiv = document.querySelector('#timeiv');
-        const coninf = document.querySelector('#coninf');
+        //clc vital
+        const dateclcvital = document.querySelector('#dateclcvital');
+        const timeclcvital = document.querySelector('#timeclcvital');
 
-        //Output
-        const dateoutput = document.querySelector('#dateoutput');
-        const timeoutput = document.querySelector('#timeoutput');
+
+        //pupils
+        const datepupils = document.querySelector('#datepupils');
+        const timepupils = document.querySelector('#timepupils');
+        const sizeright = document.querySelector('#sizeright');
+        const reactionright = document.querySelector('#reactionright');
+        const sizeleft = document.querySelector('#sizeleft');
+        const reactionrreactionleftight = document.querySelector('#reactionleft');
+
+        //Motor strength
+        const datemotorstrength = document.querySelector('#datemotorstrength');
+        const timemotorstrength = document.querySelector('#timemotorstrength');
+        const strengthrightarm = document.querySelector('#strengthrightarm');
+        const strengthleftarm = document.querySelector('#strengthleftarm');
+        const strengthrightleg = document.querySelector('#strengthrightleg');
+        const strengthleftleg = document.querySelector('#strengthleftleg');
 
         //Img
         const elems = document.querySelectorAll('.materialboxed');
