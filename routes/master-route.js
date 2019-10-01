@@ -2395,74 +2395,200 @@ router.get('/CarePlan/:name/:carePlanID', ensureAuthenticated, (req, res) => {
 //Load Neurovascular page
 router.get('/neuro', ensureAuthenticated, ensureAuthorised, (req, res) => {
 	MasterNeuro.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newNeuro => {
+		// Right arm
+		MasterNeuro.find({ patientID: req.session.patient.patientID, siteOfInjury: "Right Arm" }).sort({'datetime':1}).then(newNeuroRightArm => {
 
-		neurosample = [];
-		neurosampleDate = [];
-		let neuroFlow = Object.assign([], newNeuro);
-					
-		neuroCount = -1;
-					
-		neuronoRecord = 'No existing record';
+			// Left arm
+			MasterNeuro.find({ patientID: req.session.patient.patientID, siteOfInjury: "Left Arm" }).sort({'datetime':1}).then(newNeuroLeftArm => {
 
-		newNeuro.forEach(neuro => {
-			if (!(neurosample.includes(neuro.datetime))) {
-				neurosample.push(neuro.datetime);
-				neurosampleDate.push(neuro.date);
-			}
-		});
-		neurosample.sort();
-		neurosampleDate.sort();
+				// Right leg
+				MasterNeuro.find({ patientID: req.session.patient.patientID, siteOfInjury: "Right Leg" }).sort({'datetime':1}).then(newNeuroRightLeg => {
 
-		for (i = 0; i < neurosample.length; i++) {
-			
+					// Left leg
+					MasterNeuro.find({ patientID: req.session.patient.patientID, siteOfInjury: "Left Leg" }).sort({'datetime':1}).then(newNeuroLeftLeg => {
+						
+						// right arm
+						var rightArmNeuroFlowLength = 0;
+						// left arm
+						var leftArmNeuroFlowLength = 0;
+						// right leg
+						var rightLegNeuroFlowLength = 0;
+						// left leg
+						var leftLegNeuroFlowLength = 0;
 
-			//Counter for empty data
-			//.length here refers to last index of the array
-			if (neuroCount !== (neuroFlow.length - 1)) {
-				neuroCount++;
-			}
-			//Insert empty data when value doesnt match
-			//Count here does the index count of flow array
-			if(neuroFlow !='') 
-			{
-				if (neurosample[i] < neuroFlow[neuroCount].datetime) {
-					neuroFlow.splice(neuroCount, 0, {datetime: ''});
-				} else if (neurosample[i] > neuroFlow[neuroCount].datetime) {
-					neuroFlow.splice(neuroCount + 1, 0, {datetime: ''});
-				}
-			} 
-			else
-			{
-				neuroFlow.push({datetime: '', poc: neuronoRecord});
-			}
+						// Right Arm
+						if (!(isNaN(newNeuroRightArm.length)))
+						{
+							rightArmNeuroFlowLength = newNeuroRightArm.length
+						}
+						rightArmNeuroFlowLength = rightArmNeuroFlowLength * 2; // rowspan to merge same site of injury on right arm
 
-			
-		};
-		res.render('charts/master/charts-neuro', {
-			// recordID: req.params.recordID,
-			// userType: userType,
-			neurodateVal: neurosample,
-			neuroFlow: neuroFlow,
-			newNeuro: newNeuro,
-			patient: req.session.patient,
-			showMenu: true
+						//Left Arm
+						if (!(isNaN(newNeuroLeftArm.length)))
+						{
+							leftArmNeuroFlowLength = newNeuroLeftArm.length
+						}
+						leftArmNeuroFlowLength = leftArmNeuroFlowLength * 2; // rowspan to merge same site of injury on left arm
+						
+						// Right Leg
+						if (!(isNaN(newNeuroRightLeg.length)))
+						{
+							rightLegNeuroFlowLength = newNeuroRightLeg.length
+						}
+						rightLegNeuroFlowLength = rightLegNeuroFlowLength * 2; // rowspan to merge same site of injury on right leg
+
+						//Left Leg
+						if (!(isNaN(newNeuroLeftLeg.length)))
+						{
+							leftLegNeuroFlowLength = newNeuroLeftLeg.length
+						}
+						leftLegNeuroFlowLength = leftLegNeuroFlowLength * 2; // rowspan to merge same site of injury on left arm
+						
+						/*console.log("rightArmNeuroFlowLength: "+ rightArmNeuroFlowLength);
+						console.log("leftArmNeuroFlowLength: " + leftArmNeuroFlowLength);
+						console.log("rightLegNeuroFlowLength: " +rightLegNeuroFlowLength);
+						console.log("leftLegNeuroFlowLength: "+leftLegNeuroFlowLength)*/
+						
+
+						neurosample = [];
+						neurosampleDate = [];
+						let neuroFlow = Object.assign([], newNeuro);
+									
+						neuroCount = -1;
+									
+						neuronoRecord = 'No existing record';
+
+						newNeuro.forEach(neuro => {
+							if (!(neurosample.includes(neuro.datetime))) {
+								neurosample.push(neuro.datetime);
+								neurosampleDate.push(neuro.date);
+							}
+						});
+						neurosample.sort();
+						neurosampleDate.sort();
+
+						for (i = 0; i < neurosample.length; i++) {
+							
+
+							//Counter for empty data
+							//.length here refers to last index of the array
+							if (neuroCount !== (neuroFlow.length - 1)) {
+								neuroCount++;
+							}
+							//Insert empty data when value doesnt match
+							//Count here does the index count of flow array
+							if(neuroFlow !='') 
+							{
+								if (neurosample[i] < neuroFlow[neuroCount].datetime) {
+									neuroFlow.splice(neuroCount, 0, {datetime: ''});
+								} else if (neurosample[i] > neuroFlow[neuroCount].datetime) {
+									neuroFlow.splice(neuroCount + 1, 0, {datetime: ''});
+								}
+							} 
+							else
+							{
+								neuroFlow.push({datetime: '', poc: neuronoRecord});
+							}
+
+							
+						};
+						res.render('charts/master/charts-neuro', {
+							// recordID: req.params.recordID,
+							// userType: userType,
+							neurodateVal: neurosample,
+							neuroFlow: neuroFlow,
+							newNeuro: newNeuro,
+							patient: req.session.patient,
+							newNeuroRightArm: newNeuroRightArm,
+							newNeuroLeftArm: newNeuroLeftArm,
+							newNeuroRightLeg: newNeuroRightLeg,
+							newNeuroLeftLeg: newNeuroLeftLeg,
+							rightArmRowSpan: rightArmNeuroFlowLength,
+							leftArmRowSpan: leftArmNeuroFlowLength,
+							rightLegRowSpan: rightLegNeuroFlowLength,
+							leftLegRowSpan: leftLegNeuroFlowLength,
+							showMenu: true
+						})
+					})
+				})
+			})
 		})
 	})
 })
 
 //get single Neurovascular info
 router.get('/neuro/:neuroID', ensureAuthenticated, ensureAuthorised, (req, res) => {
-	// MasterBraden.find({ patientID: req.session.patient.patientID }).then(newBraden => {
-		MasterNeuro.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newNeuro => {
-			MasterNeuro.findOne({ neuroID: req.params.neuroID }).then(editNeuro => {
+	MasterNeuro.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newNeuro => {
+		// Right arm
+		MasterNeuro.find({ patientID: req.session.patient.patientID, siteOfInjury: "Right Arm" }).sort({'datetime':1}).then(newNeuroRightArm => {
+			// Left arm
+			MasterNeuro.find({ patientID: req.session.patient.patientID, siteOfInjury: "Left Arm" }).sort({'datetime':1}).then(newNeuroLeftArm => {
+				// Right leg
+				MasterNeuro.find({ patientID: req.session.patient.patientID, siteOfInjury: "Right Leg" }).sort({'datetime':1}).then(newNeuroRightLeg => {
+					// Left leg
+					MasterNeuro.find({ patientID: req.session.patient.patientID, siteOfInjury: "Left Leg" }).sort({'datetime':1}).then(newNeuroLeftLeg => {
+						MasterNeuro.findOne({ neuroID: req.params.neuroID }).then(editNeuro => {
+							// right arm
+							var rightArmNeuroFlowLength = 0;
+							// left arm
+							var leftArmNeuroFlowLength = 0;
+							// right leg
+							var rightLegNeuroFlowLength = 0;
+							// left leg
+							var leftLegNeuroFlowLength = 0;
 
-			editNeuro.date = moment(editNeuro.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
-			res.render('charts/master/charts-neuro', {
-				// azureId: req.user.azure_oid,
-				newNeuro: newNeuro,
-				editNeuro: editNeuro,
-				patient: req.session.patient,
-				showMenu: true			
+							// Right Arm
+							if (!(isNaN(newNeuroRightArm.length)))
+							{
+								rightArmNeuroFlowLength = newNeuroRightArm.length
+							}
+							rightArmNeuroFlowLength = rightArmNeuroFlowLength * 2; // rowspan to merge same site of injury on right arm
+
+							//Left Arm
+							if (!(isNaN(newNeuroLeftArm.length)))
+							{
+								leftArmNeuroFlowLength = newNeuroLeftArm.length
+							}
+							leftArmNeuroFlowLength = leftArmNeuroFlowLength * 2; // rowspan to merge same site of injury on left arm
+							
+							// Right Leg
+							if (!(isNaN(newNeuroRightLeg.length)))
+							{
+								rightLegNeuroFlowLength = newNeuroRightLeg.length
+							}
+							rightLegNeuroFlowLength = rightLegNeuroFlowLength * 2; // rowspan to merge same site of injury on right leg
+
+							//Left Leg
+							if (!(isNaN(newNeuroLeftLeg.length)))
+							{
+								leftLegNeuroFlowLength = newNeuroLeftLeg.length
+							}
+							leftLegNeuroFlowLength = leftLegNeuroFlowLength * 2; // rowspan to merge same site of injury on left arm
+							
+							/*console.log("rightArmNeuroFlowLength: "+ rightArmNeuroFlowLength);
+							console.log("leftArmNeuroFlowLength: " + leftArmNeuroFlowLength);
+							console.log("rightLegNeuroFlowLength: " +rightLegNeuroFlowLength);
+							console.log("leftLegNeuroFlowLength: "+leftLegNeuroFlowLength)*/
+
+							editNeuro.date = moment(editNeuro.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
+							res.render('charts/master/charts-neuro', {
+								// azureId: req.user.azure_oid,
+								newNeuro: newNeuro,
+								editNeuro: editNeuro,
+								patient: req.session.patient,
+								newNeuroRightArm: newNeuroRightArm,
+								newNeuroLeftArm: newNeuroLeftArm,
+								newNeuroRightLeg: newNeuroRightLeg,
+								newNeuroLeftLeg: newNeuroLeftLeg,
+								rightArmRowSpan: rightArmNeuroFlowLength,
+								leftArmRowSpan: leftArmNeuroFlowLength,
+								rightLegRowSpan: rightLegNeuroFlowLength,
+								leftLegRowSpan: leftLegNeuroFlowLength,
+								showMenu: true			
+							})
+						})
+					})
+				})
 			})
 		})
 	})

@@ -289,128 +289,261 @@
                 
                 {{#if newNeuro}}
                     <!--Right Arm-->
-                    {{#each newNeuro}}
+                    {{#if newNeuroRightArm}}
                     <tr style="height: 60px">
-                        <td rowspan="2">{{siteOfInjury}}</td>
-                        {{#unless ../userType}}
-                        <td rowspan="2"><a href="/master/neuro/{{neuroID}}">{{date}}</a></td>
-                        {{else}}
-                        <td rowspan="2"><a href="/student/neuro/{{../recordID}}/{{neuroID}}">{{date}}</a></td>
-                        {{/unless}}
-                        <td rowspan="2">{{time}}</td>
-                        <td>Left</td>
-                        <td>{{colourLeft}}</td>
-                        
-                        <td>{{temperatureLeft}}</td>
-                        
-                        <td>{{capillaryRefillLeft}}</td>
-                        
-                        <td>{{peripheralPulseLeft}}</td>
-                        
-                        <td>{{edemaLeft}}</td>
-                        
-                        <td>{{movementLeft}}</td>
-                        
-                        <td>{{sensationLeft}}</td>
-                        
-                        <td>{{painLeft}}</td>
-                        
-                        <td>{{numericalRatingScaleLeft}}</td>
-                        
-                        <td>{{verbalDescriptiveScaleLeft}}</td>
-                        
-                        <td>{{characteristicLeft}}</td>
-                        
-                        {{#unless ../userType}}
-                        <td style="width: 65px" rowspan="2"> <!-- the tr we're trying to get -->
-                            <form action="/master/del-neuro/{{neuroID}}?_method=DELETE" method="post" id="delete-form">
-                                <input type="hidden" name="_method" value="DELETE">
-                            <button type="submit" class="btn red darken-3">
-                                 <i class="material-icons">delete
-                            </button>
-                            </form>
-                        </td>  
-                        {{/unless}}
-                    </tr>
-                    <tr>
-                        <td>Right</td>
-                        <td>{{colourRight}}</td>
-                        <td>{{temperatureRight}}</td>
-                        <td>{{capillaryRefillRight}}</td>
-                        <td>{{peripheralPulseRight}}</td>
-                        <td>{{edemaRight}}</td>
-                        <td>{{movementRight}}</td>
-                        <td>{{sensationRight}}</td>
-                        <td>{{painRight}}</td>
-                        <td>{{numericalRatingScaleRight}}</td>
-                        <td>{{verbalDescriptiveScaleRight}}</td>
-                        <td>{{characteristicRight}}</td>
-                    </tr>
+                        <td rowspan="{{rightArmRowSpan}}">Right arm</td>
+
+                        {{#each newNeuroRightArm}}
+                            {{#unless ../userType}}
+                                <td rowspan="2"><a href="/master/neuro/{{neuroID}}">{{date}}</a></td>
+                            {{else}}
+                                <td rowspan="2"><a href="/student/neuro/{{../recordID}}/{{neuroID}}">{{date}}</a></td>
+                            {{/unless}}
+                            <td rowspan="2">{{time}}</td>
+                            
+                            <td>Left</td>
+                            <td>{{colourLeft}}</td>
+                            
+                            <td>{{temperatureLeft}}</td>
+                            
+                            <td>{{capillaryRefillLeft}}</td>
+                            
+                            <td>{{peripheralPulseLeft}}</td>
+                            
+                            <td>{{edemaLeft}}</td>
+                            
+                            <td>{{movementLeft}}</td>
+                            
+                            <td>{{sensationLeft}}</td>
+                            
+                            <td>{{painLeft}}</td>
+                            
+                            <td>{{numericalRatingScaleLeft}}</td>
+                            
+                            <td>{{verbalDescriptiveScaleLeft}}</td>
+                            
+                            <td>{{characteristicLeft}}</td>
+                            
+                            {{#unless ../userType}}
+                                <td style="width: 65px" rowspan="2"> <!-- the tr we're trying to get -->
+                                    <form action="/master/del-neuro/{{neuroID}}?_method=DELETE" method="post" id="delete-form">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                    <button type="submit" class="btn red darken-3">
+                                        <i class="material-icons">delete
+                                    </button>
+                                    </form>
+                                </td>  
+                            {{/unless}}
+                        </tr>
+                        <tr>
+                            <td>Right</td>
+                            <td>{{colourRight}}</td>
+                            <td>{{temperatureRight}}</td>
+                            <td>{{capillaryRefillRight}}</td>
+                            <td>{{peripheralPulseRight}}</td>
+                            <td>{{edemaRight}}</td>
+                            <td>{{movementRight}}</td>
+                            <td>{{sensationRight}}</td>
+                            <td>{{painRight}}</td>
+                            <td>{{numericalRatingScaleRight}}</td>
+                            <td>{{verbalDescriptiveScaleRight}}</td>
+                            <td>{{characteristicRight}}</td>
+                        </tr>
+                        {{/each}}
+                    {{/if}}
                     <!--//Right Arm-->
+
                     <!--Left Arm-->
-                    <!--//Right Arm-->
+                    {{#if newNeuroLeftArm}}
+                        <tr style="height: 60px">
+                            <td rowspan="{{leftArmRowSpan}}">Left Arm</td>
+
+                            {{#each newNeuroLeftArm}}
+                                {{#unless ../userType}}
+                                    <td rowspan="2"><a href="/master/neuro/{{neuroID}}">{{date}}</a></td>
+                                {{else}}
+                                    <td rowspan="2"><a href="/student/neuro/{{../recordID}}/{{neuroID}}">{{date}}</a></td>
+                                {{/unless}}
+                                <td rowspan="2">{{time}}</td>
+                                <td>Left</td>
+                                <td>{{colourLeft}}</td>
+                                
+                                <td>{{temperatureLeft}}</td>
+                                
+                                <td>{{capillaryRefillLeft}}</td>
+                                
+                                <td>{{peripheralPulseLeft}}</td>
+                                
+                                <td>{{edemaLeft}}</td>
+                                
+                                <td>{{movementLeft}}</td>
+                                
+                                <td>{{sensationLeft}}</td>
+                                
+                                <td>{{painLeft}}</td>
+                                
+                                <td>{{numericalRatingScaleLeft}}</td>
+                                
+                                <td>{{verbalDescriptiveScaleLeft}}</td>
+                                
+                                <td>{{characteristicLeft}}</td>
+                                
+                                {{#unless ../userType}}
+                                    <td style="width: 65px" rowspan="2"> <!-- the tr we're trying to get -->
+                                        <form action="/master/del-neuro/{{neuroID}}?_method=DELETE" method="post" id="delete-form">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                        <button type="submit" class="btn red darken-3">
+                                            <i class="material-icons">delete
+                                        </button>
+                                        </form>
+                                    </td>  
+                                {{/unless}}
+                        </tr>
+                        <tr>
+                            <td>Right</td>
+                            <td>{{colourRight}}</td>
+                            <td>{{temperatureRight}}</td>
+                            <td>{{capillaryRefillRight}}</td>
+                            <td>{{peripheralPulseRight}}</td>
+                            <td>{{edemaRight}}</td>
+                            <td>{{movementRight}}</td>
+                            <td>{{sensationRight}}</td>
+                            <td>{{painRight}}</td>
+                            <td>{{numericalRatingScaleRight}}</td>
+                            <td>{{verbalDescriptiveScaleRight}}</td>
+                            <td>{{characteristicRight}}</td>
+                        </tr>
+                        {{/each}}
+                    {{/if}}
+                    <!--//Left Arm-->
+
                     <!--Right Leg-->
+                    {{#if newNeuroRightLeg}}
+                        <tr style="height: 60px">
+                            <td rowspan="{{rightLegRowSpan}}">Right Leg</td>
+
+                            {{#each newNeuroRightLeg}}
+                            {{#unless ../userType}}
+                                <td rowspan="2"><a href="/master/neuro/{{neuroID}}">{{date}}</a></td>
+                            {{else}}
+                                <td rowspan="2"><a href="/student/neuro/{{../recordID}}/{{neuroID}}">{{date}}</a></td>
+                            {{/unless}}
+                            <td rowspan="2">{{time}}</td>
+                            <td>Left</td>
+                            <td>{{colourLeft}}</td>
+                            
+                            <td>{{temperatureLeft}}</td>
+                            
+                            <td>{{capillaryRefillLeft}}</td>
+                            
+                            <td>{{peripheralPulseLeft}}</td>
+                            
+                            <td>{{edemaLeft}}</td>
+                            
+                            <td>{{movementLeft}}</td>
+                            
+                            <td>{{sensationLeft}}</td>
+                            
+                            <td>{{painLeft}}</td>
+                            
+                            <td>{{numericalRatingScaleLeft}}</td>
+                            
+                            <td>{{verbalDescriptiveScaleLeft}}</td>
+                            
+                            <td>{{characteristicLeft}}</td>
+                            
+                            {{#unless ../userType}}
+                            <td style="width: 65px" rowspan="2"> <!-- the tr we're trying to get -->
+                                <form action="/master/del-neuro/{{neuroID}}?_method=DELETE" method="post" id="delete-form">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn red darken-3">
+                                    <i class="material-icons">delete
+                                </button>
+                                </form>
+                            </td>  
+                            {{/unless}}
+                        </tr>
+                        <tr>
+                            <td>Right</td>
+                            <td>{{colourRight}}</td>
+                            <td>{{temperatureRight}}</td>
+                            <td>{{capillaryRefillRight}}</td>
+                            <td>{{peripheralPulseRight}}</td>
+                            <td>{{edemaRight}}</td>
+                            <td>{{movementRight}}</td>
+                            <td>{{sensationRight}}</td>
+                            <td>{{painRight}}</td>
+                            <td>{{numericalRatingScaleRight}}</td>
+                            <td>{{verbalDescriptiveScaleRight}}</td>
+                            <td>{{characteristicRight}}</td>
+                        </tr>
+                        {{/each}}
+                    {{/if}}
                     <!--//Right Leg-->
+
                     <!--Left Leg-->
+                    {{#if newNeuroLeftLeg}}
+                        <tr style="height: 60px">
+                            <td rowspan="{{leftLegRowSpan}}">Left Leg</td>
+                            {{#each newNeuroLeftLeg}}
+                            {{#unless ../userType}}
+                                <td rowspan="2"><a href="/master/neuro/{{neuroID}}">{{date}}</a></td>
+                            {{else}}
+                                <td rowspan="2"><a href="/student/neuro/{{../recordID}}/{{neuroID}}">{{date}}</a></td>
+                            {{/unless}}
+                            <td rowspan="2">{{time}}</td>
+                            <td>Left</td>
+                            <td>{{colourLeft}}</td>
+                            
+                            <td>{{temperatureLeft}}</td>
+                            
+                            <td>{{capillaryRefillLeft}}</td>
+                            
+                            <td>{{peripheralPulseLeft}}</td>
+                            
+                            <td>{{edemaLeft}}</td>
+                            
+                            <td>{{movementLeft}}</td>
+                            
+                            <td>{{sensationLeft}}</td>
+                            
+                            <td>{{painLeft}}</td>
+                            
+                            <td>{{numericalRatingScaleLeft}}</td>
+                            
+                            <td>{{verbalDescriptiveScaleLeft}}</td>
+                            
+                            <td>{{characteristicLeft}}</td>
+                            
+                            {{#unless ../userType}}
+                            <td style="width: 65px" rowspan="2"> <!-- the tr we're trying to get -->
+                                <form action="/master/del-neuro/{{neuroID}}?_method=DELETE" method="post" id="delete-form">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn red darken-3">
+                                    <i class="material-icons">delete
+                                </button>
+                                </form>
+                            </td>  
+                            {{/unless}}
+                        </tr>
+                        <tr>
+                            <td>Right</td>
+                            <td>{{colourRight}}</td>
+                            <td>{{temperatureRight}}</td>
+                            <td>{{capillaryRefillRight}}</td>
+                            <td>{{peripheralPulseRight}}</td>
+                            <td>{{edemaRight}}</td>
+                            <td>{{movementRight}}</td>
+                            <td>{{sensationRight}}</td>
+                            <td>{{painRight}}</td>
+                            <td>{{numericalRatingScaleRight}}</td>
+                            <td>{{verbalDescriptiveScaleRight}}</td>
+                            <td>{{characteristicRight}}</td>
+                        </tr>
+                        {{/each}}
+                    {{/if}}
                     <!--//Left Leg-->
-                    {{!-- {{#each newNeuro}}
-                    <tr style="height: 60px">
-                        <td rowspan="2">{{siteOfInjury}}</td>
-                        {{#unless ../userType}}
-                        <td rowspan="2"><a href="/master/neuro/{{neuroID}}">{{date}}</a></td>
-                        {{else}}
-                        <td rowspan="2"><a href="/student/neuro/{{../recordID}}/{{neuroID}}">{{date}}</a></td>
-                        {{/unless}}
-                        <td rowspan="2">{{time}}</td>
-                        <td>Left</td>
-                        <td>{{colourLeft}}</td>
-                        
-                        <td>{{temperatureLeft}}</td>
-                        
-                        <td>{{capillaryRefillLeft}}</td>
-                        
-                        <td>{{peripheralPulseLeft}}</td>
-                        
-                        <td>{{edemaLeft}}</td>
-                        
-                        <td>{{movementLeft}}</td>
-                        
-                        <td>{{sensationLeft}}</td>
-                        
-                        <td>{{painLeft}}</td>
-                        
-                        <td>{{numericalRatingScaleLeft}}</td>
-                        
-                        <td>{{verbalDescriptiveScaleLeft}}</td>
-                        
-                        <td>{{characteristicLeft}}</td>
-                        
-                        {{#unless ../userType}}
-                        <td style="width: 65px" rowspan="2"> <!-- the tr we're trying to get -->
-                            <form action="/master/del-neuro/{{neuroID}}?_method=DELETE" method="post" id="delete-form">
-                                <input type="hidden" name="_method" value="DELETE">
-                            <button type="submit" class="btn red darken-3">
-                                 <i class="material-icons">delete
-                            </button>
-                            </form>
-                        </td>  
-                        {{/unless}}
-                    </tr>
-                    <tr>
-                        <td>Right</td>
-                        <td>{{colourRight}}</td>
-                        <td>{{temperatureRight}}</td>
-                        <td>{{capillaryRefillRight}}</td>
-                        <td>{{peripheralPulseRight}}</td>
-                        <td>{{edemaRight}}</td>
-                        <td>{{movementRight}}</td>
-                        <td>{{sensationRight}}</td>
-                        <td>{{painRight}}</td>
-                        <td>{{numericalRatingScaleRight}}</td>
-                        <td>{{verbalDescriptiveScaleRight}}</td>
-                        <td>{{characteristicRight}}</td>
-                    </tr> --}}
-                    {{/each}}
+                    
                 {{else}}
                 <p id="noRecord">You have not created any Neurovascular records yet</p>
                 {{/if}}
