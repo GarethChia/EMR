@@ -2459,10 +2459,10 @@ router.get('/neuro', ensureAuthenticated, ensureAuthorised, (req, res) => {
 						neuronoRecord = 'No existing record';
 
 						newNeuro.forEach(neuro => {
-							if (!(neurosample.includes(neuro.datetime))) {
+							// if (!(neurosample.includes(neuro.datetime))) {
 								neurosample.push(neuro.datetime);
 								neurosampleDate.push(neuro.date);
-							}
+							// }
 						});
 						neurosample.sort();
 						neurosampleDate.sort();

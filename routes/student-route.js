@@ -2845,36 +2845,26 @@ router.get('/neuro/:recordID', ensureAuthenticated, (req, res) => {
 							leftLegNeuroFlowLength = newNeuroLeftLeg.length
 						}
 						leftLegNeuroFlowLength = leftLegNeuroFlowLength * 2; // rowspan to merge same site of injury on left arm
-						
-						/*console.log("rightArmNeuroFlowLength: "+ rightArmNeuroFlowLength);
-						console.log("leftArmNeuroFlowLength: " + leftArmNeuroFlowLength);
-						console.log("rightLegNeuroFlowLength: " +rightLegNeuroFlowLength);
-						console.log("leftLegNeuroFlowLength: "+leftLegNeuroFlowLength)*/
 
 						neurosample = [];
 						neurosampleDate = [];
 						let neuroFlow = Object.assign([], newNeuro); // used to copy the values of all enumerable own properties
-						
-						console.log("Hi: " + neuroFlow); // Right leg, Right leg, Right arm
-						console.log("Hi2: " + newNeuro); // Right leg, Right leg, Right arm
 						
 						neuroCount = -1;
 						
 						neuronoRecord = 'No existing record';
 
 						newNeuro.forEach(neuro => {
-							if (!(neurosample.includes(neuro.datetime))) {
+							// if (!(neurosample.includes(neuro.datetime))) {
 								neurosample.push(neuro.datetime);
 								neurosampleDate.push(neuro.date);
-							}
+							// }
 						});
 						neurosample.sort();
 						neurosampleDate.sort();
 
 						for (i = 0; i < neurosample.length; i++) {
-							
-							// console.log("neuroCount: "+neuroCount);
-							// console.log("neuroFlow.length: "+ neuroFlow.length);
+						
 							//Counter for empty data
 							//.length here refers to last index of the array
 							if (neuroCount !== (neuroFlow.length - 1)) { // until it gets to 2
@@ -2887,9 +2877,6 @@ router.get('/neuro/:recordID', ensureAuthenticated, (req, res) => {
 							//Count here does the index count of flow array
 							if(neuroFlow !='') 
 							{
-								console.log("i: "+i);
-								console.log("neurosample[i]: "+neurosample[i]);
-								console.log("neuroFlow[neuroCount].datetime: "+neuroFlow[neuroCount].datetime);
 								if (neurosample[i] < neuroFlow[neuroCount].datetime) {
 									neuroFlow.splice(neuroCount, 0, {datetime: ''});
 								} else if (neurosample[i] > neuroFlow[neuroCount].datetime) {
