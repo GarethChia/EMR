@@ -2678,10 +2678,10 @@ router.get('/diabetic/:recordID', ensureAuthenticated, (req, res) => {
 					diabeticnoRecord = 'No existing record';
 
 					newDiabetic.forEach(diabetic => {
-						if (!(diabeticsample.includes(diabetic.datetime))) {
+						//if (!(diabeticsample.includes(diabetic.datetime))) {
 							diabeticsample.push(diabetic.datetime);
 							diabeticsampleDate.push(diabetic.date);
-						}
+						//}
 					});
 					diabeticsample.sort();
 					diabeticsampleDate.sort();
