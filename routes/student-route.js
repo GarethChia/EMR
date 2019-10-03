@@ -624,8 +624,6 @@ router.put('/save-customised-patient/:patientID', ensureAuthenticated, (req, res
 																					painRight: neuro.painRight,
 																					numericalRatingScaleLeft: neuro.numericalRatingScaleLeft,
 																					numericalRatingScaleRight: neuro.numericalRatingScaleRight,
-																					verbalDescriptiveScaleLeft: neuro.verbalDescriptiveScaleLeft,
-																					verbalDescriptiveScaleRight: neuro.verbalDescriptiveScaleRight,
 																					characteristicLeft: neuro.characteristicLeft,
 																					characteristicRight: neuro.characteristicRight
 																				}).save();
@@ -3029,8 +3027,6 @@ router.post('/add-neuro/:recordID', ensureAuthenticated, (req, res) => {
 			painRight: req.body.rightTypeOfPainScale,
 			numericalRatingScaleLeft: req.body.numericalRatingScaleLeft,
 			numericalRatingScaleRight: req.body.numericalRatingScaleRight,
-			verbalDescriptiveScaleLeft: req.body.leftVerbalDescriptiveScale,
-			verbalDescriptiveScaleRight: req.body.rightVerbalDescriptiveScale,
 			characteristicLeft: req.body.leftCharacteristic,
 			characteristicRight: req.body.rightCharacteristic
 			/*
@@ -3092,8 +3088,6 @@ router.put('/edit-neuro/:recordID/:neuroID', ensureAuthenticated, (req,res) => {
 		editNeuro.painRight = req.body.rightTypeOfPainScale,
 		editNeuro.numericalRatingScaleLeft = req.body.numericalRatingScaleLeft,
 		editNeuro.numericalRatingScaleRight = req.body.numericalRatingScaleRight,
-		editNeuro.verbalDescriptiveScaleLeft = req.body.leftVerbalDescriptiveScale,
-		editNeuro.verbalDescriptiveScaleRight = req.body.rightVerbalDescriptiveScale,
 		editNeuro.characteristicLeft = req.body.leftCharacteristic,
 		editNeuro.characteristicRight = req.body.rightCharacteristic
 		editNeuro.save();

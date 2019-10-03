@@ -217,24 +217,6 @@
             </tr>
 
             <tr>
-                <th width="10%" rowspan="3">Verbal Descriptive Scale</th>
-            </tr>
-              
-            <tr>
-                <th>Left</th>
-                {{#each neuroFlow}}
-                    <td>{{verbalDescriptiveScaleLeft}}</td>
-                {{/each}}
-            </tr>
-
-            <tr style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">
-                <th>Right</th>
-                {{#each neuroFlow}}
-                    <td>{{verbalDescriptiveScaleRight}}</td>
-                {{/each}}
-            </tr>
-
-            <tr>
                 <th width="10%" rowspan="3">Characteristic</th>
             </tr>
               
@@ -275,7 +257,6 @@
                     <th>Sensation</th>
                     <th>Pain</th>
                     <th>Numerical Rating Scale</th>
-                    <th>Verbal Descriptive Scale</th>
                     <th>Characteristic</th>
                     {{#unless userType}}
                     <th>Delete</th>
@@ -317,8 +298,6 @@
                             
                             <td>{{numericalRatingScaleLeft}}</td>
                             
-                            <td>{{verbalDescriptiveScaleLeft}}</td>
-                            
                             <td>{{characteristicLeft}}</td>
                             
                             {{#unless ../userType}}
@@ -343,7 +322,6 @@
                             <td>{{sensationRight}}</td>
                             <td>{{painRight}}</td>
                             <td>{{numericalRatingScaleRight}}</td>
-                            <td>{{verbalDescriptiveScaleRight}}</td>
                             <td>{{characteristicRight}}</td>
                         </tr>
                         {{/each}}
@@ -790,8 +768,9 @@
                             </select>
                         <label for="rightSensation">Right</label>
                         </div>
-                        <!--Pop-up for sensation 1-->
+                        
                         <div class="col s10 m2 input-field">
+                            <!--Pop-up for sensation 1-->
                             <a class="waves-effect waves-light btn modal-trigger" href="#sensation">
                                 <i class="fa fa-hand-paper fa-lg" aria-hidden="true"></i>
                             </a>
@@ -811,6 +790,9 @@
                                 <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
                                 </div>
                             </div>
+                            <!--// Pop-up for sensation 1-->
+
+                            <!--Pop-up for sensation 2 -->
                             <a class="waves-effect waves-light btn modal-trigger" href="#motor-function">
                                 <i class="fab fa-accessible-icon fa-lg" aria-hidden="true"></i>
                             </a>
@@ -830,11 +812,6 @@
                                 <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
                                 </div>
                             </div>
-                        </div>
-                        <!--// Pop-up for sensation 1-->
-                        <!--Pop-up for sensation 2 -->
-                        <div class="col s10 m1 input-field">
-                            
                         </div>
                         <!--// Pop-up for sensation 2-->
                     </div>
@@ -859,9 +836,51 @@
                             </select>
                             <label for="rightTypeOfPainScale">Right</label>
                         </div>
+
+                        <div class="col s10 m2 input-field">
+                            <!--Pop-up for pain scale-->
+                            <a class="waves-effect waves-light btn modal-trigger" href="#painScale">
+                                <i class="fa fa-info-circle fa-lg" aria-hidden="true"></i>
+                            </a>
+                            <div id="painScale" class="modal">
+                                <div class="modal-content">
+                                <p>
+                                    <hr/>
+                                    <h4>
+                                        <center>
+                                            Numerical Rating Scale
+                                        </center>
+                                    </h4>
+                                    <hr/>
+                                    <img class="materialboxed" style="margin-left: auto;margin-right: auto; max-height: 20em; min-height: 20em; max-width:43em; min-width: 43em;" src="/assets/img/numericalRatingScale.jpeg">
+                                    <hr/>
+                                    <h4>
+                                        <center>
+                                            Wong Baker
+                                        </center>
+                                    </h4>
+                                    <hr/>
+                                    <img class="materialboxed" style="margin-left: auto;margin-right: auto; max-height: 30em; min-height: 30em;" src="/assets/img/wongbakerImage.jpg">
+                                    <hr/>
+                                    <h4>
+                                        <center>
+                                            FLACC
+                                        </center>
+                                    </h4>
+                                    <hr/>
+                                    <img class="materialboxed" style="margin-left: auto;margin-right: auto; max-height: 30em; min-height: 30em;" src="/assets/img/FLACCImage.JPG">
+                                    
+                                </p>
+                                </div>
+                                <div class="modal-footer">
+                                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+                                </div>
+                            </div>
+                            <!--// Pop-up for pain scale-->
+                        </div>
                     </div>
 
-                    <span class="purple-text darken-2">Numerical Rating Scale</span>
+                    <span class="purple-text darken-2">Pain Scale</span>
                     <div class="row">
                         <div class="col s12 m4 input-field">
                             <select id="numericalRatingScaleLeft" name="numericalRatingScaleLeft" required>
@@ -898,28 +917,6 @@
                         <label for="numericalRatingScaleRight">Right</label>
                         </div>
                         
-                    </div>
-                    
-                    <span class="purple-text darken-2">Verbal Descriptive Scale</span>
-                    <div class="row">
-                        <div class="col s12 m4 input-field">
-                                <select id="leftVerbalDescriptiveScale" name="leftVerbalDescriptiveScale" required>
-                                    <option value="" disabled selected>Please Select</option>
-                                    <option value="Mild pain 3">Mild pain 3</option>
-                                    <option value="Moderate pain 6">Moderate pain 6</option>
-                                    <option value="Severe pain 9">Severe pain 9</option>
-                                </select>
-                        <label for="leftVerbalDescriptiveScale">Left</label>
-                        </div>
-                        <div class="col s12 m4 input-field">
-                                <select id="rightVerbalDescriptiveScale" name="rightVerbalDescriptiveScale" required>
-                                    <option value="" disabled selected>Please Select</option>
-                                    <option value="Mild pain 3">Mild pain 3</option>
-                                    <option value="Moderate pain 6">Moderate pain 6</option>
-                                    <option value="Severe pain 9">Severe pain 9</option>
-                                </select>
-                        <label for="rightVerbalDescriptiveScale">Left</label>
-                        </div>
                     </div>
 
                     <span class="purple-text darken-2">Characteristic</span>

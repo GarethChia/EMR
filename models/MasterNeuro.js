@@ -43,8 +43,8 @@ const MasterNeuroSchema = new Schema({
 	painRight:	{type: String, default: ''},
 	numericalRatingScaleLeft:	{type: String, default: ''},
 	numericalRatingScaleRight:	{type: String, default: ''},
-	verbalDescriptiveScaleLeft:		{type: String, default: ''},
-	verbalDescriptiveScaleRight:	{type: String, default: ''},
+	// verbalDescriptiveScaleLeft:		{type: String, default: ''},
+	// verbalDescriptiveScaleRight:	{type: String, default: ''},
 	characteristicLeft: 	{type: String, default: ''},
 	characteristicRight:	{type: String, default: ''}
 });

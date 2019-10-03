@@ -2626,8 +2626,6 @@ router.post('/add-neuro', ensureAuthenticated,ensureAuthorised, (req, res) => {
 		painRight: req.body.rightTypeOfPainScale,
 		numericalRatingScaleLeft: req.body.numericalRatingScaleLeft,
 		numericalRatingScaleRight: req.body.numericalRatingScaleRight,
-		verbalDescriptiveScaleLeft: req.body.leftVerbalDescriptiveScale,
-		verbalDescriptiveScaleRight: req.body.rightVerbalDescriptiveScale,
 		characteristicLeft: req.body.leftCharacteristic,
 		characteristicRight: req.body.rightCharacteristic
 	}).save();
@@ -2663,8 +2661,6 @@ router.put('/edit-neuro/:neuroID', ensureAuthenticated,ensureAuthorised, (req,re
 		editNeuro.painRight = req.body.rightTypeOfPainScale,
 		editNeuro.numericalRatingScaleLeft = req.body.numericalRatingScaleLeft,
 		editNeuro.numericalRatingScaleRight = req.body.numericalRatingScaleRight,
-		editNeuro.verbalDescriptiveScaleLeft = req.body.leftVerbalDescriptiveScale,
-		editNeuro.verbalDescriptiveScaleRight = req.body.rightVerbalDescriptiveScale,
 		editNeuro.characteristicLeft = req.body.leftCharacteristic,
 		editNeuro.characteristicRight = req.body.rightCharacteristic
 		editNeuro.save();
