@@ -112,7 +112,7 @@
                 {{/each}}
             </tr>
             <tr>
-                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Respiratory</th>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Respiratory (Breath Per Mins)</th>
                 {{#each clcvitalFlow}}
                 <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)" >{{resp}}</td>
                 {{/each}}
@@ -175,13 +175,15 @@
             <tr>
                 <th width="10%">Right Arm Strength</th>
                 {{#each motorstrengthFlow}}
-                <td class="urine">{{splitstrengthrightarm}}</td>
+                {{!-- <td class="urine">{{splitstrengthrightarm}}</td> --}}
+                <td class="urine">{{strengthrightarm}}</td>
                 {{/each}}
             </tr>
             <tr>
                 <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Left Arm Strength</th>
                 {{#each motorstrengthFlow}}
-                <td>{{splitstrengthleftarm}}</td>
+                {{!-- <td>{{splitstrengthleftarm}}</td> --}}
+                <td>{{strengthleftarm}}</td>
                 {{/each}}
             </tr>
             <tr>
@@ -193,32 +195,25 @@
             <tr>
                 <th width="10%">Right Leg Strength</th>
                 {{#each motorstrengthFlow}}
-                <td>{{splitstrengthrightleg}}</td>
+                {{!-- <td>{{splitstrengthrightleg}}</td> --}}
+                <td>{{strengthrightleg}}</td>
                 {{/each}}
             </tr>
             <tr>
                 <th width="10%">Left Leg Strength</th>
                 {{#each motorstrengthFlow}}
-                <td>{{splitstrengthleftleg}}</td>
+                {{!-- <td>{{splitstrengthleftleg}}</td> --}}
+                <td>{{strengthleftleg}}</td>
                 {{/each}}
             </tr>
 
-            <tr>
+            {{!-- <tr>
                 <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Total</th>
                 {{#each motorstrengthFlow}}
                 <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">{{totalms}}</td>
                 {{/each}}
-            </tr>
-            {{!-- <tr>
-                <th width="10%">Nett Balance</th>
-                {{#each motorstrengthFlow}}
-                <td class="nettBalance" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);"></td>
-                {{/each}}
-            </tr>
-            <tr>
-                <th width="10%">Total Balance</th>
-                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12); border: 0;" id="totalBalance"></td>
             </tr> --}}
+            
         </table>
     </div>
 </div>
@@ -360,7 +355,7 @@
                     <th>Eyes Open</th>
                     <th>Best Verbal Response</th>
                     <th>Best Motor Response</th>
-                    <th>Total</th>
+                    <th>Total GCS Score</th>
                     {{!-- <th>Fluid Consumed (mL)</th> --}}
                     {{!-- <th>Patient ID</th> --}}
                     {{#unless userType}}
@@ -460,10 +455,10 @@
                     <div class="col s12 m4 input-field">
                             <select id="eyeopen" name="eyeopen" required>
                                 <option value="" >Eyes Open</option>
-                                <option value="None +1">None +1</option>
-                                <option value="To Pain +2">To Pain +2</option>
-                                <option value="To Speech +3">To Speech +3</option>
                                 <option value="Spontaneous +4">Spontaneous +4</option>
+                                <option value="To Speech +3">To Speech +3</option>
+                                <option value="To Pain +2">To Pain +2</option>
+                                <option value="None +1">None +1</option>
                             </select>
                      <label for="eyeopen">Eyes Open</label>
 
@@ -471,11 +466,11 @@
                      <div class="col s12 m4 input-field">
                             <select id="bestverbal" name="bestverbal"  required>
                                 <option value="">Best Verbal Response</option>
-                                <option value="None +1">None +1</option>
-                                <option value="Incomprehensive Sounds +2">Incomprehensive Sounds +2</option>
-                                <option value="Inappropriate Words +3">Inappropriate Words +3</option>
-                                <option value="Confused +4">Confused +4</option>
                                 <option value="Oriented +5">Oriented +5</option>
+                                <option value="Confused +4">Confused +4</option>
+                                <option value="Inappropriate Words +3">Inappropriate Words +3</option>
+                                <option value="Incomprehensive Sounds +2">Incomprehensive Sounds +2</option>
+                                <option value="None +1">None +1</option>
                             </select>
                      <label for="bestverbal">Best Verbal Response</label>
 
@@ -483,12 +478,12 @@
                      <div class="col s12 m4 input-field">
                             <select id="bestmotor" name="bestmotor" required>
                                 <option value="">Best Motor Response</option>
-                                <option value="None +1">None +1</option>
-                                <option value="Extension to pain +2">Extension to pain +2</option>
-                                <option value="Abnormal FLexion +3">Abnormal FLexion +3</option>
-                                <option value="Flexion to pain +4">Flexion to pain +4</option>
+                                <option value="Obey Commands +6">Obey Commands +6</option>
                                 <option value="Localised Pain +5">Localised Pain +5</option>
-                                <option value="Obey Commands +6">Obey Commands +6</option>                                
+                                <option value="Flexion to pain +4">Flexion to pain +4</option>
+                                <option value="Abnormal FLexion +3">Abnormal FLexion +3</option>
+                                <option value="Extension to pain +2">Extension to pain +2</option>
+                                <option value="None +1">None +1</option>                          
                             </select>
                      <label for="bestmotor">Best Motor Response</label>
 
@@ -545,7 +540,7 @@
                     <th>Date</th>
                     <th>Time</th>
                     <th>Heart Rate (BPM) </th>
-                    <th>Respiratory</th>
+                    <th>Respiratory (Breath Per Mins)</th>
                     <th>Blood Pressure (mmHg)</th>
                     {{!-- <th>Blood Pressure (DBP)</th> --}}
                     {{!-- <th>Patient ID</th> --}}
@@ -639,8 +634,6 @@
                 </div>
 
                 <div class="row">
-
-
                         <div class="col s12 m4 input-field">
                             <input id="heartRate" type="number" name="heartRate" value="{{editclcvital.heartRate}}" required>
                             <label for="heartRate">Heart Rate (BPM)</label>
@@ -663,7 +656,7 @@
                         </div>
                         <div class="col s12 m4 input-field">
                             <input id="dbp" type="number" name="dbp" value="{{editclcvital.dbp}}"required>
-                            <label for="dbp">Blood Pressure (SDP)</label>
+                            <label for="dbp">Blood Pressure (DBP)</label>
                             <span class="helper-text"></span>
                         </div>
                  </div>
@@ -916,7 +909,7 @@
                     <th>Strength Right Leg</th>
                     <th>Strength Left Arm</th>
                     <th>Strength Left Leg</th>
-                    <th>Total</th>
+                    {{!-- <th>Total</th> --}}
                     {{!-- <th>I.V Flush (mL)</th> --}}
                     {{!-- <th>Patient ID</th> --}}
                     {{#unless userType}}
@@ -935,13 +928,15 @@
                         <td><a href="/student/clc-motorstrength/{{../recordID}}/{{motorstrengthID}}">{{date}}</a></td>
                         {{/unless}}
                         <td>{{time}}</td>
-                        <td>{{splitstrengthrightarm}}</td>
+                        <td>{{strengthrightarm}}</td>
+                        <td>{{strengthrightleg}}</td>
+                        <td>{{strengthleftarm}}</td>
+                        <td>{{strengthleftleg}}</td>
+                        {{!-- <td>{{splitstrengthrightarm}}</td>
                         <td>{{splitstrengthrightleg}}</td>
                         <td>{{splitstrengthleftarm}}</td>
-                        <td>{{splitstrengthleftleg}}</td>
-                        <td>{{totalms}}</td>
-                        {{!-- <td>{{ivflush}}</td> --}}
-                        {{!-- <td>{{patientID}}</td> --}}
+                        <td>{{splitstrengthleftleg}}</td> --}}
+
                         {{#unless ../userType}}          
                         <td style="width: 65px"> <!-- the tr we're trying to get -->
                             <form action="/master/del-motorstrength/{{motorstrengthID}}?_method=DELETE" method="post" id="delete-form">
@@ -1014,12 +1009,12 @@
                         <div class="col s12 m4 input-field">
                             <select id="strengthrightarm" name="strengthrightarm" required>
                             <option value="0" disabled>Right Arm Strength</option>
-                            <option value="No Movement +0">No Movement +0</option>
-                            <option value="Minimal Strength +1">Minimal Strength +1</option>
-                            <option value="&#60; Anti-Gravity Strength +2">&lt; Anti-Gravity Strength +2</option>
-                            <option value="&gt; Anti-Gravity Strength +3">&gt; Anti-Gravity Strength +3</option>
-                            <option value="Mild Weakness +4">Mild Weakness +4</option>
-                            <option value="Normal +5">Normal +5</option>
+                            <option value="Normal 5">Normal +5</option>
+                            <option value="Mild Weakness 4">Mild Weakness +4</option>
+                            <option value="&gt; Anti-Gravity Strength 3">&gt; Anti-Gravity Strength +3</option>
+                            <option value="&#60; Anti-Gravity Strength 2">&lt; Anti-Gravity Strength +2</option>
+                            <option value="Minimal Strength 1">Minimal Strength +1</option>
+                            <option value="No Movement 0">No Movement +0</option>
                             </select>
                             <label for="strengthrightarm">Right Arm Strength</label>
                         </div>  
@@ -1027,12 +1022,12 @@
                         <div class="col s12 m4 input-field">
                             <select id="strengthleftarm" name="strengthleftarm" required>
                             <option value="0" disabled>Left Arm Strength</option>
-                            <option value="No Movement +0">No Movement +0</option>
-                            <option value="Minimal Strength +1">Minimal Strength +1</option>
-                            <option value="< Anti-Gravity Strength +2">&lt; Anti-Gravity Strength +2</option>
-                            <option value="> Anti-Gravity Strength +3">&gt; Anti-Gravity Strength +3</option>
-                            <option value="Mild Weakness +4">Mild Weakness +4</option>
-                            <option value="Normal +5">Normal +5</option>
+                            <option value="Normal 5">Normal +5</option>
+                            <option value="Mild Weakness 4">Mild Weakness +4</option>
+                            <option value="> Anti-Gravity Strength 3">&gt; Anti-Gravity Strength +3</option>
+                            <option value="< Anti-Gravity Strength 2">&lt; Anti-Gravity Strength +2</option>
+                            <option value="Minimal Strength 1">Minimal Strength +1</option>
+                            <option value="No Movement 0">No Movement +0</option>                            
                             </select>
                             <label for="strengthleftarm">Left Arm Strength</label>
                         </div>  
@@ -1042,12 +1037,11 @@
                         <div class="col s12 m4 input-field">
                             <select id="strengthrightleg" name="strengthrightleg" required>
                             <option value="0" disabled>Right Leg Strength</option>
-                            <option value="No Movement +0">No Movement +0</option>
-                            <option value="Minimal Strength +1">Minimal Strength +1</option>
-                            <option value="< Anti-Gravity Strength +2">&lt; Anti-Gravity Strength +2</option>
-                            <option value="> Anti-Gravity Strength +3">&gt; Anti-Gravity Strength +3</option>
-                            <option value="Mild Weakness +4">Mild Weakness +4</option>
-                            <option value="Normal +5">Normal +5</option>
+                            <option value="Normal 5">Normal +5</option>
+                            <option value="Mild Weakness 4">Mild Weakness +4</option>
+                            <option value="> Anti-Gravity Strength 3">&gt; Anti-Gravity Strength +3</option>
+                            <option value="Minimal Strength 1">Minimal Strength +1</option>
+                            <option value="No Movement 0">No Movement +0</option>
                             </select>
                             <label for="strengthrightleg">Right Leg Strength</label>
                         </div>  
@@ -1055,12 +1049,12 @@
                         <div class="col s12 m4 input-field">
                             <select id="strengthleftleg" name="strengthleftleg" required>
                             <option value="0" disabled>Left Leg Strength</option>
-                            <option value="No Movement +0">No Movement +0</option>
-                            <option value="Minimal Strength +1">Minimal Strength +1</option>
-                            <option value="< Anti-Gravity Strength +2">&lt; Anti-Gravity Strength +2</option>
-                            <option value="> Anti-Gravity Strength +3">&gt; Anti-Gravity Strength +3</option>
-                            <option value="Mild Weakness +4">Mild Weakness +4</option>
-                            <option value="Normal +5">Normal +5</option>
+                            <option value="Normal 5">Normal +5</option>
+                            <option value="Mild Weakness 4">Mild Weakness +4</option>
+                            <option value="> Anti-Gravity Strength 3">&gt; Anti-Gravity Strength +3</option>
+                            <option value="< Anti-Gravity Strength 2">&lt; Anti-Gravity Strength +2</option>
+                            <option value="Minimal Strength 1">Minimal Strength +1</option>
+                            <option value="No Movement 0">No Movement +0</option>
                             </select>
                             <label for="strengthleftleg">Left Leg Strength</label>
                         </div>  

@@ -3064,10 +3064,10 @@ router.post('/add-motorstrength', ensureAuthenticated, ensureAuthorised, (req, r
 	+ parseInt(req.body.strengthrightleg.slice(-1))
 	+ parseInt(req.body.strengthleftleg.slice(-1));
 
-	splitstrengthrightarm = removeNumber.removeNumberFunction(req.body.strengthrightarm);
-	splitstrengthleftarm = removeNumber.removeNumberFunction(req.body.strengthleftarm);
-	splitstrengthrightleg = removeNumber.removeNumberFunction(req.body.strengthrightleg);
-	splitstrengthleftleg = removeNumber.removeNumberFunction(req.body.strengthleftleg);
+	// splitstrengthrightarm = removeNumber.removeNumberFunction(req.body.strengthrightarm);
+	// splitstrengthleftarm = removeNumber.removeNumberFunction(req.body.strengthleftarm);
+	// splitstrengthrightleg = removeNumber.removeNumberFunction(req.body.strengthrightleg);
+	// splitstrengthleftleg = removeNumber.removeNumberFunction(req.body.strengthleftleg);
 	
 	new  MasterMotorStrength({
 		patientID: req.session.patient.patientID,
@@ -3080,10 +3080,10 @@ router.post('/add-motorstrength', ensureAuthenticated, ensureAuthorised, (req, r
 		strengthrightleg: req.body.strengthrightleg,
 		strengthleftleg: req.body.strengthleftleg,
 
-		splitstrengthrightarm: splitstrengthrightarm,
-		splitstrengthleftarm: splitstrengthleftarm,
-		splitstrengthrightleg: splitstrengthrightleg,
-		splitstrengthleftleg: splitstrengthleftleg,
+		// splitstrengthrightarm: splitstrengthrightarm,
+		// splitstrengthleftarm: splitstrengthleftarm,
+		// splitstrengthrightleg: splitstrengthrightleg,
+		// splitstrengthleftleg: splitstrengthleftleg,
 		
 		totalms: totalms,
 
@@ -3111,10 +3111,10 @@ router.put('/edit-motorstrength/:motorstrengthID', ensureAuthenticated, ensureAu
 	+ parseInt(req.body.strengthrightleg.slice(-1))
 	+ parseInt(req.body.strengthleftleg.slice(-1));
 
-	splitstrengthrightarm = removeNumber.removeNumberFunction(req.body.strengthrightarm);
-	splitstrengthleftarm = removeNumber.removeNumberFunction(req.body.strengthleftarm);
-	splitstrengthrightleg = removeNumber.removeNumberFunction(req.body.strengthrightleg);
-	splitstrengthleftleg = removeNumber.removeNumberFunction(req.body.strengthleftleg);
+	// splitstrengthrightarm = removeNumber.removeNumberFunction(req.body.strengthrightarm);
+	// splitstrengthleftarm = removeNumber.removeNumberFunction(req.body.strengthleftarm);
+	// splitstrengthrightleg = removeNumber.removeNumberFunction(req.body.strengthrightleg);
+	// splitstrengthleftleg = removeNumber.removeNumberFunction(req.body.strengthleftleg);
 
 	MasterMotorStrength.findOne({ motorstrengthID: req.params.motorstrengthID }).then(editmotorstrength => {
 		editmotorstrength.date = moment(req.body.datemotorstrength, 'DD/MM/YYYY').format('YYYY-MM-DD'),
@@ -3126,10 +3126,10 @@ router.put('/edit-motorstrength/:motorstrengthID', ensureAuthenticated, ensureAu
 		editmotorstrength.strengthleftleg = req.body.strengthleftleg,
 		editmotorstrength.totalms = totalms,
 		
-		editmotorstrength.splitstrengthrightarm = splitstrengthrightarm,
-		editmotorstrength.splitstrengthleftarm = splitstrengthleftarm,
-		editmotorstrength.splitstrengthrightleg = splitstrengthrightleg,
-		editmotorstrength.splitstrengthleftleg = splitstrengthleftleg,
+		// editmotorstrength.splitstrengthrightarm = splitstrengthrightarm,
+		// editmotorstrength.splitstrengthleftarm = splitstrengthleftarm,
+		// editmotorstrength.splitstrengthrightleg = splitstrengthrightleg,
+		// editmotorstrength.splitstrengthleftleg = splitstrengthleftleg,
 		
 
 		editmotorstrength.save();
