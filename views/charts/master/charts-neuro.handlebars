@@ -1015,8 +1015,6 @@
         const rightTypeOfPainScale = document.querySelector('#rightTypeOfPainScale');
         const numericalRatingScaleLeft = document.querySelector('#numericalRatingScaleLeft');
         const numericalRatingScaleRight = document.querySelector('#numericalRatingScaleRight');
-        const leftVerbalDescriptiveScale = document.querySelector('#leftVerbalDescriptiveScale');
-        const rightVerbalDescriptiveScale = document.querySelector('#rightVerbalDescriptiveScale');
         const leftCharacteristic = document.querySelector('#leftCharacteristic');
         const rightCharacteristic = document.querySelector('#rightCharacteristic');
 
@@ -1103,12 +1101,7 @@
         M.FormSelect.init(numericalRatingScaleRight, {
             
         })
-        M.FormSelect.init(leftVerbalDescriptiveScale, {
 
-        })
-        M.FormSelect.init(rightVerbalDescriptiveScale, {
-
-        })
         M.FormSelect.init(leftCharacteristic, {
 
         })
@@ -1144,8 +1137,6 @@
         document.getElementById('rightTypeOfPainScale').value = "{{editNeuro.painRight}}";
         document.getElementById('numericalRatingScaleLeft').value = "{{editNeuro.numericalRatingScaleLeft}}";
         document.getElementById('numericalRatingScaleRight').value = "{{editNeuro.numericalRatingScaleRight}}";
-        document.getElementById('leftVerbalDescriptiveScale').value = "{{editNeuro.verbalDescriptiveScaleLeft}}";
-        document.getElementById('rightVerbalDescriptiveScale').value = "{{editNeuro.verbalDescriptiveScaleRight}}";
         document.getElementById('leftCharacteristic').value = "{{editNeuro.characteristicLeft}}";
         document.getElementById('rightCharacteristic').value = "{{editNeuro.characteristicRight}}";
         document.getElementById('flowsheetTab').className += " disabled";
