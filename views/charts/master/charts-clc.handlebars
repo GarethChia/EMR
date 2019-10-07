@@ -31,7 +31,6 @@
             <li class="tab col s2" id="vitaltab"><a class="purple-text text-darken-3" id="tab2" href="#vital">Vital</a></li>
             <li class="tab col s2" id="pupilstab"><a class="purple-text text-darken-3" id="tab3" href="#pupils">Pupils</a></li>
             <li class="tab col s2" id="motorstrengthtab"><a class="purple-text text-darken-3" id="tab4" href="#motorstrength">Motor Strength</a></li>
-            {{!-- <li class="tab col s2" id="tabletab"><a class="purple-text text-darken-3" id="tab5" href="#table">Net IO</a></li> --}}
         </div>
     </div>
 </div>
@@ -99,12 +98,7 @@
                 <td>{{bloodp}}</td>
                 {{/each}}
             </tr>
-            {{!-- <tr>
-                <th width="10%">Blood Pressure (DBP)</th>
-                {{#each clcvitalFlow}}
-                <td>{{dbp}}</td>
-                {{/each}}
-            </tr> --}}
+
             <tr>
                 <th width="10%">Heart Rate (BPM)</th>
                 {{#each clcvitalFlow}}
@@ -125,12 +119,6 @@
                 <td class="Pupils"></td>
                 {{/each}}
             </tr>
-            {{!-- <tr>
-                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Right</th>
-                {{#each pupilsFlow}}
-                <td class="Pupils"></td>
-                {{/each}}
-            </tr> --}}
             
             <tr>
                 <th width="10%">Right Size</th>
@@ -144,12 +132,7 @@
                 <td class="reactionright">{{reactionright}}</td>
                 {{/each}}
             </tr>
-            {{!-- <tr>
-                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Left</th>
-                {{#each pupilsFlow}}
-                <td class="Pupils"></td>
-                {{/each}}
-            </tr> --}}
+
             <tr>
                 <th width="10%">Left Size</th>
                 {{#each pupilsFlow}}
@@ -217,131 +200,6 @@
         </table>
     </div>
 </div>
-<script>
-    // Intake PO
-    var fluidConsumed = document.getElementsByClassName("fluidConsumed");
-    var intakePO = document.getElementsByClassName("intakePO");
-
-    // Intake Enteral
-    var amountOfFeeding = document.getElementsByClassName("amountOfFeeding");
-    var flush = document.getElementsByClassName("flush");
-    var intakeEnteral = document.getElementsByClassName("intakeEnteral");
-
-    // Intake I.V
-    var amountInfusedContinuous = document.getElementsByClassName("amountInfusedContinuous");
-    var amountInfusedIntermittent = document.getElementsByClassName("amountInfusedIntermittent");
-    var ivFlush = document.getElementsByClassName("ivFlush");
-    var intakeIV = document.getElementsByClassName("intakeIV");
-
-    // Output
-    var urine = document.getElementsByClassName("urine");
-    var vomitus = document.getElementsByClassName("vomitus");
-    var blood = document.getElementsByClassName("blood");
-    var diaperWeight = document.getElementsByClassName("diaperWeight");
-    var other = document.getElementsByClassName("other");
-    var outputFlow = document.getElementsByClassName("outputFlow");
-    
-    for (i = 0; i < fluidConsumed.length; i++) { 
-        var totalIntakePO = 0;
-        var totalIntakeEnteral = 0;
-        var totalIntakeIV = 0;
-        var output = 0;
-        
-        // display total intakePO
-        if (!(isNaN(parseInt(fluidConsumed[i].innerHTML)))) 
-        { 
-            totalIntakePO += parseInt(fluidConsumed[i].innerHTML);
-            intakePO[i].innerHTML = totalIntakePO;
-        }
-        // display total intake enteral
-        if (!(isNaN(parseInt(amountOfFeeding[i].innerHTML)))) 
-        { 
-            totalIntakeEnteral += parseInt(amountOfFeeding[i].innerHTML);
-            intakeEnteral[i].innerHTML = totalIntakeEnteral;
-        }
-        if (!(isNaN(parseInt(flush[i].innerHTML)))) 
-        { 
-            totalIntakeEnteral += parseInt(flush[i].innerHTML);
-            intakeEnteral[i].innerHTML = totalIntakeEnteral;
-        }
-        // display total Intake I.V
-        if (!(isNaN(parseInt(amountInfusedContinuous[i].innerHTML)))) 
-        { 
-            totalIntakeIV += parseInt(amountInfusedContinuous[i].innerHTML);
-            intakeIV[i].innerHTML = totalIntakeIV;
-        }
-        if (!(isNaN(parseInt(amountInfusedIntermittent[i].innerHTML)))) 
-        { 
-            totalIntakeIV += parseInt(amountInfusedIntermittent[i].innerHTML);
-            intakeIV[i].innerHTML = totalIntakeIV;
-        }
-        if (!(isNaN(parseInt(ivFlush[i].innerHTML)))) 
-        { 
-            totalIntakeIV += parseInt(ivFlush[i].innerHTML);
-            intakeIV[i].innerHTML = totalIntakeIV;
-        }
-        // display total Output
-        if (!(isNaN(parseInt(urine[i].innerHTML)))) 
-        { 
-            output += parseInt(urine[i].innerHTML);
-            outputFlow[i].innerHTML = output;
-        }
-        if (!(isNaN(parseInt(vomitus[i].innerHTML)))) 
-        { 
-            output += parseInt(vomitus[i].innerHTML);
-            outputFlow[i].innerHTML = output;
-        }
-        if (!(isNaN(parseInt(blood[i].innerHTML)))) 
-        { 
-            output += parseInt(blood[i].innerHTML);
-            outputFlow[i].innerHTML = output;
-        }
-        if (!(isNaN(parseInt(diaperWeight[i].innerHTML)))) 
-        { 
-            output += parseInt(diaperWeight[i].innerHTML);
-            outputFlow[i].innerHTML = output;
-        }
-        if (!(isNaN(parseInt(other[i].innerHTML)))) 
-        { 
-            output += parseInt(other[i].innerHTML);
-            outputFlow[i].innerHTML = output;
-        }
-    }
-
-    // nett balance & total balance
-    var nettBalance = document.getElementsByClassName("nettBalance");
-    var total = 0;
-
-    for (i = 0; i < nettBalance.length; i++)
-    {
-        var totalInput = 0;
-        var totalOutput = 0;
-        // intake PO, intake Enteral, intake I.V, output
-        if (!(isNaN(parseInt(intakePO[i].innerHTML)))) 
-        {
-            totalInput += parseInt(intakePO[i].innerHTML);
-        }
-        if (!(isNaN(parseInt(intakeEnteral[i].innerHTML)))) 
-        {
-            totalInput += parseInt(intakeEnteral[i].innerHTML);
-        }
-        if (!(isNaN(parseInt(intakeIV[i].innerHTML)))) 
-        {
-            totalInput += parseInt(intakeIV[i].innerHTML);
-        }
-        if (!(isNaN(parseInt(outputFlow[i].innerHTML)))) 
-        {
-            totalOutput += parseInt(outputFlow[i].innerHTML);
-        }
-        nettBalance[i].innerHTML = totalInput - totalOutput;
-        total += (totalInput - totalOutput);
-    }
-
-    var totalBalance = document.getElementById("totalBalance");
-    totalBalance.colSpan = nettBalance.length;
-    totalBalance.style.textAlign = "center";
-    totalBalance.innerHTML += total;
-</script>
 
 {{!-- GCS code start --}}
 <div id="gcs">
@@ -356,8 +214,6 @@
                     <th>Best Verbal Response</th>
                     <th>Best Motor Response</th>
                     <th>Total GCS Score</th>
-                    {{!-- <th>Fluid Consumed (mL)</th> --}}
-                    {{!-- <th>Patient ID</th> --}}
                     {{#unless userType}}
                     <th>Delete</th>
                     {{/unless}}
@@ -377,8 +233,6 @@
                         <td>{{splitbestverbal}}</td>
                         <td>{{splitbestmotor}}</td>
                         <td>{{totalgcs}}</td>
-                        {{!-- <td>{{fluidportion}}</td> --}}
-                        {{!-- <td>{{patientID}}</td> --}}
                         {{#unless ../userType}}
                         <td style="width: 65px"> <!-- the tr we're trying to get -->
                             <form action="/master/del-gcs/{{gcsID}}?_method=DELETE" method="post" id="delete-form">
@@ -443,11 +297,6 @@
                             <span class="helper-text">hh:ss</span>
                         </div>
 
-                        {{!-- <div class="col s12 m4 input-field">
-                            <input id="eyeopen" type="text" name="eyeopen" value="{{editGcs.eyeopen}}">
-                            <label for="eyeopen">Eyes Open</label>
-                            <span class="helper-text"></span>
-                        </div> --}}
                 </div>
 
                 <div class="row">
@@ -542,8 +391,6 @@
                     <th>Heart Rate (BPM) </th>
                     <th>Respiratory (Breath Per Mins)</th>
                     <th>Blood Pressure (mmHg)</th>
-                    {{!-- <th>Blood Pressure (DBP)</th> --}}
-                    {{!-- <th>Patient ID</th> --}}
                     {{#unless userType}}
                     <th>Delete</th>
                     {{!-- {{else}}
@@ -564,8 +411,6 @@
                         <td>{{heartRate}}</td>
                         <td>{{resp}}</td>
                         <td>{{bloodp}}</td>
-                        {{!-- <td>{{dbp}}</td> --}}
-                        {{!-- <td>{{patientID}}</td> --}}
                         {{#unless ../userType}}
                             <td style="width: 65px"> <!-- the tr we're trying to get -->
                                 <form action="/master/del-clcvital/{{clcvitalID}}?_method=DELETE" method="post" id="delete-form">
@@ -684,19 +529,6 @@
             </button>
             
         </div>
-        {{!-- <div class="col s12 m4">
-            {{#if editenteral}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editenteral">Save
-            {{else}}
-            {{#unless userType}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addenteral">Save
-            {{/unless}}
-            {{/if}}
-            {{#unless userType}}
-                <i class="material-icons right">send</i>
-            </button>
-            {{/unless}}
-        </div> --}}
     </div>
 </div>
 
@@ -740,8 +572,7 @@
                         <td>{{reactionright}}</td>
                         <td>{{sizeleft}}</td>
                         <td>{{reactionleft}}</td>
-                        {{!-- <td>{{ivflush}}</td> --}}
-                        {{!-- <td>{{patientID}}</td> --}}
+
                         {{#unless ../userType}}          
                         <td style="width: 65px"> <!-- the tr we're trying to get -->
                             <form action="/master/del-pupils/{{pupilsID}}?_method=DELETE" method="post" id="delete-form">
@@ -909,9 +740,6 @@
                     <th>Strength Right Leg</th>
                     <th>Strength Left Arm</th>
                     <th>Strength Left Leg</th>
-                    {{!-- <th>Total</th> --}}
-                    {{!-- <th>I.V Flush (mL)</th> --}}
-                    {{!-- <th>Patient ID</th> --}}
                     {{#unless userType}}
                     <th>Delete</th>
                     {{/unless}}
@@ -1248,8 +1076,6 @@
     {{/if}}
 
     {{#if editclcvital}}
-        /** document.getElementById('formula').value = "{{editclcvital.formula}}";
-        document.getElementById('enteralfeed').value = "{{editclcvital.enteralfeed}}"; */
         document.getElementById('clcflowTab').className += " disabled";
         document.getElementById('pupilstab').className += " disabled";
         document.getElementById('motorstrengthtab').className += " disabled";
