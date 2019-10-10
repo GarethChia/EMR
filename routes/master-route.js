@@ -3,6 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const EMR_User = mongoose.model('emr-users');
 const PatientMasterModel = mongoose.model('patient');
+const PatientStudentModel = mongoose.model('patientStudent');
 const NursingAssessmentModel = mongoose.model('assessmentModel');
 const MasterVital = mongoose.model('masterVital');
 const MasterBraden = mongoose.model('masterBraden');
@@ -52,11 +53,21 @@ router.get('/list-patients', ensureAuthenticated, ensureAuthorised, (req, res) =
 	console.log(req.user);
 	PatientMasterModel.find({user: req.user._id}) // req.user_id is assigned to user, which is then used by find
 	.then(patients => {
-		//toaster.setErrorMessage(' ', 'Error listing master patient records');
-		// To check if user has admin rights here
-		res.render('master/master-list-patients', {
-			patients: patients,
-			showMenu: false
+
+		PatientStudentModel.find() // req.user_id is self generated
+		.then(studentPatients => {
+			//console.log("***Hi: "+studentPatients[0].user._id);
+			/*EMR_User.findById({})	// findById is Mongoose utility method
+			.then(user => {*/
+				//toaster.setErrorMessage(' ', 'Error listing master patient records');
+				// To check if user has admin rights here
+				res.render('master/master-list-patients', {
+					patients: patients,
+					studentPatients: studentPatients,
+					showMenu: false
+				});
+			//});
+			
 		});
 	})
 });

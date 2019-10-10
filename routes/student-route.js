@@ -106,14 +106,15 @@ router.get('/showown/:recordID/:patientID', ensureAuthenticated, (req, res) => {
 	.populate('user')
 	.then(retrievedPatient => {
 		// check if logged in user is owner of this patient record
-		if(JSON.stringify(retrievedPatient.user._id) !== JSON.stringify(req.user.id)) {
+		if((JSON.stringify(retrievedPatient.user._id) !== JSON.stringify(req.user.id)) && (req.user.userType != "staff")) {
 			/*let alert = res.flashMessenger.success('Only allowed to edit own record');
 			 alert.titleIcon = 'far fa-thumbs-up';
 			 alert.canBeDismissed = true;*/
 			//alertMessage.flashMessage(res, 'Only allowed to edit own record', 'fas fa-exclamation', true);
 			toaster.setErrorMessage(' ', 'Only allowed to edit own record');
 			res.redirect('/student/list-patients');
-		} else {
+		} 
+		else {
 			req.session.patient = retrievedPatient;
 			res.render('student/student-edit-patient', { // calls handlebars
 				recordID: req.params.recordID,

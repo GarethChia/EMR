@@ -4,7 +4,7 @@
 <h5>Welcome {{user.firstName}}</h5>
 
 <br>
-<div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">Patient Master Records</div>
+<div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 18px">Patient Master Records</div>
 
 {{#if patients}}
 	<table id="patientMasterList" class="hover order-column">
@@ -68,7 +68,73 @@
 	</p>
 {{/if}}
 <br>
-<hr>
+{{!-- <hr> --}}
+<div class="card-panel purple lighten-1 white-text" style="padding:5px; font-size: 18px">Student Records</div>
+
+{{#if studentPatients}}
+	<table id="patientStudentList" class="hover order-column">
+		<thead>
+		<tr>
+			<th>Rec ID</th>
+			<th>Patient ID</th>
+			<th class="dt-head-center">Ward</th>
+			<th class="dt-head-center">Bed</th>
+			<th>Family Name</th>
+			<th>Given Name</th>
+			<th class="dt-head-center">Gender</th>
+			<th class="dt-head-center">Adm Date</th>
+			<th>Updated</th>
+			<th></th>
+		</tr>
+		</thead>
+		<tbody>
+		{{#each studentPatients}}
+			<tr style="height: 50px">
+				<td><a href="/student/showown/{{recordID}}/{{patientID}}">{{recordID}}</a></td>
+				{{!-- Passing patientID to illustrate how to pass multiple URL parameters--}}
+				<td>{{patientID}}</td>
+				<td class="dt-body-center">{{ward}}</td>
+				<td class="dt-body-center">{{bed}}</td>
+				<td>{{familyName}}</td>
+				<td>{{givenName}}</td>
+				<td class="dt-body-center">{{gender}}</td>
+				<td class="dt-body-center">{{formatDate admDate 'DD/MM/YYYY'}}</td>
+				<td>{{formatDate dateCreated 'DD/MM/YYYY HH:mm'}}</td>
+				<td style="width: 40px">
+					<a id="dropdown-button" class='dropdown-trigger btn purple darken-3 waves-effect waves-light'
+					   style="display: none; width:20px" href='#'
+					   data-target='menu-options'
+					>
+						<i class="material-icons">more_vert</i>
+					</a>
+				</td>
+			</tr>
+			<ul id="menu-options" class='dropdown-content'>
+				<li>
+					<form action="/student/showown/{{recordID}}/{{patientID}}">
+						<button type="submit" class="btn green darken-3">
+							<i class="material-icons">mode_edit</i>
+						</button>
+					</form>
+				</li>
+				<li>
+					<form action="/stories/{{id}}?_method=DELETE" method="post" id="delete-form">
+						<input type="hidden" name="_method" value="DELETE">
+						<button type="submit" class="btn red darken-3">
+							<i class="material-icons">delete</i>
+						</button>
+					</form>
+				</li>
+			</ul>
+		{{/each}}
+		</tbody>
+	</table>
+{{else}}
+	<p id="noStudentRecord">Students have not created any student records yet</p>
+
+{{/if}}
+
+<br>
 
 <script>
 	paceOptions = {
