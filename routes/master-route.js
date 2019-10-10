@@ -49,6 +49,10 @@ const csrfProtection = csrf({cookie: true});
 
 // Shows list of master patient documents
 router.get('/list-patients', ensureAuthenticated, ensureAuthorised, (req, res) => {
+
+	studentIDs = [];
+	studentNames = [];
+	
 	console.log('\nFrom listPatientMaster user:');
 	console.log(req.user);
 	PatientMasterModel.find({user: req.user._id}) // req.user_id is assigned to user, which is then used by find
@@ -56,7 +60,27 @@ router.get('/list-patients', ensureAuthenticated, ensureAuthorised, (req, res) =
 
 		PatientStudentModel.find() // req.user_id is self generated
 		.then(studentPatients => {
-			//console.log("***Hi: "+studentPatients[0].user._id);
+			
+			console.log("******************************Hi: "+studentPatients.length);
+			
+			studentPatients.forEach(studentPatientsRecord => {
+				studentIDs.push(studentPatientsRecord.user._id);
+				console.log(studentPatientsRecord.user._id);
+				
+			})
+			studentIDs.forEach(studentID => {
+				EMR_User.find({_id: studentID})	// findById is Mongoose utility method
+				.then(user => {
+					//console.log(user);
+					user.forEach(userRecords=> {
+						
+						studentNames.push(userRecords.firstName);
+					})
+					console.log("******************************: "+ studentNames);
+				});
+			})
+				
+			console.log("******************************: "+ studentNames);
 			/*EMR_User.findById({})	// findById is Mongoose utility method
 			.then(user => {*/
 				//toaster.setErrorMessage(' ', 'Error listing master patient records');
