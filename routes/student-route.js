@@ -25,6 +25,11 @@ const StudentHistory = mongoose.model('studentHistoryTrack');
 const StudentCarePlan = mongoose.model('studentCarePlan');
 const MasterDiabetic = mongoose.model('masterDiabetic');
 const MasterNeuro = mongoose.model('masterNeuro');
+// CLC
+const MasterGcs = mongoose.model('masterGcs');
+const MasterClcVital = mongoose.model('masterClcVital');
+const MasterPupils = mongoose.model('masterPupils');
+const MasterMotorStrength = mongoose.model('masterMotorStrength');
 
 const moment = require('moment');
 const alertMessage = require('../helpers/messenger');
@@ -590,41 +595,133 @@ router.put('/save-customised-patient/:patientID', ensureAuthenticated, (req, res
 																			}).save();
 																		})
 																	}).then(neurosucc => {
-																		MasterNeuro.find({ patientID: req.params.patientID }).then(neuroDatas => {
+																		MasterNeuro.find({ patientID: req.params.patientID }).then(neuroDatas => {		
 																			neuroDatas.forEach(neuro => {
 																				// splitpoc = req.body.poc.splice(0,2);
 																				new MasterNeuro({
 																					patientID: recordID,
 																					neuroID:  (new standardID('AAA0000')).generate(),
-																					date: neuro.date,
 																					datetime: neuro.datetime,
+																					date: neuro.date,
 																					time: neuro.time,
-																					poc: neuro.poc,
-																					bgl: neuro.bgl,
-																					insulintype: neuro.insulintype,
-																					insulinamt: neuro.insulinamt,
-																					hypoagent: neuro.hypoagent,
-																					splitpoc: neuro.splitpoc,
-	
+																					siteOfInjury: neuro.siteOfInjury,
+																					colourLeft: neuro.colourLeft,
+																					colourRight: neuro.colourRight,
+
+																					temperatureLeft: neuro.temperatureLeft,
+																					temperatureRight: neuro.temperatureRight,
+																					capillaryRefillLeft: neuro.capillaryRefillLeft,
+																					capillaryRefillRight: neuro.capillaryRefillRight,
+																					peripheralPulseLeft: neuro.peripheralPulseLeft,
+																					peripheralPulseRight: neuro.peripheralPulseRight,
+																					edemaLeft: neuro.edemaLeft,
+																					edemaRight: neuro.edemaRight,
+																					movementLeft: neuro.movementLeft,
+																					movementRight: neuro.movementRight,
+																					sensationLeft: neuro.sensationLeft,
+																					sensationRight: neuro.sensationRight,
+																					painLeft: neuro.painLeft,
+																					painRight: neuro.painRight,
+																					numericalRatingScaleLeft: neuro.numericalRatingScaleLeft,
+																					numericalRatingScaleRight: neuro.numericalRatingScaleRight,
+																					characteristicLeft: neuro.characteristicLeft,
+																					characteristicRight: neuro.characteristicRight
 																				}).save();
 																			})
-															}).then(newStudentPatient => {
-																
-																/*let alert = res.flashMessenger.success('New student patient record added');
-																 alert.titleIcon = 'far fa-thumbs-up';
-																 alert.canBeDismissed = true;
-																 */
-																//req.session.patient = newStudentPatient;
-																//alertMessage.flashMessage(res, 'New student patient record added', 'far fa-thumbs-up', true);
-																toaster.setSuccessMessage(' ', 'New Customised Record Created From Master');
-																req.session.toaster = toaster;
-																res.redirect('/student/list-patients');
-																// redirect will activate router while render activates specific handlebar
-															});
+																		}).then(clcsucc => {
+																			MasterGcs.find({ patientID: req.session.patient.patientID }).then(gcsDatas => {
+																				MasterClcVital.find({ patientID: req.session.patient.patientID }).then(clcvitalDatas => {
+																					MasterPupils.find({ patientID: req.session.patient.patientID }).then(pupilsDatas => {
+																						MasterMotorStrength.find({ patientID: req.session.patient.patientID }).then(motorstrengthData => {
+																							gcsDatas.forEach(gcs => {
+																							new MasterGcs({
+																								patientID: recordID,
+																								gcsID: (new standardID('AAA0000')).generate(),
+																								date: gcs.date,
+																								time: gcs.time,
+																								datetime: gcs.datetime,
+																								eyeopen: gcs.eyeopen,
+																								bestverbal: gcs.bestverbal,
+																								bestmotor: gcs.bestmotor,
+																								spliteyeopen:gcs.spliteyeopen,
+																								splitbestverbal:gcs.splitbestverbal,
+																								splitbestmotor:gcs.splitbestmotor,
+																								totalgcs: gcs.totalgcs
+																							}).save();
+																						})
+								
+																						clcvitalDatas.forEach(clcvital => {
+																							new MasterClcVital({
+																								patientID: recordID,
+																								clcvitalID: (new standardID('AAA0000')).generate(),
+																								date: clcvital.date,
+																								time: clcvital.time,
+																								datetime: clcvital.datetime,
+																								heartRate: clcvital.heartRate,
+																								resp: clcvital.resp,
+																								sbp: clcvital.sbp,
+																								dbp: clcvital.dbp,
+																								bloodp: clcvital.bloodp
+																							}).save();
+																						})
+								
+																						pupilsDatas.forEach(pupils => {
+																							new MasterPupils({
+																								patientID: recordID,
+																								pupilsID: (new standardID('AAA0000')).generate(),
+																								date: pupils.date,
+																								time: pupils.time,
+																								datetime: pupils.datetime,
+																								sizeright: pupils.sizeright,
+																								sizeleft: pupils.sizeleft,
+																								reactionright: pupils.reactionright,
+																								reactionleft: pupils.reactionleft
+																							}).save();
+																						})
+								
+																						motorstrengthData.forEach(motorstrengthData => {
+																							new MasterMotorStrength({
+																								patientID: recordID,
+																								motorstrengthID: (new standardID('AAA0000')).generate(),
+																								date: motorstrengthData.date,
+																								time: motorstrengthData.time,
+																								datetime: motorstrengthData.datetime,
+																								strengthrightarm: motorstrengthData.strengthrightarm,
+																								strengthleftarm: motorstrengthData.strengthleftarm,
+																								strengthrightleg: motorstrengthData.strengthrightleg,
+																								strengthleftleg: motorstrengthData.strengthleftleg,
+
+																								splitstrengthrightarm: motorstrengthData.splitstrengthrightarm,
+																								splitstrengthleftarm: motorstrengthData.splitstrengthleftarm,
+																								splitstrengthrightleg: motorstrengthData.splitstrengthrightleg,
+																								splitstrengthleftleg: motorstrengthData.splitstrengthleftleg,
+																								totalms: motorstrengthData.totalms
+																						
+																							}).save();
+																						})
+								
+																				
+																					}).then(newStudentPatient => {
+																						
+																						/*let alert = res.flashMessenger.success('New student patient record added');
+																						alert.titleIcon = 'far fa-thumbs-up';
+																						alert.canBeDismissed = true;
+																						*/
+																						//req.session.patient = newStudentPatient;
+																						//alertMessage.flashMessage(res, 'New student patient record added', 'far fa-thumbs-up', true);
+																						toaster.setSuccessMessage(' ', 'New Customised Record Created From Master');
+																						req.session.toaster = toaster;
+																						res.redirect('/student/list-patients');
+																						// redirect will activate router while render activates specific handlebar
+																					});
+																				})
+																			})
+																		})
+																	})
+																})
+															})
 														})
 													})
-												})
-											})
 												})
 											})
 										})
@@ -2579,10 +2676,10 @@ router.get('/diabetic/:recordID', ensureAuthenticated, (req, res) => {
 					diabeticnoRecord = 'No existing record';
 
 					newDiabetic.forEach(diabetic => {
-						if (!(diabeticsample.includes(diabetic.datetime))) {
+						//if (!(diabeticsample.includes(diabetic.datetime))) {
 							diabeticsample.push(diabetic.datetime);
 							diabeticsampleDate.push(diabetic.date);
-						}
+						//}
 					});
 					diabeticsample.sort();
 					diabeticsampleDate.sort();
@@ -2692,6 +2789,314 @@ router.put('/edit-diabetic/:recordID/:diabeticID', ensureAuthenticated, (req,res
 
 
 //END OF DIABETIC
+
+//Load Neurovascular page
+router.get('/neuro/:recordID', ensureAuthenticated, (req, res) => {
+	userType = req.user.userType == 'student';
+	MasterNeuro.find({ patientID: req.params.recordID}).sort({'datetime':1}).then(newNeuro => {
+
+		// Right arm
+		MasterNeuro.find({ patientID: req.params.recordID, siteOfInjury: "Right Arm" }).sort({'datetime':1}).then(newNeuroRightArm => {
+
+			// Left arm
+			MasterNeuro.find({ patientID: req.params.recordID, siteOfInjury: "Left Arm" }).sort({'datetime':1}).then(newNeuroLeftArm => {
+
+				// Right leg
+				MasterNeuro.find({ patientID: req.params.recordID, siteOfInjury: "Right Leg" }).sort({'datetime':1}).then(newNeuroRightLeg => {
+
+					// Left leg
+					MasterNeuro.find({ patientID: req.params.recordID, siteOfInjury: "Left Leg" }).sort({'datetime':1}).then(newNeuroLeftLeg => {
+
+						// right arm
+						var rightArmNeuroFlowLength = 0;
+						// left arm
+						var leftArmNeuroFlowLength = 0;
+						// right leg
+						var rightLegNeuroFlowLength = 0;
+						// left leg
+						var leftLegNeuroFlowLength = 0;
+
+						// Right Arm
+						if (!(isNaN(newNeuroRightArm.length)))
+						{
+							rightArmNeuroFlowLength = newNeuroRightArm.length
+						}
+						rightArmNeuroFlowLength = rightArmNeuroFlowLength * 2; // rowspan to merge same site of injury on right arm
+
+						//Left Arm
+						if (!(isNaN(newNeuroLeftArm.length)))
+						{
+							leftArmNeuroFlowLength = newNeuroLeftArm.length
+						}
+						leftArmNeuroFlowLength = leftArmNeuroFlowLength * 2; // rowspan to merge same site of injury on left arm
+						
+						// Right Leg
+						if (!(isNaN(newNeuroRightLeg.length)))
+						{
+							rightLegNeuroFlowLength = newNeuroRightLeg.length
+						}
+						rightLegNeuroFlowLength = rightLegNeuroFlowLength * 2; // rowspan to merge same site of injury on right leg
+
+						//Left Leg
+						if (!(isNaN(newNeuroLeftLeg.length)))
+						{
+							leftLegNeuroFlowLength = newNeuroLeftLeg.length
+						}
+						leftLegNeuroFlowLength = leftLegNeuroFlowLength * 2; // rowspan to merge same site of injury on left arm
+
+						neurosample = [];
+						neurosampleDate = [];
+						let neuroFlow = Object.assign([], newNeuro); // used to copy the values of all enumerable own properties
+						
+						neuroCount = -1;
+						
+						neuronoRecord = 'No existing record';
+
+						newNeuro.forEach(neuro => {
+							// if (!(neurosample.includes(neuro.datetime))) {
+								neurosample.push(neuro.datetime);
+								neurosampleDate.push(neuro.date);
+							// }
+						});
+						neurosample.sort();
+						neurosampleDate.sort();
+
+						for (i = 0; i < neurosample.length; i++) {
+						
+							//Counter for empty data
+							//.length here refers to last index of the array
+							if (neuroCount !== (neuroFlow.length - 1)) { // until it gets to 2
+								console.log("neuroCount: "+neuroCount);
+								console.log("neuroFlow.length: "+ (neuroFlow.length - 1));
+								neuroCount++;
+								
+							}
+							//Insert empty data when value doesnt match
+							//Count here does the index count of flow array
+							if(neuroFlow !='') 
+							{
+								if (neurosample[i] < neuroFlow[neuroCount].datetime) {
+									neuroFlow.splice(neuroCount, 0, {datetime: ''});
+								} else if (neurosample[i] > neuroFlow[neuroCount].datetime) {
+									neuroFlow.splice(neuroCount + 1, 0, {datetime: ''});
+								}
+							} 
+							else
+							{
+								neuroFlow.push({datetime: '', poc: diabeticnoRecord});
+							}
+
+							
+						};
+						res.render('charts/master/charts-neuro', {
+							recordID: req.params.recordID,
+							userType: userType,
+							neurodateVal: neurosample,
+							neuroFlow: neuroFlow,
+							newNeuro: newNeuro,
+							patient: req.session.patient,
+							newNeuroRightArm: newNeuroRightArm,
+							newNeuroLeftArm: newNeuroLeftArm,
+							newNeuroRightLeg: newNeuroRightLeg,
+							newNeuroLeftLeg: newNeuroLeftLeg,
+							rightArmRowSpan: rightArmNeuroFlowLength,
+							leftArmRowSpan: leftArmNeuroFlowLength,
+							rightLegRowSpan: rightLegNeuroFlowLength,
+							leftLegRowSpan: leftLegNeuroFlowLength,
+							showMenu: true
+						})
+					})
+				})
+			})
+		})
+	})
+})
+
+//get single Neurovascular info
+router.get('/neuro/:recordID/:neuroID', ensureAuthenticated, (req, res) => {
+	userType = req.user.userType == 'student';
+	MasterNeuro.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(newNeuro => {
+		// Right arm
+		MasterNeuro.find({ patientID: req.params.recordID, siteOfInjury: "Right Arm" }).sort({'datetime':1}).then(newNeuroRightArm => {
+			// Left arm
+			MasterNeuro.find({ patientID: req.params.recordID, siteOfInjury: "Left Arm" }).sort({'datetime':1}).then(newNeuroLeftArm => {
+				// Right leg
+				MasterNeuro.find({ patientID: req.params.recordID, siteOfInjury: "Right Leg" }).sort({'datetime':1}).then(newNeuroRightLeg => {
+					// Left leg
+					MasterNeuro.find({ patientID: req.params.recordID, siteOfInjury: "Left Leg" }).sort({'datetime':1}).then(newNeuroLeftLeg => {
+						MasterNeuro.findOne({ neuroID: req.params.neuroID }).then(editNeuro => {
+							
+							// right arm
+							var rightArmNeuroFlowLength = 0;
+							// left arm
+							var leftArmNeuroFlowLength = 0;
+							// right leg
+							var rightLegNeuroFlowLength = 0;
+							// left leg
+							var leftLegNeuroFlowLength = 0;
+
+							// Right Arm
+							if (!(isNaN(newNeuroRightArm.length)))
+							{
+								rightArmNeuroFlowLength = newNeuroRightArm.length
+							}
+							rightArmNeuroFlowLength = rightArmNeuroFlowLength * 2; // rowspan to merge same site of injury on right arm
+
+							//Left Arm
+							if (!(isNaN(newNeuroLeftArm.length)))
+							{
+								leftArmNeuroFlowLength = newNeuroLeftArm.length
+							}
+							leftArmNeuroFlowLength = leftArmNeuroFlowLength * 2; // rowspan to merge same site of injury on left arm
+							
+							// Right Leg
+							if (!(isNaN(newNeuroRightLeg.length)))
+							{
+								rightLegNeuroFlowLength = newNeuroRightLeg.length
+							}
+							rightLegNeuroFlowLength = rightLegNeuroFlowLength * 2; // rowspan to merge same site of injury on right leg
+
+							//Left Leg
+							if (!(isNaN(newNeuroLeftLeg.length)))
+							{
+								leftLegNeuroFlowLength = newNeuroLeftLeg.length
+							}
+							leftLegNeuroFlowLength = leftLegNeuroFlowLength * 2; // rowspan to merge same site of injury on left arm
+							
+							/*console.log("rightArmNeuroFlowLength: "+ rightArmNeuroFlowLength);
+							console.log("leftArmNeuroFlowLength: " + leftArmNeuroFlowLength);
+							console.log("rightLegNeuroFlowLength: " +rightLegNeuroFlowLength);
+							console.log("leftLegNeuroFlowLength: "+leftLegNeuroFlowLength)*/
+
+							editNeuro.date = moment(editNeuro.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
+							res.render('charts/master/charts-neuro', {
+								// azureId: req.user.azure_oid,
+								recordID: req.params.recordID,
+								userType: userType,
+								newNeuro: newNeuro,
+								editNeuro: editNeuro,
+								patient: req.session.patient,
+								newNeuroRightArm: newNeuroRightArm,
+								newNeuroLeftArm: newNeuroLeftArm,
+								newNeuroRightLeg: newNeuroRightLeg,
+								newNeuroLeftLeg: newNeuroLeftLeg,
+								rightArmRowSpan: rightArmNeuroFlowLength,
+								leftArmRowSpan: leftArmNeuroFlowLength,
+								rightLegRowSpan: rightLegNeuroFlowLength,
+								leftLegRowSpan: leftLegNeuroFlowLength,
+								showMenu: true			
+							})
+						})
+					})
+				})
+			})
+		})
+	})
+})
+//add Neurovascular info
+router.post('/add-neuro/:recordID', ensureAuthenticated, (req, res) => {
+	neuroID = (new standardID('AAA0000')).generate();
+	datetime = moment(req.body.dateNeuro, 'DD/MM/YYYY').format('MM/DD/YYYY') + " "+ req.body.timeNeuro;
+	//splitpoc = req.body.poc.slice(0,2);
+
+
+	new MasterNeuro({
+			// patientID: req.session.patient.patientID,
+			patientID: req.params.recordID,
+			neuroID: neuroID,
+			// userType: ,
+			datetime: datetime,
+			date: moment(req.body.dateNeuro, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+			time: req.body.timeNeuro,
+			siteOfInjury: req.body.siteOfInjury,
+			colourLeft: req.body.leftColour,
+			colourRight: req.body.rightColour,
+			temperatureLeft: req.body.leftTemperature,
+			temperatureRight: req.body.rightTemperature,
+			capillaryRefillLeft: req.body.leftCapillaryRefill,
+			capillaryRefillRight: req.body.rightCapillaryRefill,
+			peripheralPulseLeft: req.body.leftPeripheralPulse,
+			peripheralPulseRight: req.body.rightPeripheralPulse,
+			edemaLeft: req.body.leftEdema,
+			edemaRight: req.body.rightEdema,
+			movementLeft: req.body.leftMovement,
+			movementRight: req.body.rightMovement,
+			sensationLeft: req.body.leftSensation,
+			sensationRight: req.body.rightSensation,
+			painLeft: req.body.leftTypeOfPainScale,
+			painRight: req.body.rightTypeOfPainScale,
+			numericalRatingScaleLeft: req.body.numericalRatingScaleLeft,
+			numericalRatingScaleRight: req.body.numericalRatingScaleRight,
+			characteristicLeft: req.body.leftCharacteristic,
+			characteristicRight: req.body.rightCharacteristic
+			/*
+			siteOfInjury:	{type: String, default: ''},
+			colourLeft: {type: String, default: ''},
+			colourRight:	{type: String, default: ''},
+			temperatureLeft:	{type: String, default: ''},
+			temperatureRight:	{type: String, default: ''},
+			capillaryRefillLeft:	{type: String, default: ''},
+			capillaryRefillRight:	{type: String, default: ''},	
+			peripheralPulseLeft: {type: String, default: ''},
+			peripheralPulseRight:	{type: String, default: ''},
+			edemaLeft:	{type: String, default: ''},
+			edemaRight:	{type: String, default: ''},
+			movementLeft:	{type: String, default: ''},
+			movementRight: {type: String, default: ''},
+			sensationLeft:	{type: String, default: ''},
+			sensationRight: {type: String, default: ''},
+			painLeft:	{type: String, default: ''},
+			painRight:	{type: String, default: ''},
+			numericalRatingScaleLeft:	{type: String, default: ''},
+			numericalRatingScaleRight:	{type: String, default: ''},
+			verbalDescriptiveScaleLeft:		{type: String, default: ''},
+			verbalDescriptiveScaleRight:	{type: String, default: ''},
+			characteristicLeft: 	{type: String, default: ''},
+			characteristicRight:	{type: String, default: ''}	
+			*/
+
+	}).save();
+
+	res.redirect('/student/neuro/'+req.params.recordID);
+})
+
+//Edit Neurovascular information
+router.put('/edit-neuro/:recordID/:neuroID', ensureAuthenticated, (req,res) => {
+	datetime = moment(req.body.dateNeuro, 'DD/MM/YYYY').format('MM/DD/YYYY') + " "+ req.body.timeNeuro;
+	//splitpoc = req.body.poc.slice(0,2);
+	
+	MasterNeuro.findOne({ neuroID: req.params.neuroID }).then(editNeuro => {
+		editNeuro.date = moment(req.body.dateNeuro, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		editNeuro.time = req.body.timeNeuro,
+		editNeuro.datetime = datetime,
+		editNeuro.siteOfInjury = req.body.siteOfInjury,
+		editNeuro.colourLeft = req.body.leftColour,
+		editNeuro.colourRight = req.body.rightColour,
+		editNeuro.temperatureLeft = req.body.leftTemperature,
+		editNeuro.temperatureRight = req.body.rightTemperature,
+		editNeuro.capillaryRefillLeft = req.body.leftCapillaryRefill,
+		editNeuro.capillaryRefillRight = req.body.rightCapillaryRefill,
+		editNeuro.peripheralPulseLeft = req.body.leftPeripheralPulse,
+		editNeuro.peripheralPulseRight = req.body.rightPeripheralPulse,
+		editNeuro.edemaLeft = req.body.leftEdema,
+		editNeuro.edemaRight = req.body.rightEdema,
+		editNeuro.movementLeft = req.body.leftMovement,
+		editNeuro.movementRight = req.body.rightMovement,
+		editNeuro.sensationLeft = req.body.leftSensation,
+		editNeuro.sensationRight = req.body.rightSensation,
+		editNeuro.painLeft = req.body.leftTypeOfPainScale,
+		editNeuro.painRight = req.body.rightTypeOfPainScale,
+		editNeuro.numericalRatingScaleLeft = req.body.numericalRatingScaleLeft,
+		editNeuro.numericalRatingScaleRight = req.body.numericalRatingScaleRight,
+		editNeuro.characteristicLeft = req.body.leftCharacteristic,
+		editNeuro.characteristicRight = req.body.rightCharacteristic
+		editNeuro.save();
+	});
+	res.redirect('/student/neuro/' + req.params.recordID);
+})
+
+
+//END OF Neurovascular
 
 //Load Neurovascular page
 router.get('/neuro/:recordID', ensureAuthenticated, (req, res) => {
@@ -2820,4 +3225,489 @@ router.put('/edit-neuro/:recordID/:neuroID', ensureAuthenticated, (req,res) => {
 
 
 //END OF Neurovascular
+
+
+//Load clc page
+router.get('/clc/:recordID', ensureAuthenticated, (req, res) => {
+	userType = req.user.userType == 'student';
+	// MasterIO.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newIO => {
+	// 	MasterEnteral.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newenteral => {
+	// 		MasterIV.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newiv => {	
+	// 			MasterOutput.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newoutput => {
+		MasterGcs.find({patientID: req.params.recordID}).sort({'datetime':1}).then(newGcs => {
+			MasterClcVital.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(newclcvital => {
+				MasterPupils.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(newpupils => {	
+					MasterMotorStrength.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(newmotorstrength => {						
+
+						clcsample = [];
+						clcsampleDate = [];
+						let gcsFlow = Object.assign([], newGcs);
+						let clcvitalFlow = Object.assign([], newclcvital);
+						let pupilsFlow = Object.assign([], newpupils);
+						let motorstrengthFlow = Object.assign([], newmotorstrength);
+						gcsCount = -1;
+						clcvitalCount = -1;
+						pupilsCount = -1;
+						motorstrengthCount = -1;
+						ionoRecord = 'No existing record';
+	
+						newGcs.forEach(gcs => {
+							if (!(clcsample.includes(gcs.datetime))) {
+								clcsample.push(gcs.datetime);
+								clcsampleDate.push(gcs.date);
+							}
+						});
+						newclcvital.forEach(clcvital => {
+							if (!(clcsample.includes(clcvital.datetime))) {
+								clcsample.push(clcvital.datetime);
+								clcsampleDate.push(clcvital.date);
+							}
+						});
+						newpupils.forEach(pupils => {
+							if (!(clcsample.includes(pupils.datetime))){
+								clcsample.push(pupils.datetime);
+								clcsampleDate.push(pupils.date);
+							}
+						});
+	
+						newmotorstrength.forEach(motorstrength => {
+							if (!(clcsample.includes(motorstrength.datetime))) {
+								clcsample.push(motorstrength.datetime);
+								clcsampleDate.push(motorstrength.date);
+							}
+						});
+			
+							
+						clcsample.sort();
+						clcsampleDate.sort();
+	
+						for (i = 0; i < clcsample.length; i++) {
+							
+	
+							//Counter for empty data
+							//.length here refers to last index of the array
+							if (gcsCount !== (gcsFlow.length - 1)) {
+								gcsCount++;
+							}
+	
+							if (clcvitalCount !== (clcvitalFlow.length - 1)) {
+								clcvitalCount++;
+							}
+	
+							if (pupilsCount !== (pupilsFlow.length - 1)) {
+								pupilsCount++;
+							}
+	
+							if (motorstrengthCount !== (motorstrengthFlow.length - 1)) {
+								motorstrengthCount++;
+							}
+							
+	
+							//Insert empty data when value doesnt match
+							//Count here does the index count of flow array
+							if(gcsFlow !='') 
+							{
+								if (clcsample[i] < gcsFlow[gcsCount].datetime) {
+									gcsFlow.splice(gcsCount, 0, {datetime: ''});
+								} else if (clcsample[i] > gcsFlow[gcsCount].datetime) {
+									gcsFlow.splice(gcsCount + 1, 0, {datetime: ''});
+								}
+							} 
+							else
+							{
+								gcsFlow.push({datetime: '', eyeopen: ionoRecord});
+							}
+	
+							if(clcvitalFlow !='') 
+							{
+								if (clcsample[i] < clcvitalFlow[clcvitalCount].datetime) {
+									clcvitalFlow.splice(clcvitalCount, 0, {datetime: ''});
+								} else if (clcsample[i] > clcvitalFlow[clcvitalCount].datetime) {
+									clcvitalFlow.splice(clcvitalCount + 1, 0, {datetime: ''});
+								}
+							} 
+							else
+							{
+								clcvitalFlow.push({datetime: '', heartRate: ionoRecord});
+							}
+	
+							if(pupilsFlow !='') 
+							{
+								if (clcsample[i] < pupilsFlow[pupilsCount].datetime) {
+									pupilsFlow.splice(pupilsCount, 0, {datetime: ''});
+								} else if (clcsample[i] > pupilsFlow[pupilsCount].datetime) {
+									pupilsFlow.splice(pupilsCount + 1, 0, {datetime: ''});
+								}
+							} 
+							else 
+							{
+								pupilsFlow.push({datetime: '', sizeright: ionoRecord});
+							}
+	
+							if(motorstrengthFlow !='')
+							{
+								if (clcsample[i] < motorstrengthFlow[motorstrengthCount].datetime) {
+									motorstrengthFlow.splice(motorstrengthCount, 0, {datetime: ''});
+								} else if (clcsample[i] > motorstrengthFlow[motorstrengthCount].datetime) {
+									motorstrengthFlow.splice(motorstrengthCount + 1, 0, {datetime: ''});
+								}
+							}
+							else 
+							{
+								motorstrengthFlow.push({datetime: '', splitstrengthrightarm: ionoRecord});
+							}
+						};
+	
+						res.render('charts/master/charts-clc', {
+							recordID: req.params.recordID,
+							userType: userType,
+
+							clcsampleDate: clcsample,
+							gcsFlow: gcsFlow,
+							clcvitalFlow: clcvitalFlow,
+							pupilsFlow: pupilsFlow,
+							motorstrengthFlow: motorstrengthFlow,
+							newGcs: newGcs,
+							newpupils: newpupils,
+							newclcvital: newclcvital,
+							newmotorstrength: newmotorstrength,
+							patient: req.session.patient,
+							showMenu: true
+						  })
+					})
+				})
+			});
+		})
+	})
+
+//get single gcs info
+router.get('/clc-gcs/:recordID/:gcsID', ensureAuthenticated, (req, res) => {
+	userType = req.user.userType == 'student';
+	MasterGcs.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(newGcs => {
+		MasterGcs.findOne({ gcsID: req.params.gcsID }).then(editGcs => {
+
+			editGcs.date = moment(editGcs.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
+			res.render('charts/master/charts-clc', {
+				recordID: req.params.recordID,
+				userType: userType,
+				newGcs: newGcs,
+				editGcs: editGcs,
+				patient: req.session.patient,
+				showMenu: true			
+			})
+		})
+	})
+})
+//add gcs info
+router.post('/add-gcs/:recordID', ensureAuthenticated, (req, res) => {
+	gcsID = (new standardID('AAA0000')).generate();
+	datetime = moment(req.body.dateGcs, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeGcs;
+	
+	totalgcs = parseInt(req.body.eyeopen.slice(-2))
+	+ parseInt(req.body.bestverbal.slice(-2)) 
+	+ parseInt(req.body.bestmotor.slice(-2));
+
+	spliteyeopen = removeNumber.removeNumberFunction(req.body.eyeopen);
+	splitbestverbal = removeNumber.removeNumberFunction(req.body.bestverbal);
+	splitbestmotor = removeNumber.removeNumberFunction(req.body.bestmotor);
+	
+	new MasterGcs({
+		// patientID: req.session.patient.patientID,
+		patientID: req.params.recordID,
+		gcsID: gcsID,
+		date:	moment(req.body.dateGcs, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		time: req.body.timeGcs,
+		datetime: datetime,
+		eyeopen: req.body.eyeopen,
+		bestverbal: req.body.bestverbal,
+		bestmotor: req.body.bestmotor,
+
+		spliteyeopen:spliteyeopen,
+		splitbestverbal:splitbestverbal,
+		splitbestmotor:splitbestmotor,
+
+		totalgcs: totalgcs,
+	}).save();
+
+	res.redirect('/student/clc/'+req.params.recordID);
+})
+//edit gcs informations
+router.put('/edit-gcs/:recordID/:gcsID', ensureAuthenticated, (req,res) => {
+	datetime = moment(req.body.dateGcs, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeGcs;
+
+	totalgcs = parseInt(req.body.eyeopen.slice(-2))
+	+ parseInt(req.body.bestverbal.slice(-2)) 
+	+ parseInt(req.body.bestmotor.slice(-2));
+
+	spliteyeopen = removeNumber.removeNumberFunction(req.body.eyeopen);
+	splitbestverbal = removeNumber.removeNumberFunction(req.body.bestverbal);
+	splitbestmotor = removeNumber.removeNumberFunction(req.body.bestmotor);
+
+	MasterGcs.findOne({ gcsID: req.params.gcsID }).then(editGcs => {
+		editGcs.date = moment(req.body.dateGcs, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		editGcs.time = req.body.timeGcs,
+		editGcs.datetime = datetime,
+		editGcs.eyeopen = req.body.eyeopen,
+		editGcs.bestverbal = req.body.bestverbal,
+		editGcs.bestmotor = req.body.bestmotor,
+		editGcs.totalgcs = totalgcs,
+
+		editGcs.spliteyeopen = spliteyeopen,
+		editGcs.splitbestverbal = splitbestverbal,
+		editGcs.splitbestmotor = splitbestmotor,
+		editGcs.save();
+	});
+	res.redirect('/student/clc/' + req.params.recordID);
+})
+//Delete gcs information
+router.delete('/del-gcs/:recordID/:gcsID', ensureAuthenticated, (req, res) => {
+	MasterGcs.deleteOne({gcsID: req.params.gcsID}, function(err) {
+		if (err) {
+			console.log('Cannot delete GCS details');
+		}
+	});
+	res.redirect('/student/gcs/' + req.params.recordID);
+})
+
+//add clc vital info
+router.post('/add-clcvital/:recordID', ensureAuthenticated, (req, res) => {
+	clcvitalID = (new standardID('AAA0000')).generate();
+	datetime = moment(req.body.dateclcvital, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeclcvital;
+
+	bloodp = req.body.sbp + "/" + req.body.dbp;
+
+	new MasterClcVital({
+		patientID: req.params.recordID,
+		clcvitalID: clcvitalID,
+		date:	moment(req.body.dateclcvital, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		time: req.body.timeclcvital,
+		datetime: datetime,
+		heartRate: req.body.heartRate,
+		resp: req.body.resp,
+		sbp: req.body.sbp,
+		dbp: req.body.dbp,
+		bloodp: bloodp,
+
+	}).save();
+
+	res.redirect('/student/clc/' + req.params.recordID);
+})
+
+//Delete clcvital information
+router.delete('/del-clcvital/:recordID/:clcvitalID', ensureAuthenticated, (req, res) => {
+	MasterClcVital.deleteOne({clcvitalID: req.params.clcvitalID}, function(err) {
+		if (err) {
+			console.log('cannot delete Vital details');
+		}
+	});
+	res.redirect('/student/clc/' + req.params.recordID);
+})
+
+//Get single clcvital info
+router.get('/clc-vital/:recordID/:clcvitalID', ensureAuthenticated, (req, res) => {
+	userType = req.user.userType == 'student';
+	MasterClcVital.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newclcvital => {
+		MasterClcVital.findOne({ clcvitalID: req.params.clcvitalID }).then(editclcvital => {
+
+			//Changes date format to DD/MM/YYYY
+			editclcvital.date = moment(editclcvital.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
+			res.render('charts/master/charts-clc', {
+				recordID: req.params.recordID,
+				userType: userType,
+				newclcvital: newclcvital,
+				editclcvital: editclcvital,
+      		})
+    	})
+  	})
+})
+
+
+//Edit clcvital info
+router.put('/edit-clcvital/:recordID/:clcvitalID', ensureAuthenticated, (req, res) => {
+	datetime = moment(req.body.dateclcvital, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeclcvital;
+
+	bloodp = req.body.sbp + "/" + req.body.dbp;
+
+	MasterClcVital.findOne({ clcvitalID: req.params.clcvitalID }).then(editclcvital => {
+		editclcvital.date = moment(req.body.dateclcvital, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		editclcvital.time = req.body.timeclcvital,
+		editclcvital.datetime = datetime,
+		editclcvital.heartRate = req.body.heartRate,
+		editclcvital.resp = req.body.resp,
+		editclcvital.sbp = req.body.sbp,
+		editclcvital.dbp = req.body.dbp,
+		editclcvital.bloodp = bloodp,
+
+		editclcvital.save();
+	});
+	res.redirect('/student/clc/' + req.params.recordID);
+})
+
+//add pupils info
+router.post('/add-pupils/:recordID', ensureAuthenticated, (req, res) => {
+	pupilsID = (new standardID('AAA0000')).generate();
+	datetime = moment(req.body.datepupils, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timepupils;
+
+	new MasterPupils({
+		patientID: req.params.recordID,
+		pupilsID: pupilsID,
+		date:	moment(req.body.datepupils, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		time: req.body.timepupils,
+		datetime: datetime,
+		sizeright: req.body.sizeright,
+		sizeleft: req.body.sizeleft,
+		reactionright: req.body.reactionright,
+		reactionleft: req.body.reactionleft,
+
+	}).save();
+
+	res.redirect('/student/clc/' +req.params.recordID);
+})
+//Delete pupils information
+router.delete('/del-pupils/:recordID/:pupilsID', ensureAuthenticated, (req, res) => {
+	MasterPupils.deleteOne({pupilsID: req.params.pupilsID}, function(err) {
+		if (err) {
+			console.log('cannot delete Pupils details');
+		}
+	});
+	res.redirect('/student/clc/' + req.params.recordID);
+})
+//Get single pupils info
+router.get('/clc-pupils/:recordID/:pupilsID', ensureAuthenticated, (req, res) => {
+	userType = req.user.userType == 'student';
+	MasterPupils.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newpupils => {
+		MasterPupils.findOne({ pupilsID: req.params.pupilsID }).then(editpupils => {
+
+			//Changes date format to DD/MM/YYYY
+			editpupils.date = moment(editpupils.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
+			res.render('charts/master/charts-clc', {
+				recordID: req.params.recordID,
+				userType: userType,
+				newpupils: newpupils,
+				editpupils: editpupils,
+      		})
+    	})
+  	})
+})
+
+//Edit pupils info
+router.put('/edit-pupils/:recordID/:pupilsID', ensureAuthenticated, (req, res) => {
+	datetime = moment(req.body.datepupils, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timepupils;
+
+	MasterPupils.findOne({ pupilsID: req.params.pupilsID }).then(editpupils => {
+
+		editpupils.date = moment(req.body.datepupils, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		editpupils.time = req.body.timepupils,
+		editpupils.datetime = datetime,
+		editpupils.sizeright = req.body.sizeright,
+		editpupils.sizeleft = req.body.sizeleft,
+		editpupils.reactionright = req.body.reactionright,
+		editpupils.reactionleft = req.body.reactionleft,
+
+		editpupils.save();
+	})
+	res.redirect('/student/clc/' + req.params.recordID);
+})
+
+//add motorstrength info
+router.post('/add-motorstrength/:recordID', ensureAuthenticated, (req, res) => {
+	motorstrengthID = (new standardID('AAA0000')).generate();
+	datetime = moment(req.body.datemotorstrength, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timemotorstrength;
+	
+	totalms = parseInt(req.body.strengthrightarm.slice(-2))
+	+ parseInt(req.body.strengthleftarm.slice(-2)) 
+	+ parseInt(req.body.strengthrightleg.slice(-2))
+	+ parseInt(req.body.strengthleftleg.slice(-2));
+
+	splitstrengthrightarm = removeNumber.removeNumberFunction(req.body.strengthrightarm);
+	splitstrengthleftarm = removeNumber.removeNumberFunction(req.body.strengthleftarm);
+	splitstrengthrightleg = removeNumber.removeNumberFunction(req.body.strengthrightleg);
+	splitstrengthleftleg = removeNumber.removeNumberFunction(req.body.strengthleftleg);
+	new MasterMotorStrength({
+		patientID: req.params.recordID,
+		motorstrengthID: motorstrengthID,
+		date:	moment(req.body.datemotorstrength, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		time: req.body.timemotorstrength,
+		datetime: datetime,
+		strengthrightarm: req.body.strengthrightarm,
+		strengthleftarm: req.body.strengthleftarm,
+		strengthrightleg: req.body.strengthrightleg,
+		strengthleftleg: req.body.strengthleftleg,
+
+		splitstrengthrightarm: splitstrengthrightarm,
+		splitstrengthleftarm: splitstrengthleftarm,
+		splitstrengthrightleg: splitstrengthrightleg,
+		splitstrengthleftleg: splitstrengthleftleg,
+		
+		totalms: totalms,
+
+	}).save();
+
+	res.redirect('/student/clc/'+ req.params.recordID);
+})
+//Delete motor strength information
+router.delete('/del-motorstrength/:recordID/:motorstrengthID', ensureAuthenticated, (req, res) => {
+	MasterMotorStrength.deleteOne({motorstrengthID: req.params.motorstrengthID}, function(err) {
+		if (err) {
+			console.log('Cannot delete Motor Strength details');
+		}
+	});
+	res.redirect('/student/clc/' + req.params.recordID);
+})
+
+//Get single motorstrength info
+router.get('/clc-motorstrength/:recordID/:motorstrengthID', ensureAuthenticated, (req, res) => {
+	userType = req.user.userType == 'student';
+	MasterMotorStrength.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newmotorstrength => {
+		MasterMotorStrength.findOne({ motorstrengthID: req.params.motorstrengthID }).then(editmotorstrength => {
+
+			//Changes date format to DD/MM/YYYY
+			editmotorstrength.date = moment(editmotorstrength.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
+			res.render('charts/master/charts-clc', {
+				recordID: req.params.recordID,
+				userType: userType,
+				newmotorstrength: newmotorstrength,
+				editmotorstrength: editmotorstrength,
+				patient: req.session.patient,
+				showMenu: true	
+      		})
+    	})
+  	})
+})
+
+//Edit motorstrength info
+router.put('/edit-motorstrength/:recordID/:motorstrengthID', ensureAuthenticated, (req, res) => {
+	datetime = moment(req.body.datemotorstrength, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timemotorstrength;
+	
+	totalms = parseInt(req.body.strengthrightarm.slice(-2))
+	+ parseInt(req.body.strengthleftarm.slice(-2)) 
+	+ parseInt(req.body.strengthrightleg.slice(-2))
+	+ parseInt(req.body.strengthleftleg.slice(-2));
+
+	splitstrengthrightarm = removeNumber.removeNumberFunction(req.body.strengthrightarm);
+	splitstrengthleftarm = removeNumber.removeNumberFunction(req.body.strengthleftarm);
+	splitstrengthrightleg = removeNumber.removeNumberFunction(req.body.strengthrightleg);
+	splitstrengthleftleg = removeNumber.removeNumberFunction(req.body.strengthleftleg);
+
+	MasterMotorStrength.findOne({ motorstrengthID: req.params.motorstrengthID }).then(editmotorstrength => {
+
+		editmotorstrength.date = moment(req.body.datemotorstrength, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		editmotorstrength.time = req.body.timemotorstrength,
+		editmotorstrength.datetime = datetime,
+		editmotorstrength.strengthrightarm = req.body.strengthrightarm,
+		editmotorstrength.strengthleftarm = req.body.strengthleftarm,
+		editmotorstrength.strengthrightleg = req.body.strengthrightleg,
+		editmotorstrength.strengthleftleg = req.body.strengthleftleg,
+		editmotorstrength.totalms = totalms,
+
+		editmotorstrength.splitstrengthrightarm = splitstrengthrightarm,
+		editmotorstrength.splitstrengthleftarm = splitstrengthleftarm,
+		editmotorstrength.splitstrengthrightleg = splitstrengthrightleg,
+		editmotorstrength.splitstrengthleftleg = splitstrengthleftleg,
+
+		editmotorstrength.save();
+	})
+	res.redirect('/student/clc/' + req.params.recordID);
+})
+//END OF clc
 module.exports = router;

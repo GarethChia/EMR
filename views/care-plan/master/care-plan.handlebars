@@ -193,7 +193,7 @@
     // display students who has created their care plan
     {{#if studentCarePlanName}} 
         {{#each studentCarePlanName}}
-        $("#selectUser").append("<option value='https://localhost/master/CarePlan/{{createdBy}}'>{{createdBy}}</option>"); 
+        $("#selectUser").append("<option value='https://composition.sit.nyp.edu.sg/master/CarePlan/{{createdBy}}'>{{createdBy}}</option>"); 
         {{/each}}
     {{/if}} 
     
@@ -202,7 +202,7 @@
     });
     
     {{#if name}}
-        document.getElementById("selectUser").value = "https://localhost/master/CarePlan/{{name}}";
+        document.getElementById("selectUser").value = "https://composition.sit.nyp.edu.sg/master/CarePlan/{{name}}";
     {{/if}}
 
     {{#if editCarePlan}}

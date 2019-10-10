@@ -17,6 +17,7 @@ exports.creds = {
 	responseMode: 'form_post',
 	
 	// Required, the reply URL registered in AAD for your app
+	// ** CHANGE HERE:
 	redirectUrl: 'https://localhost/auth/azure/callback',
 	//redirectUrl: 'https://composition.sit.nyp.edu.sg/auth/azure/callback',
 	

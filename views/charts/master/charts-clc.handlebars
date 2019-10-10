@@ -1,0 +1,1117 @@
+<style>
+    td, th {
+        text-align: center
+    }
+    .tabs .indicator {
+        background-color: #6A1B9A;
+    }
+    .tabs .tab a:focus, .tabs .tab a:focus.active {
+        background: transparent;
+    }
+
+    #clcflowsheetTable th {
+        border-right: 1px solid rgba(0, 0, 0, 0.12);
+        border-bottom: none;
+    }
+    #clcflowsheetTable tr {
+        border-bottom: none;
+    }
+    #clcflowsheetTable tr td {
+        border-right: 1px solid rgba(0, 0, 0, 0.12);
+    }
+</style>
+
+
+<br>
+<div class="row">
+    <div class="col s12">
+        <div class="tabs">
+            <li class="tab col s2 offset-s1" id="clcflowTab"><a class="purple-text text-darken-3" id="tab0" href="#clcflowsheet">CLC Flowsheet</a></li>
+            <li class="tab col s2" id="gcstab"><a class="purple-text text-darken-3" id="tab1" href="#gcs">GCS</a></li>
+            <li class="tab col s2" id="vitaltab"><a class="purple-text text-darken-3" id="tab2" href="#vital">Vital</a></li>
+            <li class="tab col s2" id="pupilstab"><a class="purple-text text-darken-3" id="tab3" href="#pupils">Pupils</a></li>
+            <li class="tab col s2" id="motorstrengthtab"><a class="purple-text text-darken-3" id="tab4" href="#motorstrength">Motor Strength</a></li>
+        </div>
+    </div>
+</div>
+
+
+ {{!-- clc Flowsheet code start --}}
+ <div id="clcflowsheet">
+    <div class="card-panel purple darken-3 white-text" style="padding: 5px; font-size: 20px; text-align: center"> CLC Flowsheet</div>
+    
+    <div style="overflow-x: auto; max-height: 48em;">
+        <table id="clcflowsheetTable">
+            <tr>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Datetime</th>
+                {{#each clcsampleDate}}
+                <th style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">{{formatDatetime this}}</th>
+                {{/each}}
+            </tr>
+
+           
+
+        {{!-- GCS --}}
+
+            <tr>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Glasgow Coma Scale</th>
+                {{#each gcsFlow}}
+                <td class="gcs"></td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Eyes Open</th>
+                {{#each gcsFlow}}
+                <td>{{spliteyeopen}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Best Verbal Response</th>
+                {{#each gcsFlow}}
+                <td>{{splitbestverbal}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Best Motor Response</th>
+                {{#each gcsFlow}}
+                <td class="bestmotor">{{splitbestmotor}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Total</th>
+                {{#each gcsFlow}}
+                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)" class="totalgcs">{{totalgcs}}</td>
+                {{/each}}
+            </tr>
+
+             {{!-- Vital --}}
+
+            <tr>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Vital</th>
+                {{#each clcvitalFlow}}
+                <td class="clcvital"></td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Blood Pressure (mmHg)</th>
+                {{#each clcvitalFlow}}
+                <td>{{bloodp}}</td>
+                {{/each}}
+            </tr>
+
+            <tr>
+                <th width="10%">Heart Rate (BPM)</th>
+                {{#each clcvitalFlow}}
+                <td class="heartRate">{{heartRate}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Respiratory (Breath Per Mins)</th>
+                {{#each clcvitalFlow}}
+                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)" >{{resp}}</td>
+                {{/each}}
+            </tr>
+
+            {{!-- pupils --}}
+            <tr>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Pupils</th>
+                {{#each pupilsFlow}}
+                <td class="Pupils"></td>
+                {{/each}}
+            </tr>
+            
+            <tr>
+                <th width="10%">Right Size</th>
+                {{#each pupilsFlow}}
+                <td>{{sizeright}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%" > Right Reaction</th>
+                {{#each pupilsFlow}}
+                <td class="reactionright">{{reactionright}}</td>
+                {{/each}}
+            </tr>
+
+            <tr>
+                <th width="10%">Left Size</th>
+                {{#each pupilsFlow}}
+                <td>{{sizeleft}}</td>
+                {{/each}}
+            </tr>
+
+            <tr>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Left Reaction</th>
+                {{#each pupilsFlow}}
+                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)" class="reactionleft">{{reactionleft}}</td>
+                {{/each}}
+            </tr> 
+
+            {{!-- motor strength --}}
+        
+            <tr>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Arms</th>
+                {{#each motorstrengthFlow}}
+                <td class="motorstrengthFlow"></td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Right Arm Strength</th>
+                {{#each motorstrengthFlow}}
+                {{!-- <td class="urine">{{splitstrengthrightarm}}</td> --}}
+                <td class="urine">{{strengthrightarm}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Left Arm Strength</th>
+                {{#each motorstrengthFlow}}
+                {{!-- <td>{{splitstrengthleftarm}}</td> --}}
+                <td>{{strengthleftarm}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Legs</th>
+                {{#each motorstrengthFlow}}
+                <td class="motorstrengthFlow"></td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Right Leg Strength</th>
+                {{#each motorstrengthFlow}}
+                {{!-- <td>{{splitstrengthrightleg}}</td> --}}
+                <td>{{strengthrightleg}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Left Leg Strength</th>
+                {{#each motorstrengthFlow}}
+                {{!-- <td>{{splitstrengthleftleg}}</td> --}}
+                <td>{{strengthleftleg}}</td>
+                {{/each}}
+            </tr>
+
+            {{!-- <tr>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Total</th>
+                {{#each motorstrengthFlow}}
+                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">{{totalms}}</td>
+                {{/each}}
+            </tr> --}}
+            
+        </table>
+    </div>
+</div>
+
+{{!-- GCS code start --}}
+<div id="gcs">
+<div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">GCS</div>
+    <div style="overflow-x:auto; max-height: 16em;">
+        <table id="ioRecords" class="hover order-column">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Eyes Open</th>
+                    <th>Best Verbal Response</th>
+                    <th>Best Motor Response</th>
+                    <th>Total GCS Score</th>
+                    {{#unless userType}}
+                    <th>Delete</th>
+                    {{/unless}}
+                </tr>
+            </thead>
+            <tbody>
+                {{#if newGcs}}
+                    {{#each newGcs}}
+                    <tr style="height: 60px">
+                        {{#unless ../userType}}
+                        <td><a href="/master/clc-gcs/{{gcsID}}">{{date}}</a></td>
+                        {{else}}
+                        <td><a href="/student/clc-gcs/{{../recordID}}/{{gcsID}}">{{date}}</a></td>
+                        {{/unless}}
+                        <td>{{time}}</td>
+                        <td>{{spliteyeopen}}</td>
+                        <td>{{splitbestverbal}}</td>
+                        <td>{{splitbestmotor}}</td>
+                        <td>{{totalgcs}}</td>
+                        {{#unless ../userType}}
+                        <td style="width: 65px"> <!-- the tr we're trying to get -->
+                            <form action="/master/del-gcs/{{gcsID}}?_method=DELETE" method="post" id="delete-form">
+                                <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn red darken-3">
+                                 <i class="material-icons">delete
+                            </button>
+                            </form>
+                        </td>
+                        {{else}}
+                         {{!-- <td style="width: 65px"> <!-- the tr we're trying to get -->
+                            <form action="/master/del-io/{{../recordID}}/{{ioID}}?_method=DELETE" method="post" id="delete-form">
+                                <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn red darken-3">
+                                 <i class="material-icons">delete
+                            </button> --}}
+                            </form>
+                        {{/unless}}
+                    </tr>
+                    {{/each}}
+                {{else}}
+                <p id="noRecord">You have not created any GCS records yet</p>
+                {{/if}}
+            </tbody>
+        </table>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col s12 m8"></div>
+    </div>
+
+    {{#if editGcs}}
+        {{#unless userType}}
+        <form action="/master/edit-gcs/{{editGcs.gcsID}}?_method=PUT" method="POST" id="editGcs">
+        {{else}}    
+        <form action="/student/edit-gcs/{{recordID}}/{{editGcs.gcsID}}?_method=PUT" method="POST" id="editGcs">
+        {{/unless}}
+    {{!-- <input type="hidden" name="_method" value="PUT"> --}}
+    {{else}}
+        {{#unless userType}}
+        <form action="/master/add-gcs" method="POST" id="addGcs">
+        {{else}}
+        <form action="/student/add-gcs/{{recordID}}" method="POST" id="addGcs">
+        {{/unless}}
+    {{/if}}
+        <div class="card purple lighten-5">
+            <div class="card-content">
+                <div id="ioInfo">
+                    <span class="purple-text darken-2">Glasgow Coma Scale Information</span>
+
+                <div class="row">
+                        <div class="col s12 m4 input-field">
+                            <input id="dateGcs" type="text" class="datepicker" name="dateGcs" value="{{editGcs.date}}" required>
+                            <label for="dateGcs">Date</label>
+                            <span class="helper-text">dd/mm/yyyy</span>
+                        </div>
+
+                        <div class="col s12 m4 input-field">
+                            <input id="timeGcs" type="text" class="timepicker" name="timeGcs" value="{{editGcs.time}}" required>
+                            <label for="timeGcs">Time</label>
+                            <span class="helper-text">hh:ss</span>
+                        </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col s12 m4 input-field">
+                            <select id="eyeopen" name="eyeopen" required>
+                                <option value="" >Eyes Open</option>
+                                <option value="Spontaneous +4">Spontaneous +4</option>
+                                <option value="To Speech +3">To Speech +3</option>
+                                <option value="To Pain +2">To Pain +2</option>
+                                <option value="None +1">None +1</option>
+                            </select>
+                     <label for="eyeopen">Eyes Open</label>
+
+                    </div>
+                     <div class="col s12 m4 input-field">
+                            <select id="bestverbal" name="bestverbal"  required>
+                                <option value="">Best Verbal Response</option>
+                                <option value="Oriented +5">Oriented +5</option>
+                                <option value="Confused +4">Confused +4</option>
+                                <option value="Inappropriate Words +3">Inappropriate Words +3</option>
+                                <option value="Incomprehensive Sounds +2">Incomprehensive Sounds +2</option>
+                                <option value="None +1">None +1</option>
+                            </select>
+                     <label for="bestverbal">Best Verbal Response</label>
+
+                    </div>
+                     <div class="col s12 m4 input-field">
+                            <select id="bestmotor" name="bestmotor" required>
+                                <option value="">Best Motor Response</option>
+                                <option value="Obey Commands +6">Obey Commands +6</option>
+                                <option value="Localised Pain +5">Localised Pain +5</option>
+                                <option value="Flexion to pain +4">Flexion to pain +4</option>
+                                <option value="Abnormal FLexion +3">Abnormal FLexion +3</option>
+                                <option value="Extension to pain +2">Extension to pain +2</option>
+                                <option value="None +1">None +1</option>                          
+                            </select>
+                     <label for="bestmotor">Best Motor Response</label>
+
+                    </div>                    
+                        {{!-- <div class="col s12 m4 input-field">
+                            <input id="fluidtype" type="text" name="fluidtype" value="{{editIO.fluidtype}}">
+                            <label for="fluidtype">Fluid Type</label>
+                            <span class="helper-text"></span>
+                        </div>
+
+                        <div class="col s12 m4 input-field">
+                            <input id="fluidportion" type="number" name="fluidportion" value="{{editIO.fluidportion}}">
+                            <label for="floodportion">Fluid Consumed (mL)</label>
+                            <span class="helper-text"></span>
+                        </div> --}}
+
+                </div>
+
+
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="row">
+        <div class="col s12 m8"></div>
+
+        <div class="col s12 m4">
+            {{#if editGcs}}
+                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editGcs">Save Changes
+            {{else}}
+                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addGcs">Save
+            {{/if}}
+            {{#unless userType}}
+                <i class="material-icons right">send</i>
+                {{else}}
+                <i class="material-icons right">send</i>
+            {{/unless}}
+        </div>
+    </div>
+</div>
+
+{{!-- GCS code end --}}
+
+
+{{!-- CLC Vital code start --}}
+
+<div id="vital">
+<div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">Vital</div>
+    <div style="overflow-x:auto; max-height: 16em;">
+        <table id="enteralRecords" class="hover order-column" >
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Heart Rate (BPM) </th>
+                    <th>Respiratory (Breath Per Mins)</th>
+                    <th>Blood Pressure (mmHg)</th>
+                    {{#unless userType}}
+                    <th>Delete</th>
+                    {{!-- {{else}}
+                    <th>Delete</th> --}}
+                    {{/unless}}
+                </tr>
+            </thead>
+            <tbody>
+                {{#if newclcvital}}
+                    {{#each newclcvital}}
+                    <tr style="height: 60px">
+                        {{#unless ../userType}}
+                        <td><a href="/master/clc-vital/{{clcvitalID}}">{{date}}</a></td>
+                        {{else}}
+                        <td><a href="/student/clc-vital/{{../recordID}}/{{clcvitalID}}">{{date}}</a></td>
+                        {{/unless}}
+                        <td>{{time}}</td>
+                        <td>{{heartRate}}</td>
+                        <td>{{resp}}</td>
+                        <td>{{bloodp}}</td>
+                        {{#unless ../userType}}
+                            <td style="width: 65px"> <!-- the tr we're trying to get -->
+                                <form action="/master/del-clcvital/{{clcvitalID}}?_method=DELETE" method="post" id="delete-form">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn red darken-3">
+                                    <i class="material-icons">delete
+                                </button>
+                                </form>
+                            </td>
+                        {{else}}
+                            {{!-- <td style="width: 65px"> <!-- the tr we're trying to get -->
+                                <form action="/student/del-enteral/{{../recordID}}/{{enteralID}}?_method=DELETE" method="post" id="delete-form">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn red darken-3">
+                                    <i class="material-icons">delete
+                                </button>
+                                </form>
+                            </td> --}}
+                        {{/unless}}
+                    </tr>
+                    {{/each}}
+                {{else}}
+                <p id="noRecord">You have not created any Vital records yet</p>
+                {{/if}}
+            </tbody>
+        </table>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col s12 m8"></div>
+
+    </div>
+
+    {{#if editclcvital}}
+        {{#unless userType}}
+        <form action="/master/edit-clcvital/{{editclcvital.clcvitalID}}?_method=PUT" method="POST" id="editclcvital">
+        {{else}}
+        <form action="/student/edit-clcvital/{{recordID}}/{{editclcvital.clcvitalID}}?_method=PUT" method="POST" id="editclcvital">
+        {{/unless}}
+    {{!-- <input type="hidden" name="_method" value="PUT"> --}}
+    {{else}}
+        {{#unless userType}}
+            <form action="/master/add-clcvital" method="POST" id="addclcvital">
+            {{else}}
+            <form action="/student/add-clcvital/{{recordID}}" method="POST" id="addclcvital">
+        {{/unless}}
+    {{/if}}
+        <div class="card purple lighten-5">
+            <div class="card-content">
+                <div id="enteralInfo">
+                    <span class="purple-text darken-2">Vital</span>
+
+                <div class="row">
+                        <div class="col s12 m4 input-field">
+                            <input id="dateclcvital" type="text" class="datepicker" name="dateclcvital" value="{{editclcvital.date}}" required>
+                            <label for="dateclcvital">Date</label>
+                            <span class="helper-text">dd/mm/yyyy</span>
+                        </div>
+
+                        <div class="col s12 m4 input-field">
+                            <input id="timeclcvital" type="text" class="timepicker" name="timeclcvital" value="{{editclcvital.time}}" required>
+                            <label for="timeclcvital">Time</label>
+                            <span class="helper-text">hh:ss</span>
+                        </div>
+                </div>
+
+                <div class="row">
+                        <div class="col s12 m4 input-field">
+                            <input id="heartRate" type="number" name="heartRate" value="{{editclcvital.heartRate}}" required>
+                            <label for="heartRate">Heart Rate (BPM)</label>
+                            <span class="helper-text"></span>
+                        </div>
+
+                        <div class="col s12 m4 input-field">
+                            <input id="resp" type="number" name="resp" value="{{editclcvital.resp}}" required>
+                            <label for="resp">Respiration Rate</label>
+                            <span class="helper-text"></span>
+                        </div>
+                       
+
+                </div>
+                 <div class="row">
+                        <div class="col s12 m4 input-field">
+                            <input id="sbp" type="number" name="sbp" value="{{editclcvital.sbp}}"required>
+                            <label for="sbp">Blood Pressure (SBP)</label>
+                            <span class="helper-text"></span>
+                        </div>
+                        <div class="col s12 m4 input-field">
+                            <input id="dbp" type="number" name="dbp" value="{{editclcvital.dbp}}"required>
+                            <label for="dbp">Blood Pressure (DBP)</label>
+                            <span class="helper-text"></span>
+                        </div>
+                 </div>
+
+
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="row">
+        <div class="col s12 m8"></div>
+        <div class="col s12 m4">
+            {{#if editclcvital}}
+                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editclcvital">Save Changes
+            {{else}}
+           
+                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addclcvital">Save
+            {{/if}}
+            {{#unless userType}}
+                <i class="material-icons right">send</i>
+                {{else}}
+                <i class="material-icons right">send</i>
+            {{/unless}}
+            </button>
+            
+        </div>
+    </div>
+</div>
+
+{{!-- end CLC Vital Code --}}
+
+
+
+{{!-- Pupils code start --}}
+
+<div id="pupils">
+<div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">Pupils</div>
+    <div style="overflow-x:auto; max-height: 16em;">
+        <table id="ivRecords" class="hover order-column" >
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Size (Right)</th>
+                    <th>Reaction (Right)</th>
+                    <th>Size (Left)</th>
+                    <th>Reaction (Left)</th>
+                    {{!-- <th>I.V Flush (mL)</th> --}}
+                    {{!-- <th>Patient ID</th> --}}
+                    {{#unless userType}}
+                    <th>Delete</th>
+                    {{/unless}}
+                </tr>
+            </thead>
+
+            <tbody>
+                {{#if newpupils}}
+                    {{#each newpupils}}
+                    <tr style="height: 60px">
+                        {{#unless ../userType}}
+                        <td><a href="/master/clc-pupils/{{pupilsID}}">{{date}}</a></td>
+                        {{else}}
+                        <td><a href="/student/clc-pupils/{{../recordID}}/{{pupilsID}}">{{date}}</a></td>
+                        {{/unless}}
+                        <td>{{time}}</td>
+                        <td>{{sizeright}}</td>
+                        <td>{{reactionright}}</td>
+                        <td>{{sizeleft}}</td>
+                        <td>{{reactionleft}}</td>
+
+                        {{#unless ../userType}}          
+                        <td style="width: 65px"> <!-- the tr we're trying to get -->
+                            <form action="/master/del-pupils/{{pupilsID}}?_method=DELETE" method="post" id="delete-form">
+                                <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn red darken-3">
+                                 <i class="material-icons">delete
+                            </button>
+                            </form>
+                        </td>
+                        {{else}}
+                            {{!-- <td style="width: 65px"> <!-- the tr we're trying to get -->
+                                <form action="/student/del-iv/{{../recordID}}/{{ivID}}?_method=DELETE" method="post" id="delete-form">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn red darken-3">
+                                    <i class="material-icons">delete
+                                </button>
+                                </form>
+                            </td> --}}
+                        {{/unless}}
+                    </tr>
+                    {{/each}}
+                {{else}}
+                <p id="noRecord">You have not created any Pupils records yet</p>
+                {{/if}}
+            </tbody>
+        </table>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col s12 m8"></div>
+    </div>
+
+    {{#if editpupils}}
+        {{#unless userType}}
+        <form action="/master/edit-pupils/{{editpupils.pupilsID}}?_method=PUT" method="POST" id="editpupils">
+        {{else}}
+        <form action="/student/edit-pupils/{{recordID}}/{{editpupils.pupilsID}}?_method=PUT" method="POST" id="editpupils">
+        {{/unless}}
+        {{else}}
+    {{!-- <input type="hidden" name="_method" value="PUT"> --}}
+        {{#unless userType}}
+            <form action="/master/add-pupils" method="POST" id="addpupils">
+        {{else}}
+            <form action="/student/add-pupils/{{recordID}}" method="POST" id="addpupils">
+        {{/unless}}
+    {{/if}}
+        <div class="card purple lighten-5">
+            <div class="card-content">
+                <div id="ivInfo">
+                    <span class="purple-text darken-2">Pupils</span>
+
+                <div class="row">
+                        <div class="col s12 m4 input-field">
+                            <input id="datepupils" type="text" class="datepicker" name="datepupils" value="{{editpupils.date}}" required>
+                            <label for="datepupils">Date</label>
+                            <span class="helper-text">dd/mm/yyyy</span>
+                        </div>
+
+                        <div class="col s12 m4 input-field">
+                            <input id="timepupils" type="text" class="timepicker" name="timepupils" value="{{editpupils.time}}" required>
+                            <label for="timepupils">Time</label>
+                            <span class="helper-text">hh:ss</span>
+                        </div>
+
+                </div>
+                <div class="row">
+                        <div class="col s12 m4 input-field">
+                            <select id="sizeright" name="sizeright" required>
+                            <option value="0" disabled selected>Right Pupil Size</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            </select>
+                            <label for="sizeright">Right Pupil Size</label>
+                        </div>  
+
+                        <div class="col s12 m4 input-field">
+                            <select id="reactionright" name="reactionright" required>
+                            <option value="0" disabled selected>Right Reaction</option>
+                            <option value="Brisk">Brisk</option>
+                            <option value="Sluggish">Sluggish</option>
+                            <option value="Fixed">Fixed</option>
+                            <option value="Eyes closed">Eyes Closed</option>
+                            </select>
+                            <label for="reactionright">Right Reaction</label>
+                        </div>  
+
+                </div>
+                <div class="row">
+                        <div class="col s12 m4 input-field">
+                            <select id="sizeleft" name="sizeleft" required>
+                            <option value="0" disabled selected>Left Pupil Size</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            </select>
+                            <label for="sizeleft">Left Pupil Size</label>
+                        </div>  
+
+                        <div class="col s12 m4 input-field">
+                            <select id="reactionleft" name="reactionleft" required>
+                            <option value="0" disabled selected>Left Reaction</option>
+                            <option value="Brisk">Brisk</option>
+                            <option value="Sluggish">Sluggish</option>
+                            <option value="Fixed">Fixed</option>
+                            <option value="Eyes closed">Eyes Closed</option>
+                            </select>
+                            <label for="reactionleft">Left Reaction</label>
+                        </div>  
+
+                </div>
+
+
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="row">
+
+        <div class="col s12 m8"></div>
+
+        <div class="col s12 m4">
+            {{#if editpupils}}
+            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editpupils">Save Changes
+            {{else}}
+            
+            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addpupils">Save
+            {{/if}}
+            {{#unless userType}}
+                <i class="material-icons right">send</i>
+                {{else}}
+                <i class="material-icons right">send</i>
+            {{/unless}}
+            </button>
+        </div>
+    </div>
+
+</div>
+
+{{!-- Pupils code ends here --}}
+
+{{!-- Motor strength code start --}}
+
+<div id="motorstrength">
+<div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">Motor Strength</div>
+    <div style="overflow-x:auto; max-height: 16em;">
+        <table id="ivRecords" class="hover order-column" >
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Strength Right Arm</th>
+                    <th>Strength Right Leg</th>
+                    <th>Strength Left Arm</th>
+                    <th>Strength Left Leg</th>
+                    {{#unless userType}}
+                    <th>Delete</th>
+                    {{/unless}}
+                </tr>
+            </thead>
+
+            <tbody>
+                {{#if newmotorstrength}}
+                    {{#each newmotorstrength}}
+                    <tr style="height: 60px">
+                        {{#unless ../userType}}
+                        <td><a href="/master/clc-motorstrength/{{motorstrengthID}}">{{date}}</a></td>
+                        {{else}}
+                        <td><a href="/student/clc-motorstrength/{{../recordID}}/{{motorstrengthID}}">{{date}}</a></td>
+                        {{/unless}}
+                        <td>{{time}}</td>
+                        <td>{{strengthrightarm}}</td>
+                        <td>{{strengthrightleg}}</td>
+                        <td>{{strengthleftarm}}</td>
+                        <td>{{strengthleftleg}}</td>
+                        {{!-- <td>{{splitstrengthrightarm}}</td>
+                        <td>{{splitstrengthrightleg}}</td>
+                        <td>{{splitstrengthleftarm}}</td>
+                        <td>{{splitstrengthleftleg}}</td> --}}
+
+                        {{#unless ../userType}}          
+                        <td style="width: 65px"> <!-- the tr we're trying to get -->
+                            <form action="/master/del-motorstrength/{{motorstrengthID}}?_method=DELETE" method="post" id="delete-form">
+                                <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn red darken-3">
+                                 <i class="material-icons">delete
+                            </button>
+                            </form>
+                        </td>
+                        {{else}}
+                            {{!-- <td style="width: 65px"> <!-- the tr we're trying to get -->
+                                <form action="/student/del-iv/{{../recordID}}/{{ivID}}?_method=DELETE" method="post" id="delete-form">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn red darken-3">
+                                    <i class="material-icons">delete
+                                </button>
+                                </form>
+                            </td> --}}
+                        {{/unless}}
+                    </tr>
+                    {{/each}}
+                {{else}}
+                <p id="noRecord">You have not created any Motor Strength records yet</p>
+                {{/if}}
+            </tbody>
+        </table>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col s12 m8"></div>
+    </div>
+
+    {{#if editmotorstrength}}
+        {{#unless userType}}
+        <form action="/master/edit-motorstrength/{{editmotorstrength.motorstrengthID}}?_method=PUT" method="POST" id="editmotorstrength">
+        {{else}}
+        <form action="/student/edit-motorstrength/{{recordID}}/{{editmotorstrength.motorstrengthID}}?_method=PUT" method="POST" id="editmotorstrength">
+        {{/unless}}
+    {{else}}
+    {{!-- <input type="hidden" name="_method" value="PUT"> --}}
+        {{#unless userType}}
+            <form action="/master/add-motorstrength" method="POST" id="addmotorstrength">
+        {{else}}
+            <form action="/student/add-motorstrength/{{recordID}}" method="POST" id="addmotorstrength">
+        {{/unless}}
+    {{/if}}
+        <div class="card purple lighten-5">
+            <div class="card-content">
+                <div id="ivInfo">
+                    <span class="purple-text darken-2">Motor Strength</span>
+
+                <div class="row">
+                        <div class="col s12 m4 input-field">
+                            <input id="datemotorstrength" type="text" class="datepicker" name="datemotorstrength" value="{{editmotorstrength.date}}" required>
+                            <label for="datemotorstrength">Date</label>
+                            <span class="helper-text">dd/mm/yyyy</span>
+                        </div>
+
+                        <div class="col s12 m4 input-field">
+                            <input id="timemotorstrength" type="text" class="timepicker" name="timemotorstrength" value="{{editmotorstrength.time}}" required>
+                            <label for="timemotorstrength">Time</label>
+                            <span class="helper-text">hh:ss</span>
+                        </div>
+
+                      
+
+                </div>
+                <div class="row">
+                        <div class="col s12 m4 input-field">
+                            <select id="strengthrightarm" name="strengthrightarm" required>
+                            <option value="0" disabled>Right Arm Strength</option>
+                            <option value="Normal 5">Normal +5</option>
+                            <option value="Mild Weakness 4">Mild Weakness +4</option>
+                            <option value="&gt; Anti-Gravity Strength 3">&gt; Anti-Gravity Strength +3</option>
+                            <option value="&#60; Anti-Gravity Strength 2">&lt; Anti-Gravity Strength +2</option>
+                            <option value="Minimal Strength 1">Minimal Strength +1</option>
+                            <option value="No Movement 0">No Movement +0</option>
+                            </select>
+                            <label for="strengthrightarm">Right Arm Strength</label>
+                        </div>  
+
+                        <div class="col s12 m4 input-field">
+                            <select id="strengthleftarm" name="strengthleftarm" required>
+                            <option value="0" disabled>Left Arm Strength</option>
+                            <option value="Normal 5">Normal +5</option>
+                            <option value="Mild Weakness 4">Mild Weakness +4</option>
+                            <option value="> Anti-Gravity Strength 3">&gt; Anti-Gravity Strength +3</option>
+                            <option value="< Anti-Gravity Strength 2">&lt; Anti-Gravity Strength +2</option>
+                            <option value="Minimal Strength 1">Minimal Strength +1</option>
+                            <option value="No Movement 0">No Movement +0</option>                            
+                            </select>
+                            <label for="strengthleftarm">Left Arm Strength</label>
+                        </div>  
+
+                </div>
+                <div class="row">
+                        <div class="col s12 m4 input-field">
+                            <select id="strengthrightleg" name="strengthrightleg" required>
+                            <option value="0" disabled>Right Leg Strength</option>
+                            <option value="Normal 5">Normal +5</option>
+                            <option value="Mild Weakness 4">Mild Weakness +4</option>
+                            <option value="> Anti-Gravity Strength 3">&gt; Anti-Gravity Strength +3</option>
+                            <option value="Minimal Strength 1">Minimal Strength +1</option>
+                            <option value="No Movement 0">No Movement +0</option>
+                            </select>
+                            <label for="strengthrightleg">Right Leg Strength</label>
+                        </div>  
+
+                        <div class="col s12 m4 input-field">
+                            <select id="strengthleftleg" name="strengthleftleg" required>
+                            <option value="0" disabled>Left Leg Strength</option>
+                            <option value="Normal 5">Normal +5</option>
+                            <option value="Mild Weakness 4">Mild Weakness +4</option>
+                            <option value="> Anti-Gravity Strength 3">&gt; Anti-Gravity Strength +3</option>
+                            <option value="< Anti-Gravity Strength 2">&lt; Anti-Gravity Strength +2</option>
+                            <option value="Minimal Strength 1">Minimal Strength +1</option>
+                            <option value="No Movement 0">No Movement +0</option>
+                            </select>
+                            <label for="strengthleftleg">Left Leg Strength</label>
+                        </div>  
+
+                </div>
+
+
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="row">
+
+        <div class="col s12 m8"></div>
+
+        <div class="col s12 m4">
+            {{#if editmotorstrength}}
+            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editmotorstrength">Save Changes
+            {{else}}
+            
+            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addmotorstrength">Save
+            {{/if}}
+            {{#unless userType}}
+                <i class="material-icons right">send</i>
+                {{else}}
+                <i class="material-icons right">send</i>
+            {{/unless}}
+            </button>
+        </div>
+    </div>
+
+</div>
+
+{{!-- Motor strength code ends here --}}
+
+
+
+
+
+<script
+		src="https://code.jquery.com/jquery-3.3.1.min.js"
+		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+		crossorigin="anonymous">
+</script>
+
+<script>
+
+    $(document).ready(() => {
+        $('.tabs').tabs();
+    })
+
+        document.addEventListener('DOMContentLoaded', () => {
+        //GCS
+        const dateGcs = document.querySelector('#dateGcs');
+        const timeGcs = document.querySelector('#timeGcs');
+        const eyeopen = document.querySelector('#eyeopen');
+        const bestverbal = document.querySelector('#bestverbal');
+        const bestmotor = document.querySelector('#bestmotor');
+
+
+        //clc vital
+        const dateclcvital = document.querySelector('#dateclcvital');
+        const timeclcvital = document.querySelector('#timeclcvital');
+
+
+        //pupils
+        const datepupils = document.querySelector('#datepupils');
+        const timepupils = document.querySelector('#timepupils');
+        const sizeright = document.querySelector('#sizeright');
+        const reactionright = document.querySelector('#reactionright');
+        const sizeleft = document.querySelector('#sizeleft');
+        const reactionrreactionleftight = document.querySelector('#reactionleft');
+
+        //Motor strength
+        const datemotorstrength = document.querySelector('#datemotorstrength');
+        const timemotorstrength = document.querySelector('#timemotorstrength');
+        const strengthrightarm = document.querySelector('#strengthrightarm');
+        const strengthleftarm = document.querySelector('#strengthleftarm');
+        const strengthrightleg = document.querySelector('#strengthrightleg');
+        const strengthleftleg = document.querySelector('#strengthleftleg');
+
+        //Img
+        const elems = document.querySelectorAll('.materialboxed');
+        const instances = M.Materialbox.init(elems, {});
+
+        //gcs Instances
+                M.Datepicker.init(dateGcs, {
+                    maxDate: new Date(),
+                    format: 'dd/mm/yyyy',
+                    disableWeekends: true
+                });
+                M.Timepicker.init(timeGcs, {
+                    twelveHour: false,
+                    showClearBtn: true
+                });
+
+                M.FormSelect.init(eyeopen, {
+                    
+                })
+                M.FormSelect.init(bestverbal, {
+                    
+                })
+                M.FormSelect.init(bestmotor, {
+                    
+                })
+
+
+
+        //clc vital Instances
+                M.Datepicker.init(dateclcvital, {
+                    maxDate: new Date(),
+                    format: 'dd/mm/yyyy',
+                    disableWeekends: true
+                });
+                M.Timepicker.init(timeclcvital, {
+                    twelveHour: false,
+                    showClearBtn: true
+                });
+
+               
+
+        //pupils Instances
+                M.Datepicker.init(datepupils, {
+                    maxDate: new Date(),
+                    format: 'dd/mm/yyyy',
+                    disableWeekends: true
+                });
+                M.Timepicker.init(timepupils, {
+                    twelveHour: false,
+                    showClearBtn: true
+                });
+
+                 M.FormSelect.init(sizeright, {
+                    
+                })
+                
+                M.FormSelect.init(reactionright, {
+                    
+                })
+                M.FormSelect.init(sizeleft, {
+                    
+                })
+                M.FormSelect.init(reactionleft, {
+                    
+                })       
+
+                
+        //motor strength Instances
+                M.Datepicker.init(datemotorstrength, {
+                    maxDate: new Date(),
+                    format: 'dd/mm/yyyy',
+                    disableWeekends: true
+                });
+
+                M.Timepicker.init(timemotorstrength, {
+                    twelveHour: false,
+                    showClearBtn: true
+                });
+                M.FormSelect.init(strengthrightarm, {
+                    
+                })
+                M.FormSelect.init(strengthleftarm, {
+                    
+                })
+                M.FormSelect.init(strengthrightleg, {
+                    
+                })
+                M.FormSelect.init(strengthleftleg, {
+                    
+                })         
+
+                 
+        })
+    function htmlDecode(input){
+        var e = document.createElement('div');
+        e.innerHTML = input;
+        return e.childNodes[0].nodeValue;
+    }
+
+    {{#if editGcs}}
+        document.getElementById('eyeopen').value = "{{editGcs.eyeopen}}";
+        document.getElementById('bestverbal').value = "{{editGcs.bestverbal}}";
+        document.getElementById('bestmotor').value = "{{editGcs.bestmotor}}";
+
+        document.getElementById('clcflowTab').className += " disabled";
+        document.getElementById('vitaltab').className += " disabled";
+        document.getElementById('pupilstab').className += " disabled";
+        document.getElementById('motorstrengthtab').className += " disabled";
+        document.getElementById('tab1').className += " active";
+    {{/if}}
+
+    {{#if editclcvital}}
+        document.getElementById('clcflowTab').className += " disabled";
+        document.getElementById('pupilstab').className += " disabled";
+        document.getElementById('motorstrengthtab').className += " disabled";
+        document.getElementById('gcstab').className += " disabled";
+        document.getElementById('tab2').className += " active";
+    {{/if}}
+
+    {{#if editpupils}}
+        document.getElementById('sizeright').value = "{{editpupils.sizeright}}";
+        document.getElementById('sizeleft').value = "{{editpupils.sizeleft}}";
+        document.getElementById('reactionright').value = "{{editpupils.reactionright}}";
+        document.getElementById('reactionleft').value = "{{editpupils.reactionleft}}";
+
+        document.getElementById('clcflowTab').className += " disabled";
+        document.getElementById('motorstrengthtab').className += " disabled";
+        document.getElementById('gcstab').className += " disabled";
+        document.getElementById('vitaltab').className += " disabled";
+        document.getElementById('tab3').className += " active";
+    {{/if}}
+
+    {{#if editmotorstrength}}
+        document.getElementById('strengthrightarm').value = htmlDecode("{{editmotorstrength.strengthrightarm}}");
+        document.getElementById('strengthleftarm').value = htmlDecode("{{editmotorstrength.strengthleftarm}}");
+        document.getElementById('strengthrightleg').value = htmlDecode("{{editmotorstrength.strengthrightleg}}");
+        document.getElementById('strengthleftleg').value = htmlDecode("{{editmotorstrength.strengthleftleg}}");
+
+        document.getElementById('clcflowTab').className += " disabled";
+        document.getElementById('gcstab').className += " disabled";
+        document.getElementById('vitaltab').className += " disabled";
+        document.getElementById('pupilstab').className += " disabled";
+        document.getElementById('tab4').className += " active";
+    {{/if}}    
+
+    // modal
+    document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.modal');
+        var instances = M.Modal.init(elems, {});
+    });
+ </script>

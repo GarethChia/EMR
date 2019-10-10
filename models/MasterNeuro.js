@@ -24,14 +24,29 @@ const MasterNeuroSchema = new Schema({
 	datetime: 	{type: String, default:''},
 	date:	{type: String, default:''},
 	time:		 {type: String, default: ''},
-	poc:	 {type: String, default: ''},
-	bgl:	 {type: String, default: ''},
-	insulintype:		 {type: String, default: ''},
-    insulinamt:   {type: String, default: ''},		
-	hypoagent:   {type: String, default: ''},	
-	splitpoc:	 {type: String, default: ''},
-
-	
+	siteOfInjury:	{type: String, default: ''},
+	colourLeft: {type: String, default: ''},
+	colourRight:	{type: String, default: ''},
+	temperatureLeft:	{type: String, default: ''},
+	temperatureRight:	{type: String, default: ''},
+	capillaryRefillLeft:	{type: String, default: ''},
+	capillaryRefillRight:	{type: String, default: ''},	
+	peripheralPulseLeft: {type: String, default: ''},
+	peripheralPulseRight:	{type: String, default: ''},
+	edemaLeft:	{type: String, default: ''},
+	edemaRight:	{type: String, default: ''},
+	movementLeft:	{type: String, default: ''},
+	movementRight: {type: String, default: ''},
+	sensationLeft:	{type: String, default: ''},
+	sensationRight: {type: String, default: ''},
+	painLeft:	{type: String, default: ''},
+	painRight:	{type: String, default: ''},
+	numericalRatingScaleLeft:	{type: String, default: ''},
+	numericalRatingScaleRight:	{type: String, default: ''},
+	// verbalDescriptiveScaleLeft:		{type: String, default: ''},
+	// verbalDescriptiveScaleRight:	{type: String, default: ''},
+	characteristicLeft: 	{type: String, default: ''},
+	characteristicRight:	{type: String, default: ''}
 });
 
 mongoose.model('masterNeuro', MasterNeuroSchema, 'master-neuro');

@@ -206,7 +206,7 @@
                 <div class="row">
 
                     <div class="col s12 m4 input-field">
-                            <select id="poc" name="poc">
+                            <select id="poc" name="poc" required>
                                 <option value="" disabled selected>Point Of Care</option>
                                 <option value="BB - Before Breakfast">BB - Before Breakfast</option>
                                 <option value="AB - After Breakfast">AB - After Breakfast</option>
@@ -301,7 +301,7 @@
         //IO Instances
                 M.Datepicker.init(dateDiabetic, {
                     maxDate: new Date(),
-                    format: 'dd/mm/yyyy',
+                    format: 'dd-mm-yyyy',
                     disableWeekends: true
                 });
                 M.Timepicker.init(timeDiabetic, {
@@ -319,7 +319,6 @@
         document.getElementById('poc').value = "{{editDiabetic.poc}}";
         document.getElementById('flowsheetTab').className += " disabled";
         document.getElementById('tab1').className += " active";
-   
     {{/if}}
 
     // modal
