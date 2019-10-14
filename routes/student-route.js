@@ -2231,6 +2231,7 @@ router.get('/HistoryTaking/:recordID', ensureAuthenticated, (req,res) => {
 				patient: req.session.patient,
 				userType: userType,
 				recordID: req.params.recordID,
+				currentUserType: req.user.userType,
 				showMenu: true
 			})
 		
@@ -2395,6 +2396,7 @@ router.get('/mdp/:recordID', ensureAuthenticated, (req, res) => {
 				newMasterMDP: newMasterMDP,
 				newMDP: newMDP,
 				userType: userType,
+				currentUserType: req.user.userType,
 				patient: req.session.patient,
 				showMenu: true
 			});

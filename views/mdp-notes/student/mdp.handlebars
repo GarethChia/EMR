@@ -133,9 +133,9 @@
 
         <div class="col s12 m4">
             {{#if editMDP}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editMDP">Save
+            <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editMDP">Save
             {{else}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addMDP">Save
+            <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addMDP">Save
             {{/if}}
                 <i class="material-icons right">send</i>
             </button>
@@ -173,4 +173,13 @@
     {{#if editMDP}}
         document.getElementById('selectUser').value = "{{editMDP.selectUser}}";
     {{/if}}
+    
+    if ("{{currentUserType}}" == "staff")
+	{
+		$(".saveButton").hide();
+	}
+	else
+	{
+		$(".saveButton").show();
+	}
  </script>
