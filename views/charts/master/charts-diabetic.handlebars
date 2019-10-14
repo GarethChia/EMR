@@ -256,9 +256,9 @@
 
         <div class="col s12 m4">
             {{#if editDiabetic}}
-                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editDiabetic">Save Changes
+                <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editDiabetic">Save Changes
             {{else}}
-                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addDiabetic">Save
+                <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addDiabetic">Save
             {{/if}}
             {{#unless userType}}
                 <i class="material-icons right">send</i>
@@ -326,4 +326,12 @@
         var elems = document.querySelectorAll('.modal');
         var instances = M.Modal.init(elems, {});
     });
+    if ("{{currentUserType}}" == "staff")
+    {
+        $(".saveButton").hide();
+    }
+    else
+    {
+        $(".saveButton").show();
+    }
  </script>

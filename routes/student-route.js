@@ -1110,6 +1110,7 @@ router.get('/chart/:recordID', ensureAuthenticated, (req, res) => {
 						oxyData: oxyData,
 						whData: whData,
 						patient: req.session.patient,
+						currentUserType: req.user.userType,
 						showMenu: true
 					})
 				})
@@ -1634,6 +1635,7 @@ router.get('/io/:recordID', ensureAuthenticated, (req, res) => {
 						newiv: newiv,
 						newoutput: newoutput,
 						patient: req.session.patient,
+						currentUserType: req.user.userType,
 						showMenu: true
           			})
 				})
@@ -1951,6 +1953,7 @@ router.get('/braden/:recordID', ensureAuthenticated, (req, res) => {
 			userType: userType,
 			newBraden: newBraden,
 			patient: req.session.patient,
+			currentUserType: req.user.userType,
 			showMenu: true
 		})
   	})
@@ -2087,6 +2090,7 @@ router.get('/fall/:recordID', ensureAuthenticated, (req, res) => {
 			userType: userType,
 			newFall: newFall,
 			patient: req.session.patient,
+			currentUserType: req.user.userType,
 			showMenu: true
 		});
 	})
@@ -2166,6 +2170,7 @@ router.post('/add-fall/:recordID', ensureAuthenticated, (req, res) => {
 					newHistory: newHistory,
 					userType: userType,
 					patient: req.session.patient,
+					currentUserType: req.user.userType,
 					showMenu: true,
 				});
 			}
@@ -2181,6 +2186,7 @@ router.post('/add-fall/:recordID', ensureAuthenticated, (req, res) => {
 					newHistory: newHistory,
 					userType: userType,
 					patient: req.session.patient,
+					currentUserType: req.user.userType,
 					showMenu: true,
 					editHistory: editHistory
 				});
@@ -2693,6 +2699,7 @@ router.get('/show-nursing-assessment/:recordID/:patientID', ensureAuthenticated,
 					user: req.user,
 					showMenu: true,
 					userType: userType,
+					currentUserType: req.user.userType,
 					recordID: req.params.recordID
 				});
 			});
@@ -2863,6 +2870,7 @@ router.get('/diabetic/:recordID', ensureAuthenticated, (req, res) => {
 						diabeticFlow: diabeticFlow,
 						newDiabetic: newDiabetic,
 						patient: req.session.patient,
+						currentUserType: req.user.userType,
 						showMenu: true
         			})
 	})
@@ -3055,6 +3063,7 @@ router.get('/neuro/:recordID', ensureAuthenticated, (req, res) => {
 							leftArmRowSpan: leftArmNeuroFlowLength,
 							rightLegRowSpan: rightLegNeuroFlowLength,
 							leftLegRowSpan: leftLegNeuroFlowLength,
+							currentUserType: req.user.userType,
 							showMenu: true
 						})
 					})
@@ -3528,6 +3537,7 @@ router.get('/clc/:recordID', ensureAuthenticated, (req, res) => {
 							newclcvital: newclcvital,
 							newmotorstrength: newmotorstrength,
 							patient: req.session.patient,
+							currentUserType: req.user.userType,
 							showMenu: true
 						  })
 					})

@@ -362,9 +362,9 @@
 
         <div class="col s12 m4">
             {{#if editGcs}}
-                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editGcs">Save Changes
+                <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editGcs">Save Changes
             {{else}}
-                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addGcs">Save
+                <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addGcs">Save
             {{/if}}
             {{#unless userType}}
                 <i class="material-icons right">send</i>
@@ -516,10 +516,10 @@
         <div class="col s12 m8"></div>
         <div class="col s12 m4">
             {{#if editclcvital}}
-                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editclcvital">Save Changes
+                <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editclcvital">Save Changes
             {{else}}
            
-                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addclcvital">Save
+                <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addclcvital">Save
             {{/if}}
             {{#unless userType}}
                 <i class="material-icons right">send</i>
@@ -708,10 +708,10 @@
 
         <div class="col s12 m4">
             {{#if editpupils}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editpupils">Save Changes
+            <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editpupils">Save Changes
             {{else}}
             
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addpupils">Save
+            <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addpupils">Save
             {{/if}}
             {{#unless userType}}
                 <i class="material-icons right">send</i>
@@ -901,10 +901,10 @@
 
         <div class="col s12 m4">
             {{#if editmotorstrength}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editmotorstrength">Save Changes
+            <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editmotorstrength">Save Changes
             {{else}}
             
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addmotorstrength">Save
+            <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addmotorstrength">Save
             {{/if}}
             {{#unless userType}}
                 <i class="material-icons right">send</i>
@@ -1114,4 +1114,12 @@
         var elems = document.querySelectorAll('.modal');
         var instances = M.Modal.init(elems, {});
     });
+     if ("{{currentUserType}}" == "staff")
+    {
+        $(".saveButton").hide();
+    }
+    else
+    {
+        $(".saveButton").show();
+    }
  </script>

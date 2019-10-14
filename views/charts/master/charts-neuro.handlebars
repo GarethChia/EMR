@@ -962,9 +962,9 @@
 
         <div class="col s12 m4">
             {{#if editNeuro}}
-                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editNeuro">Save Changes
+                <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editNeuro">Save Changes
             {{else}}
-                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addNeuro">Save
+                <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addNeuro">Save
             {{/if}}
             {{#unless userType}}
                 <i class="material-icons right">send</i>
@@ -1149,4 +1149,12 @@
         var elems = document.querySelectorAll('.modal');
         var instances = M.Modal.init(elems, {});
     });
+    if ("{{currentUserType}}" == "staff")
+    {
+        $(".saveButton").hide();
+    }
+    else
+    {
+        $(".saveButton").show();
+    }
  </script>

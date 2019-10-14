@@ -447,13 +447,13 @@
 
         <div class="col s12 m4">
             {{#if editVital}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editVital">Save
+            <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editVital">Save
             {{else}}
-                {{#unless userType}}
+                {{!-- {{#unless userType}} --}}
+                    <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addVital">Save
+                {{!-- {{else}}
                     <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addVital">Save
-                {{else}}
-                    <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addVital">Save
-                {{/unless}}
+                {{/unless}} --}}
             {{/if}}
             {{#unless userType}}
                 <i class="material-icons right">send</i>
@@ -724,9 +724,9 @@
 
         <div class="col s12 m4">
             {{#if editPain}}
-                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editPain">Save
+                <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editPain">Save
             {{else}}
-                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addPain">Save
+                <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addPain">Save
             {{/if}}
                 <i class="material-icons right">send</i>
             </button>
@@ -917,13 +917,13 @@
 
         <div class="col s12 m4">
             {{#if editOxy}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editOxy">Save
+            <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editOxy">Save
             {{else}}
-                {{#unless userType}}
+                {{!-- {{#unless userType}} --}}
+                <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addOxy">Save
+                {{!-- {{else}}
                 <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addOxy">Save
-                {{else}}
-                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addOxy">Save
-                {{/unless}}
+                {{/unless}} --}}
             {{/if}}
             {{#unless userType}}
                 <i class="material-icons right">send</i>
@@ -1098,11 +1098,11 @@
             {{#if editWh}}
                 <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editWh">Save
             {{else}}
-                {{#unless userType}}
+                {{!-- {{#unless userType}} --}}
+                <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addWh">Save
+                {{!-- {{else}}
                 <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addWh">Save
-                {{else}}
-                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addWh">Save
-                {{/unless}}
+                {{/unless}} --}}
                 {{/if}}
                     <i class="material-icons right">send</i>
                 </button>
@@ -1359,4 +1359,14 @@ $(document).ready(function(){
         document.getElementById('oxyTab').className += " disabled";
         document.getElementById('tab4').className += " active";
     {{/if}}
+
+    if ("{{currentUserType}}" == "staff")
+    {
+        $(".saveButton").hide();
+    }
+    else
+    {
+        $(".saveButton").show();
+    }
+
 </script>

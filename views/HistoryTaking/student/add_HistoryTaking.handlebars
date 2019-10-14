@@ -236,10 +236,10 @@
 
                                 <div>
                                 {{#if editHistory}}
-                                    <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editHistory">Save Changes
+                                    <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editHistory">Save Changes
                                 {{else}}
                                 
-                                    <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addHistory">Save
+                                    <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addHistory">Save
                                 
                                 {{/if}}
                                 {{#unless userType}}
@@ -283,91 +283,15 @@
         $('.tabs').tabs();
     })
     
-/*
-    document.addEventListener('DOMContentLoaded', () => {
-        //IO
-        const dateIO = document.querySelector('#dateIO');
-        const timeIO = document.querySelector('#timeIO');
-        const foodportion = document.querySelector('#foodportion');
-
-        //Enteral
-        const dateenteral = document.querySelector('#dateenteral');
-        const timeenteral = document.querySelector('#timeenteral');
-        const enteralfeed = document.querySelector('#enteralfeed');
-        const formula = document.querySelector('#formula');
-
-        //IV
-        const dateiv = document.querySelector('#dateiv');
-        const timeiv = document.querySelector('#timeiv');
-        const coninf = document.querySelector('#coninf');
-
-        //Output
-        const dateoutput = document.querySelector('#dateoutput');
-        const timeoutput = document.querySelector('#timeoutput');
-
-        //IO Instances
-         M.Datepicker.init(dateIO, {
-            maxDate: new Date(),
-            format: 'dd/mm/yyyy',
-            disableWeekends: true
-        });
-        M.Timepicker.init(timeIO, {
-            twelveHour: false,
-            showClearBtn: true
-        });
-
-        M.FormSelect.init(foodportion, {
-            
-        })
-       
-
-        //Enteral Instances
-        M.Datepicker.init(dateenteral, {
-            maxDate: new Date(),
-            format: 'dd/mm/yyyy',
-            disableWeekends: true
-        });
-        M.Timepicker.init(timeenteral, {
-            twelveHour: false,
-            showClearBtn: true
-        });
-
-        M.FormSelect.init(enteralfeed, {
-            
-        })
-        
-        M.FormSelect.init(formula, {
-            
-        })
-
-        //IV Instances
-        M.Datepicker.init(dateiv, {
-            maxDate: new Date(),
-            format: 'dd/mm/yyyy',
-            disableWeekends: true
-        });
-        M.Timepicker.init(timeiv, {
-            twelveHour: false,
-            showClearBtn: true
-        });
-
-        M.FormSelect.init(coninf, {
-            
-        })       
-
-        //Output Instances
-        M.Datepicker.init(dateoutput, {
-            maxDate: new Date(),
-            format: 'dd/mm/yyyy',
-            disableWeekends: true
-        });
-
-        M.Timepicker.init(timeoutput, {
-            twelveHour: false,
-            showClearBtn: true
-        }); **/
-                
-    })  
+  
+    if ("{{currentUserType}}" == "staff")
+    {
+        $(".saveButton").hide();
+    }
+    else
+    {
+        $(".saveButton").show();
+    }
 
 
  </script>

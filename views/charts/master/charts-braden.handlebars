@@ -362,9 +362,9 @@
 
         <div class="col s12 m4">
             {{#if editBraden}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editBraden">Save Changes
+            <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editBraden">Save Changes
             {{else}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addBraden">Save
+            <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addBraden">Save
             {{/if}}
             {{#unless userType}}
                 <i class="material-icons right">send</i>
@@ -425,7 +425,11 @@
 
 
 </style>
-
+<script
+    src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous">
+</script>
 <script>
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -471,7 +475,14 @@
         document.getElementById('nutrition').value = "{{editBraden.nutrition}}";
         document.getElementById('fns').value = "{{editBraden.fns}}";
     {{/if}}
-
+    if ("{{currentUserType}}" == "staff")
+    {
+        $(".saveButton").hide();
+    }
+    else
+    {
+        $(".saveButton").show();
+    }
 </script>
 
 {{!-- <script>
