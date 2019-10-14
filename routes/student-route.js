@@ -98,6 +98,7 @@ router.get('/customise/:patientID', ensureAuthenticated, (req, res) => {
 // Retrieve and show customised patient record for student to edit own record
 router.get('/showown/:recordID/:patientID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
+
 	// enable edit of nursing assessment here
 	console.log(`Patient ID from Show Own: ${req.params.patientID}`);
 	PatientStudentModel.findOne({
@@ -125,6 +126,7 @@ router.get('/showown/:recordID/:patientID', ensureAuthenticated, (req, res) => {
 				recordID: req.params.recordID,
 				patient: retrievedPatient,
 				userType: userType,
+				currentUserType: req.user.userType,
 				showMenu: true
 			});
 			
