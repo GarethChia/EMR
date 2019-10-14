@@ -115,6 +115,11 @@ router.get('/showown/:recordID/:patientID', ensureAuthenticated, (req, res) => {
 			res.redirect('/student/list-patients');
 		} 
 		else {
+			userType = req.user.userType == 'student';
+			if (req.user.userType == 'staff')
+			{
+				userType = 'student';
+			}
 			req.session.patient = retrievedPatient;
 			res.render('student/student-edit-patient', { // calls handlebars
 				recordID: req.params.recordID,
@@ -122,6 +127,7 @@ router.get('/showown/:recordID/:patientID', ensureAuthenticated, (req, res) => {
 				userType: userType,
 				showMenu: true
 			});
+			
 		}
 	});
 });

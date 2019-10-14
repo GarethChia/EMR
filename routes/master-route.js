@@ -2288,7 +2288,6 @@ router.delete('/del-diabetic/:diabeticID', ensureAuthenticated, ensureAuthorised
 //END OF DIABETIC
 // Care Plan
 router.get('/CarePlan', ensureAuthenticated, ensureAuthorised, (req, res) => { // to display the students who has created their care plan
-	userType = req.user.userType == 'student';
 
 	StudentCarePlan.aggregate([ // display students who has created their care plan
 		{"$sort": {
@@ -2306,7 +2305,7 @@ router.get('/CarePlan', ensureAuthenticated, ensureAuthorised, (req, res) => { /
 		res.render('care-plan/master/care-plan', {
 			studentCarePlanName: studentCarePlanName,
 			recordID: req.params.recordID,
-			userType: userType,
+			userType: req.user.userType,
 			patient: req.session.patient,
 			showMenu: true
 		});
