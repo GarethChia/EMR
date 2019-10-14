@@ -1090,7 +1090,11 @@ router.get('/chart/:recordID', ensureAuthenticated, (req, res) => {
 							whFlow.push({date: '', heightEst: noRecord});
 						}
 					};
-					
+					userType = req.user.userType == 'student';
+					if (req.user.userType == 'staff')
+					{
+						userType = 'student';
+					}
 					res.render('charts/master/charts-vital', {
 						recordID: req.params.recordID,
 						userType: userType,
@@ -1610,7 +1614,11 @@ router.get('/io/:recordID', ensureAuthenticated, (req, res) => {
 							outputFlow.push({datetime: '', otherass: ionoRecord});
 						}
 					};
-
+					userType = req.user.userType == 'student';
+					if (req.user.userType == 'staff')
+					{
+						userType = 'student';
+					}
 					res.render('charts/master/charts-io', {
 						recordID: req.params.recordID,
 						userType: userType,
@@ -1930,6 +1938,11 @@ router.get('/braden/:recordID', ensureAuthenticated, (req, res) => {
 		MasterBraden.find({ patientID: req.params.recordID }).then(newBraden => {
 	
 		console.log(newBraden);
+		userType = req.user.userType == 'student';
+			if (req.user.userType == 'staff')
+			{
+				userType = 'student';
+			}
 		res.render('charts/master/charts-braden', {
 			// azureId: req.user.azure_oid,
 			recordID: req.params.recordID,
@@ -2061,6 +2074,11 @@ router.get('/fall/:recordID', ensureAuthenticated, (req, res) => {
 
 	MasterFall.find({ patientID: req.params.recordID }).then(newFall => {
 		console.log(newFall);
+		userType = req.user.userType == 'student';
+			if (req.user.userType == 'staff')
+			{
+				userType = 'student';
+			}
 		res.render('charts/master/charts-Fall', {
 			// azureId: req.user.azure_oid,
 			recordID: req.params.recordID,
@@ -2128,10 +2146,19 @@ router.post('/add-fall/:recordID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
 	MasterHistory.find({ patientID: req.session.patient.patientID, patientID: req.params.recordID})
 	.then(newHistory => {
+		userType = req.user.userType == 'student';
+		if (req.user.userType == 'staff')
+		{
+			userType = 'student';
+		}
 		MasterHistory.findOne({ patientID: req.params.recordID})
 		.then(editHistory => {
 			if (editHistory == null)
 			{
+				if (req.user.userType == 'staff')
+				{
+					userType = 'student';
+				}
 				res.render('HistoryTaking/student/add_HistoryTaking', {
 					recordID:req.params.recordID,
 					newHistory: newHistory,
@@ -2142,6 +2169,10 @@ router.post('/add-fall/:recordID', ensureAuthenticated, (req, res) => {
 			}
 			else
 			{
+				if (req.user.userType == 'staff')
+				{
+					userType = 'student';
+				}
 				console.log("History Taking is not empty: "+editHistory);
 				res.render('HistoryTaking/student/add_HistoryTaking', {
 					recordID:req.params.recordID,
@@ -2182,6 +2213,10 @@ router.get('/HistoryTaking/:recordID', ensureAuthenticated, (req,res) => {
 	userType = req.user.userType == 'student';
 	MasterHistory.find({ patientID: req.params.recordID, patientID:req.session.patient.patientID,}).then(newHistory => {
 		MasterHistory.findOne({ patientID: req.params.recordID }).then(editHistory =>{
+			if (req.user.userType == 'staff')
+			{
+				userType = 'student';
+			}
 			res.render('HistoryTaking/student/add_HistoryTaking',{
 				newHistory:newHistory,
 				editHistory: editHistory,
@@ -2463,6 +2498,11 @@ router.get('/CarePlan/:recordID', ensureAuthenticated, (req, res) => {
 			// console.log("************ newMasterMDP: "+ JSON.stringify(newMasterMDP));
 		StudentCarePlan.find({user: req.user.id, patientID: req.session.patient.patientID}).sort({'datetime': 1})
 		.then(newCarePlan => {
+			userType = req.user.userType == 'student';
+			if (req.user.userType == 'staff')
+			{
+				userType = 'student';
+			}
 			res.render('care-plan/student/care-plan', {
 				recordID: req.params.recordID,
 				// newMasterMDP: newMasterMDP,
@@ -2575,7 +2615,7 @@ router.get('/show-nursing-assessment/:recordID/:patientID', ensureAuthenticated,
 		recordID: req.params.recordID
 	})
 	.then(retrievedPatient => {
-		if(JSON.stringify(retrievedPatient.user._id) === JSON.stringify(req.user.id)) {
+		if((JSON.stringify(retrievedPatient.user._id) === JSON.stringify(req.user.id)) || (req.user.userType == "staff")) {
 			NursingAssessmentModel.findById(retrievedPatient.nursingAssessmentID,{
 				// new way of calling method
 			}).then(assessment => {
@@ -2592,6 +2632,11 @@ router.get('/show-nursing-assessment/:recordID/:patientID', ensureAuthenticated,
 				});
 			});
 		}else {
+			userType = req.user.userType == 'student';
+			if (req.user.userType == 'staff')
+			{
+				userType = 'student';
+			}
 			console.log('User that created record is different from this user');
 			//alertMessage.flashMessage(res, 'User that created record is different from current user', 'fas fa-exclamation',
 			// true);
@@ -2741,6 +2786,11 @@ router.get('/diabetic/:recordID', ensureAuthenticated, (req, res) => {
 
 						
 					};
+					userType = req.user.userType == 'student';
+					if (req.user.userType == 'staff')
+					{
+						userType = 'student';
+					}
 					res.render('charts/master/charts-diabetic', {
 						recordID: req.params.recordID,
 						userType: userType,
@@ -2920,6 +2970,11 @@ router.get('/neuro/:recordID', ensureAuthenticated, (req, res) => {
 
 							
 						};
+						userType = req.user.userType == 'student';
+						if (req.user.userType == 'staff')
+						{
+							userType = 'student';
+						}
 						res.render('charts/master/charts-neuro', {
 							recordID: req.params.recordID,
 							userType: userType,
@@ -3389,7 +3444,11 @@ router.get('/clc/:recordID', ensureAuthenticated, (req, res) => {
 								motorstrengthFlow.push({datetime: '', splitstrengthrightarm: ionoRecord});
 							}
 						};
-	
+						userType = req.user.userType == 'student';
+						if (req.user.userType == 'staff')
+						{
+							userType = 'student';
+						}
 						res.render('charts/master/charts-clc', {
 							recordID: req.params.recordID,
 							userType: userType,
