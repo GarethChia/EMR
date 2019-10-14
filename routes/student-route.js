@@ -1442,6 +1442,10 @@ router.delete('/del-wh/:recordID/:whID', ensureAuthenticated, (req, res) => {
 //Starting route for doctor's orders
 router.get('/doctor/orders/:recordID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
+	if (req.user.userType == 'staff')
+	{
+		userType = 'student';
+	}
 	//DoctorOrders.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(docOrders => {
 	DoctorOrders.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(docOrders => {
 		res.render('doctors/doctors-orders', {
@@ -2323,6 +2327,10 @@ router.put('/edit-fall/:recordID/:fallID', ensureAuthenticated, (req,res) => {
 // mdp page
 router.get('/mdp/:recordID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
+	if (req.user.userType == 'staff')
+	{
+		userType = 'student';
+	}
 	StudentMDP.find({user: req.user.id, patientID: req.session.patient.patientID}).sort({'datetime':1})
 	.then(newMDP => { // mdp that they have created
 		MasterMDP.aggregate([
@@ -2382,6 +2390,10 @@ router.delete('/del-mdp/:recordID/:mdpID', ensureAuthenticated, (req, res) => {
 // get single MDP info
 router.get('/mdp/:recordID/:mdpID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
+	if (req.user.userType == 'staff')
+	{
+		userType = 'student';
+	}
 	StudentMDP.find({ patientID: req.session.patient.patientID, user: req.user.id}).sort({'datetime':1}).then(newMDP => {
 		StudentMDP.findOne({ mdpID: req.params.mdpID}).then(editMDP => {
 			MasterMDP.aggregate([
@@ -2640,6 +2652,11 @@ router.get('/edit/:recordID/:patientID', ensureAuthenticated, (req, res) => {
 	})
 	.populate('user')							// gets user from emr-users collection
 	.then(patient => {
+
+		if (req.user.userType == 'staff') // if it's a staff, change userType to student so that the navbar is changed to student route
+		{
+			userType = 'student';
+		}
 		// check if logged in user is owner of this patient record
 		if(JSON.stringify(patient.user._id) === JSON.stringify(req.user.id)) {
 			//req.session.patient = patient;				// adds object to session
