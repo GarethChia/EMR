@@ -2775,7 +2775,7 @@ router.get('/edit/:recordID/:patientID', ensureAuthenticated, (req, res) => {
 			userType = 'student';
 		}
 		// check if logged in user is owner of this patient record
-		if(JSON.stringify(patient.user._id) === JSON.stringify(req.user.id)) {
+		if((JSON.stringify(patient.user._id) === JSON.stringify(req.user.id)) || (req.user.userType == 'staff')) {
 			//req.session.patient = patient;				// adds object to session
 			res.render('student/student-edit-patient', { // calls handlebars
 				patient: patient,
