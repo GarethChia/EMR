@@ -2498,23 +2498,49 @@ router.get('/CarePlan/:recordID', ensureAuthenticated, (req, res) => {
 		// ])
 		// 	.then(newMasterMDP => {
 			// console.log("************ newMasterMDP: "+ JSON.stringify(newMasterMDP));
-		StudentCarePlan.find({user: req.user.id, patientID: req.session.patient.patientID}).sort({'datetime': 1})
-		.then(newCarePlan => {
-			userType = req.user.userType == 'student';
-			if (req.user.userType == 'staff')
-			{
-				userType = 'student';
-			}
-			res.render('care-plan/student/care-plan', {
-				recordID: req.params.recordID,
-				// newMasterMDP: newMasterMDP,
-				newCarePlan: newCarePlan,
-				userType: userType,
-				patient: req.session.patient,
-				showMenu: true
-			});
-		})
-			
+		if (req.user.userType == 'staff')
+		{
+			PatientStudentModel.findOne({patientID: req.session.patient.patientID})
+			.then(patientStudent => {
+
+				StudentCarePlan.find({user: patientStudent.user, patientID: req.session.patient.patientID}).sort({'datetime': 1})
+				.then(newCarePlan => {
+
+					console.log("****newCarePlan: "+patientStudent.user);
+
+					if (req.user.userType == 'staff')
+					{
+						userType = 'student';
+					}
+					res.render('care-plan/student/care-plan', {
+						recordID: req.params.recordID,
+						// newMasterMDP: newMasterMDP,
+						newCarePlan: newCarePlan,
+						userType: userType,
+						patient: req.session.patient,
+						currentUserType: req.user.userType,
+						showMenu: true
+					});
+				})
+			})
+		}
+		else
+		{
+			StudentCarePlan.find({user: req.user.id, patientID: req.session.patient.patientID}).sort({'datetime': 1})
+			.then(newCarePlan => {
+				userType = req.user.userType == 'student';
+
+				res.render('care-plan/student/care-plan', {
+					recordID: req.params.recordID,
+					// newMasterMDP: newMasterMDP,
+					newCarePlan: newCarePlan,
+					userType: userType,
+					patient: req.session.patient,
+					currentUserType: req.user.userType,
+					showMenu: true
+				});
+			})
+		}
 		// });
 		//});
 	// })
@@ -2548,23 +2574,60 @@ router.post('/add-CarePlan/:recordID', ensureAuthenticated,(req, res) => {
 router.get('/CarePlan/:recordID/:carePlanID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
 	
-	StudentCarePlan.find({ patientID: req.session.patient.patientID, user: req.user.id}).sort({'datetime':1})
-	.then(newCarePlan => {
-		StudentCarePlan.findOne({ carePlanID: req.params.carePlanID })
-		.then(editCarePlan => {
-			
-			editCarePlan.date = moment(editCarePlan.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
-			
-			res.render('care-plan/student/care-plan', {
-				userType: userType,
-				recordID: req.params.recordID,
-				newCarePlan: newCarePlan,
-				editCarePlan: editCarePlan,
-				patient: req.session.patient,
-				showMenu: true
+	if (req.user.userType == 'staff')
+	{
+		PatientStudentModel.findOne({patientID: req.session.patient.patientID})
+		.then(patientStudent => {
+
+			StudentCarePlan.find({ patientID: req.session.patient.patientID, user:  patientStudent.user}).sort({'datetime':1})
+			.then(newCarePlan => {
+
+				StudentCarePlan.findOne({ carePlanID: req.params.carePlanID })
+				.then(editCarePlan => {
+
+					if (req.user.userType == 'staff')
+					{
+						userType = 'student';
+					}
+					
+					editCarePlan.date = moment(editCarePlan.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
+					
+					res.render('care-plan/student/care-plan', {
+						userType: userType,
+						recordID: req.params.recordID,
+						newCarePlan: newCarePlan,
+						editCarePlan: editCarePlan,
+						patient: req.session.patient,
+						currentUserType: req.user.userType,
+						showMenu: true
+					});
+				});
 			});
 		});
-	});
+	}
+	else
+	{
+		StudentCarePlan.find({ patientID: req.session.patient.patientID, user: req.user.id}).sort({'datetime':1})
+		.then(newCarePlan => {
+			StudentCarePlan.findOne({ carePlanID: req.params.carePlanID })
+			.then(editCarePlan => {
+				userType = req.user.userType == 'student';
+				
+				editCarePlan.date = moment(editCarePlan.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
+				
+				res.render('care-plan/student/care-plan', {
+					userType: userType,
+					recordID: req.params.recordID,
+					newCarePlan: newCarePlan,
+					editCarePlan: editCarePlan,
+					patient: req.session.patient,
+					currentUserType: req.user.userType,
+					showMenu: true
+				});
+			});
+		});
+	}
+	
 })
 
 // edit Care Plan informations
