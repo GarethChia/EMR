@@ -296,61 +296,69 @@ router.put('/save-customised-patient/:patientID', ensureAuthenticated, (req, res
 				/*console.log('\n/addPatient user found: ===========');
 				 console.log(user);
 				 */
-				new PatientStudentModel({
-					recordID: recordID,
-					patientID: req.params.patientID,
-					user: user._id,
-					nursingAssessmentID: assessment._id,
-					nric: req.body.nric,
-					
-					familyName: req.body.familyName,
-					givenName: req.body.givenName,
-					dob: moment(req.body.dob, 'DD/MM/YYYY', true).format(),
-					gender: req.body.gender,
-					weight: req.body.weight,
-					height: req.body.height,
-					address: req.body.address,
-					postalCode: req.body.postalCode,
-					mobilePhone: req.body.mobilePhone,
-					homePhone: req.body.homePhone,
-					officePhone: req.body.officePhone,
-					
-					ward: req.body.ward,
-					bed: req.body.bed,
-					admDate: moment(req.body.admDate, 'DD/MM/YYYY', true).format(),
-					policeCase: req.body.policeCase,
-					admFrom: req.body.admFrom,
-					modeOfArr: req.body.modeOfArr,
-					accompBy: req.body.accompBy,
-					caseNotes: req.body.caseNotes,
-					xRaysCD: req.body.xRaysCD,
-					prevAdm: req.body.prevAdm,
-					condArr: req.body.condArr,
-					otherCond: req.body.otherCond,
-					ownMeds: req.body.ownMeds,
-					unableAssess: req.body.unableAssess,
-					adviceMeds: req.body.adviceMeds,
-					
-					emgName: req.body.emgName,
-					emgRel: req.body.emgRel,
-					emgMobile: req.body.emgMobile,
-					emgHome: req.body.emgHome,
-					emgOffice: req.body.emgOffice,
-					
-					careName: req.body.careName,
-					careRel: req.body.careRel,
-					careOccu: req.body.careOccu,
-					careMobile: req.body.careMobile,
-					careHome: req.body.careHome,
-					careOffice: req.body.careOffice,
-					
-					accomodation: req.body.accomodation,
-					hospConcerns: req.body.hospConcerns,
-					spiritConcerns: req.body.spiritConcerns,
-					prefLang: req.body.prefLang,
-					otherLang: req.body.otherLang
+				console.log("req.params.patientID: "+ req.params.patientID);
+
+				PatientMasterModel.findOne({patientID: req.params.patientID})
+				.then(patientMaster => {
+					new PatientStudentModel({
+						recordID: recordID,
+						patientID: req.params.patientID,
+						user: user._id,
+						nursingAssessmentID: assessment._id,
+						nric: req.body.nric,
+						
+						familyName: req.body.familyName,
+						givenName: req.body.givenName,
+						dob: moment(req.body.dob, 'DD/MM/YYYY', true).format(),
+						gender: req.body.gender,
+						weight: req.body.weight,
+						height: req.body.height,
+						address: req.body.address,
+						postalCode: req.body.postalCode,
+						mobilePhone: req.body.mobilePhone,
+						homePhone: req.body.homePhone,
+						officePhone: req.body.officePhone,
+						
+						ward: req.body.ward,
+						bed: req.body.bed,
+						admDate: moment(req.body.admDate, 'DD/MM/YYYY', true).format(),
+						policeCase: req.body.policeCase,
+						admFrom: req.body.admFrom,
+						modeOfArr: req.body.modeOfArr,
+						accompBy: req.body.accompBy,
+						caseNotes: req.body.caseNotes,
+						xRaysCD: req.body.xRaysCD,
+						prevAdm: req.body.prevAdm,
+						condArr: req.body.condArr,
+						otherCond: req.body.otherCond,
+						ownMeds: req.body.ownMeds,
+						unableAssess: req.body.unableAssess,
+						adviceMeds: req.body.adviceMeds,
+						
+						emgName: req.body.emgName,
+						emgRel: req.body.emgRel,
+						emgMobile: req.body.emgMobile,
+						emgHome: req.body.emgHome,
+						emgOffice: req.body.emgOffice,
+						
+						careName: req.body.careName,
+						careRel: req.body.careRel,
+						careOccu: req.body.careOccu,
+						careMobile: req.body.careMobile,
+						careHome: req.body.careHome,
+						careOffice: req.body.careOffice,
+						
+						accomodation: req.body.accomodation,
+						hospConcerns: req.body.hospConcerns,
+						spiritConcerns: req.body.spiritConcerns,
+						prefLang: req.body.prefLang,
+						otherLang: req.body.otherLang,
+
+						masterID: patientMaster.user // storing masterID
+					})
+					.save()
 				})
-				.save()
+				
 				.then(user => {
 					MasterVital.find({ patientID: req.params.patientID }).then(vitalData => {
 						MasterPain.find({ patientID: req.params.patientID }).then(painData => {
