@@ -2381,35 +2381,71 @@ router.get('/mdp/:recordID', ensureAuthenticated, (req, res) => {
 	if (req.user.userType == 'staff')
 	{
 		userType = 'student';
+		PatientStudentModel.findOne({patientID: req.session.patient.patientID})
+		.then(patientStudent => {
+			StudentMDP.find({user: patientStudent.user, patientID: req.session.patient.patientID}).sort({'datetime':1})
+			.then(newMDP => { // mdp that they have created
+
+				MasterMDP.aggregate([
+					{"$sort": {
+						'datetime': -1
+					}},
+					{ "$match" : { 'patientID' : req.session.patient.patientID } },
+					{ "$group": { '_id' : "$createdBy",  "doc": {"$first":"$$ROOT"} }},
+					{ "$replaceRoot": {"newRoot": "$doc" }},
+					{"$sort": {
+						'datetime': -1,
+						'createdBy': 1
+					}}
+				])
+					.then(newMasterMDP => {
+					//console.log("************ newMasterMDP: "+ JSON.stringify(newMasterMDP));
+					res.render('mdp-notes/student/mdp', {
+						recordID: req.params.recordID,
+						newMasterMDP: newMasterMDP,
+						newMDP: newMDP,
+						userType: userType,
+						currentUserType: req.user.userType,
+						patient: req.session.patient,
+						showMenu: true
+					});
+				});
+				//});
+			})
+		})
+		
 	}
-	StudentMDP.find({user: req.user.id, patientID: req.session.patient.patientID}).sort({'datetime':1})
-	.then(newMDP => { // mdp that they have created
-		MasterMDP.aggregate([
-			{"$sort": {
-				'datetime': -1
-			}},
-			{ "$match" : { 'patientID' : req.session.patient.patientID } },
-			{ "$group": { '_id' : "$createdBy",  "doc": {"$first":"$$ROOT"} }},
-			{ "$replaceRoot": {"newRoot": "$doc" }},
-			{"$sort": {
-				'datetime': -1,
-				'createdBy': 1
-			}}
-		])
-			.then(newMasterMDP => {
-			console.log("************ newMasterMDP: "+ JSON.stringify(newMasterMDP));
-			res.render('mdp-notes/student/mdp', {
-				recordID: req.params.recordID,
-				newMasterMDP: newMasterMDP,
-				newMDP: newMDP,
-				userType: userType,
-				currentUserType: req.user.userType,
-				patient: req.session.patient,
-				showMenu: true
+	else
+	{
+		StudentMDP.find({user: req.user.id, patientID: req.session.patient.patientID}).sort({'datetime':1})
+		.then(newMDP => { // mdp that they have created
+			MasterMDP.aggregate([
+				{"$sort": {
+					'datetime': -1
+				}},
+				{ "$match" : { 'patientID' : req.session.patient.patientID } },
+				{ "$group": { '_id' : "$createdBy",  "doc": {"$first":"$$ROOT"} }},
+				{ "$replaceRoot": {"newRoot": "$doc" }},
+				{"$sort": {
+					'datetime': -1,
+					'createdBy': 1
+				}}
+			])
+				.then(newMasterMDP => {
+				console.log("************ newMasterMDP: "+ JSON.stringify(newMasterMDP));
+				res.render('mdp-notes/student/mdp', {
+					recordID: req.params.recordID,
+					newMasterMDP: newMasterMDP,
+					newMDP: newMDP,
+					userType: userType,
+					currentUserType: req.user.userType,
+					patient: req.session.patient,
+					showMenu: true
+				});
 			});
-		});
-		//});
-	})
+			//});
+		})
+	}
 })
 // add MDP page
 router.post('/add-mdp/:recordID', ensureAuthenticated,(req, res) => {
@@ -2516,18 +2552,14 @@ router.get('/CarePlan/:recordID', ensureAuthenticated, (req, res) => {
 			// console.log("************ newMasterMDP: "+ JSON.stringify(newMasterMDP));
 		if (req.user.userType == 'staff')
 		{
+			userType = 'student';
 			PatientStudentModel.findOne({patientID: req.session.patient.patientID})
 			.then(patientStudent => {
 
 				StudentCarePlan.find({user: patientStudent.user, patientID: req.session.patient.patientID}).sort({'datetime': 1})
 				.then(newCarePlan => {
 
-					console.log("****newCarePlan: "+patientStudent.user);
-
-					if (req.user.userType == 'staff')
-					{
-						userType = 'student';
-					}
+					//console.log("****newCarePlan: "+patientStudent.user);
 					res.render('care-plan/student/care-plan', {
 						recordID: req.params.recordID,
 						// newMasterMDP: newMasterMDP,
@@ -2544,7 +2576,6 @@ router.get('/CarePlan/:recordID', ensureAuthenticated, (req, res) => {
 		{
 			StudentCarePlan.find({user: req.user.id, patientID: req.session.patient.patientID}).sort({'datetime': 1})
 			.then(newCarePlan => {
-				userType = req.user.userType == 'student';
 
 				res.render('care-plan/student/care-plan', {
 					recordID: req.params.recordID,
@@ -2592,6 +2623,7 @@ router.get('/CarePlan/:recordID/:carePlanID', ensureAuthenticated, (req, res) =>
 	
 	if (req.user.userType == 'staff')
 	{
+		userType = 'student';
 		PatientStudentModel.findOne({patientID: req.session.patient.patientID})
 		.then(patientStudent => {
 
@@ -2600,11 +2632,6 @@ router.get('/CarePlan/:recordID/:carePlanID', ensureAuthenticated, (req, res) =>
 
 				StudentCarePlan.findOne({ carePlanID: req.params.carePlanID })
 				.then(editCarePlan => {
-
-					if (req.user.userType == 'staff')
-					{
-						userType = 'student';
-					}
 					
 					editCarePlan.date = moment(editCarePlan.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
 					
@@ -2627,7 +2654,6 @@ router.get('/CarePlan/:recordID/:carePlanID', ensureAuthenticated, (req, res) =>
 		.then(newCarePlan => {
 			StudentCarePlan.findOne({ carePlanID: req.params.carePlanID })
 			.then(editCarePlan => {
-				userType = req.user.userType == 'student';
 				
 				editCarePlan.date = moment(editCarePlan.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
 				
