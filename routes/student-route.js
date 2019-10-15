@@ -106,6 +106,7 @@ router.get('/showown/:recordID/:patientID', ensureAuthenticated, (req, res) => {
 	})
 	.populate('user')
 	.then(retrievedPatient => {
+		
 		// check if logged in user is owner of this patient record
 		if((JSON.stringify(retrievedPatient.user._id) !== JSON.stringify(req.user.id)) && (req.user.userType != "staff")) {
 			/*let alert = res.flashMessenger.success('Only allowed to edit own record');
@@ -117,10 +118,12 @@ router.get('/showown/:recordID/:patientID', ensureAuthenticated, (req, res) => {
 		} 
 		else {
 			userType = req.user.userType == 'student';
-			if (req.user.userType == 'staff')
+
+			if (req.user.userType == 'staff') // if it's a staff, change userType to student so that the navbar is changed to student route
 			{
 				userType = 'student';
 			}
+			
 			req.session.patient = retrievedPatient;
 			res.render('student/student-edit-patient', { // calls handlebars
 				recordID: req.params.recordID,
@@ -1468,6 +1471,10 @@ router.get('/doctor/orders/:recordID', ensureAuthenticated, (req, res) => {
 //Get single doctor's orders
 router.get('/doctor/orders/:recordID/:orderID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
+	if (req.user.userType == 'staff')
+	{
+		userType = 'student';
+	}
 	//DoctorOrders.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(docOrders => {
 	DoctorOrders.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(docOrders => {
 		DoctorOrders.findOne({ orderID: req.params.orderID }).then(editOrder => {
@@ -2462,6 +2469,7 @@ router.get('/mdp/:recordID/:mdpID', ensureAuthenticated, (req, res) => {
 					newMDP: newMDP,
 					editMDP: editMDP,
 					patient: req.session.patient,
+					currentUserType: req.user.userType,
 					newMasterMDP: newMasterMDP,
 					showMenu: true
 				});
@@ -2683,6 +2691,10 @@ var removeNumber = {
 router.get('/show-nursing-assessment/:recordID/:patientID', ensureAuthenticated, (req, res) => {
 	
 	userType = req.user.userType == 'student';
+	if (req.user.userType == 'staff')
+	{
+		userType = 'student';
+	}
 	PatientStudentModel.findOne({
 		//patientID: req.params.patientID		// gets current patient
 		recordID: req.params.recordID
@@ -2706,20 +2718,12 @@ router.get('/show-nursing-assessment/:recordID/:patientID', ensureAuthenticated,
 				});
 			});
 		}else {
-			userType = req.user.userType == 'student';
-			if (req.user.userType == 'staff')
-			{
-				userType = 'student';
-			}
 			console.log('User that created record is different from this user');
 			//alertMessage.flashMessage(res, 'User that created record is different from current user', 'fas fa-exclamation',
 			// true);
 			toaster.setErrorMessage(' ', 'User that created record is different from this user');
 			res.redirect('/student/list-patients');
 		}
-		// console.log("****************Hi: "+JSON.stringify(retrievedPatient.user._id));
-		// console.log("****************************"+JSON.stringify(req.user.id))
-		// console.log();
 	});
 });
 
@@ -2772,16 +2776,19 @@ router.get('/edit/:recordID/:patientID', ensureAuthenticated, (req, res) => {
 	.populate('user')							// gets user from emr-users collection
 	.then(patient => {
 
-		if (req.user.userType == 'staff') // if it's a staff, change userType to student so that the navbar is changed to student route
-		{
-			userType = 'student';
-		}
 		// check if logged in user is owner of this patient record
 		if((JSON.stringify(patient.user._id) === JSON.stringify(req.user.id)) || (req.user.userType == 'staff')) {
+			
+			userType = req.user.userType == 'student';
+			if (req.user.userType == 'staff') // if it's a staff, change userType to student so that the navbar is changed to student route
+			{
+				userType = 'student';
+			}
 			//req.session.patient = patient;				// adds object to session
 			res.render('student/student-edit-patient', { // calls handlebars
 				patient: patient,
 				userType: userType,
+				currentUserType: req.user.userType,
 				recordID: req.params.recordID,
 				showMenu: true							// shows menu using unless
 			});
