@@ -275,7 +275,13 @@
                             {{#unless ../userType}}
                                 <td rowspan="2"><a href="/master/neuro/{{neuroID}}">{{date}}</a></td>
                             {{else}}
-                                <td rowspan="2"><a href="/student/neuro/{{../recordID}}/{{neuroID}}">{{date}}</a></td>
+                                <td rowspan="2">
+                                    {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
+                                        <a href="/student/neuro/{{../recordID}}/{{neuroID}}">{{date}}</a>
+                                    {{else}}
+                                        {{date}}
+                                    {{/ifCond}}
+                                </td>
                             {{/unless}}
                             <td rowspan="2">{{time}}</td>
                             
@@ -337,7 +343,13 @@
                                 {{#unless ../userType}}
                                     <td rowspan="2"><a href="/master/neuro/{{neuroID}}">{{date}}</a></td>
                                 {{else}}
-                                    <td rowspan="2"><a href="/student/neuro/{{../recordID}}/{{neuroID}}">{{date}}</a></td>
+                                    <td rowspan="2">
+                                        {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
+                                            <a href="/student/neuro/{{../recordID}}/{{neuroID}}">{{date}}</a>
+                                        {{else}}
+                                            {{date}}
+                                        {{/ifCond}}
+                                    </td>
                                 {{/unless}}
                                 <td rowspan="2">{{time}}</td>
                                 <td>Left</td>
@@ -401,7 +413,13 @@
                             {{#unless ../userType}}
                                 <td rowspan="2"><a href="/master/neuro/{{neuroID}}">{{date}}</a></td>
                             {{else}}
-                                <td rowspan="2"><a href="/student/neuro/{{../recordID}}/{{neuroID}}">{{date}}</a></td>
+                                <td rowspan="2">
+                                    {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
+                                        <a href="/student/neuro/{{../recordID}}/{{neuroID}}">{{date}}</a>
+                                    {{else}}
+                                        {{date}}
+                                    {{/ifCond}}
+                                </td>
                             {{/unless}}
                             <td rowspan="2">{{time}}</td>
                             <td>Left</td>
@@ -464,7 +482,13 @@
                             {{#unless ../userType}}
                                 <td rowspan="2"><a href="/master/neuro/{{neuroID}}">{{date}}</a></td>
                             {{else}}
-                                <td rowspan="2"><a href="/student/neuro/{{../recordID}}/{{neuroID}}">{{date}}</a></td>
+                                <td rowspan="2">
+                                    {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
+                                        <a href="/student/neuro/{{../recordID}}/{{neuroID}}">{{date}}</a>
+                                    {{else}}
+                                        {{date}}
+                                    {{/ifCond}}
+                                </td>
                             {{/unless}}
                             <td rowspan="2">{{time}}</td>
                             <td>Left</td>

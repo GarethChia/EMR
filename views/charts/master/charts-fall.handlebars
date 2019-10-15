@@ -25,7 +25,13 @@
                 {{#unless ../userType}}
                 <td><a href="/master/fall/{{fallID}}">{{datetime}}</a></td>
                 {{else}}
-                <td><a href="/student/fall/{{../recordID}}/{{fallID}}">{{datetime}}</a></td>
+                    <td>
+                        {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
+                            <a href="/student/fall/{{../recordID}}/{{fallID}}">{{datetime}}</a>
+                        {{else}}
+                            {{date}}
+                        {{/ifCond}}
+                    </td>
                 {{!-- <td id="editRights{{fallID}}"></td> --}}
                 {{/unless}}
                 <td>{{historySplit}}</td>

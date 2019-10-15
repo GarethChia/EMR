@@ -16,7 +16,13 @@
                 {{#if newMDP}}
                     {{#each newMDP}}
                     <tr style="height: 60px">
-                        <td><a href="/student/mdp/{{studentPatientID}}/{{mdpID}}">{{date}}</a></td>
+                        <td>
+                            {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
+                                <a href="/student/mdp/{{studentPatientID}}/{{mdpID}}">{{date}}</a>
+                            {{else}}
+                                {{date}}
+                            {{/ifCond}}
+                        </td>
                         <td>{{time}}</td>
                         <td>{{progressNotes}}</td>
                         <td>{{selectUser}}</td>

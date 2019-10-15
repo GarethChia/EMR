@@ -226,7 +226,13 @@
                         {{#unless ../userType}}
                         <td><a href="/master/clc-gcs/{{gcsID}}">{{date}}</a></td>
                         {{else}}
-                        <td><a href="/student/clc-gcs/{{../recordID}}/{{gcsID}}">{{date}}</a></td>
+                            <td>
+                                {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
+                                    <a href="/student/clc-gcs/{{../recordID}}/{{gcsID}}">{{date}}</a>
+                                {{else}}
+                                    {{date}}
+                                {{/ifCond}}
+                            </td>
                         {{/unless}}
                         <td>{{time}}</td>
                         <td>{{spliteyeopen}}</td>
@@ -405,7 +411,13 @@
                         {{#unless ../userType}}
                         <td><a href="/master/clc-vital/{{clcvitalID}}">{{date}}</a></td>
                         {{else}}
-                        <td><a href="/student/clc-vital/{{../recordID}}/{{clcvitalID}}">{{date}}</a></td>
+                            <td>
+                                {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
+                                    <a href="/student/clc-vital/{{../recordID}}/{{clcvitalID}}">{{date}}</a>
+                                {{else}}
+                                    {{date}}
+                                {{/ifCond}}
+                            </td>
                         {{/unless}}
                         <td>{{time}}</td>
                         <td>{{heartRate}}</td>
@@ -565,7 +577,14 @@
                         {{#unless ../userType}}
                         <td><a href="/master/clc-pupils/{{pupilsID}}">{{date}}</a></td>
                         {{else}}
-                        <td><a href="/student/clc-pupils/{{../recordID}}/{{pupilsID}}">{{date}}</a></td>
+                            <td>
+                                {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
+                                    <a href="/student/clc-pupils/{{../recordID}}/{{pupilsID}}">{{date}}</a>
+                                {{else}}
+                                    {{date}}
+                                {{/ifCond}}
+                            </td>
+
                         {{/unless}}
                         <td>{{time}}</td>
                         <td>{{sizeright}}</td>
@@ -753,7 +772,13 @@
                         {{#unless ../userType}}
                         <td><a href="/master/clc-motorstrength/{{motorstrengthID}}">{{date}}</a></td>
                         {{else}}
-                        <td><a href="/student/clc-motorstrength/{{../recordID}}/{{motorstrengthID}}">{{date}}</a></td>
+                            <td>
+                                {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
+                                    <a href="/student/clc-motorstrength/{{../recordID}}/{{motorstrengthID}}">{{date}}</a>
+                                {{else}}
+                                    {{date}}
+                                {{/ifCond}}
+                            </td>
                         {{/unless}}
                         <td>{{time}}</td>
                         <td>{{strengthrightarm}}</td>

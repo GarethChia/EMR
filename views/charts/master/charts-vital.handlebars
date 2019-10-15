@@ -262,7 +262,13 @@
                         {{#unless ../userType}}
                         <td><a href="/master/vital/{{vitalID}}">{{date}}</a></td>
                         {{else}}
-                        <td><a href="/student/vital/{{../recordID}}/{{vitalID}}">{{date}}</a></td>
+                            <td>
+                                {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
+                                    <a href="/student/vital/{{../recordID}}/{{vitalID}}">{{date}}</a>
+                                {{else}}
+                                    {{date}}
+                                {{/ifCond}}
+                            </td>
                         {{/unless}}
                         <td>{{time}}</td>
                         <td>{{temp}}</td>
@@ -497,7 +503,13 @@
                         {{#unless ../userType}}
                         <td><a href="/master/pain/{{painID}}">{{date}}</a></td>
                         {{else}}
-                        <td><a href="/student/pain/{{../recordID}}/{{painID}}">{{date}}</a></td>
+                            <td>
+                                {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
+                                    <a href="/student/pain/{{../recordID}}/{{painID}}">{{date}}</a>
+                                {{else}}
+                                    {{date}}
+                                {{/ifCond}}
+                            </td>
                         {{/unless}}
                         <td>{{time}}</td>
                         <td>{{painScale}}</td>
@@ -762,7 +774,13 @@
                         {{#unless ../userType}}
                         <td><a href="/master/oxygen/{{oxygenID}}">{{date}}</a></td>
                         {{else}}
-                        <td><a href="/student/oxygen/{{../recordID}}/{{oxygenID}}">{{date}}</a></td>
+                            <td>
+                                {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
+                                    <a href="/student/oxygen/{{../recordID}}/{{oxygenID}}">{{date}}</a>
+                                {{else}}
+                                    {{date}}
+                                {{/ifCond}}
+                            </td>
                         {{/unless}}
                         <td>{{time}}</td>
                         <td>{{o2Device}}</td>
@@ -961,7 +979,13 @@
                         {{#unless ../userType}}
                         <td><a href="/master/wh/{{whID}}">{{date}}</a></td>
                         {{else}}
-                        <td><a href="/student/wh/{{../recordID}}/{{whID}}">{{date}}</a></td>
+                            <td>
+                                {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
+                                    <a href="/student/wh/{{../recordID}}/{{whID}}">{{date}}</a>
+                                {{else}}
+                                    {{date}}
+                                {{/ifCond}}
+                            </td>
                         {{/unless}}
                         <td>{{time}}</td>
                         <td>{{height}}</td>

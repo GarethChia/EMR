@@ -85,7 +85,8 @@ const {
 	checked,
 	resetExceptNone,
 	setRadioButton,
-	assessmentSaveLink
+	assessmentSaveLink,
+	ifEqual
 } = require('./helpers/hbs');
 
 // Map global promises
@@ -118,7 +119,8 @@ app.engine('handlebars', exphbs({
 		checked: checked,
 		resetExceptNone: resetExceptNone,
 		setRadioButton: setRadioButton,
-		assessmentSaveLink: assessmentSaveLink
+		assessmentSaveLink: assessmentSaveLink,
+		ifEqual: ifEqual
 	},
 	defaultLayout: 'main'
 }));

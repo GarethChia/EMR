@@ -120,7 +120,13 @@
                         {{#unless ../userType}}
                         <td><a href="/master/diabetic/{{diabeticID}}">{{date}}</a></td>
                         {{else}}
-                        <td><a href="/student/diabetic/{{../recordID}}/{{diabeticID}}">{{date}}</a></td>
+                            <td>
+                                {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
+                                    <a href="/student/diabetic/{{../recordID}}/{{diabeticID}}">{{date}}</a>
+                                {{else}}
+                                    {{date}}
+                                {{/ifCond}}
+                            </td>
                         {{/unless}}
                         <td>{{time}}</td>
                         <td>{{splitpoc}}</td>
