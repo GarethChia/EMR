@@ -2432,7 +2432,7 @@ router.get('/mdp/:recordID', ensureAuthenticated, (req, res) => {
 				}}
 			])
 				.then(newMasterMDP => {
-				console.log("************ newMasterMDP: "+ JSON.stringify(newMasterMDP));
+				//console.log("************ newMasterMDP: "+ JSON.stringify(newMasterMDP));
 				res.render('mdp-notes/student/mdp', {
 					recordID: req.params.recordID,
 					newMasterMDP: newMasterMDP,
@@ -2550,15 +2550,17 @@ router.get('/CarePlan/:recordID', ensureAuthenticated, (req, res) => {
 		// ])
 		// 	.then(newMasterMDP => {
 			// console.log("************ newMasterMDP: "+ JSON.stringify(newMasterMDP));
+		console.log("patientID: req.session.patient.patientID: "+ req.params.recordID);
 		if (req.user.userType == 'staff')
 		{
 			userType = 'student';
-			PatientStudentModel.findOne({patientID: req.session.patient.patientID})
+			PatientStudentModel.findOne({recordID: req.params.recordID})
 			.then(patientStudent => {
 
+				console.log("patientID: req.session.patient.patientID: "+ patientStudent.user);
 				StudentCarePlan.find({user: patientStudent.user, patientID: req.session.patient.patientID}).sort({'datetime': 1})
 				.then(newCarePlan => {
-
+					
 					//console.log("****newCarePlan: "+patientStudent.user);
 					res.render('care-plan/student/care-plan', {
 						recordID: req.params.recordID,
@@ -2576,7 +2578,7 @@ router.get('/CarePlan/:recordID', ensureAuthenticated, (req, res) => {
 		{
 			StudentCarePlan.find({user: req.user.id, patientID: req.session.patient.patientID}).sort({'datetime': 1})
 			.then(newCarePlan => {
-
+				console.log("Hi Siti: "+ newCarePlan);
 				res.render('care-plan/student/care-plan', {
 					recordID: req.params.recordID,
 					// newMasterMDP: newMasterMDP,
@@ -2624,7 +2626,7 @@ router.get('/CarePlan/:recordID/:carePlanID', ensureAuthenticated, (req, res) =>
 	if (req.user.userType == 'staff')
 	{
 		userType = 'student';
-		PatientStudentModel.findOne({patientID: req.session.patient.patientID})
+		PatientStudentModel.findOne({recordID: req.params.recordID})
 		.then(patientStudent => {
 
 			StudentCarePlan.find({ patientID: req.session.patient.patientID, user:  patientStudent.user}).sort({'datetime':1})

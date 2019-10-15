@@ -61,8 +61,6 @@ router.get('/list-patients', ensureAuthenticated, ensureAuthorised, (req, res) =
 		PatientStudentModel.find({masterID: req.user._id}) // req.user_id is self generated
 		.then(studentPatients => {
 			
-			//console.log("******************************Hi: "+studentPatients.length);
-			
 			studentPatients.forEach(studentPatientsRecord => {
 				studentIDs.push(studentPatientsRecord.user._id);
 				//console.log(studentPatientsRecord.user._id);
@@ -2063,7 +2061,6 @@ router.get('/mdp', ensureAuthenticated, ensureAuthorised, (req, res) => {
 					}}
 				])
 				.then(newOtherStudentMDP => {
-				console.log("************ group value: "+ JSON.stringify(newOtherStudentMDP));
 				res.render('mdp-notes/master/mdp', {
 					newMDP: newMDP,
 					newOtherMasterMDP: newOtherMasterMDP,
@@ -2301,7 +2298,6 @@ router.get('/CarePlan', ensureAuthenticated, ensureAuthorised, (req, res) => { /
 		}}
 	])
 	.then(studentCarePlanName => {
-		console.log("************ studentCarePlanName: "+ JSON.stringify(studentCarePlanName));
 		res.render('care-plan/master/care-plan', {
 			studentCarePlanName: studentCarePlanName,
 			recordID: req.params.recordID,
