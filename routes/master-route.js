@@ -2301,7 +2301,7 @@ router.get('/CarePlan', ensureAuthenticated, ensureAuthorised, (req, res) => { /
 		res.render('care-plan/master/care-plan', {
 			studentCarePlanName: studentCarePlanName,
 			recordID: req.params.recordID,
-			userType: req.user.userType,
+			//userType: req.user.userType,
 			patient: req.session.patient,
 			showMenu: true
 		});
@@ -2309,7 +2309,7 @@ router.get('/CarePlan', ensureAuthenticated, ensureAuthorised, (req, res) => { /
 })
 
 router.get('/CarePlan/:name', ensureAuthenticated, ensureAuthorised, (req, res) => {
-	userType = req.user.userType == 'student';
+	//userType = req.user.userType == 'student';
 	var name = req.params.name;
 	console.log("name: "+ name);
 	StudentCarePlan.aggregate([ // display students who has created their care plan
@@ -2354,7 +2354,7 @@ router.get('/CarePlan/:name', ensureAuthenticated, ensureAuthorised, (req, res) 
 				newCarePlan: newCarePlan,	
 				studentCarePlanName: studentCarePlanName,
 				recordID: req.params.recordID,
-				userType: userType,
+				//userType: userType,
 				patient: req.session.patient,
 				showMenu: true
 			});
@@ -2364,7 +2364,7 @@ router.get('/CarePlan/:name', ensureAuthenticated, ensureAuthorised, (req, res) 
 
 // get single Care Plan info
 router.get('/CarePlan/:name/:carePlanID', ensureAuthenticated, ensureAuthorised, (req, res) => {
-	userType = req.user.userType == 'student';
+	//userType = req.user.userType == 'student';
 	
 	StudentCarePlan.aggregate([ // display students who has created their care plan
 		{"$sort": {
@@ -2410,7 +2410,7 @@ router.get('/CarePlan/:name/:carePlanID', ensureAuthenticated, ensureAuthorised,
 				res.render('care-plan/master/care-plan', {
 					studentCarePlanName: studentCarePlanName,
 					name: req.params.name,
-					userType: userType,
+					//userType: userType,
 					recordID: req.params.recordID,
 					newCarePlan: newCarePlan,
 					editCarePlan: editCarePlan,
