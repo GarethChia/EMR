@@ -1727,7 +1727,8 @@ router.post('/add-pain', ensureAuthenticated, ensureAuthorised, (req, res) => {
 		aggravatingFact: req.body.aggravatingFact,
 		relievingFact: req.body.relievingFact,
 		painIntervene: req.body.painIntervene,
-		responseIntervene: req.body.responseIntervene
+		responseIntervene: req.body.responseIntervene,
+		siteofpain: req.body.siteofpain
 	}).save();
 
 	res.redirect('/master/vital');
@@ -1752,7 +1753,8 @@ router.put('/edit-pain/:painID', ensureAuthenticated, ensureAuthorised, (req, re
 		editPain.aggravatingFact = req.body.aggravatingFact,
 		editPain.relievingFact = req.body.relievingFact,
 		editPain.painIntervene = req.body.painIntervene,
-		editPain.responseIntervene = req.body.responseIntervene
+		editPain.responseIntervene = req.body.responseIntervene,
+		editPain.siteofpain = req.body.siteofpain
 
 		editPain.save();
 	})

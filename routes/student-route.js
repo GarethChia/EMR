@@ -277,6 +277,7 @@ router.put('/save-customised-patient/:patientID', ensureAuthenticated, (req, res
 			fluidSpecify: assessment.fluidSpecify,
 			fluidUnable: assessment.fluidUnable,
 			oralCavity: assessment.oralCavity,
+			dentures: assessment.dentures,
 			oralCavityPresence: assessment.oralCavityPresence,
 			oralCavityOthers: assessment.oralCavityOthers,
 			
@@ -426,7 +427,8 @@ router.put('/save-customised-patient/:patientID', ensureAuthenticated, (req, res
 											aggravatingFact: pain.aggravatingFact,
 											relievingFact: pain.relievingFact,
 											painIntervene: pain.painIntervene,
-											responseIntervene: pain.responseIntervene
+											responseIntervene: pain.responseIntervene,
+											siteofpain : pain.siteofpain
 										}).save();
 									})
 
@@ -1247,7 +1249,8 @@ router.post('/add-pain/:recordID', ensureAuthenticated, (req, res) => {
 		aggravatingFact: req.body.aggravatingFact,
 		relievingFact: req.body.relievingFact,
 		painIntervene: req.body.painIntervene,
-		responseIntervene: req.body.responseIntervene
+		responseIntervene: req.body.responseIntervene,
+		siteofpain : req.body.siteofpain
 	}).save();
 
 	res.redirect('/student/vital/'+ req.params.recordID);
@@ -1302,7 +1305,8 @@ router.put('/edit-pain/:recordID/:painID', ensureAuthenticated, (req, res) => {
 		editPain.aggravatingFact = req.body.aggravatingFact,
 		editPain.relievingFact = req.body.relievingFact,
 		editPain.painIntervene = req.body.painIntervene,
-		editPain.responseIntervene = req.body.responseIntervene
+		editPain.responseIntervene = req.body.responseIntervene,
+		editPain.siteofpain = req.body.siteofpain
 
 		editPain.save();
 	})

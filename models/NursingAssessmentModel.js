@@ -40,6 +40,7 @@ const NursingAssessmentSchema = new Schema({
 	fluidSpecify: {type: String, default: ''},
 	fluidUnable: {type: String, default: ''},
 	oralCavity: [String],
+	dentures: [String],
 	oralCavityPresence: [String],
 	oralCavityOthers: {type: String, default: ''},
 	
