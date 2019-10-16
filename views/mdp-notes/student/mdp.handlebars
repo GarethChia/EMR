@@ -9,7 +9,7 @@
                     <th>Time</th>
                     <th>Progress Notes</th>
                     <th>Health Provider</th>
-                    <th>Delete</th>
+                    {{!-- <th>Delete</th> --}}
                 </tr>
             </thead>
             <tbody>
@@ -28,14 +28,14 @@
                         <td>{{selectUser}}</td>
                         {{!-- <td>{{patientID}}</td> --}}
                         {{!-- {{#unless ../userType}} --}}
-                        <td style="width: 65px"> <!-- the tr we're trying to get -->
+                        {{!-- <td style="width: 65px"> <!-- the tr we're trying to get -->
                             <form action="/student/del-mdp/{{studentPatientID}}/{{mdpID}}?_method=DELETE" method="post" id="delete-form">
                                 <input type="hidden" name="_method" value="DELETE">
                             <button type="submit" class="btn red darken-3">
                                  <i class="material-icons">delete
                             </button>
                             </form>
-                        </td>
+                        </td> --}}
                         {{!-- {{/unless}} --}}
                     </tr>
                     {{/each}}
