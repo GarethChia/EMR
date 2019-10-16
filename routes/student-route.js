@@ -140,83 +140,90 @@ router.get('/showown/:recordID/:patientID', ensureAuthenticated, (req, res) => {
 
 // Save student edited patient record, selected from Student Records table at the top
 router.put('/save-student-edited-patient/:recordID', ensureAuthenticated, (req, res) => {
+
 	userType = req.user.userType == 'student';
 	PatientStudentModel.findOne({
 		recordID: req.params.recordID
 	})
 	.populate('user')
 	.then(studentPatient => {
+		
 		if(JSON.stringify(studentPatient.user._id) !== JSON.stringify(req.user.id)) {
 			//alertMessage.flashMessage(res, 'Only allowed to edit own record', 'fas fa-exclamation', true);
 			toaster.setErrorMessage(' ', 'Only allowed to edit own record');
 			res.redirect('/student/list-patients');
 		} else {
-			// New values Biography
-			//studentPatient.nric = req.body.nric;
-			//studentPatient.familyName = req.body.familyName;
-			//studentPatient.givenName = req.body.givenName;
-			studentPatient.dateCreated = moment(new Date(), 'DD/MM/YYYY', true)
-			.format();
-			studentPatient.dob = moment(req.body.dob, 'DD/MM/YYYY', true)
-			.format();
-			studentPatient.gender = req.body.gender;
-			studentPatient.weight = req.body.weight;
-			studentPatient.height = req.body.height;
-			studentPatient.address = req.body.address;
-			studentPatient.postalCode = req.body.postalCode;
-			studentPatient.mobilePhone = req.body.mobilePhone;
-			studentPatient.homePhone = req.body.homePhone;
-			studentPatient.officePhone = req.body.officePhone;
-			// admission
-			studentPatient.ward = req.body.ward;
-			studentPatient.bed = req.body.bed;
-			studentPatient.admDate = moment(req.body.admDate, 'DD/MM/YYYY', true)
-			.format();
-			studentPatient.policeCase = req.body.policeCase;
-			studentPatient.admFrom = req.body.admFrom;
-			studentPatient.modeOfArr = req.body.modeOfArr;
-			studentPatient.accompBy = req.body.accompBy;
-			studentPatient.caseNotes = req.body.caseNotes;
-			studentPatient.xRaysCD = req.body.xRaysCD;
-			studentPatient.prevAdm = req.body.prevAdm;
-			studentPatient.condArr = req.body.condArr;
-			studentPatient.otherCond = req.body.otherCond;
-			studentPatient.ownMeds = req.body.ownMeds;
-			studentPatient.unableAssess = req.body.unableAssess;
-			studentPatient.adviceMeds = req.body.adviceMeds;
-			// psycho-social
-			studentPatient.emgName = req.body.emgName;
-			studentPatient.emgRel = req.body.emgRel;
-			studentPatient.emgMobile = req.body.emgMobile;
-			studentPatient.emgHome = req.body.emgHome;
-			studentPatient.emgOffice = req.body.emgOffice;
 			
-			studentPatient.careName = req.body.careName;
-			studentPatient.careRel = req.body.careRel;
-			studentPatient.careOccu = req.body.careOccu;
-			studentPatient.careMobile = req.body.careMobile;
-			studentPatient.careHome = req.body.careHome;
-			studentPatient.careOffice = req.body.careOffice;
-			
-			studentPatient.accomodation = req.body.accomodation;
-			studentPatient.hospConcerns = req.body.hospConcerns;
-			studentPatient.spiritConcerns = req.body.spiritConcerns;
-			studentPatient.prefLang = req.body.prefLang;
-			studentPatient.otherLang = req.body.otherLang;
-			
-			
-			studentPatient.save()
-			.then(patient => {
-				//alertMessage.flashMessage(res, 'Patient record successfully saved', 'far fa-thumbs-up', true);
-				toaster.setSuccessMessage(' ', 'Patient (' + patient.givenName + ' ' + patient.familyName + ') Customised' +
-					' Record Updated');
-				//res.redirect('/student/list-patients');
-				res.render('student/student-edit-patient', { // calls student-edie-patient.handlebars
-					patient: patient,
-					toaster,
-					showMenu: true,
-					userType: userType,
-					recordID: req.params.recordID
+			PatientMasterModel.findOne({patientID: studentPatient.patientID})
+			.then(patientMaster => { // get Master ID
+				// New values Biography
+				//studentPatient.nric = req.body.nric;
+				//studentPatient.familyName = req.body.familyName;
+				//studentPatient.givenName = req.body.givenName;
+				studentPatient.dateCreated = moment(new Date(), 'DD/MM/YYYY', true)
+				.format();
+				studentPatient.dob = moment(req.body.dob, 'DD/MM/YYYY', true)
+				.format();
+				studentPatient.gender = req.body.gender;
+				studentPatient.weight = req.body.weight;
+				studentPatient.height = req.body.height;
+				studentPatient.address = req.body.address;
+				studentPatient.postalCode = req.body.postalCode;
+				studentPatient.mobilePhone = req.body.mobilePhone;
+				studentPatient.homePhone = req.body.homePhone;
+				studentPatient.officePhone = req.body.officePhone;
+				// admission
+				studentPatient.ward = req.body.ward;
+				studentPatient.bed = req.body.bed;
+				studentPatient.admDate = moment(req.body.admDate, 'DD/MM/YYYY', true)
+				.format();
+				studentPatient.policeCase = req.body.policeCase;
+				studentPatient.admFrom = req.body.admFrom;
+				studentPatient.modeOfArr = req.body.modeOfArr;
+				studentPatient.accompBy = req.body.accompBy;
+				studentPatient.caseNotes = req.body.caseNotes;
+				studentPatient.xRaysCD = req.body.xRaysCD;
+				studentPatient.prevAdm = req.body.prevAdm;
+				studentPatient.condArr = req.body.condArr;
+				studentPatient.otherCond = req.body.otherCond;
+				studentPatient.ownMeds = req.body.ownMeds;
+				studentPatient.unableAssess = req.body.unableAssess;
+				studentPatient.adviceMeds = req.body.adviceMeds;
+				// psycho-social
+				studentPatient.emgName = req.body.emgName;
+				studentPatient.emgRel = req.body.emgRel;
+				studentPatient.emgMobile = req.body.emgMobile;
+				studentPatient.emgHome = req.body.emgHome;
+				studentPatient.emgOffice = req.body.emgOffice;
+				
+				studentPatient.careName = req.body.careName;
+				studentPatient.careRel = req.body.careRel;
+				studentPatient.careOccu = req.body.careOccu;
+				studentPatient.careMobile = req.body.careMobile;
+				studentPatient.careHome = req.body.careHome;
+				studentPatient.careOffice = req.body.careOffice;
+				
+				studentPatient.accomodation = req.body.accomodation;
+				studentPatient.hospConcerns = req.body.hospConcerns;
+				studentPatient.spiritConcerns = req.body.spiritConcerns;
+				studentPatient.prefLang = req.body.prefLang;
+				studentPatient.otherLang = req.body.otherLang;
+				studentPatient.masterID = patientMaster.user;
+				
+				
+				studentPatient.save()
+				.then(patient => {
+					//alertMessage.flashMessage(res, 'Patient record successfully saved', 'far fa-thumbs-up', true);
+					toaster.setSuccessMessage(' ', 'Patient (' + patient.givenName + ' ' + patient.familyName + ') Customised' +
+						' Record Updated');
+					//res.redirect('/student/list-patients');
+					res.render('student/student-edit-patient', { // calls student-edie-patient.handlebars
+						patient: patient,
+						toaster,
+						showMenu: true,
+						userType: userType,
+						recordID: req.params.recordID
+					});
 				});
 			});
 		}
