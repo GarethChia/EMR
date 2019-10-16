@@ -2558,7 +2558,7 @@ router.get('/CarePlan/:recordID', ensureAuthenticated, (req, res) => {
 			.then(patientStudent => {
 
 				console.log("patientID: req.session.patient.patientID: "+ patientStudent.user);
-				StudentCarePlan.find({user: patientStudent.user, patientID: req.session.patient.patientID, studentPatientID: req.params.recordID}).sort({'datetime': 1})
+				StudentCarePlan.find({user: patientStudent.user, patientID: req.session.patient.patientID}).sort({'datetime': 1})
 				.then(newCarePlan => {
 					
 					//console.log("****newCarePlan: "+patientStudent.user);
@@ -2576,9 +2576,9 @@ router.get('/CarePlan/:recordID', ensureAuthenticated, (req, res) => {
 		}
 		else
 		{
-			StudentCarePlan.find({user: req.user.id, patientID: req.session.patient.patientID, studentPatientID: req.params.recordID}).sort({'datetime': 1})
+			StudentCarePlan.find({user: req.user.id, patientID: req.session.patient.patientID}).sort({'datetime': 1})
 			.then(newCarePlan => {
-
+				console.log("Hi Siti: "+ newCarePlan);
 				res.render('care-plan/student/care-plan', {
 					recordID: req.params.recordID,
 					// newMasterMDP: newMasterMDP,
@@ -2629,7 +2629,7 @@ router.get('/CarePlan/:recordID/:carePlanID', ensureAuthenticated, (req, res) =>
 		PatientStudentModel.findOne({recordID: req.params.recordID})
 		.then(patientStudent => {
 
-			StudentCarePlan.find({ patientID: req.session.patient.patientID, user:  patientStudent.user, studentPatientID: req.params.recordID}).sort({'datetime':1})
+			StudentCarePlan.find({ patientID: req.session.patient.patientID, user:  patientStudent.user}).sort({'datetime':1})
 			.then(newCarePlan => {
 
 				StudentCarePlan.findOne({ carePlanID: req.params.carePlanID })
@@ -2652,7 +2652,7 @@ router.get('/CarePlan/:recordID/:carePlanID', ensureAuthenticated, (req, res) =>
 	}
 	else
 	{
-		StudentCarePlan.find({ patientID: req.session.patient.patientID, user: req.user.id, studentPatientID: req.params.recordID}).sort({'datetime':1})
+		StudentCarePlan.find({ patientID: req.session.patient.patientID, user: req.user.id}).sort({'datetime':1})
 		.then(newCarePlan => {
 			StudentCarePlan.findOne({ carePlanID: req.params.carePlanID })
 			.then(editCarePlan => {
