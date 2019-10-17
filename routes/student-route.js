@@ -2165,56 +2165,54 @@ router.post('/add-fall/:recordID', ensureAuthenticated, (req, res) => {
 
 
 // Open HistoryTakng page
-// router.get('/HistoryTaking/:recordID', ensureAuthenticated, (req, res) => {
-router.get('/HistoryTaking', ensureAuthenticated, (req, res) => {
+ //router.get('/HistoryTaking/:recordID', ensureAuthenticated, (req, res) => {
+// router.get('/HistoryTaking', ensureAuthenticated, (req, res) => {
 
-	userType = req.user.userType == 'student';
-	MasterHistory.find({ patientID: req.session.patient.patientID, patientID: req.params.recordID})
-	.then(newHistory => {
-		userType = req.user.userType == 'student';
-		if (req.user.userType == 'staff')
-		{
-			userType = 'student';
-		}
-		MasterHistory.findOne({ masterpatientID: req.params.recordID})
-		.then(editHistory => {
-			if (editHistory == null)
-			{
-				if (req.user.userType == 'staff')
-				{
-					userType = 'student';
-				}
-				res.render('HistoryTaking/student/add_HistoryTaking', {
-					recordID:req.params.recordID,
-					newHistory: newHistory,
-					userType: userType,
-					patient: req.session.patient,
-					currentUserType: req.user.userType,
-					showMenu: true,
-				});
-			}
-			else
-			{
-				if (req.user.userType == 'staff')
-				{
-					userType = 'student';
-				}
-				console.log("History Taking is not empty: "+editHistory);
-				res.render('HistoryTaking/student/add_HistoryTaking', {
-					recordID:req.params.recordID,
-					newHistory: newHistory,
-					userType: userType,
-					patient: req.session.patient,
-					currentUserType: req.user.userType,
-					showMenu: true,
-					editHistory: editHistory
-				});
-			}
-			
-			
-		})	
-	})
-})
+// 	userType = req.user.userType == 'student';
+// 	MasterHistory.find({ patientID: req.session.patient.patientID, patientID: req.params.recordID})
+// 	.then(newHistory => {
+// 		userType = req.user.userType == 'student';
+// 		if (req.user.userType == 'staff')
+// 		{
+// 			userType = 'student';
+// 		}
+// 		MasterHistory.findOne({ masterpatientID: req.session.patient.patientID})
+// 		.then(editHistory => {
+// 			if (editHistory == null)
+// 			{
+// 				if (req.user.userType == 'staff')
+// 				{
+// 					userType = 'student';
+// 				}
+// 				res.render('HistoryTaking/student/add_HistoryTaking', {
+// 					recordID:req.params.recordID,
+// 					newHistory: newHistory,
+// 					userType: userType,
+// 					patient: req.session.patient,
+// 					currentUserType: req.user.userType,
+// 					showMenu: true,
+// 				});
+// 			}
+// 			else
+// 			{
+// 				if (req.user.userType == 'staff')
+// 				{
+// 					userType = 'student';
+// 				}
+// 				console.log("History Taking is not empty: "+editHistory);
+// 				res.render('HistoryTaking/student/add_HistoryTaking', {
+// 					recordID:req.params.recordID,
+// 					newHistory: newHistory,
+// 					userType: userType,
+// 					patient: req.session.patient,
+// 					currentUserType: req.user.userType,
+// 					showMenu: true,
+// 					editHistory: editHistory
+// 				});
+// 			}
+// 		})	
+// 	})
+// })
 //Add HistoryTaking
 router.post('/add-history/:recordID', ensureAuthenticated, (req, res) => {
 	historyId = (new standardID('AAA0000')).generate();
@@ -2237,24 +2235,60 @@ router.post('/add-history/:recordID', ensureAuthenticated, (req, res) => {
 })
 //One HistoryTaking by ID
 router.get('/HistoryTaking/:recordID', ensureAuthenticated, (req,res) => {
-	userType = req.user.userType == 'student';
+	
 	MasterHistory.find({ patientID: req.params.recordID, patientID:req.session.patient.patientID,}).then(newHistory => {
-		MasterHistory.findOne({ masterpatientID: req.params.recordID }).then(editHistory =>{
-			if (req.user.userType == 'staff')
-			{
-				userType = 'student';
-			}
-			res.render('HistoryTaking/student/add_HistoryTaking',{
-				newHistory:newHistory,
-				editHistory: editHistory,
-				patient: req.session.patient,
-				userType: userType,
-				recordID: req.params.recordID,
-				currentUserType: req.user.userType,
-				showMenu: true
+		if (req.user.userType == 'staff')
+		{ 
+			userType = 'student';
+			PatientStudentModel.findOne({recordID: req.params.recordID})
+			.then(patientStudent => {
+				
+				EMR_User.findById(patientStudent.user)	// findById is Mongoose utility method
+				.then(user => { 
+
+					MasterHistory.findOne({ masterpatientID: req.session.patient.patientID, by: user.firstName }).then(editHistory =>{
+					
+						if (req.user.userType == 'staff')
+						{
+							userType = 'student';
+						}
+						res.render('HistoryTaking/student/add_HistoryTaking',{
+							newHistory:newHistory,
+							editHistory: editHistory,
+							patient: req.session.patient,
+							userType: userType,
+							recordID: req.params.recordID,
+							currentUserType: req.user.userType,
+							showMenu: true
+						})
+					
+					});
+				});
+				
 			})
-		
-		});
+		}
+		else
+		{
+			userType = req.user.userType == 'student';
+
+			MasterHistory.findOne({ masterpatientID: req.session.patient.patientID, by: req.user.firstName }).then(editHistory =>{
+				console.log("Hi: " + req.user.firstName);
+				if (req.user.userType == 'staff')
+				{
+					userType = 'student';
+				}
+				res.render('HistoryTaking/student/add_HistoryTaking',{
+					newHistory:newHistory,
+					editHistory: editHistory,
+					patient: req.session.patient,
+					userType: userType,
+					recordID: req.params.recordID,
+					currentUserType: req.user.userType,
+					showMenu: true
+				})
+			
+			});
+		}
 	})
 })
 
