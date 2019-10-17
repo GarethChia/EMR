@@ -2391,7 +2391,7 @@ router.get('/mdp/:recordID', ensureAuthenticated, (req, res) => {
 	if (req.user.userType == 'staff')
 	{
 		userType = 'student';
-		PatientStudentModel.findOne({patientID: req.session.patient.patientID})
+		PatientStudentModel.findOne({recordID: req.params.recordID})
 		.then(patientStudent => {
 			StudentMDP.find({user: patientStudent.user, patientID: req.session.patient.patientID}).sort({'datetime':1})
 			.then(newMDP => { // mdp that they have created
