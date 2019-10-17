@@ -2166,7 +2166,7 @@ router.post('/add-fall/:recordID', ensureAuthenticated, (req, res) => {
 
 // Open HistoryTakng page
 // router.get('/HistoryTaking/:recordID', ensureAuthenticated, (req, res) => {
-	router.get('/HistoryTaking', ensureAuthenticated, (req, res) => {
+router.get('/HistoryTaking', ensureAuthenticated, (req, res) => {
 
 	userType = req.user.userType == 'student';
 	MasterHistory.find({ patientID: req.session.patient.patientID, patientID: req.params.recordID})
@@ -2176,7 +2176,7 @@ router.post('/add-fall/:recordID', ensureAuthenticated, (req, res) => {
 		{
 			userType = 'student';
 		}
-		MasterHistory.findOne({ patientID: req.params.recordID})
+		MasterHistory.findOne({ masterpatientID: req.params.recordID})
 		.then(editHistory => {
 			if (editHistory == null)
 			{
@@ -2239,7 +2239,7 @@ router.post('/add-history/:recordID', ensureAuthenticated, (req, res) => {
 router.get('/HistoryTaking/:recordID', ensureAuthenticated, (req,res) => {
 	userType = req.user.userType == 'student';
 	MasterHistory.find({ patientID: req.params.recordID, patientID:req.session.patient.patientID,}).then(newHistory => {
-		MasterHistory.findOne({ patientID: req.params.recordID }).then(editHistory =>{
+		MasterHistory.findOne({ masterpatientID: req.params.recordID }).then(editHistory =>{
 			if (req.user.userType == 'staff')
 			{
 				userType = 'student';
