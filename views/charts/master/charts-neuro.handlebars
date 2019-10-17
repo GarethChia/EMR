@@ -162,7 +162,7 @@
                 {{/each}}
             </tr>
 
-            <tr>
+            <tr style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">
                 <th width="10%" rowspan="3">Sensation</th>
             </tr>
   
@@ -180,22 +180,19 @@
                 {{/each}}
             </tr>
 
-            <tr>
+            <tr style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">
                 <th width="10%" rowspan="3">Pain</th>
             </tr>
               
-            <tr>
+            <tr style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">
                 <th>Left</th>
                 {{#each neuroFlow}}
-                    <td>{{painLeft}}</td>
+                    <td rowspan="2">{{painScale}}</td>
                 {{/each}}
             </tr>
 
             <tr style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">
                 <th>Right</th>
-                {{#each neuroFlow}}
-                    <td>{{painRight}}</td>
-                {{/each}}
             </tr>
 
             <tr>
@@ -300,7 +297,7 @@
                             
                             <td>{{sensationLeft}}</td>
                             
-                            <td>{{painLeft}}</td>
+                            <td rowspan="2">{{painScale}}</td>
                             
                             <td>{{numericalRatingScaleLeft}}</td>
                             
@@ -326,7 +323,6 @@
                             <td>{{edemaRight}}</td>
                             <td>{{movementRight}}</td>
                             <td>{{sensationRight}}</td>
-                            <td>{{painRight}}</td>
                             <td>{{numericalRatingScaleRight}}</td>
                             <td>{{characteristicRight}}</td>
                         </tr>
@@ -367,7 +363,7 @@
                                 
                                 <td>{{sensationLeft}}</td>
                                 
-                                <td>{{painLeft}}</td>
+                                <td rowspan="2">{{painScale}}</td>
                                 
                                 <td>{{numericalRatingScaleLeft}}</td>
                                 
@@ -395,7 +391,6 @@
                             <td>{{edemaRight}}</td>
                             <td>{{movementRight}}</td>
                             <td>{{sensationRight}}</td>
-                            <td>{{painRight}}</td>
                             <td>{{numericalRatingScaleRight}}</td>
                             {{!-- <td>{{verbalDescriptiveScaleRight}}</td> --}}
                             <td>{{characteristicRight}}</td>
@@ -437,7 +432,7 @@
                             
                             <td>{{sensationLeft}}</td>
                             
-                            <td>{{painLeft}}</td>
+                            <td rowspan="2">{{painScale}}</td>
                             
                             <td>{{numericalRatingScaleLeft}}</td>
                             
@@ -465,7 +460,6 @@
                             <td>{{edemaRight}}</td>
                             <td>{{movementRight}}</td>
                             <td>{{sensationRight}}</td>
-                            <td>{{painRight}}</td>
                             <td>{{numericalRatingScaleRight}}</td>
                             {{!-- <td>{{verbalDescriptiveScaleRight}}</td> --}}
                             <td>{{characteristicRight}}</td>
@@ -506,7 +500,7 @@
                             
                             <td>{{sensationLeft}}</td>
                             
-                            <td>{{painLeft}}</td>
+                            <td rowspan="2">{{painScale}}</td>
                             
                             <td>{{numericalRatingScaleLeft}}</td>
                             
@@ -534,7 +528,6 @@
                             <td>{{edemaRight}}</td>
                             <td>{{movementRight}}</td>
                             <td>{{sensationRight}}</td>
-                            <td>{{painRight}}</td>
                             <td>{{numericalRatingScaleRight}}</td>
                             {{!-- <td>{{verbalDescriptiveScaleRight}}</td> --}}
                             <td>{{characteristicRight}}</td>
@@ -848,22 +841,12 @@
                     <span class="purple-text darken-2">Type of pain scale</span>
                     <div class="row">
                         <div class="col s12 m4 input-field">
-                            <select id="leftTypeOfPainScale" name="leftTypeOfPainScale" required>
+                            <select id="painScale" name="painScale" required>
                                 <option value="" disabled selected>Please Select</option>
                                 <option value="Numerical Rating Scale">Numerical Rating Scale</option>
                                 <option value="Wong-Baker">Wong-Baker</option>
                                 <option value="FLACC">FLACC</option>
                             </select>
-                            <label for="leftTypeOfPainScale">Left</label>
-                        </div>
-                        <div class="col s12 m4 input-field">
-                            <select id="rightTypeOfPainScale" name="rightTypeOfPainScale" required>
-                                <option value="" disabled selected>Please Select</option>
-                                <option value="Numerical Rating Scale">Numerical Rating Scale</option>
-                                <option value="Wong-Baker">Wong-Baker</option>
-                                <option value="FLACC">FLACC</option>
-                            </select>
-                            <label for="rightTypeOfPainScale">Right</label>
                         </div>
 
                         <div class="col s10 m2 input-field">
@@ -1035,8 +1018,7 @@
         const rightMovement = document.querySelector('#rightMovement')
         const leftSensation = document.querySelector('#leftSensation');
         const rightSensation = document.querySelector('#rightSensation');
-        const leftTypeOfPainScale = document.querySelector('#leftTypeOfPainScale');
-        const rightTypeOfPainScale = document.querySelector('#rightTypeOfPainScale');
+        const painScale = document.querySelector('#painScale');
         const numericalRatingScaleLeft = document.querySelector('#numericalRatingScaleLeft');
         const numericalRatingScaleRight = document.querySelector('#numericalRatingScaleRight');
         const leftCharacteristic = document.querySelector('#leftCharacteristic');
@@ -1113,10 +1095,7 @@
         M.FormSelect.init(rightSensation, {
             
         })
-        M.FormSelect.init(leftTypeOfPainScale, {
-            
-        })
-        M.FormSelect.init(rightTypeOfPainScale, {
+        M.FormSelect.init(painScale, {
             
         })
         M.FormSelect.init(numericalRatingScaleLeft, {
@@ -1157,8 +1136,7 @@
         document.getElementById('rightMovement').value = "{{editNeuro.movementRight}}";
         document.getElementById('leftSensation').value = "{{editNeuro.sensationLeft}}";
         document.getElementById('rightSensation').value = "{{editNeuro.sensationRight}}";
-        document.getElementById('leftTypeOfPainScale').value = "{{editNeuro.painLeft}}";
-        document.getElementById('rightTypeOfPainScale').value = "{{editNeuro.painRight}}";
+        document.getElementById('painScale').value = "{{editNeuro.painScale}}";
         document.getElementById('numericalRatingScaleLeft').value = "{{editNeuro.numericalRatingScaleLeft}}";
         document.getElementById('numericalRatingScaleRight').value = "{{editNeuro.numericalRatingScaleRight}}";
         document.getElementById('leftCharacteristic').value = "{{editNeuro.characteristicLeft}}";

@@ -649,8 +649,7 @@ router.put('/save-customised-patient/:patientID', ensureAuthenticated, (req, res
 																					movementRight: neuro.movementRight,
 																					sensationLeft: neuro.sensationLeft,
 																					sensationRight: neuro.sensationRight,
-																					painLeft: neuro.painLeft,
-																					painRight: neuro.painRight,
+																					painScale: neuro.painScale,
 																					numericalRatingScaleLeft: neuro.numericalRatingScaleLeft,
 																					numericalRatingScaleRight: neuro.numericalRatingScaleRight,
 																					characteristicLeft: neuro.characteristicLeft,
@@ -2397,7 +2396,7 @@ router.get('/mdp/:recordID', ensureAuthenticated, (req, res) => {
 			StudentMDP.find({user: patientStudent.user, patientID: req.session.patient.patientID}).sort({'datetime':1})
 			.then(newMDP => { // mdp that they have created
 
-				MasterMDP.aggregate([
+				/*MasterMDP.aggregate([
 					{"$sort": {
 						'datetime': -1
 					}},
@@ -2409,8 +2408,10 @@ router.get('/mdp/:recordID', ensureAuthenticated, (req, res) => {
 						'createdBy': 1
 					}}
 				])
-					.then(newMasterMDP => {
-					//console.log("************ newMasterMDP: "+ JSON.stringify(newMasterMDP));
+				.then(newMasterMDP => {*/
+				MasterMDP.find({patientID: req.session.patient.patientID})
+				.then(newMasterMDP=> {
+					console.log("************ newMasterMDP: "+ JSON.stringify(newMasterMDP));
 					res.render('mdp-notes/student/mdp', {
 						recordID: req.params.recordID,
 						newMasterMDP: newMasterMDP,
@@ -2420,7 +2421,8 @@ router.get('/mdp/:recordID', ensureAuthenticated, (req, res) => {
 						patient: req.session.patient,
 						showMenu: true
 					});
-				});
+				})	
+				//});
 				//});
 			})
 		})
@@ -2430,7 +2432,7 @@ router.get('/mdp/:recordID', ensureAuthenticated, (req, res) => {
 	{
 		StudentMDP.find({user: req.user.id, patientID: req.session.patient.patientID}).sort({'datetime':1})
 		.then(newMDP => { // mdp that they have created
-			MasterMDP.aggregate([
+			/*MasterMDP.aggregate([
 				{"$sort": {
 					'datetime': -1
 				}},
@@ -2442,7 +2444,9 @@ router.get('/mdp/:recordID', ensureAuthenticated, (req, res) => {
 					'createdBy': 1
 				}}
 			])
-				.then(newMasterMDP => {
+				.then(newMasterMDP => {*/
+			MasterMDP.find({patientID: req.session.patient.patientID})
+			.then(newMasterMDP=> { 
 				//console.log("************ newMasterMDP: "+ JSON.stringify(newMasterMDP));
 				res.render('mdp-notes/student/mdp', {
 					recordID: req.params.recordID,
@@ -2453,7 +2457,8 @@ router.get('/mdp/:recordID', ensureAuthenticated, (req, res) => {
 					patient: req.session.patient,
 					showMenu: true
 				});
-			});
+			})
+			//});
 			//});
 		})
 	}
@@ -2495,7 +2500,7 @@ router.get('/mdp/:recordID/:mdpID', ensureAuthenticated, (req, res) => {
 	}
 	StudentMDP.find({ patientID: req.session.patient.patientID, user: req.user.id}).sort({'datetime':1}).then(newMDP => {
 		StudentMDP.findOne({ mdpID: req.params.mdpID}).then(editMDP => {
-			MasterMDP.aggregate([
+			/*MasterMDP.aggregate([
 				{"$sort": {
 					'datetime': -1
 				}},
@@ -2507,7 +2512,9 @@ router.get('/mdp/:recordID/:mdpID', ensureAuthenticated, (req, res) => {
 					'createdBy': 1
 				}}
 			])
-			.then(newMasterMDP => {
+			.then(newMasterMDP => {*/
+			MasterMDP.find({patientID: req.session.patient.patientID})
+			.then(newMasterMDP=> { 
 				console.log("editMDP: "+ editMDP);
 				editMDP.date = moment(editMDP.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
 				res.render('mdp-notes/student/mdp', {
@@ -2520,7 +2527,8 @@ router.get('/mdp/:recordID/:mdpID', ensureAuthenticated, (req, res) => {
 					newMasterMDP: newMasterMDP,
 					showMenu: true
 				});
-			});
+			})
+			//});
 		})
 	})
 })
@@ -3232,7 +3240,7 @@ router.post('/add-neuro/:recordID', ensureAuthenticated, (req, res) => {
 			movementRight: req.body.rightMovement,
 			sensationLeft: req.body.leftSensation,
 			sensationRight: req.body.rightSensation,
-			painLeft: req.body.leftTypeOfPainScale,
+			painScale: req.body.painScale,
 			painRight: req.body.rightTypeOfPainScale,
 			numericalRatingScaleLeft: req.body.numericalRatingScaleLeft,
 			numericalRatingScaleRight: req.body.numericalRatingScaleRight,
@@ -3293,8 +3301,7 @@ router.put('/edit-neuro/:recordID/:neuroID', ensureAuthenticated, (req,res) => {
 		editNeuro.movementRight = req.body.rightMovement,
 		editNeuro.sensationLeft = req.body.leftSensation,
 		editNeuro.sensationRight = req.body.rightSensation,
-		editNeuro.painLeft = req.body.leftTypeOfPainScale,
-		editNeuro.painRight = req.body.rightTypeOfPainScale,
+		editNeuro.painScale = req.body.painScale,
 		editNeuro.numericalRatingScaleLeft = req.body.numericalRatingScaleLeft,
 		editNeuro.numericalRatingScaleRight = req.body.numericalRatingScaleRight,
 		editNeuro.characteristicLeft = req.body.leftCharacteristic,
