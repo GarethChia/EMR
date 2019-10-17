@@ -209,6 +209,7 @@ router.put('/save-student-edited-patient/:recordID', ensureAuthenticated, (req, 
 				studentPatient.prefLang = req.body.prefLang;
 				studentPatient.otherLang = req.body.otherLang;
 				studentPatient.masterID = patientMaster.user;
+				studentPatient.by = req.user.firstName;
 				
 				
 				studentPatient.save()
@@ -372,6 +373,7 @@ router.put('/save-customised-patient/:patientID', ensureAuthenticated, (req, res
 						spiritConcerns: req.body.spiritConcerns,
 						prefLang: req.body.prefLang,
 						otherLang: req.body.otherLang,
+						by: req.user.firstName,
 
 						masterID: patientMaster.user // storing masterID
 					})

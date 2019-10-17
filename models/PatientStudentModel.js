@@ -64,6 +64,7 @@ const PatientStudentSchema = new Schema({
 	prefLang:	 [String],
 	otherLang:	 {type: String},
 	notes: {type: String},
+	by: {type: String},
 	
 	masterID:  {type: Schema.Types.ObjectId, require: true}
 });
