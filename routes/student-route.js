@@ -2163,56 +2163,6 @@ router.post('/add-fall/:recordID', ensureAuthenticated, (req, res) => {
 	res.redirect('/student/fall/'+ req.params.recordID);
 })
 
-
-// Open HistoryTakng page
- //router.get('/HistoryTaking/:recordID', ensureAuthenticated, (req, res) => {
-// router.get('/HistoryTaking', ensureAuthenticated, (req, res) => {
-
-// 	userType = req.user.userType == 'student';
-// 	MasterHistory.find({ patientID: req.session.patient.patientID, patientID: req.params.recordID})
-// 	.then(newHistory => {
-// 		userType = req.user.userType == 'student';
-// 		if (req.user.userType == 'staff')
-// 		{
-// 			userType = 'student';
-// 		}
-// 		MasterHistory.findOne({ masterpatientID: req.session.patient.patientID})
-// 		.then(editHistory => {
-// 			if (editHistory == null)
-// 			{
-// 				if (req.user.userType == 'staff')
-// 				{
-// 					userType = 'student';
-// 				}
-// 				res.render('HistoryTaking/student/add_HistoryTaking', {
-// 					recordID:req.params.recordID,
-// 					newHistory: newHistory,
-// 					userType: userType,
-// 					patient: req.session.patient,
-// 					currentUserType: req.user.userType,
-// 					showMenu: true,
-// 				});
-// 			}
-// 			else
-// 			{
-// 				if (req.user.userType == 'staff')
-// 				{
-// 					userType = 'student';
-// 				}
-// 				console.log("History Taking is not empty: "+editHistory);
-// 				res.render('HistoryTaking/student/add_HistoryTaking', {
-// 					recordID:req.params.recordID,
-// 					newHistory: newHistory,
-// 					userType: userType,
-// 					patient: req.session.patient,
-// 					currentUserType: req.user.userType,
-// 					showMenu: true,
-// 					editHistory: editHistory
-// 				});
-// 			}
-// 		})	
-// 	})
-// })
 //Add HistoryTaking
 router.post('/add-history/:recordID', ensureAuthenticated, (req, res) => {
 	historyId = (new standardID('AAA0000')).generate();
@@ -2272,7 +2222,7 @@ router.get('/HistoryTaking/:recordID', ensureAuthenticated, (req,res) => {
 			userType = req.user.userType == 'student';
 
 			MasterHistory.findOne({ masterpatientID: req.session.patient.patientID, by: req.user.firstName }).then(editHistory =>{
-				console.log("Hi: " + req.user.firstName);
+
 				if (req.user.userType == 'staff')
 				{
 					userType = 'student';
@@ -2310,55 +2260,6 @@ router.put('/edit-history/:recordID', ensureAuthenticated, (req,res) => {
 	res.redirect("/student/HistoryTaking/" + req.params.recordID);
 })
 	
-// // Open HistoryTakng page
-// router.get('/HistoryTaking', ensureAuthenticated, (req, res) => {
-// 	StudentHistory.find({user: req.user.id, patientID: req.session.patient.patientID})
-// 	.then(newHistory => {
-// 		MasterHistory.findOne().then(newMasterHistory => {
-// 			res.render('HistoryTaking/student/add_HistoryTaking', {
-// 				newMasterHistory: newMasterHistory,
-// 				newHistory: newHistory,
-// 				patient: req.session.patient,
-// 				showMenu: true
-// 			});
-// 		});
-// 	})
-// })
-// // Add HistoryTaking
-// router.post('/addHistory', ensureAuthenticated,(req, res) => {
-// 	historyId = (new standardID('AAA0000')).generate();
-// 	new StudentHistory({
-// 		user: req.user.id,
-// 		patientID: req.session.patient.patientID,
-// 		userType: req.user.userType,
-// 		chiefComp: req.body.chiefComp,
-// 		historyPresent: req.body.historyPresent,
-// 		allergy: req.body.allergy,
-// 		medicalH: req.body.medicalH,
-// 		surgicalH: req.body.surgicalH,
-// 		familyH: req.body.familyH,
-// 		socialH: req.body.socialH,
-// 		travelH: req.body.travelH,
-// 		historyId: historyId
-// 	}).save();
-// 	res.redirect('/student/HistoryTaking');
-// })
-// //Edit HistoryTaking
-// router.put('/edit-history/:historyId', ensureAuthenticated, (req,res) => {
-// 	StudentHistory.findOne({ historyId: req.params.historyId}).then(editHistory => {
-// 		editHistory.chiefComp = req.body.chiefComp,
-// 		editHistory.historyPresent = req.body.chiefComp,
-// 		editHistory.allergy = req.body.allergy,
-// 		editHistory.medicalH = req.body.medicalH,
-// 		editHistory.surgicalH = req.body.surgicalH,
-// 		editHistory.familyH = req.body.familyH,
-// 		editHistory.socialH = req.body.socialH,
-// 		editHistory.travelH = req.body.travelH
-
-// 		editHistory.save();
-// 	});
-// 	res.redirect("/student/add_HistoryTaking");
-// })
 //get single fall info
 router.get('/fall/:recordID/:fallID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
@@ -2633,7 +2534,6 @@ router.get('/CarePlan/:recordID', ensureAuthenticated, (req, res) => {
 		{
 			StudentCarePlan.find({user: req.user.id, patientID: req.session.patient.patientID}).sort({'datetime': 1})
 			.then(newCarePlan => {
-				console.log("Hi Siti: "+ newCarePlan);
 				res.render('care-plan/student/care-plan', {
 					recordID: req.params.recordID,
 					// newMasterMDP: newMasterMDP,
@@ -2884,25 +2784,7 @@ router.get('/edit/:recordID/:patientID', ensureAuthenticated, (req, res) => {
 	});
 });
 
-
 //START OF DIABETIC
-//open route to diabetic page
-// router.get('/diabetic/:recordID', ensureAuthenticated, (req, res) => {
-// 	userType = req.user.userType == 'student';
-// 	// MasterBraden.find({ patientID: req.session.patient.patientID }).then(newBraden => {
-// 		MasterDiabetic.find({ patientID: req.params.recordID }).then(newDiabetic => {
-	
-// 		console.log(newBraden);
-// 		res.render('charts/master/charts-braden', {
-// 			// azureId: req.user.azure_oid,
-// 			recordID: req.params.recordID,
-// 			userType: userType,
-// 			newDiabetic: newDiabetic,
-// 			patient: req.session.patient,
-// 			showMenu: true
-// 		})
-//   	})
-// })
 //Load Diabetic page
 router.get('/diabetic/:recordID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
@@ -2965,8 +2847,8 @@ router.get('/diabetic/:recordID', ensureAuthenticated, (req, res) => {
 						currentUserType: req.user.userType,
 						showMenu: true
         			})
-	})
-})
+				})
+			})
 
 //get single Diabetic info
 router.get('/diabetic/:recordID/:diabeticID', ensureAuthenticated, (req, res) => {
