@@ -2071,6 +2071,7 @@ router.post('/add-mdp', ensureAuthenticated, ensureAuthorised, (req, res) => {
 		time: req.body.timeMDP,
 		datetime: datetime,
 		selectUser: req.body.selectUser,
+		nameOfHealthProvider: req.body.nameOfHealthProvider,
 		progressNotes: req.body.progressNotes
 	}).save();
 	res.redirect('/master/mdp');
@@ -2134,7 +2135,7 @@ router.put('/edit-mdp/:mdpID', ensureAuthenticated, ensureAuthorised, (req,res) 
 		editMDP.selectUser = req.body.selectUser,
 		editMDP.healthProvider = req.body.healthProvider,
 		editMDP.progressNotes = req.body.progressNotes
-
+		editMDP.nameOfHealthProvider = req.body.nameOfHealthProvider,
 		editMDP.save();
 	});
 	res.redirect("/master/mdp");

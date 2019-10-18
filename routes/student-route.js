@@ -2414,6 +2414,7 @@ router.post('/add-mdp/:recordID', ensureAuthenticated,(req, res) => {
 		time: req.body.timeMDP,
 		datetime: datetime,
 		selectUser: req.body.selectUser,
+		nameOfHealthProvider: req.body.nameOfHealthProvider,
 		progressNotes: req.body.progressNotes
 	}).save();
 	res.redirect('/student/mdp/'+req.params.recordID);
@@ -2479,6 +2480,7 @@ router.put('/edit-mdp/:recordID/:mdpID', ensureAuthenticated, (req,res) => {
 		editMDP.time = req.body.timeMDP,
 		editMDP.datetime = datetime,
 		editMDP.selectUser = req.body.selectUser,
+		editMDP.nameOfHealthProvider = req.body.nameOfHealthProvider,
 		editMDP.progressNotes = req.body.progressNotes
 
 		editMDP.save().then(editMDP => {

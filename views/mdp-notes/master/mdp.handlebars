@@ -9,6 +9,7 @@
                     <th>Time</th>
                     <th>Progress Notes</th>
                     <th>Health Provider</th>
+                    <th>Name</th>
                     <th>By</th>
                     <th>Delete</th>
                 </tr>
@@ -25,6 +26,7 @@
                         <td>{{time}}</td>
                         <td>{{progressNotes}}</td>
                         <td>{{selectUser}}</td>
+                        <td>{{nameOfHealthProvider}}</td>
                         <td>{{createdBy}}</td>
                         {{#unless ../userType}}
                         <td style="width: 65px"> <!-- the tr we're trying to get -->
@@ -74,6 +76,7 @@
                     <th>Time</th>
                     <th>Progress Notes</th>
                     <th>Health Provider</th>
+                    <th>Name</th>
                     <th>By</th>
                 </tr>
             </thead>
@@ -85,6 +88,7 @@
                         <td>{{time}}</td>
                         <td>{{progressNotes}}</td>
                         <td>{{selectUser}}</td>
+                        <td>{{nameOfHealthProvider}}</td>
                         <td>{{createdBy}}</td>
                     </tr>
                     {{/each}}
@@ -142,6 +146,11 @@
                             </div>
                     </div>
                     <div class="row">
+                        <div class="col s12 m4 input-field">
+                            <input id="nameOfHealthProvider" type="text" name="nameOfHealthProvider" value="{{editMDP.nameOfHealthProvider}}">
+                            <label for="nameOfHealthProvider">Name</label>
+                            <span class="helper-text"></span>
+                        </div>
                         <div class="col s12 m8 input-field">
                             <textarea id="progressNotes" class="materialize-textarea" name="progressNotes" required>{{editMDP.progressNotes}}</textarea>
                             <label for="progressNotes">Progress notes</label>

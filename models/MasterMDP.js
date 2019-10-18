@@ -20,6 +20,7 @@ const MasterMDPSchema = new Schema({
     time:		 {type: String, default: ''},
     datetime: {type: String, default: ''},
     selectUser: {type: String, default:''},
+    nameOfHealthProvider: {type: String, default:''},
     progressNotes: {type: String, default: ''}
 });
 
