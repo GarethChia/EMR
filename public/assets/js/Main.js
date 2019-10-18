@@ -178,7 +178,7 @@ $(function(){
 			style: 'single'
 		},
 		"columnDefs": [
-			{orderable: false, targets: 9},
+			{orderable: false, targets: 10},
 		]
 	});
 	
