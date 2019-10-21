@@ -894,32 +894,73 @@ router.put('/edit-braden/:bradenID', ensureAuthenticated, ensureAuthorised, (req
 // Open HistoryTakng page
 router.get('/HistoryTaking', ensureAuthenticated, ensureAuthorised, (req, res) => {
 	MasterHistory.find({masterpatientID: req.session.patient.patientID})
-	.then(newHistory => {
-		MasterHistory.findOne({ user: req.user.id, patientID: req.session.patient.patientID})
+	.then(newHistory => {//(other record)
+		MasterHistory.findOne({ patientID: req.session.patient.patientID})
+	.then(newOtherHistory =>{ //(your own record)
+		// console.log("Yikes: " + newOtherHistory.length);
+		// console.log("Yikes: " + req.user);
+		/*MasterHistory.findOne({patientID: req.session.patient.patientID})
+	
 	.then(editHistory => {
 		if(editHistory == null){
 			res.render('HistoryTaking/master/add_HistoryTaking', {
 				newHistory: newHistory,
 				editHistory: editHistory,
 				patient: req.session.patient,
+				currentName: req.user.firstName,
+				//newOtherHistory:newOtherHistory,
 				showMenu: true
 			});
 		}
 		else
-		{
-			console.log("History is not empty: "+editHistory);
+		{*/
+			//console.log("History is not empty: "+editHistory);
 			res.render('HistoryTaking/master/add_HistoryTaking', {
 				newHistory: newHistory,
-				editHistory: editHistory,
+				//editHistory: editHistory,
+				checkifEmpty: true,
 				patient: req.session.patient,
+				currentName: req.user.firstName,
+				newOtherHistory:newOtherHistory,
 				showMenu: true
 			});
-		}
+		//}
 		
-	 })
-		
+	 	//})
 	})
+	})
+	
 })
+//show only other students not lecturer
+// router.get('/HistoryTaking', ensureAuthenticated, ensureAuthorised, (req, res) => {
+// 	MasterHistory.find({masterpatientID: req.session.patient.patientID})
+// 	.then(newHistory => {
+// 		MasterHistory.findOne({ user: req.user.id, patientID: req.session.patient.patientID})
+// 	.then(editHistory => {
+// 		if(editHistory == null){
+// 			res.render('HistoryTaking/master/add_HistoryTaking', {
+// 				newHistory: newHistory,
+// 				editHistory: editHistory,
+// 				patient: req.session.patient,
+// 				showMenu: true
+// 			});
+// 		}
+// 		else
+// 		{
+// 			console.log("History is not empty: "+editHistory);
+// 			res.render('HistoryTaking/master/add_HistoryTaking', {
+// 				newHistory: newHistory,
+// 				editHistory: editHistory,
+// 				patient: req.session.patient,
+// 				showMenu: true
+// 			});
+// 		}
+		
+// 	 	})
+		
+// 	})
+	
+// })
 //Add HistoryTaking
 router.post('/add-history', ensureAuthenticated, ensureAuthorised, (req, res) => {
 	historyId = (new standardID('AAA0000')).generate();
@@ -942,23 +983,30 @@ router.post('/add-history', ensureAuthenticated, ensureAuthorised, (req, res) =>
 
 	
 //One HistoryTaking by ID
-router.get('/HistoryTaking/:historyId', ensureAuthenticated, ensureAuthorised, (req,res) => {
-	MasterHistory.find({ patientID: req.session.patient.patientID}).then(newHistory => {
-		MasterHistory.findOne({ historyId: req.params.historyId }).then(editHistory =>{
+router.get('/HistoryTaking/:historyId/:name', ensureAuthenticated, ensureAuthorised, (req,res) => {
+	MasterHistory.find({ masterpatientID: req.session.patient.patientID}).then(newHistory => {
+		MasterHistory.findOne({ patientID: req.session.patient.patientID})
+	.then(newOtherHistory =>{//(your own record) you need this (if you only put in the /HistoryTaking, this route do not know the newOtherHistory)
+		MasterHistory.findOne({ historyId: req.params.historyId }).then(editHistory =>{		
+			var name = req.params.name;
 			res.render('HistoryTaking/master/add_HistoryTaking',{
 				newHistory:newHistory,
 				editHistory: editHistory,
 				patient: req.session.patient,
+				checkifEmpty: false,
+				currentName: req.user.firstName,
+				newOtherHistory: newOtherHistory,	
+				by: name,
 				showMenu: true
 			})
-		
+		});
 		});
 	})
 })
 
 //Edit the HistoryTaking
-router.put('/edit-history/:historyId', ensureAuthenticated, ensureAuthorised, (req,res) => {
-	MasterHistory.findOne({ historyId: req.params.historyId}).then(editHistory => {
+router.put('/edit-history/:historyId/:name', ensureAuthenticated, ensureAuthorised, (req,res) => {
+	MasterHistory.findOne({ patientID:  req.session.patient.patientID,historyId: req.params.historyId}).then(editHistory => {
 		editHistory.chiefComp = req.body.chiefComp,
 		editHistory.historyPresent = req.body.historyPresent,
 		editHistory.allergy = req.body.allergy,
