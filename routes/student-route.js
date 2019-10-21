@@ -3078,7 +3078,6 @@ router.post('/add-neuro/:recordID', ensureAuthenticated, (req, res) => {
 			// patientID: req.session.patient.patientID,
 			patientID: req.params.recordID,
 			neuroID: neuroID,
-			// userType: ,
 			datetime: datetime,
 			date: moment(req.body.dateNeuro, 'DD/MM/YYYY').format('YYYY-MM-DD'),
 			time: req.body.timeNeuro,
@@ -3103,31 +3102,6 @@ router.post('/add-neuro/:recordID', ensureAuthenticated, (req, res) => {
 			numericalRatingScaleRight: req.body.numericalRatingScaleRight,
 			characteristicLeft: req.body.leftCharacteristic,
 			characteristicRight: req.body.rightCharacteristic
-			/*
-			siteOfInjury:	{type: String, default: ''},
-			colourLeft: {type: String, default: ''},
-			colourRight:	{type: String, default: ''},
-			temperatureLeft:	{type: String, default: ''},
-			temperatureRight:	{type: String, default: ''},
-			capillaryRefillLeft:	{type: String, default: ''},
-			capillaryRefillRight:	{type: String, default: ''},	
-			peripheralPulseLeft: {type: String, default: ''},
-			peripheralPulseRight:	{type: String, default: ''},
-			edemaLeft:	{type: String, default: ''},
-			edemaRight:	{type: String, default: ''},
-			movementLeft:	{type: String, default: ''},
-			movementRight: {type: String, default: ''},
-			sensationLeft:	{type: String, default: ''},
-			sensationRight: {type: String, default: ''},
-			painLeft:	{type: String, default: ''},
-			painRight:	{type: String, default: ''},
-			numericalRatingScaleLeft:	{type: String, default: ''},
-			numericalRatingScaleRight:	{type: String, default: ''},
-			verbalDescriptiveScaleLeft:		{type: String, default: ''},
-			verbalDescriptiveScaleRight:	{type: String, default: ''},
-			characteristicLeft: 	{type: String, default: ''},
-			characteristicRight:	{type: String, default: ''}	
-			*/
 
 	}).save();
 
@@ -3176,57 +3150,57 @@ router.get('/neuro/:recordID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
 	MasterNeuro.find({ patientID: req.params.recordID}).sort({'datetime':1}).then(newNeuro => {
 
-					neurosample = [];
-					neurosampleDate = [];
-					let neuroFlow = Object.assign([], newNeuro);
-					
-					neuroCount = -1;
-					
-					neuronoRecord = 'No existing record';
+		neurosample = [];
+		neurosampleDate = [];
+		let neuroFlow = Object.assign([], newNeuro);
+		
+		neuroCount = -1;
+		
+		neuronoRecord = 'No existing record';
 
-					newNeuro.forEach(neuro => {
-						if (!(neurosample.includes(neuro.datetime))) {
-							neurosample.push(neuro.datetime);
-							neurosampleDate.push(neuro.date);
-						}
-					});
-					neurosample.sort();
-					neurosampleDate.sort();
+		newNeuro.forEach(neuro => {
+			if (!(neurosample.includes(neuro.datetime))) {
+				neurosample.push(neuro.datetime);
+				neurosampleDate.push(neuro.date);
+			}
+		});
+		neurosample.sort();
+		neurosampleDate.sort();
 
-					for (i = 0; i < neurosample.length; i++) {
-						
+		for (i = 0; i < neurosample.length; i++) {
+			
 
-						//Counter for empty data
-						//.length here refers to last index of the array
-						if (neuroCount !== (neuroFlow.length - 1)) {
-							neuroCount++;
-						}
-						//Insert empty data when value doesnt match
-						//Count here does the index count of flow array
-						if(neuroFlow !='') 
-						{
-							if (neurosample[i] < neuroFlow[neuroCount].datetime) {
-								neuroFlow.splice(neuroCount, 0, {datetime: ''});
-							} else if (neurosample[i] > neuroFlow[neuroCount].datetime) {
-								neuroFlow.splice(neuroCount + 1, 0, {datetime: ''});
-							}
-						} 
-						else
-						{
-							neuroFlow.push({datetime: '', poc: diabeticnoRecord});
-						}
+			//Counter for empty data
+			//.length here refers to last index of the array
+			if (neuroCount !== (neuroFlow.length - 1)) {
+				neuroCount++;
+			}
+			//Insert empty data when value doesnt match
+			//Count here does the index count of flow array
+			if(neuroFlow !='') 
+			{
+				if (neurosample[i] < neuroFlow[neuroCount].datetime) {
+					neuroFlow.splice(neuroCount, 0, {datetime: ''});
+				} else if (neurosample[i] > neuroFlow[neuroCount].datetime) {
+					neuroFlow.splice(neuroCount + 1, 0, {datetime: ''});
+				}
+			} 
+			else
+			{
+				neuroFlow.push({datetime: '', poc: diabeticnoRecord});
+			}
 
-						
-					};
-					res.render('charts/master/charts-neuro', {
-						recordID: req.params.recordID,
-						userType: userType,
-						neurodateVal: neurosample,
-						neuroFlow: neuroFlow,
-						newNeuro: newNeuro,
-						patient: req.session.patient,
-						showMenu: true
-        			})
+			
+		};
+		res.render('charts/master/charts-neuro', {
+			recordID: req.params.recordID,
+			userType: userType,
+			neurodateVal: neurosample,
+			neuroFlow: neuroFlow,
+			newNeuro: newNeuro,
+			patient: req.session.patient,
+			showMenu: true
+		})
 	})
 })
 
