@@ -2055,21 +2055,16 @@ router.delete('/doctor/orders/del-order/:orderID', ensureAuthenticated, ensureAu
 router.get('/mdp', ensureAuthenticated, ensureAuthorised, (req, res) => {
 	MasterMDP.find({user: req.user.id, patientID: req.session.patient.patientID}).sort({'datetime':1})
 	.then(newMDP => { // mdp that they have created
+
 		MasterMDP.find({user:{'$ne':req.user.id} , patientID: req.session.patient.patientID}).sort({'datetime':1})
-		.then(newOtherMasterMDP => { 
-		/*MasterMDP.aggregate(
+		.then(newOtherMasterMDP => {  // mdp that is created by other users
+
+			StudentMDP.aggregate( // show the latest record created by each student
 			[
 				{"$sort": {
 					'datetime': -1
 				}},
-				{ "$match" : 
-					{ 'patientID' : req.session.patient.patientID,
-						'createdBy':
-						{ 
-							$ne: req.user.firstName // user did not work, use firstName-
-						} 
-					} 
-				},
+				{ "$match" : { 'patientID' : req.session.patient.patientID } },
 				{ "$group": { '_id' : "$createdBy",  "doc": {"$first":"$$ROOT"}}},
 				{"$replaceRoot": {"newRoot": "$doc"}},
 				{"$sort": {
@@ -2077,22 +2072,8 @@ router.get('/mdp', ensureAuthenticated, ensureAuthorised, (req, res) => {
 					'createdBy': 1
 				}}
 			])
-			.then(newOtherMasterMDP => {*/
+			.then(newOtherStudentMDP => {
 
-				StudentMDP.aggregate(
-				[
-					{"$sort": {
-						'datetime': -1
-					}},
-					{ "$match" : { 'patientID' : req.session.patient.patientID } },
-					{ "$group": { '_id' : "$createdBy",  "doc": {"$first":"$$ROOT"}}},
-					{"$replaceRoot": {"newRoot": "$doc"}},
-					{"$sort": {
-						'datetime': -1,
-						'createdBy': 1
-					}}
-				])
-				.then(newOtherStudentMDP => {
 				res.render('mdp-notes/master/mdp', {
 					newMDP: newMDP,
 					newOtherMasterMDP: newOtherMasterMDP,
@@ -2101,7 +2082,6 @@ router.get('/mdp', ensureAuthenticated, ensureAuthorised, (req, res) => {
 					showMenu: true,
 				});
 			})
-		//})
 		})
 	})
 })
@@ -2138,10 +2118,13 @@ router.delete('/del-mdp/:mdpID', ensureAuthenticated, ensureAuthorised, (req, re
 router.get('/mdp/:mdpID', ensureAuthenticated, ensureAuthorised, (req, res) => {
 	MasterMDP.find({ patientID: req.session.patient.patientID, user: req.user.id}).sort({'datetime':1})
 	.then(newMDP => {
+
 		MasterMDP.find({user:{'$ne':req.user.id} , patientID: req.session.patient.patientID}).sort({'datetime':1})
 		.then(newOtherMasterMDP => { 
+
 			MasterMDP.findOne({ mdpID: req.params.mdpID})
 			.then(editMDP => {
+				
 				editMDP.date = moment(editMDP.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
 
 				StudentMDP.aggregate(

@@ -2330,22 +2330,10 @@ router.get('/mdp/:recordID', ensureAuthenticated, (req, res) => {
 		userType = 'student';
 		PatientStudentModel.findOne({recordID: req.params.recordID})
 		.then(patientStudent => {
+
 			StudentMDP.find({user: patientStudent.user, patientID: req.session.patient.patientID}).sort({'datetime':1})
 			.then(newMDP => { // mdp that they have created
 
-				/*MasterMDP.aggregate([
-					{"$sort": {
-						'datetime': -1
-					}},
-					{ "$match" : { 'patientID' : req.session.patient.patientID } },
-					{ "$group": { '_id' : "$createdBy",  "doc": {"$first":"$$ROOT"} }},
-					{ "$replaceRoot": {"newRoot": "$doc" }},
-					{"$sort": {
-						'datetime': -1,
-						'createdBy': 1
-					}}
-				])
-				.then(newMasterMDP => {*/
 				MasterMDP.find({patientID: req.session.patient.patientID})
 				.then(newMasterMDP=> {
 					console.log("************ newMasterMDP: "+ JSON.stringify(newMasterMDP));
@@ -2359,8 +2347,6 @@ router.get('/mdp/:recordID', ensureAuthenticated, (req, res) => {
 						showMenu: true
 					});
 				})	
-				//});
-				//});
 			})
 		})
 		
@@ -2369,19 +2355,7 @@ router.get('/mdp/:recordID', ensureAuthenticated, (req, res) => {
 	{
 		StudentMDP.find({user: req.user.id, patientID: req.session.patient.patientID}).sort({'datetime':1})
 		.then(newMDP => { // mdp that they have created
-			/*MasterMDP.aggregate([
-				{"$sort": {
-					'datetime': -1
-				}},
-				{ "$match" : { 'patientID' : req.session.patient.patientID } },
-				{ "$group": { '_id' : "$createdBy",  "doc": {"$first":"$$ROOT"} }},
-				{ "$replaceRoot": {"newRoot": "$doc" }},
-				{"$sort": {
-					'datetime': -1,
-					'createdBy': 1
-				}}
-			])
-				.then(newMasterMDP => {*/
+
 			MasterMDP.find({patientID: req.session.patient.patientID})
 			.then(newMasterMDP=> { 
 				//console.log("************ newMasterMDP: "+ JSON.stringify(newMasterMDP));
@@ -2395,8 +2369,6 @@ router.get('/mdp/:recordID', ensureAuthenticated, (req, res) => {
 					showMenu: true
 				});
 			})
-			//});
-			//});
 		})
 	}
 })
@@ -2438,19 +2410,7 @@ router.get('/mdp/:recordID/:mdpID', ensureAuthenticated, (req, res) => {
 	}
 	StudentMDP.find({ patientID: req.session.patient.patientID, user: req.user.id}).sort({'datetime':1}).then(newMDP => {
 		StudentMDP.findOne({ mdpID: req.params.mdpID}).then(editMDP => {
-			/*MasterMDP.aggregate([
-				{"$sort": {
-					'datetime': -1
-				}},
-				{ "$match" : { 'patientID' : req.session.patient.patientID } },
-				{ "$group": { '_id' : "$createdBy",  "doc": {"$first":"$$ROOT"}}},
-				{"$replaceRoot": {"newRoot": "$doc"}},
-				{"$sort": {
-					'datetime': -1,
-					'createdBy': 1
-				}}
-			])
-			.then(newMasterMDP => {*/
+
 			MasterMDP.find({patientID: req.session.patient.patientID})
 			.then(newMasterMDP=> { 
 				console.log("editMDP: "+ editMDP);
@@ -2466,7 +2426,6 @@ router.get('/mdp/:recordID/:mdpID', ensureAuthenticated, (req, res) => {
 					showMenu: true
 				});
 			})
-			//});
 		})
 	})
 })
@@ -2493,21 +2452,7 @@ router.put('/edit-mdp/:recordID/:mdpID', ensureAuthenticated, (req,res) => {
 // Care Plan
 router.get('/CarePlan/:recordID', ensureAuthenticated, (req, res) => {
 	userType = req.user.userType == 'student';
-	// StudentMDP.find({user: req.user.id, patientID: req.session.patient.patientID}).sort({'datetime':1})
-	// .then(newMDP => { // mdp that they have created
-		// MasterMDP.aggregate([
-		// 	{"$sort": {
-		// 		'datetime': -1
-		// 	}},
-		// 	{ "$match" : { 'patientID' : req.session.patient.patientID } },
-		// 	{ "$group": { '_id' : "$createdBy",  "doc": {"$first":"$$ROOT"} }},
-		// 	{ "$replaceRoot": {"newRoot": "$doc" }},
-		// 	{"$sort": {
-		// 		'datetime': -1
-		// 	}}
-		// ])
-		// 	.then(newMasterMDP => {
-			// console.log("************ newMasterMDP: "+ JSON.stringify(newMasterMDP));
+
 		console.log("patientID: req.session.patient.patientID: "+ req.params.recordID);
 		if (req.user.userType == 'staff')
 		{
@@ -2547,9 +2492,6 @@ router.get('/CarePlan/:recordID', ensureAuthenticated, (req, res) => {
 				});
 			})
 		}
-		// });
-		//});
-	// })
 })
 
 // add Care Plan
@@ -3099,11 +3041,6 @@ router.get('/neuro/:recordID/:neuroID', ensureAuthenticated, (req, res) => {
 								leftLegNeuroFlowLength = newNeuroLeftLeg.length
 							}
 							leftLegNeuroFlowLength = leftLegNeuroFlowLength * 2; // rowspan to merge same site of injury on left arm
-							
-							/*console.log("rightArmNeuroFlowLength: "+ rightArmNeuroFlowLength);
-							console.log("leftArmNeuroFlowLength: " + leftArmNeuroFlowLength);
-							console.log("rightLegNeuroFlowLength: " +rightLegNeuroFlowLength);
-							console.log("leftLegNeuroFlowLength: "+leftLegNeuroFlowLength)*/
 
 							editNeuro.date = moment(editNeuro.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
 							res.render('charts/master/charts-neuro', {
