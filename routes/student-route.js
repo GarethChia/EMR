@@ -2166,7 +2166,7 @@ router.post('/add-fall/:recordID', ensureAuthenticated, (req, res) => {
 //HISTORY TAKING
 // Open HistoryTakng page
 router.get('/HistoryTaking/:recordID', ensureAuthenticated,  (req, res) => {
-	MasterHistory.find({user:{'$ne':req.user.id}})
+	MasterHistory.find({patientID: req.session.patient.patientID, user:{'$ne':req.user.id} })
 	.then(newHistory => {//(other record)
 		MasterHistory.findOne({ patientID: req.params.recordID, user: req.user._id})
 	.then(newOtherHistory =>{ //(your own record)
@@ -2243,7 +2243,7 @@ router.post('/add-history/:recordID', ensureAuthenticated, (req, res) => {
 //One HistoryTaking by ID
 router.get('/HistoryTaking/:recordID/:historyId/:name', ensureAuthenticated, (req,res) => {
 	
-	MasterHistory.find({user:{'$ne': req.user._id}, masterpatientID: req.session.patient.patientID})
+	MasterHistory.find({patientID: req.session.patient.patientID, user:{'$ne': req.user._id}})
 	.then(newHistory => {
 		//console.log("Hi Siti: "+newHistory);
 		if (req.user.userType == 'staff')
