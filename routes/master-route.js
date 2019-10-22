@@ -930,36 +930,7 @@ router.get('/HistoryTaking', ensureAuthenticated, ensureAuthorised, (req, res) =
 	})
 	
 })
-//show only other students not lecturer
-// router.get('/HistoryTaking', ensureAuthenticated, ensureAuthorised, (req, res) => {
-// 	MasterHistory.find({masterpatientID: req.session.patient.patientID})
-// 	.then(newHistory => {
-// 		MasterHistory.findOne({ user: req.user.id, patientID: req.session.patient.patientID})
-// 	.then(editHistory => {
-// 		if(editHistory == null){
-// 			res.render('HistoryTaking/master/add_HistoryTaking', {
-// 				newHistory: newHistory,
-// 				editHistory: editHistory,
-// 				patient: req.session.patient,
-// 				showMenu: true
-// 			});
-// 		}
-// 		else
-// 		{
-// 			console.log("History is not empty: "+editHistory);
-// 			res.render('HistoryTaking/master/add_HistoryTaking', {
-// 				newHistory: newHistory,
-// 				editHistory: editHistory,
-// 				patient: req.session.patient,
-// 				showMenu: true
-// 			});
-// 		}
-		
-// 	 	})
-		
-// 	})
-	
-// })
+
 //Add HistoryTaking
 router.post('/add-history', ensureAuthenticated, ensureAuthorised, (req, res) => {
 	historyId = (new standardID('AAA0000')).generate();
