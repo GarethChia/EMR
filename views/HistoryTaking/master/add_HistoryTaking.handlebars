@@ -140,7 +140,7 @@
     {{#unless userType}}
     <form action="/master/edit-history/{{editHistory.historyId}}/{{by}}?_method=PUT" method="POST" id="editHistory">
     {{else}}    
-    <form action="/student/edit-history/{{recordID}}/{{editHistory.historyId}}?_method=PUT" method="POST" id="editHistory">
+    <form action="/student/edit-history/{{recordID}}/{{editHistory.historyId}}/{{by}}?_method=PUT" method="POST" id="editHistory">
     {{/unless}}
     <input type="hidden" name="_method" value="PUT">
     {{else}}
@@ -333,7 +333,7 @@
             }
 
         }
-        console.log("wth: "+{{checkifEmpty}} );
+       
     })
     
     //document.getElementById("currentName").addEventListener("click", checkifUser);

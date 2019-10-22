@@ -2163,6 +2163,62 @@ router.post('/add-fall/:recordID', ensureAuthenticated, (req, res) => {
 	res.redirect('/student/fall/'+ req.params.recordID);
 })
 
+//HISTORY TAKING
+// Open HistoryTakng page
+router.get('/HistoryTaking/:recordID', ensureAuthenticated,  (req, res) => {
+	MasterHistory.find({user:{'$ne':req.user.id}})
+	.then(newHistory => {//(other record)
+		MasterHistory.findOne({ patientID: req.params.recordID, user: req.user._id})
+	.then(newOtherHistory =>{ //(your own record)
+		PatientStudentModel.find({patientID: req.session.patient.patientID})
+			.then(patientStudent => {
+		EMR_User.findById(patientStudent.user)	// findById is Mongoose utility method
+		.then(user => {  
+			MasterHistory.findOne({ masterpatientID: req.session.patient.patientID, by: req.user.firstName })
+			.then(editHistory =>{
+			console.log("hi: "+ newHistory);
+
+		
+		// console.log("Yikes: " + newOtherHistory.length);
+		// console.log("Yikes: " + req.user);
+		/*MasterHistory.findOne({patientID: req.session.patient.patientID})
+	
+	.then(editHistory => {
+		if(editHistory == null){
+			res.render('HistoryTaking/master/add_HistoryTaking', {
+				newHistory: newHistory,
+				editHistory: editHistory,
+				patient: req.session.patient,
+				currentName: req.user.firstName,
+				//newOtherHistory:newOtherHistory,
+				showMenu: true
+			});
+		}
+		else
+		{*/
+			//console.log("History is not empty: "+editHistory);
+			res.render('HistoryTaking/student/add_HistoryTaking', {
+				newHistory: newHistory,
+				//editHistory: editHistory,
+				checkifEmpty: true,
+				patient: req.session.patient,
+				currentName: req.user.firstName,
+				newOtherHistory:newOtherHistory,
+				editHistory: editHistory,
+				//by: name,
+				recordID: req.params.recordID,
+				showMenu: true
+			});
+			});
+		});
+	});
+		//}
+		
+	 	//})
+	})
+	})
+	
+})
 //Add HistoryTaking
 router.post('/add-history/:recordID', ensureAuthenticated, (req, res) => {
 	historyId = (new standardID('AAA0000')).generate();
@@ -2183,10 +2239,13 @@ router.post('/add-history/:recordID', ensureAuthenticated, (req, res) => {
 	}).save();
 		res.redirect('/student/HistoryTaking/' + req.params.recordID );
 })
+
 //One HistoryTaking by ID
-router.get('/HistoryTaking/:recordID', ensureAuthenticated, (req,res) => {
+router.get('/HistoryTaking/:recordID/:historyId/:name', ensureAuthenticated, (req,res) => {
 	
-	MasterHistory.find({ patientID: req.params.recordID, patientID:req.session.patient.patientID,}).then(newHistory => {
+	MasterHistory.find({user:{'$ne': req.user._id}, masterpatientID: req.session.patient.patientID})
+	.then(newHistory => {
+		//console.log("Hi Siti: "+newHistory);
 		if (req.user.userType == 'staff')
 		{ 
 			userType = 'student';
@@ -2195,56 +2254,139 @@ router.get('/HistoryTaking/:recordID', ensureAuthenticated, (req,res) => {
 				
 				EMR_User.findById(patientStudent.user)	// findById is Mongoose utility method
 				.then(user => { 
-
-					MasterHistory.findOne({ masterpatientID: req.session.patient.patientID, by: user.firstName }).then(editHistory =>{
-					
-						if (req.user.userType == 'staff')
-						{
-							userType = 'student';
-						}
-						res.render('HistoryTaking/student/add_HistoryTaking',{
-							newHistory:newHistory,
-							editHistory: editHistory,
-							patient: req.session.patient,
-							userType: userType,
-							recordID: req.params.recordID,
-							currentUserType: req.user.userType,
-							showMenu: true
-						})
-					
+					MasterHistory.findOne({ patientID: req.params.recordID, user: req.user._id})
+					.then(newOtherHistory =>{
+						MasterHistory.findOne({ historyId: req.params.historyId  })
+						.then(editHistory =>{
+							console.log("BEECH: "+ editHistory);
+							if (req.user.userType == 'staff')
+							{
+								userType = 'student';
+							}
+							var name = req.params.name;
+							res.render('HistoryTaking/student/add_HistoryTaking',{
+								newHistory:newHistory,
+								editHistory: editHistory,
+								patient: req.session.patient,
+								userType: userType,
+								recordID: req.params.recordID,
+								newOtherHistory: newOtherHistory,
+								currentName: req.user.firstName,
+								by: name,
+								checkifEmpty: false,
+								currentUserType: req.user.userType,
+								showMenu: true
+							})
+						
+						});
 					});
-				});
-				
+				})
 			})
 		}
 		else
 		{
+			//console.log("Hi Siti2: "+newHistory);
 			userType = req.user.userType == 'student';
 
-			MasterHistory.findOne({ masterpatientID: req.session.patient.patientID, by: req.user.firstName }).then(editHistory =>{
-
-				if (req.user.userType == 'staff')
-				{
-					userType = 'student';
-				}
-				res.render('HistoryTaking/student/add_HistoryTaking',{
-					newHistory:newHistory,
-					editHistory: editHistory,
-					patient: req.session.patient,
-					userType: userType,
-					recordID: req.params.recordID,
-					currentUserType: req.user.userType,
-					showMenu: true
-				})
-			
+			PatientStudentModel.findOne({recordID: req.params.recordID})
+			.then(patientStudent => {
+				
+				EMR_User.findById(patientStudent.user)	// findById is Mongoose utility method
+				.then(user => {
+					MasterHistory.findOne({ historyId: req.params.historyId })
+					.then(editHistory =>{
+						console.log("BOOOOO: "+ editHistory);
+						MasterHistory.findOne({ masterpatientID: req.session.patient.patientID, by: user.firstName})
+						.then(newOtherHistory =>{
+							if (req.user.userType == 'staff')
+							{
+								userType = 'student';
+							}
+							var name = req.params.name;
+							res.render('HistoryTaking/student/add_HistoryTaking',{
+								newHistory: newHistory,
+								editHistory: editHistory,
+								patient: req.session.patient,
+								userType: userType,
+								currentName: req.user.firstName,
+								newOtherHistory: newOtherHistory,
+								recordID: req.params.recordID,
+								by: name,
+								checkifEmpty: false,
+								currentUserType: req.user.userType,
+								showMenu: true
+							})
+						})
+					});
+				});
 			});
 		}
 	})
 })
 
+// router.get('/HistoryTaking/:recordID/:historyId', ensureAuthenticated, (req,res) => {
+	
+// 	MasterHistory.find({ masterpatientID: req.session.patient.patientID, patientID:req.session.patient.patientID}).then(newHistory => {
+// 		if (req.user.userType == 'staff')
+// 		{ 
+// 			userType = 'student';
+// 			PatientStudentModel.findOne({recordID: req.params.recordID})
+// 			.then(patientStudent => {
+				
+// 				EMR_User.findById(patientStudent.user)	// findById is Mongoose utility method
+// 				.then(user => { 
+// 					MasterHistory.find({ patientID: req.session.patient.patientID}).then(newOtherHistory =>{
+// 						MasterHistory.findOne({ masterpatientID: req.session.patient.patientID, by: user.firstName }).then(editHistory =>{
+						
+// 							if (req.user.userType == 'staff')
+// 							{
+// 								userType = 'student';
+// 							}
+
+// 							res.render('HistoryTaking/student/add_HistoryTaking',{
+// 								newHistory:newHistory,
+// 								editHistory: editHistory,
+// 								patient: req.session.patient,
+// 								userType: userType,
+// 								recordID: req.params.recordID,
+// 								newOtherHistory: newOtherHistory,
+// 								currentUserType: req.user.userType,
+// 								showMenu: true
+// 							})
+						
+// 						});
+// 					});
+// 				})
+// 			})
+// 		}
+// 		else
+// 		{
+// 			userType = req.user.userType == 'student';
+
+// 			MasterHistory.findOne({ masterpatientID: req.session.patient.patientID, by: req.user.firstName }).then(editHistory =>{
+
+// 				if (req.user.userType == 'staff')
+// 				{
+// 					userType = 'student';
+// 				}
+// 				res.render('HistoryTaking/student/add_HistoryTaking',{
+// 					newHistory:newHistory,
+// 					editHistory: editHistory,
+// 					patient: req.session.patient,
+// 					userType: userType,
+// 					recordID: req.params.recordID,
+// 					currentUserType: req.user.userType,
+// 					showMenu: true
+// 				})
+			
+// 			});
+// 		}
+// 	})
+// })
+
 //Edit the HistoryTaking
-router.put('/edit-history/:recordID', ensureAuthenticated, (req,res) => {
-	MasterHistory.findOne({ patientID: req.params.recordID}).then(editHistory => {
+router.put('/edit-history/:recordID/:historyId/:name', ensureAuthenticated, (req,res) => {
+	MasterHistory.findOne({masterpatientID: req.session.patient.patientID, historyId: req.params.historyId}).then(editHistory => {
 		
 		editHistory.chiefComp = req.body.chiefComp,
 		editHistory.historyPresent = req.body.historyPresent,

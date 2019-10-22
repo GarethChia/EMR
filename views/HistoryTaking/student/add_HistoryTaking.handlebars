@@ -29,63 +29,41 @@
 </style>
 <br/>
 <div id="io">
-    <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">History Taking</div>
+    <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">My History Taking</div>
     <div style="overflow-x:auto; max-height: 16em;">
         <table id="ioRecords" class="hover order-column">
             <thead>
                 <tr>
                     <th>Created By</th>
-                    <th>Chief Complains</th>
-                    <th>History of Present Illness</th>
-                    <th>Allergy Status</th>
-                    <th>Medical History</th>
-                    <th>Surgical History</th>
-                    <th>Family History</th>
-                    <th>Social History</th>
-                    <th>Travel History</th>
-                  {{!-- {{#unless userType}}
-                    <th>Delete</th>
-                    {{/unless}}  --}}
+
                 </tr>
             </thead>
             <tbody>
-                {{#if newHistory}}
+                {{#if newOtherHistory}} {{!--own record--}}
+                    <tr style="height: 60px;">
+                        <td><a href="/student/HistoryTaking/{{recordID}}/{{newOtherHistory.historyId}}/{{newOtherHistory.by}}">{{newOtherHistory.by}}</a></td>
+                    </tr>               
+                {{else}}
+                <p id="noRecord">Lecturers have not created any History Taking yet</p>
+                {{/if}}
+            </tbody>
+        </table>
+    </div>
+    <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">Other History Taking</div>
+    <div style="overflow-x:auto; max-height: 16em;">
+        <table id="ioRecords" class="hover order-column">
+            <thead>
+                <tr>
+                    <th>Created By</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                
+                {{#if newHistory}} {{!--others--}}
                     {{#each newHistory}}
                     <tr style="height: 60px;">
-                        <td>{{by}}</td>
-                        <td class="textTable">{{chiefComp}}</td>
-                        <td class="textTable">{{historyPresent}}</td>
-                        <td class="textTable">{{allergy}}</td>
-                        <td class="textTable">{{medicalH}}</td>
-                        <td class="textTable">{{surgicalH}}</td>
-                        <td class="textTable">{{familyH}}</td>
-                        <td class="textTable">{{socialH}}</td>
-                        <td class="textTable">{{travelH}}</td>
-                    {{!-- <tr style="height: 60px">
-                        {{#unless ../userType}}
-                        <td><a href="/student/HistoryTaking/{{recordID}}/{{historyId}}">{{historyId}}</a></td>
-                        {{else}}
-                        <td><a href="/master/HistoryTaking/{{../recordID}}/{{historyId}}">{{historyId}}</a></td>
-                        {{/unless}}
-                       <td>{{chiefComp}}</td>
-                        <td>{{historyPresent}}</td>
-                        <td>{{allergy}}</td>
-                        <td>{{medicalH}}</td>
-                        <td>{{surgicalH}}</td>
-                        <td>{{familyH}}</td>
-                        <td>{{socialH}}</td>
-                        <td>{{travelH}}</td>
-                        {{#unless ../userType}}
-                        <td style="width: 65px"> <!-- the tr we're trying to get -->
-                            <form action="/student/del-io/{{historyId}}?_method=DELETE" method="post" id="delete-form">
-                                <input type="hidden" name="_method" value="DELETE">
-                            <button type="submit" class="btn red darken-3">
-                                 <i class="material-icons">delete
-                            </button>
-                            </form>
-                        </td>
-                        {{/unless}}
-                    </tr>--}}
+                        <td><a href="/student/HistoryTaking/{{../recordID}}/{{historyId}}/{{by}}">{{by}}</a></td>
                     </tr>
                     {{/each}} 
                 {{else}}
@@ -102,7 +80,7 @@
 
     {{#if editHistory}}
     {{!-- {{#unless userType}} --}}
-    <form action="/student/edit-history/{{editHistory.patientID}}?_method=PUT" method="POST" id="editHistory">
+    <form action="/student/edit-history/{{recordID}}/{{editHistory.historyId}}/{{editHistory.by}}?_method=PUT" method="POST" id="editHistory">
     {{!-- {{else}}     --}}
     {{!-- <form action="/master/edit-history/{{recordID}}/{{editHistory.historyId}}?_method=PUT" method="POST" id="editHistory"> --}}
     {{!-- {{/unless}} --}}
@@ -124,7 +102,7 @@
                             </td>
                             <td>
                                 <div class=>
-                                    <textarea id="chiefComp" name="chiefComp" class="materialize-textarea" value="" required>{{editHistory.chiefComp}}</textarea>
+                                    <textarea id="chiefComp" name="chiefComp" class="materialize-textarea" value="" required>{{ editHistory.chiefComp }}</textarea>
                                     <label for="chiefComp">The primary symptom that a patient states as the reason for seeking medical care</label>
                                 </div>
                             </td>
@@ -281,6 +259,19 @@
 
     $(document).ready(() => {
         $('.tabs').tabs();
+        console.log("{{by}}");
+        console.log("{{currentName}}");
+        if("{{by}}" == "{{currentName}}"){
+           if({{checkifEmpty}} == true)
+               $(".saveButton").show();
+        }
+        else {
+            if({{checkifEmpty}} == false){
+                console.log("hi");
+                $(".saveButton").hide();
+            }
+
+        }
     })
     
   

@@ -893,31 +893,30 @@ router.put('/edit-braden/:bradenID', ensureAuthenticated, ensureAuthorised, (req
 
 // Open HistoryTakng page
 router.get('/HistoryTaking', ensureAuthenticated, ensureAuthorised, (req, res) => {
-	MasterHistory.find({masterpatientID: req.session.patient.patientID})
+	MasterHistory.find({user:{'$ne':req.user.id}, masterpatientID: req.session.patient.patientID})
 	.then(newHistory => {//(other record)
 		MasterHistory.findOne({ patientID: req.session.patient.patientID})
 	.then(newOtherHistory =>{ //(your own record)
 		// console.log("Yikes: " + newOtherHistory.length);
 		// console.log("Yikes: " + req.user);
-		/*MasterHistory.findOne({patientID: req.session.patient.patientID})
-	
-	.then(editHistory => {
-		if(editHistory == null){
-			res.render('HistoryTaking/master/add_HistoryTaking', {
-				newHistory: newHistory,
-				editHistory: editHistory,
-				patient: req.session.patient,
-				currentName: req.user.firstName,
-				//newOtherHistory:newOtherHistory,
-				showMenu: true
-			});
-		}
-		else
-		{*/
+		MasterHistory.findOne({patientID: req.session.patient.patientID})
+		.then(editHistory => {
+		// if(editHistory == null){
+		// 	res.render('HistoryTaking/master/add_HistoryTaking', {
+		// 		newHistory: newHistory,
+		// 		editHistory: editHistory,
+		// 		patient: req.session.patient,
+		// 		currentName: req.user.firstName,
+		// 		//newOtherHistory:newOtherHistory,
+		// 		showMenu: true
+		// 	});
+		//}
+		// else
+		// {
 			//console.log("History is not empty: "+editHistory);
 			res.render('HistoryTaking/master/add_HistoryTaking', {
 				newHistory: newHistory,
-				//editHistory: editHistory,
+				editHistory: editHistory,
 				checkifEmpty: true,
 				patient: req.session.patient,
 				currentName: req.user.firstName,
@@ -926,7 +925,7 @@ router.get('/HistoryTaking', ensureAuthenticated, ensureAuthorised, (req, res) =
 			});
 		//}
 		
-	 	//})
+	 	})
 	})
 	})
 	
@@ -967,6 +966,7 @@ router.post('/add-history', ensureAuthenticated, ensureAuthorised, (req, res) =>
 	new MasterHistory({
 		user: req.user.id,
 		by: req.user.firstName,
+		masterpatientID: req.session.patient.patientID,
 		patientID: req.session.patient.patientID,
 		chiefComp: req.body.chiefComp,
 		historyPresent: req.body.historyPresent,
@@ -984,7 +984,7 @@ router.post('/add-history', ensureAuthenticated, ensureAuthorised, (req, res) =>
 	
 //One HistoryTaking by ID
 router.get('/HistoryTaking/:historyId/:name', ensureAuthenticated, ensureAuthorised, (req,res) => {
-	MasterHistory.find({ masterpatientID: req.session.patient.patientID}).then(newHistory => {
+	MasterHistory.find({ user:{'$ne':req.user.id}, masterpatientID: req.session.patient.patientID}).then(newHistory => {
 		MasterHistory.findOne({ patientID: req.session.patient.patientID})
 	.then(newOtherHistory =>{//(your own record) you need this (if you only put in the /HistoryTaking, this route do not know the newOtherHistory)
 		MasterHistory.findOne({ historyId: req.params.historyId }).then(editHistory =>{		
@@ -1012,6 +1012,8 @@ router.put('/edit-history/:historyId/:name', ensureAuthenticated, ensureAuthoris
 		editHistory.allergy = req.body.allergy,
 		editHistory.medicalH = req.body.medicalH,
 		editHistory.surgicalH = req.body.surgicalH,
+		editHistory.masterpatientID = req.session.patient.patientID,
+		editHistory.patientID = req.session.patient.patientID,
 		editHistory.familyH = req.body.familyH,
 		editHistory.socialH = req.body.socialH,
 		editHistory.travelH = req.body.travelH
