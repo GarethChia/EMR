@@ -2172,7 +2172,7 @@ router.get('/HistoryTaking/:recordID', ensureAuthenticated,  (req, res) => {
 	{
 		userType = 'student';
 		PatientStudentModel.findOne({recordID: req.params.recordID})
-		.then(patientStudent => {
+		.then(patientStudent => {//finding patientID and not equal to the user that u log in with hehe
 			MasterHistory.find({patientID: req.session.patient.patientID, user:{'$ne': patientStudent.user} })
 			.then(newHistory => {//(other record)
 				MasterHistory.findOne({ masterpatientID: req.session.patient.patientID, user: patientStudent.user})
