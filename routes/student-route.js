@@ -2175,7 +2175,7 @@ router.get('/HistoryTaking/:recordID', ensureAuthenticated,  (req, res) => {
 		.then(patientStudent => {
 			MasterHistory.find({patientID: req.session.patient.patientID, user:{'$ne': patientStudent.user} })
 			.then(newHistory => {//(other record)
-				MasterHistory.findOne({ patientID: req.params.recordID, user: patientStudent.user})
+				MasterHistory.findOne({ masterpatientID: req.session.patient.patientID, user: patientStudent.user})
 				.then(newOtherHistory =>{ //(your own record)
 					MasterHistory.findOne({ masterpatientID: req.session.patient.patientID, user: patientStudent.user })
 					.then(editHistory =>{ //(your own record --> form)
@@ -2199,7 +2199,7 @@ router.get('/HistoryTaking/:recordID', ensureAuthenticated,  (req, res) => {
 	{
 		MasterHistory.find({patientID: req.session.patient.patientID, user:{'$ne':req.user.id} })
 		.then(newHistory => {//(other record)
-			MasterHistory.findOne({ patientID: req.params.recordID, user: req.user._id})
+			MasterHistory.findOne({ masterpatientID: req.session.patient.patientID, user: req.user._id})
 			.then(newOtherHistory =>{ //(your own record)
 				MasterHistory.findOne({ masterpatientID: req.session.patient.patientID, by: req.user.firstName })
 				.then(editHistory =>{ //(your own record --> form)
