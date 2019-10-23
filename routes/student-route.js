@@ -2254,7 +2254,7 @@ router.get('/HistoryTaking/:recordID/:historyId/:name', ensureAuthenticated, (re
 			.then(patientStudent => {
 				MasterHistory.find({patientID: req.session.patient.patientID, user:{'$ne': patientStudent.user}})
 				.then(newHistory => {
-					MasterHistory.findOne({ patientID: req.params.recordID, user: patientStudent.user})
+					MasterHistory.findOne({  masterpatientID: req.session.patient.patientID, user: patientStudent.user})
 					.then(newOtherHistory =>{
 						
 						MasterHistory.findOne({ historyId: req.params.historyId })
