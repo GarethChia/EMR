@@ -47,6 +47,9 @@ require('./models/MasterGCS');
 require('./models/MasterClcVital');
 require('./models/MasterPupils');
 require('./models/MasterMotorStrength');
+//feeding regime & schedule
+require('./models/MasterFeedingRegime');
+require('./models/MasterScheduleFeed');
 
 // load keys
 const key = fs.readFileSync('./server.key');

@@ -29,6 +29,9 @@ const MasterGcs = mongoose.model('masterGcs');
 const MasterClcVital = mongoose.model('masterClcVital');
 const MasterPupils = mongoose.model('masterPupils');
 const MasterMotorStrength = mongoose.model('masterMotorStrength');
+//Feeding Regime & Schedule
+const MasterFeedingRegime = mongoose.model('masterFeedingRegime');
+const MasterScheduleFeed = mongoose.model('masterScheduleFeed');
 
 
 
@@ -2239,7 +2242,6 @@ router.post('/add-diabetic', ensureAuthenticated,ensureAuthorised, (req, res) =>
 			hypoagent: req.body.hypoagent,
 			splitpoc: splitpoc,
 
-
 	}).save();
 
 	res.redirect('/master/diabetic');
@@ -3169,4 +3171,200 @@ router.get('/clc-motorstrength/:motorstrengthID', ensureAuthenticated, ensureAut
 		})
 	})
 })
+//FEEDING REGIME
+// Open Feeding regime page
+router.get('/FeedingRegime', ensureAuthenticated, ensureAuthorised, (req, res) => {
+	MasterFeedingRegime.find({user:{'$ne':req.user.id}, masterpatientID: req.session.patient.patientID})
+	.then(newFeeding => {//(other record)
+		MasterFeedingRegime.findOne({ patientID: req.session.patient.patientID})
+		.then(newOtherFeeding =>{ //(your own record)
+			// console.log("Yikes: " + newOtherHistory.length);
+			// console.log("Yikes: " + req.user);
+			//MasterFeedingRegime.findOne({patientID: req.session.patient.patientID})
+			//.then(editFeeding => {
+				res.render('charts/master/charts-feeding-regime', {
+					newFeeding: newFeeding,
+					//editFeeding: editFeeding,
+					checkifEmpty: true,
+					patient: req.session.patient,
+					currentName: req.user.firstName,
+					newOtherFeeding:newOtherFeeding,
+					showMenu: true
+				});
+			//}
+	 		//})
+		})
+	})
+})
+
+//Add Feeding
+router.post('/add-feeding-regime', ensureAuthenticated, ensureAuthorised, (req, res) => {
+	feedID = (new standardID('AAA0000')).generate();
+	datetime = moment(req.body.dateFeeding, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeFeeding;
+	
+	console.log("Feeding Regime ADD NEW");
+	
+	new MasterFeedingRegime({
+		// user: req.user.id,
+		patientID: req.session.patient.patientID,
+		date:moment(req.body.dateFeeding, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		time: req.body.timeFeeding,
+		datetime: datetime,
+		typeofFormula: req.body.typeofFormula,
+		enteralFeed: req.body.enteralFeed,
+		ordersFeed: req.body.ordersFeed,
+		masterpatientID: req.session.patient.patientID,
+		by: req.user.firstName,
+		feedID: feedID,
+	}).save();
+		res.redirect('/master/FeedingRegime');
+})
+
+	
+//One Feeding Regime by ID
+router.get('/FeedingRegime/:feedID/:name', ensureAuthenticated, ensureAuthorised, (req,res) => {
+	
+	MasterFeedingRegime.find({ user:{'$ne':req.user.id}, masterpatientID: req.session.patient.patientID})
+	.then(newFeeding => {
+		MasterFeedingRegime.findOne({ patientID: req.session.patient.patientID})
+		.then(newOtherFeeding =>{//(your own record) you need this (if you only put in the /HistoryTaking, this route do not know the newOtherHistory)
+			MasterFeedingRegime.findOne({ feedID: req.params.feedID }).then(editFeeding =>{		
+				var name = req.params.name;
+				
+				editFeeding.date = moment(editFeeding.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
+
+				res.render('charts/master/charts-feeding-regime',{
+					newFeeding:newFeeding,
+					editFeeding: editFeeding,
+					newOtherFeeding:newOtherFeeding,
+					patient: req.session.patient,
+					checkifEmpty: false,
+					currentName: req.user.firstName,
+					by: name,
+					showMenu: true
+				})
+			});
+		});
+	})
+})
+
+//Edit the FeedingRegime
+router.put('/edit-feeding-regime/:feedID/:name', ensureAuthenticated, ensureAuthorised, (req,res) => {
+	datetime = moment(req.body.dateFeeding, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeFeeding;
+
+	MasterFeedingRegime.findOne({ patientID:  req.session.patient.patientID,feedID: req.params.feedID})
+	.then(editFeeding => {
+		editFeeding.date = moment(req.body.dateFeeding, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		editFeeding.time = req.body.timeFeeding,
+		editFeeding.datetime = datetime,
+		editFeeding.masterpatientID = req.session.patient.patientID,
+		editFeeding.patientID = req.session.patient.patientID,
+		editFeeding.typeofFormula = req.body.typeofFormula,
+		editFeeding.enteralFeed = req.body.enteralFeed,
+		editFeeding.ordersFeed = req.body.ordersFeed,
+		
+		editFeeding.save();
+	});
+	res.redirect("/master/FeedingRegime");
+})
+
+//Schedule Feed
+// Open Schedule Feed page
+router.get('/ScheduleFeeding', ensureAuthenticated, ensureAuthorised, (req, res) => {
+	MasterScheduleFeed.find({user:{'$ne':req.user.id}, masterpatientID: req.session.patient.patientID})
+	.then(newSchedule => {//(other record)
+		MasterScheduleFeed.findOne({ patientID: req.session.patient.patientID})
+		.then(newOtherScheduleFeed =>{ //(your own record)
+			// console.log("Yikes: " + newOtherHistory.length);
+			// console.log("Yikes: " + req.user);
+			//MasterFeedingRegime.findOne({patientID: req.session.patient.patientID})
+			//.then(editFeeding => {
+				res.render('charts/master/charts-feeding-regime', {
+					newSchedule: newSchedule,
+					//editFeeding: editFeeding,
+					checkifEmpty: true,
+					patient: req.session.patient,
+					currentName: req.user.firstName,
+					newOtherScheduleFeed: newOtherScheduleFeed,
+					showMenu: true
+				});
+			//}
+	 		//})
+		})
+	})
+})
+
+//Add Schedule Feeding
+router.post('/add-schedule', ensureAuthenticated, ensureAuthorised, (req, res) => {
+	scheduleID = (new standardID('AAA0000')).generate();
+	datetime = moment(req.body.dateSchedule, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeSchedule;
+	
+	console.log("Schedule ADD NEW");
+	
+	new MasterScheduleFeed({
+		// user: req.user.id,
+		patientID: req.session.patient.patientID,
+		date:moment(req.body.dateSchedule, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		time: req.body.timeSchedule,
+		datetime: datetime,
+		scheduleFeed: req.body.scheduleFeed,
+		scheduleAmt: req.body.scheduleAmt,
+		scheduleFlush: req.body.scheduleFlush,
+		masterpatientID: req.session.patient.patientID,
+		by: req.user.firstName,
+		scheduleID: scheduleID,
+	}).save();
+		res.redirect('/master/ScheduleFeeding');
+})
+
+	
+//One Schedule Feed by ID
+router.get('/ScheduleFeeding/:scheduleID/:name', ensureAuthenticated, ensureAuthorised, (req,res) => {
+	
+	MasterScheduleFeed.find({ user:{'$ne':req.user.id}, masterpatientID: req.session.patient.patientID})
+	.then(newSchedule => {
+		MasterScheduleFeed.findOne({ patientID: req.session.patient.patientID})
+		.then(newOtherScheduleFeed =>{//(your own record) you need this (if you only put in the /HistoryTaking, this route do not know the newOtherHistory)
+			MasterScheduleFeed.findOne({ scheduleID: req.params.scheduleID })
+			.then(editSchedule =>{		
+				var name = req.params.name;
+				
+				editSchedule.date = moment(editSchedule.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
+
+				res.render('charts/master/charts-feeding-regime',{
+					newSchedule: newSchedule,
+					editSchedule: editSchedule,
+					newOtherScheduleFeed: newOtherScheduleFeed,
+					patient: req.session.patient,
+					checkifEmpty: false,
+					currentName: req.user.firstName,
+					by: name,
+					showMenu: true
+				})
+			});
+		});
+	})
+})
+
+//Edit the Schedule Feed
+router.put('/edit-schedule/:scheduleID/:name', ensureAuthenticated, ensureAuthorised, (req,res) => {
+	datetime = moment(req.body.dateSchedule, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeSchedule;
+
+	MasterScheduleFeed.findOne({ patientID:  req.session.patient.patientID,scheduleID: req.params.scheduleID})
+	.then(editSchedule => {
+		editSchedule.date = moment(req.body.dateSchedule, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		editSchedule.time = req.body.timeSchedule,
+		editSchedule.datetime = datetime,
+		editSchedule.masterpatientID = req.session.patient.patientID,
+		editSchedule.patientID = req.session.patient.patientID,
+		editSchedule.scheduleFeed = req.body.scheduleFeed,
+		editSchedule.scheduleAmt = req.body.scheduleAmt,
+		editSchedule.scheduleFlush = req.body.scheduleFlush,
+		
+		editSchedule.save();
+	});
+	res.redirect("/master/ScheduleFeeding");
+})
+	
+
 module.exports = router;
