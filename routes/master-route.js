@@ -3373,4 +3373,21 @@ router.put('/edit-schedule/:scheduleID/:name', ensureAuthenticated, ensureAuthor
 })
 	
 
+
+// Discharge Planning
+router.get('/DischargePlanning', ensureAuthenticated, ensureAuthorised, (req, res) => {
+	/*MasterMotorStrength.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newmotorstrength => {
+		MasterMotorStrength.findOne({ motorstrengthID: req.params.motorstrengthID }).then(editmotorstrength => {*/
+
+			//editmotorstrength.date = moment(editmotorstrength.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
+			res.render('discharge-planning/master/discharge-planning', {
+				/*newmotorstrength: newmotorstrength,
+				editmotorstrength: editmotorstrength,*/
+				patient: req.session.patient,
+				showMenu: true			
+			})
+		//})
+	//})
+})
+
 module.exports = router;

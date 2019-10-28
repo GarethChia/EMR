@@ -190,8 +190,12 @@
 							<li><a href="/master/CarePlan">Care Plan</a></li>
 							{{else}}
 							<li><a href="/student/CarePlan/{{recordID}}">Care Plan</a></li>
+							{{/unless}}
+							{{#unless userType}}
+							<li><a href="/master/DischargePlanning">Discharge Planning</a></li>
+							{{else}}
+							<li><a href="/student/DischargePlanning/{{recordID}}">Discharge Planning</a></li>
 							{{/unless}} 
-							<li class="lighter-fonts"><a href="#!">Discharge Planning</a></li> 
 							<li class="lighter-fonts"><a class="disabled" href="#!">Education</a></li>
 							<li class="divider"></li>
 							{{!-- start of dropdown for charts --}}
@@ -381,7 +385,11 @@
 	{{else}}
 	<li><a href="/student/CarePlan/{{recordID}}">Care Plan</a></li>
 	{{/unless}}
-	<li class="lighter-fonts"><a href="#!">Discharge Planning</a></li>
+	{{#unless userType}}
+	<li><a href="/master/DischargePlanning">Discharge Planning</a></li>
+	{{else}}
+	<li><a href="/student/DischargePlanning/{{recordID}}">Discharge Planning</a></li>
+	{{/unless}}
 	<li class="lighter-fonts"><a href="#!">Education</a></li>
 	<li class="divider"></li>
 	<li>
