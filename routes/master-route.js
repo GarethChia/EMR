@@ -3182,9 +3182,12 @@ router.get('/FeedingRegime', ensureAuthenticated, ensureAuthorised, (req, res) =
 			// console.log("Yikes: " + req.user);
 			//MasterFeedingRegime.findOne({patientID: req.session.patient.patientID})
 			//.then(editFeeding => {
+				MasterScheduleFeed.find({masterpatientID: req.session.patient.patientID})	
+				.then(newOtherScheduleFeed =>{	
 				res.render('charts/master/charts-feeding-regime', {
 					newFeeding: newFeeding,
 					//editFeeding: editFeeding,
+					newOtherScheduleFeed: newOtherScheduleFeed,
 					checkifEmpty: true,
 					patient: req.session.patient,
 					currentName: req.user.firstName,
@@ -3192,7 +3195,8 @@ router.get('/FeedingRegime', ensureAuthenticated, ensureAuthorised, (req, res) =
 					showMenu: true
 				});
 			//}
-	 		//})
+			 //})
+			})
 		})
 	})
 })
@@ -3228,7 +3232,8 @@ router.get('/FeedingRegime/:feedID/:name', ensureAuthenticated, ensureAuthorised
 	.then(newFeeding => {
 		MasterFeedingRegime.findOne({ patientID: req.session.patient.patientID})
 		.then(newOtherFeeding =>{//(your own record) you need this (if you only put in the /HistoryTaking, this route do not know the newOtherHistory)
-			MasterFeedingRegime.findOne({ feedID: req.params.feedID }).then(editFeeding =>{		
+			MasterFeedingRegime.findOne({ feedID: req.params.feedID }).then(editFeeding =>{
+				
 				var name = req.params.name;
 				
 				editFeeding.date = moment(editFeeding.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
@@ -3243,7 +3248,7 @@ router.get('/FeedingRegime/:feedID/:name', ensureAuthenticated, ensureAuthorised
 					by: name,
 					showMenu: true
 				})
-			});
+			})
 		});
 	})
 })
@@ -3271,10 +3276,11 @@ router.put('/edit-feeding-regime/:feedID/:name', ensureAuthenticated, ensureAuth
 //Schedule Feed
 // Open Schedule Feed page
 router.get('/ScheduleFeeding', ensureAuthenticated, ensureAuthorised, (req, res) => {
+
 	MasterScheduleFeed.find({user:{'$ne':req.user.id}, masterpatientID: req.session.patient.patientID})
 	.then(newSchedule => {//(other record)
-		MasterScheduleFeed.findOne({ patientID: req.session.patient.patientID})
-		.then(newOtherScheduleFeed =>{ //(your own record)
+		// MasterScheduleFeed.findOne({ patientID: req.session.patient.patientID})
+		// .then(newOtherScheduleFeed =>{ //(your own record)
 			// console.log("Yikes: " + newOtherHistory.length);
 			// console.log("Yikes: " + req.user);
 			//MasterFeedingRegime.findOne({patientID: req.session.patient.patientID})
@@ -3285,14 +3291,14 @@ router.get('/ScheduleFeeding', ensureAuthenticated, ensureAuthorised, (req, res)
 					checkifEmpty: true,
 					patient: req.session.patient,
 					currentName: req.user.firstName,
-					newOtherScheduleFeed: newOtherScheduleFeed,
+					// newOtherScheduleFeed: newOtherScheduleFeed,
 					showMenu: true
 				});
 			//}
 	 		//})
 		})
 	})
-})
+// })
 
 //Add Schedule Feeding
 router.post('/add-schedule', ensureAuthenticated, ensureAuthorised, (req, res) => {

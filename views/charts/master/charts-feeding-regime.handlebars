@@ -61,15 +61,18 @@
                     {{#each newFeeding}}
                     <tr style="height: 60px">
                         {{#unless ../userType}}
+                        
                             <td><a href="/master/FeedingRegime/{{feedID}}/{{by}}">{{date}}</a></td>
                         {{else}}
-                            <td>
-                                {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
+                            <td>{{date}}</td>
+
+                            {{!-- <td>
+                                {{#ifCond currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
                                     <a href="/student/FeedingRegime/{{../recordID}}/{{feedID}}">{{date}}</a>
                                 {{else}}
                                     {{date}}
                                 {{/ifCond}}
-                            </td>
+                            </td> --}}
                         {{/unless}}
                         <td>{{time}}</td>
                         <td>{{typeofFormula}}</td>
@@ -77,7 +80,7 @@
                         <td>{{ordersFeed}}</td>
                         {{!-- <td>{{flush}}</td> --}}
                         {{!-- <td>{{patientID}}</td> --}}
-                        {{#unless ../userType}}
+                        {{!-- {{#unless ../userType}} --}}
                             {{!-- <td style="width: 65px"> <!-- the tr we're trying to get -->
                                 <form action="/master/del-feeding-regime/{{feedID}}?_method=DELETE" method="post" id="delete-form">
                                     <input type="hidden" name="_method" value="DELETE">
@@ -95,7 +98,7 @@
                                 </button>
                                 </form>
                             </td> --}}
-                        {{/unless}}
+                        {{!-- {{/unless}} --}}
                     </tr>
                     {{/each}}
                 {{else}}
@@ -114,14 +117,14 @@
     {{#if editFeeding}}
         {{#unless userType}}
         <form action="/master/edit-feeding-regime/{{editFeeding.feedID}}/{{editFeeding.by}}?_method=PUT" method="POST" id="editFeeding">
-        {{else}}
-        <form action="/student/edit-feeding-regime/{{recordID}}/{{editFeeding.feedID}}/{{editFeeding.by}}?_method=PUT" method="POST" id="editFeeding">
+        {{!-- {{else}}
+        <form action="/student/edit-feeding-regime/{{recordID}}/{{editFeeding.feedID}}/{{editFeeding.by}}?_method=PUT" method="POST" id="editFeeding"> --}}
         {{/unless}}
     {{!-- <input type="hidden" name="_method" value="PUT"> --}}
     {{else}}
         {{#unless userType}}
             <form action="/master/add-feeding-regime" method="POST" id="addFeeding">
-            {{else}}
+            {{!-- {{else}} --}}
             {{!-- <form action="/student/add-feeding-regime/{{recordID}}" method="POST" id="addeFeeding"> --}}
         {{/unless}}
     {{/if}}
@@ -213,6 +216,7 @@
     <div class="row">
         <div class="col s12 m8"></div>
         <div class="col s12 m4">
+            {{#unless userType}}
             {{#if editFeeding}}
                 <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editFeeding">Save Changes
             {{else}}
@@ -220,8 +224,9 @@
             {{/if}}
             {{#unless userType}}
                 <i class="material-icons right">send</i>
-                {{else}}
-                <i class="material-icons right">send</i>
+                {{!-- {{else}}
+                <i class="material-icons right">send</i> --}}
+            {{/unless}}
             {{/unless}}
             
         </div>
@@ -268,19 +273,21 @@
             </thead>
 
             <tbody>
-                {{#if newSchedule}}
-                    {{#each newSchedule}}
+                {{#if newOtherScheduleFeed}}
+                    {{#each newOtherScheduleFeed}}
                     <tr style="height: 60px">
                         {{#unless ../userType}}
-                        <td><a href="/master/iv/{{scheduleID}}">{{date}}</a></td>
+                        <td>{{date}}</td>
                         {{else}}
-                            <td>
+                            <td><a href="/student/ScheduleFeeding/{{../recordID}}/{{scheduleID}}/{{by}}">{{date}}</a></td>
+
+                            {{!-- <td>
                                 {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
-                                    <a href="/student/iv/{{../recordID}}/{{scheduleID}}">{{date}}</a>
+                                    <a href="/student/ScheduleFeeding/{{scheduleID}}/{{by}}">{{date}}</a>
                                 {{else}}
                                     {{date}}
                                 {{/ifCond}}
-                            </td>
+                            </td> --}}
                         {{/unless}}
                         <td>{{time}}</td>
                         <td>{{scheduleFeed}}</td>
@@ -289,7 +296,7 @@
                         {{!-- <td>{{amtinf}}</td>
                         <td>{{ivflush}}</td> --}}
                         {{!-- <td>{{patientID}}</td> --}}
-                        {{#unless ../userType}}          
+                        {{!-- {{#unless ../userType}}           --}}
                         {{!-- <td style="width: 65px"> <!-- the tr we're trying to get -->
                             <form action="/master/del-iv/{{scheduleID}}?_method=DELETE" method="post" id="delete-form">
                                 <input type="hidden" name="_method" value="DELETE">
@@ -298,7 +305,7 @@
                             </button>
                             </form>
                         </td> --}}
-                        {{else}}
+                        {{!-- {{else}} --}}
                             {{!-- <td style="width: 65px"> <!-- the tr we're trying to get -->
                                 <form action="/student/del-iv/{{../recordID}}/{{ivID}}?_method=DELETE" method="post" id="delete-form">
                                     <input type="hidden" name="_method" value="DELETE">
@@ -307,11 +314,16 @@
                                 </button>
                                 </form>
                             </td> --}}
-                        {{/unless}}
+                        {{!-- {{/unless}} --}}
                     </tr>
                     {{/each}}
                 {{else}}
+                {{#unless userType}}
+                <p id="noRecord">Students have not created any Schedule records yet</p>
+                {{else}}
                 <p id="noRecord">You have not created any Schedule records yet</p>
+
+                {{/unless}}
                 {{/if}}
             </tbody>
         </table>
@@ -324,16 +336,16 @@
 
     {{#if editSchedule}}
         {{#unless userType}}
-        <form action="/master/edit-schedule/{{editSchedule.scheduleID}}?_method=PUT" method="POST" id="editSchedule">
+        {{!-- <form action="/master/edit-schedule/{{editSchedule.scheduleID}}?_method=PUT" method="POST" id="editSchedule"> --}}
         {{else}}
-        <form action="/student/edit-schedule/{{recordID}}/{{editSchedule.scheduleID}}?_method=PUT" method="POST" id="editSchedule">
+        <form action="/student/edit-schedule/{{editSchedule.recordID}}/{{editSchedule.scheduleID}}/{{editSchedule.by}}?_method=PUT" method="POST" id="editSchedule">
         {{/unless}}
         {{else}}
     {{!-- <input type="hidden" name="_method" value="PUT"> --}}
         {{#unless userType}}
-            <form action="/master/add-schedule" method="POST" id="addiv">
+            {{!-- <form action="/master/add-schedule" method="POST" id="addSchedule"> --}}
         {{else}}
-            <form action="/student/add-schedule/{{recordID}}" method="POST" id="addiv">
+            <form action="/student/add-schedule/{{recordID}}" method="POST" id="addSchedule">
         {{/unless}}
     {{/if}}
         <div class="card purple lighten-5">
@@ -381,14 +393,14 @@
                             
                         <div>
                             <div class="col s12 m4 input-field">
-                                <input id="scheduleAmt" type="number" name="scheduleAmt" value="{{editFeeding.scheduleAmt}}">
+                                <input id="scheduleAmt" type="number" name="scheduleAmt" value="{{editSchedule.scheduleAmt}}">
                                 <label for="scheduleAmt">Amount</label>
                                 <span class="helper-text"></span>
                             </div>
                         </div>
                         <div>
                             <div class="col s12 m4 input-field">
-                                <input id="scheduleFlush" type="number" name="scheduleFlush" value="{{editFeeding.scheduleFlush}}">
+                                <input id="scheduleFlush" type="number" name="scheduleFlush" value="{{editSchedule.scheduleFlush}}">
                                 <label for="scheduleFlush">Water for Flush (ml)</label>
                                 <span class="helper-text"></span>
                             </div>
@@ -404,17 +416,22 @@
         <div class="col s12 m8"></div>
 
         <div class="col s12 m4">
+            {{#unless userType}}
+
+            {{else}}
             {{#if editSchedule}}
+          
             <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editSchedule">Save Changes
             {{else}}
-            {{#unless userType}}
+            {{!-- {{#unless userType}} --}}
             <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addSchedule">Save
-            {{/unless}}
-            {{/if}}
-            {{#unless userType}}
+            {{!-- {{/unless}} --}}
+            
+            {{!-- {{#unless userType}} --}}
                 <i class="material-icons right">send</i>
-                {{else}}
-                <i class="material-icons right">send</i>
+                {{!-- {{else}} --}}
+                {{!-- <i class="material-icons right">send</i> --}}
+                {{/if}}
             {{/unless}}
             </button>
         </div>
