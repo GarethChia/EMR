@@ -3967,7 +3967,8 @@ router.get('/FeedingRegime/:recordID', ensureAuthenticated, (req, res) => {
 	//DoctorOrders.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(docOrders => {
 	MasterFeedingRegime.find({ patientID: req.session.patient.patientID })
 	.sort({'datetime':1}).then(newFeeding => {
-		MasterScheduleFeed.find({ masterpatientID: req.session.patient.patientID})
+		// MasterScheduleFeed.findOne({ masterpatientID: req.session.patient.patientID})
+		MasterScheduleFeed.find({ masterpatientID: req.session.patient.patientID, by: req.user.firstName})
 		.sort({'datetime':1}).then(newOtherScheduleFeed =>{
 			res.render('charts/master/charts-feeding-regime', {
 				recordID: req.params.recordID,
