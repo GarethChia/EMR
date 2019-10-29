@@ -258,6 +258,9 @@
         <table id="ivRecords" class="hover order-column" >
             <thead>
                 <tr>
+                    {{#unless userType}}
+                    <th>By</th>
+                    {{/unless}}
                     <th>Date</th>
                     <th>Time</th>
                     <th>Feeds</th>
@@ -277,7 +280,7 @@
                     {{#each newOtherScheduleFeed}}
                     <tr style="height: 60px">
                         {{#unless ../userType}}
-                        <td>{{date}}</td>
+                        <td>{{by}}</td>
                         {{else}}
                             <td><a href="/student/ScheduleFeeding/{{../recordID}}/{{scheduleID}}/{{by}}">{{date}}</a></td>
 
@@ -288,6 +291,9 @@
                                     {{date}}
                                 {{/ifCond}}
                             </td> --}}
+                        {{/unless}}
+                        {{#unless ../userType}}
+                        <td>{{date}}</td>
                         {{/unless}}
                         <td>{{time}}</td>
                         <td>{{scheduleFeed}}</td>
@@ -338,7 +344,7 @@
         {{#unless userType}}
         {{!-- <form action="/master/edit-schedule/{{editSchedule.scheduleID}}?_method=PUT" method="POST" id="editSchedule"> --}}
         {{else}}
-        <form action="/student/edit-schedule/{{editSchedule.recordID}}/{{editSchedule.scheduleID}}/{{editSchedule.by}}?_method=PUT" method="POST" id="editSchedule">
+        <form action="/student/edit-schedule/{{recordID}}/{{editSchedule.scheduleID}}/{{editSchedule.by}}?_method=PUT" method="POST" id="editSchedule">
         {{/unless}}
         {{else}}
     {{!-- <input type="hidden" name="_method" value="PUT"> --}}

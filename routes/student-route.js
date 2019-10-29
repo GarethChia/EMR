@@ -4072,7 +4072,7 @@ router.put('/edit-feeding-regime/:recordID/:feedID/:name', ensureAuthenticated, 
 	res.redirect("/student/FeedingRegime/" + req.params.recordID);
 })
 //Schedule Feeding
-// Open Schedule Feeding page
+
 
 //Add Schedule
 router.post('/add-schedule/:recordID', ensureAuthenticated, (req, res) => {
@@ -4092,7 +4092,7 @@ router.post('/add-schedule/:recordID', ensureAuthenticated, (req, res) => {
 		scheduleFlush: req.body.scheduleFlush,
 		scheduleID: scheduleID
 	}).save();
-	res.redirect('/student/ScheduleFeeding/' + req.params.recordID );
+	res.redirect('/student/FeedingRegime/' + req.params.recordID );
 })
 
 //One Schedule by ID
@@ -4106,19 +4106,20 @@ router.get('/ScheduleFeeding/:recordID/:scheduleID/:name', ensureAuthenticated, 
 
 			PatientStudentModel.findOne({recordID: req.params.recordID})
 			.then(patientStudent => {
-				MasterScheduleFeed.find({patientID: req.session.patient.patientID, user:{'$ne': patientStudent.user}})
-				.then(newSchedule => {
+				// MasterScheduleFeed.find({patientID: req.session.patient.patientID, user:{'$ne': patientStudent.user}})
+				// .then(newSchedule => {
 					MasterScheduleFeed.find({  masterpatientID: req.session.patient.patientID, user: patientStudent.user})
-					.then(newOtherScheduleFeed =>{
+					.sort({'datetime':1}).then(newOtherScheduleFeed =>{
 						
 						MasterScheduleFeed.findOne({ scheduleID: req.params.scheduleID })
 						.then(editSchedule =>{
 							
 							// console.log("Edit History: "+ editHistory);
+							editSchedule.date = moment(editSchedule.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
 
 							var name = req.params.name;
 							res.render('charts/master/charts-feeding-regime',{
-								newSchedule:newSchedule,
+								// newSchedule:newSchedule,
 								editSchedule: editSchedule,
 								patient: req.session.patient,
 								userType: userType,
@@ -4133,23 +4134,25 @@ router.get('/ScheduleFeeding/:recordID/:scheduleID/:name', ensureAuthenticated, 
 						
 						});
 					});
-				});
+				// });
 			});
 		}
 		else
 		{
-			MasterScheduleFeed.find({patientID: req.session.patient.patientID, user:{'$ne': req.user._id}})
-			.then(newSchedule => {
-				MasterScheduleFeed.findOne({ scheduleID: req.params.scheduleID })
-				.then(editSchedule =>{
+			// MasterScheduleFeed.find({patientID: req.session.patient.patientID, user:{'$ne': req.user._id}})
+			// .then(newSchedule => {
+			
 					
 					// console.log("Edit History: "+ editHistory);
-					MasterScheduleFeed.find({ masterpatientID: req.session.patient.patientID, user: req.user._id})
+					MasterScheduleFeed.find({ masterpatientID: req.session.patient.patientID, by: req.user.firstName})
 					.then(newOtherScheduleFeed =>{
-
+						MasterScheduleFeed.findOne({ scheduleID: req.params.scheduleID })
+						.then(editSchedule =>{
+						
+						editSchedule.date = moment(editSchedule.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
 						var name = req.params.name;
 						res.render('charts/master/charts-feeding-regime',{
-							newSchedule: newSchedule,
+							// newSchedule: newSchedule,
 							editSchedule: editSchedule,
 							patient: req.session.patient,
 							userType: userType,
@@ -4162,7 +4165,7 @@ router.get('/ScheduleFeeding/:recordID/:scheduleID/:name', ensureAuthenticated, 
 							showMenu: true
 						})
 					})
-				});
+				// });
 			});
 		}
 })
@@ -4171,7 +4174,7 @@ router.get('/ScheduleFeeding/:recordID/:scheduleID/:name', ensureAuthenticated, 
 router.put('/edit-schedule/:recordID/:scheduleID/:name', ensureAuthenticated, (req,res) => {
 	datetime = moment(req.body.dateSchedule, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeSchedule;
 
-	MasterScheduleFeed.findOne({masterpatientID: req.session.patient.patientID, scheduleID: req.params.scheduleID})
+	MasterScheduleFeed.findOne({scheduleID: req.params.scheduleID})
 	.then(editSchedule => {
 		editSchedule.date = moment(req.body.dateSchedule, 'DD/MM/YYYY').format('YYYY-MM-DD'),
 		editSchedule.time = req.body.timeSchedule,
