@@ -304,7 +304,7 @@ router.put('/save-customised-patient/:patientID', ensureAuthenticated, (req, res
 			// Pain Assessment
 			painPresent: assessment.painPresent,
 			painScale: assessment.painScale,
-			behavioural: assessment.behavioural,
+			duration: assessment.duration,
 			onset: assessment.onset,
 			location: assessment.location,
 			characteristic: assessment.characteristic,

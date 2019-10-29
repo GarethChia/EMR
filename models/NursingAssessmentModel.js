@@ -64,7 +64,7 @@ const NursingAssessmentSchema = new Schema({
 	painPresent: {type: Boolean},
 	painScale: {type: String, default: ''},
 	painScore: {type: String, default: ''},
-	behavioural: {type: String, default: ''},
+	duration: {type: String, default: ''},
 	onset: {type: String, default: ''},
 	location: {type: String, default: ''},
 	characteristic: {type: String, default: ''},
