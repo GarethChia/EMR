@@ -282,7 +282,13 @@
                         {{#unless ../userType}}
                         <td>{{by}}</td>
                         {{else}}
-                            <td><a href="/student/ScheduleFeeding/{{../recordID}}/{{scheduleID}}/{{by}}">{{date}}</a></td>
+                            <td>
+                                {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
+                                    <a href="/student/ScheduleFeeding/{{../recordID}}/{{scheduleID}}/{{by}}">{{date}}</a>
+                                {{else}}
+                                    {{date}}
+                                {{/ifCond}}
+                            </td>
 
                             {{!-- <td>
                                 {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
@@ -425,6 +431,8 @@
             {{#unless userType}}
 
             {{else}}
+            {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
+
             {{#if editSchedule}}
           
             <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editSchedule">Save Changes
@@ -438,6 +446,7 @@
                 {{!-- {{else}} --}}
                 {{!-- <i class="material-icons right">send</i> --}}
                 {{/if}}
+            {{/ifCond}}
             {{/unless}}
             </button>
         </div>
