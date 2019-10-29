@@ -1,6 +1,6 @@
 <br/>
 <div id="mdp">
-    <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">Master MDP Notes</div>
+    <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">Discharge Checklist</div>
     <div style="overflow-x:auto; max-height: 16em;">
         <table id="ioRecords" class="hover order-column">
             <thead>
@@ -11,7 +11,7 @@
                     <th>Health Provider</th>
                     <th>Name</th>
                     <th>By</th>
-                    <th>Delete</th>
+                    {{!-- <th>Delete</th> --}}
                 </tr>
             </thead>
             <tbody>
@@ -28,7 +28,7 @@
                         <td>{{selectUser}}</td>
                         <td>{{nameOfHealthProvider}}</td>
                         <td>{{createdBy}}</td>
-                        {{#unless ../userType}}
+                        {{!-- {{#unless ../userType}}
                         <td style="width: 65px"> <!-- the tr we're trying to get -->
                             <form action="/master/del-mdp/{{mdpID}}?_method=DELETE" method="post" id="delete-form">
                                 <input type="hidden" name="_method" value="DELETE">
@@ -37,7 +37,7 @@
                             </button>
                             </form>
                         </td>
-                        {{/unless}}
+                        {{/unless}} --}}
                     </tr>
                     {{/each}}
                 {{/if}}
@@ -57,48 +57,12 @@
                 {{else if newOtherMasterMDP}}
                 {{else}}
                     <tr style="height: 60px">
-                        <td colspan="5" class="center">
-                            <p id="noRecord">Masters have not created any MDP notes yet</p>
+                        <td colspan="6" class="center">
+                            <p id="noRecord">You have not created any Discharge Checklist yet</p>
                         </td>
                     </tr>
                 {{/if}}
                 
-            </tbody>
-        </table>
-    </div>
-    <br>
-    <div class="card-panel purple lighten-1 white-text" style="padding:5px; font-size: 20px">Student MDP Notes</div>
-    <div style="overflow-x:auto; max-height: 16em;">
-        <table id="ioRecords" class="hover order-column">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Progress Notes</th>
-                    <th>Health Provider</th>
-                    <th>Name</th>
-                    <th>By</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#if newOtherStudentMDP}}
-                    {{#each newOtherStudentMDP}}
-                    <tr style="height: 60px">
-                        <td>{{date}}</td>
-                        <td>{{time}}</td>
-                        <td>{{progressNotes}}</td>
-                        <td>{{selectUser}}</td>
-                        <td>{{nameOfHealthProvider}}</td>
-                        <td>{{createdBy}}</td>
-                    </tr>
-                    {{/each}}
-                {{else}}
-                <tr style="height: 60px">
-                    <td colspan="5" class="center">
-                        <p id="noRecord">Students have not created any MDP notes yet</p>
-                    </td>
-                </tr>
-                {{/if}}
             </tbody>
         </table>
     </div>
@@ -125,14 +89,14 @@
                 
                     <div class="row">
                             <div class="col s12 m4 input-field">
-                                <input id="dateMDP" type="text" class="datepicker" name="dateMDP" value="{{editMDP.date}}" required>
-                                <label for="dateMDP">Date</label>
+                                <input id="dateDischargePlanning" type="text" class="datepicker" name="dateDischargePlanning" value="{{editMDP.date}}" required>
+                                <label for="dateDischargePlanning">Date</label>
                                 <span class="helper-text">dd/mm/yyyy</span>
                             </div>
 
                             <div class="col s12 m4 input-field">
-                                <input id="timeMDP" type="text" class="timepicker" name="timeMDP" value="{{editMDP.time}}" required>
-                                <label for="timeMDP">Time</label>
+                                <input id="timeDischargePlanning" type="text" class="timepicker" name="timeDischargePlanning" value="{{editMDP.time}}" required>
+                                <label for="timeDischargePlanning">Time</label>
                                 <span class="helper-text">hh:ss</span>
                             </div>
                     </div>
@@ -141,12 +105,10 @@
                         <div class="col s12 m2 l2" style="padding-top:20px">
                             <label style="font-size: 15px">Condition on discharge</label>
                         </div>
-                        <div class="col s12 m10 l10" >
-                            <div class="input-field">
-                                <input id="conditionOnDischarge" name="conditionOnDischarge" type="text" value="{{assessment.treatment}}"/>
-                                <label for="conditionOnDischarge">Describe</label>
-                                <span class="helper-text"></span>
-                            </div>
+                        <div class="col s12 m4 input-field" >
+                            <input id="dischargeCondition" name="dischargeCondition" type="text" value="{{assessment.treatment}}"/>
+                            <label for="dischargeCondition">Describe</label>
+                            <span class="helper-text"></span>
                         </div>
                     </div>
                     <!--//1. Condition on discharge-->
@@ -167,8 +129,8 @@
                         </div>
                         
                         <div class="col s12 m4 input-field">
-                            <input id="dischargeToOthersSpecify" type="text" name="dischargeToOthersSpecify" value="{{editMDP.nameOfHealthProvider}}">
-                            <label for="dischargeToOthersSpecify">Others</label>
+                            <input id="dischargeToSpecify" type="text" name="dischargeToSpecify" value="{{editMDP.nameOfHealthProvider}}">
+                            <label for="dischargeToSpecify">Others</label>
                             <span class="helper-text">Specify</span>
                         </div>
                     </div>
@@ -194,8 +156,8 @@
                         </div>
                         
                         <div class="col s12 m4 input-field">
-                            <input id="accompaniedByOthersSpecify" type="text" name="accompaniedByOthersSpecify" value="{{editMDP.nameOfHealthProvider}}">
-                            <label for="accompaniedByOthersSpecify">Others</label>
+                            <input id="accompaniedBySpecify" type="text" name="accompaniedBySpecify" value="{{editMDP.nameOfHealthProvider}}">
+                            <label for="accompaniedBySpecify">Others</label>
                             <span class="helper-text">Specify</span>
                         </div>
                     </div>
@@ -218,8 +180,8 @@
                         </div>
                         
                         <div class="col s12 m4 input-field">
-                            <input id="modeOfTransportOthersSpecify" type="text" name="modeOfTransportOthersSpecify" value="{{editMDP.nameOfHealthProvider}}">
-                            <label for="modeOfTransportOthersSpecify">Others</label>
+                            <input id="modeOfTransportSpecify" type="text" name="modeOfTransportSpecify" value="{{editMDP.nameOfHealthProvider}}">
+                            <label for="modeOfTransportSpecify">Others</label>
                             <span class="helper-text">Specify</span>
                         </div>
                     </div>
@@ -229,122 +191,153 @@
                         <div class="col s12 m2 l2" style="padding-top:20px">
                             <label style="font-size: 15px">Removal of</label>
                         </div>
-                        <div class="col s12 m2 l2">
-                        <label style="font-size: 15px"><br/></label>
-                        </div>
 
                         <div class="col s12 m10 l10" >
-                            <label>
-                                <input id="dyponea" name="breathingPresence" type="checkbox" value="Dyponea"
-                                    {{resetExceptNone assessment.breathingPresence 'Dyponea' 'None'}}/>
-                                <span style="padding-left: 25px; padding-right: 10px">IV Cannula</span>
-                            </label>
-                            <label>
-                                <input id="orthopnoea" name="breathingPresence" type="checkbox" value="Orthopnoea"
-                                    {{resetExceptNone assessment.breathingPresence 'Orthopnoea' 'None'}}/>
-                                <span style="padding-left: 25px; padding-right: 10px">Drain(s)</span>
-                            </label>
-                            <label>
-                                <input id="wheeze" name="breathingPresence" type="checkbox" value="Wheeze"
-                                    {{resetExceptNone assessment.breathingPresence 'Wheeze' 'None'}}/>
-                                <span style="padding-left: 25px; padding-right: 10px">Urinary catheter</span>
-                            </label>
-                            <label>
-                                <input id="cyanosis" name="breathingPresence" type="checkbox" value="Cyanosis"
-                                    {{resetExceptNone assessment.breathingPresence 'Cyanosis' 'None'}}/>
-                                <span style="padding-left: 25px; padding-right: 10px">Identification band</span>
-                            </label>
-                            <label>
-                                <input id="noneResPresenceOf" name="breathingPresence" type="checkbox" value="None"
-                                    {{checked assessment.breathingPresence 'None'}}
-                                    onclick="resetExceptNone('breathingPresence', 'noneResPresenceOf')"/>
-                                <span style="padding-left: 25px; padding-right: 10px">Stiches/Staple</span>
-                            </label>
+                            <table>
+                                <tr style="border: none;">
+                                    <td style="padding-top: 23px">
+                                        <label>
+                                            <input id="ivCannula" name="removalOf" type="checkbox" value="IV Cannula"
+                                                {{resetExceptNone assessment.breathingPresence 'IV Cannula' 'None'}}/>
+                                            <span style="padding-left: 25px; padding-right: 10px">IV Cannula</span>
+                                        </label>
+                                        <label>
+                                            <input id="drains" name="removalOf" type="checkbox" value="Drain(s)"
+                                                {{resetExceptNone assessment.breathingPresence 'Drain(s)' 'None'}}/>
+                                            <span style="padding-left: 25px; padding-right: 10px">Drain(s)</span>
+                                        </label>
+                                        <label>
+                                            <input id="urinaryCatheter" name="removalOf" type="checkbox" value="Urinary catheter"
+                                                {{resetExceptNone assessment.breathingPresence 'Urinary catheter' 'None'}}/>
+                                            <span style="padding-left: 25px; padding-right: 10px">Urinary catheter</span>
+                                        </label>
+                                        <label>
+                                            <input id="identificationBand" name="removalOf" type="checkbox" value="Identification band"
+                                                {{resetExceptNone assessment.breathingPresence 'Identification band' 'None'}}/>
+                                            <span style="padding-left: 25px; padding-right: 10px">Identification band</span>
+                                        </label>
+                                        <label>
+                                            <input id="stitchesStaple" name="removalOf" type="checkbox" value="Stitches/Staple"
+                                                {{checked assessment.breathingPresence 'Stitches/Staple'}} />
+                                            <span style="padding-left: 25px; padding-right: 10px">Stitches/Staple</span>
+                                        </label>
+                                    </td>
+                                </tr>
+                            </table>
+                            
                         </div>
                     </div>
                     <!--//5. Removal of-->
                     <!--6. Checked and returned-->
                     <div class="row">
-                        <div class="col s12 m2 l2" style="padding-top:20px">
+                        <div class="col s12 m2 l2" style="padding-top:20px;">
                             <label style="font-size: 15px">Checked and returned</label>
                         </div>
-                        <div class="col s12 m2 l2">
-                        <label style="font-size: 15px"><br/></label>
-                        </div>
-
+                        
                         <div class="col s12 m10 l10" >
-                            <label>
-                                <input id="dyponea" name="breathingPresence" type="checkbox" value="Dyponea"
-                                    {{resetExceptNone assessment.breathingPresence 'Dyponea' 'None'}}/>
-                                <span style="padding-left: 25px; padding-right: 10px">Propery/ Property Receipt</span>
-                            </label>
-                            <label>
-                                <input id="orthopnoea" name="breathingPresence" type="checkbox" value="Orthopnoea"
-                                    {{resetExceptNone assessment.breathingPresence 'Orthopnoea' 'None'}}/>
-                                <span style="padding-left: 25px; padding-right: 10px">Own medications</span>
-                            </label>
-                            <label>
-                                <input id="wheeze" name="breathingPresence" type="checkbox" value="Wheeze"
-                                    {{resetExceptNone assessment.breathingPresence 'Wheeze' 'None'}}/>
-                                <span style="padding-left: 25px; padding-right: 10px">Appliances (Specify)</span>
-                            </label>
-                            <label>
-                                <input id="cyanosis" name="breathingPresence" type="checkbox" value="Cyanosis"
-                                    {{resetExceptNone assessment.breathingPresence 'Cyanosis' 'None'}}/>
-                                <span style="padding-left: 25px; padding-right: 10px">Private X-rays</span>
-                            </label>
-                            <label>
-                                <input id="noneResPresenceOf" name="breathingPresence" type="checkbox" value="None"
-                                    {{checked assessment.breathingPresence 'None'}}
-                                    onclick="resetExceptNone('breathingPresence', 'noneResPresenceOf')"/>
-                                <span style="padding-left: 25px; padding-right: 10px">Others (Specify)</span>
-                            </label>
+                            <table>
+                                <tr style="border: none;">
+                                    <td style="padding-top:23px;">
+                                        <label>
+                                            <input id="PropertyReceipt" name="checkedAndReturned" type="checkbox" value="Propery/ Property Receipt"
+                                                {{resetExceptNone assessment.breathingPresence 'Propery/ Property Receipt' 'None'}}/>
+                                            <span style="padding-left: 25px; padding-right: 10px">Propery/ Property Receipt</span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr style="border: none;">
+                                    <td>
+                                        <label>
+                                            <input id="OwnMedications" name="checkedAndReturned" type="checkbox" value="Own medications"
+                                                {{resetExceptNone assessment.breathingPresence 'Own medications' 'None'}}/>
+                                            <span style="padding-left: 25px; padding-right: 10px">Own medications</span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr style="border: none;">
+                                    <td>
+                                        <label>
+                                            <input id="AppliancesSpecify" name="checkedAndReturned" type="checkbox" value="Appliances (Specify)"
+                                                {{resetExceptNone assessment.breathingPresence 'Appliances (Specify)' 'None'}}/>
+                                            <span style="padding-left: 25px; padding-right: 10px">Appliances (Specify)</span>
+                                        </label>
+                                        <br>
+                                        <div class="col s12 m4 input-field">
+                                            <input id="checkedAndReturnedAppliancesSpecify" type="text" name="checkedAndReturnedAppliancesSpecify" value="{{editMDP.nameOfHealthProvider}}">
+                                            <label for="checkedAndReturnedAppliancesSpecify">Specify</label>
+                                            <span class="helper-text">Specify</span>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr style="border: none;">
+                                    <td>
+                                        <label>
+                                            <input id="PrivateXRays" name="checkedAndReturned" type="checkbox" value="Private X-rays"
+                                                {{resetExceptNone assessment.breathingPresence 'Private X-rays' 'None'}}/>
+                                            <span style="padding-left: 25px; padding-right: 10px">Private X-rays</span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr style="border: none;">
+                                    <td>
+                                        <label>
+                                            <input id="OthersSpecify" name="checkedAndReturned" type="checkbox" value="Others (Specify)"
+                                                {{checked assessment.breathingPresence 'Others (Specify)'}}/>
+                                            <span style="padding-left: 25px; padding-right: 10px">Others (Specify)</span>
+                                        </label>
+                                        <br>
+                                        <div class="col s12 m4 input-field">
+                                            <input id="checkedAndReturnedSpecify" type="text" name="checkedAndReturnedSpecify" value="{{editMDP.nameOfHealthProvider}}">
+                                            <label for="checkedAndReturnedSpecify">Others</label>
+                                            <span class="helper-text">Specify</span>
+                                        </div>
+                                    </td>
+                                </tr>   
+                            </table>
                         </div>
                     </div>
                     <!--//6. Checked and returned-->
+
                     <!--7. Advice given on-->
                     <div class="row">
                         <div class="col s12 m2 l2" style="padding-top:20px">
-                            <label style="font-size: 15px">Checked and returned</label>
+                            <label style="font-size: 15px">Advice given on</label>
                         </div>
                         <div class="col s12 m1 l10">
+                            
                             <table>
                             <tr style="border: none;">
-                                <td>
-                                    <div class="col s12 m1 l10" style="padding-top:10px">
+                                <td style="padding-top:23px;">
                                     <label style="display: inline-block;">
-                                        <input id="dyponea" name="breathingPresence" type="checkbox" value="Dyponea"
-                                            {{resetExceptNone assessment.breathingPresence 'Dyponea' 'None'}}/>
+                                        <input id="dyponea" name="adviceGivenOn" type="checkbox" value="Dyponea"
+                                            {{resetExceptNone assessment.breathingPresence 'Dyponea' 'None'}} />
                                         <span style="padding-left: 25px; padding-right: 10px">Follow-up appointment</span>
                                     </label>
-                                    </div>
                                 </td>
                             </tr>
-                            <div class="follow-up">
-                                <tr style="border: none;">
-                                    <td>
+                            <!---Follow up-->
+                            <tr style="border: none;">
+                                <td>
+                                    <div class="row">
                                         <div class="col s12 m4 input-field">
-                                            <select id="followUpAppointmentDD" name="followUpAppointmentDD" required>
+                                            <select id="followUpAppointment" name="followUpAppointment" required>
                                                 <option value="" disabled selected>Please select</option>
                                                 <option value="Doctors">Doctors</option>
                                                 <option value="Therapists">Therapists</option>
                                                 <option value="Dietitians">Dietitians</option>
                                                 <option value="Others (Specify)">Others (Specify)</option>
                                             </select>
-                                            <label for="followUpAppointmentDD"></label>
-                                        </div>
-                                        <div class="col s12 m2 l2" style="padding-top:20px">
-                                            <label style="font-size: 15px">Follow-up</label>
+                                            <label for="followUpAppointment">Follow up</label>
                                         </div>
                                         <div class="col s12 m4 input-field">
-                                            <input id="accompaniedByOthersSpecify" type="text" name="accompaniedByOthersSpecify" value="{{editMDP.nameOfHealthProvider}}">
-                                            <label for="accompaniedByOthersSpecify">Others</label>
-                                            {{!-- <span class="helper-text">Specify</span> --}}
+                                            <input id="followUpAppointmentSpecify" type="text" name="followUpAppointmentSpecify" value="{{editMDP.nameOfHealthProvider}}">
+                                            <label for="followUpAppointmentSpecify">Others</label>
+                                            <span class="helper-text">Specify</span>
                                         </div>
-                                    </td>
-                                </tr>
-                                <tr style="border: none;">
-                                    <td>
+                                    </div>
+                                    
+                                    <div class="row">
                                         <div class="col s12 m4 input-field">
                                             <input id="appointmentDate" type="text" class="datepicker" name="dateMDP" value="{{editMDP.date}}" required>
                                             <label for="dateMDP">Date</label>
@@ -356,30 +349,31 @@
                                             <label for="timeMDP">Time</label>
                                             <span class="helper-text">hh:ss</span>
                                         </div>
-                                    </td>
-                                </tr>
-                                <tr style="border: none;">
-                                    <td>
+                                    </div>
+
+                                    <div class="row">
                                         <div class="col s12 m2 l2" style="padding-top:20px">
                                             <label style="font-size: 15px">Clinic</label>
                                         </div>
                                         <div class="col s12 m4 input-field">
-                                            <input id="accompaniedByOthersSpecify" type="text" name="accompaniedByOthersSpecify" value="{{editMDP.nameOfHealthProvider}}">
-                                            <label for="accompaniedByOthersSpecify">Key in the Clinic name</label>
+                                            <input id="clinic" type="text" name="clinic" value="{{editMDP.nameOfHealthProvider}}">
+                                            <label for="clinic">Key in the Clinic name</label>
                                             {{!-- <span class="helper-text">Specify</span> --}}
                                         </div>
+                                    </div>
+
+                                    <div class="row">
                                         <div class="col s12 m2 l2" style="padding-top:20px">
                                             <label style="font-size: 15px">Name of the Doctor</label>
                                         </div>
                                         <div class="col s12 m4 input-field">
-                                            <input id="accompaniedByOthersSpecify" type="text" name="accompaniedByOthersSpecify" value="{{editMDP.nameOfHealthProvider}}">
-                                            <label for="accompaniedByOthersSpecify">Doctor/Therapists/Dietitian/Others' name</label>
+                                            <input id="nameOfDoctor" type="text" name="nameOfDoctor" value="{{editMDP.nameOfHealthProvider}}">
+                                            <label for="nameOfDoctor">Doctor/Therapists/Dietitian/Others' name</label>
                                             {{!-- <span class="helper-text">Specify</span> --}}
                                         </div>
-                                    </td>
-                                </tr>
-                                <tr style="border: none;">
-                                    <td>
+                                    </div>
+
+                                    <div class="row">
                                         <div class="col s12 m2 l2" style="padding-top:20px">
                                             <label for="cough" style="font-size: 15px">Memo given</label>
                                         </div>
@@ -397,58 +391,59 @@
                                                 <span style="padding-left: 25px; padding-right: 10px">No</span>
                                             </label>
                                         </div>
-                                    </td>
-                                </tr>
-                                <tr style="border: none;">
-                                    <td>
+                                    </div>
+
+                                    <div class="row">
                                         <div class="col s12 m2 l2" style="padding-top:20px">
                                             <label style="font-size: 15px">Remarks</label>
                                         </div>
                                         <div class="col s12 m4 input-field">
-                                            <input id="accompaniedByOthersSpecify" type="text" name="accompaniedByOthersSpecify" value="{{editMDP.nameOfHealthProvider}}">
-                                            <label for="accompaniedByOthersSpecify">Specify</label>
+                                            <input id="remarks" type="text" name="remarks" value="{{editMDP.nameOfHealthProvider}}">
+                                            <label for="remarks">Specify</label>
                                             {{!-- <span class="helper-text">Specify</span> --}}
                                         </div>
-                                    </td>
-                                </tr>
-                            </div>
+                                    </div>
+                                </td>
+                            </tr>
                             <tr style="border: none;">
                                 <td>
                                     <label style="display: inline-block;">
-                                        <input id="orthopnoea" name="breathingPresence" type="checkbox" value="Orthopnoea"
+                                        <input id="orthopnoea" name="adviceGivenOn" type="checkbox" value="Orthopnoea"
                                             {{resetExceptNone assessment.breathingPresence 'Orthopnoea' 'None'}}/>
                                         <span style="padding-left: 25px; padding-right: 10px">Special instructions</span>
                                     </label>
                                 </td>
                             </tr>
-                            <div class="special-instructions">
-                                <tr style="border: none;">
-                                    <td>
-                                        <div class="col s12 m2 l2" style="padding-top:20px">
-                                            <label style="font-size: 15px">Special instructions</label>
-                                        </div>
+                            <!--Special instructions-->
+                            <tr style="border: none;">
+                                <td>
+                                    <div class="row">
                                         <div class="col s12 m4 input-field">
-                                            <input id="accompaniedByOthersSpecify" type="text" name="accompaniedByOthersSpecify" value="{{editMDP.nameOfHealthProvider}}">
-                                            <label for="accompaniedByOthersSpecify">Specify</label>
+                                            <input id="specialInstructionsSpecify" type="text" name="specialInstructionsSpecify" value="{{editMDP.nameOfHealthProvider}}">
+                                            <label for="specialInstructionsSpecify">Specify</label>
                                             {{!-- <span class="helper-text">Specify</span> --}}
                                         </div>
-                                    </td>
-                                </tr>
-                            </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!--// Special instructions-->
+
                             <tr style="border: none;">
                                 <td>
                                     <label style="display: inline-block;">
-                                        <input id="wheeze" name="breathingPresence" type="checkbox" value="Wheeze"
+                                        <input id="wheeze" name="adviceGivenOn" type="checkbox" value="Wheeze"
                                             {{resetExceptNone assessment.breathingPresence 'Wheeze' 'None'}}/>
                                         <span style="padding-left: 25px; padding-right: 10px">Referrals</span>
                                     </label>
                                 </td>
                             </tr>
-                            <div class="referrals">
-                                <tr style="border: none;">
-                                    <td>
+
+                            <!--referrals-->
+                            <tr style="border: none;">
+                                <td>
+                                    <div class="row">
                                         <div class="col s12 m4 input-field">
-                                            <select id="referralsDD" name="referralsDD" required>
+                                            <select id="referrals" name="referrals" required>
                                                 <option value="" disabled selected>Please select</option>
                                                 <option value="Community Hosptal">Community Hosptal</option>
                                                 <option value="Day Care Centre">Day Care Centre</option>
@@ -458,23 +453,23 @@
                                                 <option value="Outpatient Specialist">Outpatient Specialist</option>
                                                 <option value="Others (Specify)">Others (Specify)</option>
                                             </select>
-                                            <label for="referralsDD"></label>
+                                            <label for="referrals"></label>
                                         </div>
-                                        <div class="col s12 m2 l2" style="padding-top:20px">
-                                            <label style="font-size: 15px">Referrals</label>
-                                        </div>
+
                                         <div class="col s12 m4 input-field">
-                                            <input id="accompaniedByOthersSpecify" type="text" name="accompaniedByOthersSpecify" value="{{editMDP.nameOfHealthProvider}}">
-                                            <label for="accompaniedByOthersSpecify">Others</label>
-                                            {{!-- <span class="helper-text">Specify</span> --}}
+                                            <input id="referralsSpecify" type="text" name="referralsSpecify" value="{{editMDP.nameOfHealthProvider}}">
+                                            <label for="referralsSpecify">Others</label>
+                                            <span class="helper-text">Specify</span>
                                         </div>
-                                    </td>
-                                </tr>
-                            </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!--//referrals-->
+
                             <tr style="border: none;">
                                 <td>
                                     <label style="display: inline-block;">
-                                        <input id="cyanosis" name="breathingPresence" type="checkbox" value="Cyanosis"
+                                        <input id="cyanosis" name="adviceGivenOn" type="checkbox" value="Cyanosis"
                                             {{resetExceptNone assessment.breathingPresence 'Cyanosis' 'None'}}/>
                                         <span style="padding-left: 25px; padding-right: 10px">Medications</span>
                                     </label>
@@ -483,7 +478,7 @@
                             <tr style="border: none;">
                                 <td>
                                     <label style="display: inline-block;">
-                                        <input id="noneResPresenceOf" name="breathingPresence" type="checkbox" value="None"
+                                        <input id="noneResPresenceOf" name="adviceGivenOn" type="checkbox" value="None"
                                             {{checked assessment.breathingPresence 'None'}}
                                             onclick="resetExceptNone('breathingPresence', 'noneResPresenceOf')"/>
                                         <span style="padding-left: 25px; padding-right: 10px">Medik Awas</span>
@@ -493,7 +488,7 @@
                             <tr style="border: none;">
                                 <td>
                                     <label style="display: inline-block;">
-                                        <input id="noneResPresenceOf" name="breathingPresence" type="checkbox" value="None"
+                                        <input id="noneResPresenceOf" name="adviceGivenOn" type="checkbox" value="None"
                                             {{checked assessment.breathingPresence 'None'}}
                                             onclick="resetExceptNone('breathingPresence', 'noneResPresenceOf')"/>
                                         <span style="padding-left: 25px; padding-right: 10px">Discharge teaching/Instructions</span>
@@ -503,7 +498,7 @@
                             <tr style="border: none;">
                                 <td>
                                     <label style="display: inline-block;">
-                                        <input id="noneResPresenceOf" name="breathingPresence" type="checkbox" value="None"
+                                        <input id="noneResPresenceOf" name="adviceGivenOn" type="checkbox" value="None"
                                             {{checked assessment.breathingPresence 'None'}}
                                             onclick="resetExceptNone('breathingPresence', 'noneResPresenceOf')"/>
                                         <span style="padding-left: 25px; padding-right: 10px">Hospital inpatient discharge summary</span>
@@ -513,31 +508,33 @@
                             <tr style="border: none;">
                                 <td>
                                     <label style="display: inline-block;">
-                                        <input id="noneResPresenceOf" name="breathingPresence" type="checkbox" value="None"
+                                        <input id="noneResPresenceOf" name="adviceGivenOn" type="checkbox" value="None"
                                             {{checked assessment.breathingPresence 'None'}}
                                             onclick="resetExceptNone('breathingPresence', 'noneResPresenceOf')"/>
                                         <span style="padding-left: 25px; padding-right: 10px">Medical Certificate No.</span>
                                     </label>
                                 </td>
-                                <div class="medical-certificate-no">
-                                    <tr style="border: none;">
-                                        <td>
-                                            {{!-- <div class="col s12 m2 l2" style="padding-top:20px">
-                                                <label style="font-size: 15px">Medical Certificate No</label>
-                                            </div> --}}
-                                            <div class="col s12 m4 input-field">
-                                                <input id="accompaniedByOthersSpecify" type="text" name="accompaniedByOthersSpecify" value="{{editMDP.nameOfHealthProvider}}">
-                                                <label for="accompaniedByOthersSpecify">Key in MC No</label>
-                                                {{!-- <span class="helper-text">Specify</span> --}}
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </div>
                             </tr>
+                            <!--Medical certificate no-->
+                            <tr style="border: none;">
+                                <td>
+                                    <div class="row">
+                                        {{!-- <div class="col s12 m2 l2" style="padding-top:20px">
+                                            <label style="font-size: 15px">Medical Certificate No</label>
+                                        </div> --}}
+                                        <div class="col s12 m4 input-field">
+                                            <input id="medicalCertificateNo" type="text" name="medicalCertificateNo" value="{{editMDP.nameOfHealthProvider}}">
+                                            <label for="medicalCertificateNo">Key in MC No</label>
+                                            {{!-- <span class="helper-text">Specify</span> --}}
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!--//Medical certificate no-->
                             <tr style="border: none;">
                                 <td>
                                     <label style="display: inline-block;">
-                                        <input id="noneResPresenceOf" name="breathingPresence" type="checkbox" value="None"
+                                        <input id="noneResPresenceOf" name="adviceGivenOn" type="checkbox" value="None"
                                             {{checked assessment.breathingPresence 'None'}}
                                             onclick="resetExceptNone('breathingPresence', 'noneResPresenceOf')"/>
                                         <span style="padding-left: 25px; padding-right: 10px">Feedback form</span>
@@ -546,66 +543,6 @@
                             </tr>
                             </table>    
                         </div>
-                        {{!-- <div class="col s12 m1 l10 hi" style="padding-top:25px">
-                            <label style="display: inline-block;">
-                                <input id="dyponea" name="breathingPresence" type="checkbox" value="Dyponea"
-                                    {{resetExceptNone assessment.breathingPresence 'Dyponea' 'None'}}/>
-                                <span style="padding-left: 25px; padding-right: 10px">Follow-up appointment</span>
-                            </label>
-                            <br>
-                            <label style="display: inline-block;">
-                                <input id="orthopnoea" name="breathingPresence" type="checkbox" value="Orthopnoea"
-                                    {{resetExceptNone assessment.breathingPresence 'Orthopnoea' 'None'}}/>
-                                <span style="padding-left: 25px; padding-right: 10px">Special instructions</span>
-                            </label>
-                            <br>
-                            <label style="display: inline-block;">
-                                <input id="wheeze" name="breathingPresence" type="checkbox" value="Wheeze"
-                                    {{resetExceptNone assessment.breathingPresence 'Wheeze' 'None'}}/>
-                                <span style="padding-left: 25px; padding-right: 10px">Referrals</span>
-                            </label>
-                            <br>
-                            <label style="display: inline-block;">
-                                <input id="cyanosis" name="breathingPresence" type="checkbox" value="Cyanosis"
-                                    {{resetExceptNone assessment.breathingPresence 'Cyanosis' 'None'}}/>
-                                <span style="padding-left: 25px; padding-right: 10px">Medications</span>
-                            </label>
-                            <br>
-                            <label style="display: inline-block;">
-                                <input id="noneResPresenceOf" name="breathingPresence" type="checkbox" value="None"
-                                    {{checked assessment.breathingPresence 'None'}}
-                                    onclick="resetExceptNone('breathingPresence', 'noneResPresenceOf')"/>
-                                <span style="padding-left: 25px; padding-right: 10px">Medik Awas</span>
-                            </label>
-                            <br>
-                            <label style="display: inline-block;">
-                                <input id="noneResPresenceOf" name="breathingPresence" type="checkbox" value="None"
-                                    {{checked assessment.breathingPresence 'None'}}
-                                    onclick="resetExceptNone('breathingPresence', 'noneResPresenceOf')"/>
-                                <span style="padding-left: 25px; padding-right: 10px">Discharge teaching/Instructions</span>
-                            </label>
-                            <br>
-                            <label style="display: inline-block;">
-                                <input id="noneResPresenceOf" name="breathingPresence" type="checkbox" value="None"
-                                    {{checked assessment.breathingPresence 'None'}}
-                                    onclick="resetExceptNone('breathingPresence', 'noneResPresenceOf')"/>
-                                <span style="padding-left: 25px; padding-right: 10px">Hospital inpatient discharge summary</span>
-                            </label>
-                            <br>
-                            <label style="display: inline-block;">
-                                <input id="noneResPresenceOf" name="breathingPresence" type="checkbox" value="None"
-                                    {{checked assessment.breathingPresence 'None'}}
-                                    onclick="resetExceptNone('breathingPresence', 'noneResPresenceOf')"/>
-                                <span style="padding-left: 25px; padding-right: 10px">Medical Certificate No.</span>
-                            </label>
-                            <br>
-                            <label style="display: inline-block;">
-                                <input id="noneResPresenceOf" name="breathingPresence" type="checkbox" value="None"
-                                    {{checked assessment.breathingPresence 'None'}}
-                                    onclick="resetExceptNone('breathingPresence', 'noneResPresenceOf')"/>
-                                <span style="padding-left: 25px; padding-right: 10px">Feedback form</span>
-                            </label>
-                        </div> --}}
                     </div>
 
                     <!--//7. Advice given on-->
@@ -641,23 +578,23 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         // MDP
-        const dateMDP = document.querySelector('#dateMDP');
-        const timeMDP = document.querySelector('#timeMDP');
+        const dateDischargePlanning = document.querySelector('#dateDischargePlanning');
+        const timeDischargePlanning = document.querySelector('#timeDischargePlanning');
         const dischargeTo = document.querySelector('#dischargeTo');
         const accompaniedBy = document.querySelector('#accompaniedBy');
         const modeOfTransport = document.querySelector('#modeOfTransport');
-        const followUpAppointmentDD = document.querySelector('#followUpAppointmentDD');
+        const followUpAppointment = document.querySelector('#followUpAppointment');
         const appointmentDate = document.querySelector('#appointmentDate');
         const appointmentTime = document.querySelector('#appointmentTime');
-        const referralsDD = document.querySelector('#referralsDD');
+        const referrals = document.querySelector('#referrals');
 
         // MDP Instances
-        M.Datepicker.init(dateMDP, {
+        M.Datepicker.init(dateDischargePlanning, {
             maxDate: new Date(),
             format: 'dd/mm/yyyy',
             disableWeekends: true
         });
-        M.Timepicker.init(timeMDP, {
+        M.Timepicker.init(timeDischargePlanning, {
             twelveHour: false,
             showClearBtn: true
         });
@@ -674,7 +611,7 @@
 
         })
 
-        M.FormSelect.init(followUpAppointmentDD,{
+        M.FormSelect.init(followUpAppointment,{
 
         })
 
@@ -689,7 +626,7 @@
             showClearBtn: true
         });
 
-        M.FormSelect.init(referralsDD,{
+        M.FormSelect.init(referrals,{
 
         })
     })  

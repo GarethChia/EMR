@@ -21,47 +21,41 @@ const DischargePlanning = new Schema({
     datetime:   {type: String, default: ''},
     date:   {type: String, default: ''},
     time:   {type: String, default: ''},
+    // 1
     dischargeCondition: {type: String, default: ''},
+    // 2
     dischargeTo: {type: String, default: ''},
-    dischargeToOthersSpecify: {type: String, default: ''},
+    dischargeToSpecify: {type: String, default: ''},
+    // 3
     accompaniedBy: {type: String, default: ''},
-    accompaniedByOthersSpecify: {type: String, default: ''},
+    accompaniedBySpecify: {type: String, default: ''},
+    // 4
     modeOfTransport: {type: String, default: ''},
-    modeOfTransportOthersSpecify: {type: String, default: ''},
+    modeOfTransportSpecify: {type: String, default: ''},
+    // 5
     removalOf: [String],
+    // 6
     checkedAndReturned: [String], // checklist
     checkedAndReturnedAppliancesSpecify: {type: String, default: ''},
-    checkedAndReturnedOthersSpecify: {type: String, default: ''},
+    checkedAndReturnedSpecify: {type: String, default: ''},
+    // 7
     adviceGivenOn: [String], // checklist
     // Follow-up Appointment
-    followUpAppointment:	 [String],
-    followUpAppointmentDD: {type: String, default: ''},
-    followUpAppointmentOthersSpecify: {type: String, default: ''},
+    followUpAppointment: {type: String, default: ''},
+    followUpAppointmentSpecify: {type: String, default: ''},
     appointmentDate: {type: String, default: ''},
     appointmentTime: {type: String, default: ''},
     clinic: {type: String, default:''},
     nameOfDoctor: {type: String, default: ''},
-    memoGiven: {type: String, default: ''},
+    memoGiven: {type: Boolean, default: ''}, // radio button
     remarks: {type: String, default: ''},
     // Special Instructions
-    specialInstructions:    [String],
     specialInstructionsSpecify: {type: String, default: ''},
     // Referrals
-    referrals:	 [String],
-    referralsOthersSpecify: {type: String, default: ''},
-    // Medications
-    medications:	 [String],
+    referrals:	 {type: String, default: ''},
+    referralsSpecify: {type: String, default: ''},
+    // Medical Cert No
     medicalCertificateNo: {type: String, default: ''},
-    // Medik Awas
-    medikAwas:  [String],
-    // Discharge Teaching/ Instructions
-    dischargeTeachingInstructions:  [String],
-    // Hospital Inpatient Discharge Summary
-    hospitalInpatientDischargeSummary:  [String],
-    // Medical Certificate No
-    medicalCertificateNo:   [String],
-    // Feedback form
-    feedbackForm:   [String]
 });
 
 mongoose.model('dischargePlanning', DischargePlanning, 'discharge-planning');
