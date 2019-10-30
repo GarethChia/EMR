@@ -7,16 +7,11 @@
                 <tr>
                     <th>Date</th>
                     <th>Time</th>
-                    <th>Progress Notes</th>
-                    <th>Health Provider</th>
-                    <th>Name</th>
-                    <th>By</th>
-                    {{!-- <th>Delete</th> --}}
                 </tr>
             </thead>
             <tbody>
-                {{#if newMDP}} <!--Current lecturer's mdp notes-->
-                    {{#each newMDP}}
+                {{#if newDischargePlanning}} <!--Current lecturer's mdp notes-->
+                    {{#each newDischargePlanning}}
                     <tr style="height: 60px">
                         {{#unless ../userType}}
                         <td><a href="/master/mdp/{{mdpID}}">{{date}}</a></td>
@@ -24,40 +19,11 @@
                         <td><a href="/student/io/{{../recordID}}/{{mdpID}}">{{date}}</a></td>
                         {{/unless}}
                         <td>{{time}}</td>
-                        <td>{{progressNotes}}</td>
-                        <td>{{selectUser}}</td>
-                        <td>{{nameOfHealthProvider}}</td>
-                        <td>{{createdBy}}</td>
-                        {{!-- {{#unless ../userType}}
-                        <td style="width: 65px"> <!-- the tr we're trying to get -->
-                            <form action="/master/del-mdp/{{mdpID}}?_method=DELETE" method="post" id="delete-form">
-                                <input type="hidden" name="_method" value="DELETE">
-                            <button type="submit" class="btn red darken-3">
-                                 <i class="material-icons">delete
-                            </button>
-                            </form>
-                        </td>
-                        {{/unless}} --}}
                     </tr>
                     {{/each}}
-                {{/if}}
-                {{#if newOtherMasterMDP}}  <!-- Other lecturer's mdp notes-->
-                    {{#each newOtherMasterMDP}}
-                    <tr style="height: 60px">
-                        <td>{{date}}</td>
-                        <td>{{time}}</td>
-                        <td>{{progressNotes}}</td>
-                        <td>{{selectUser}}</td>
-                        <td>{{createdBy}}</td>
-                    </tr>
-                    {{/each}}
-                {{/if}}
-
-                {{#if newMDP}} <!--Check if both current lecturer and other lecturers have created mdp notes. If they did not, it will trgger the else statement-->
-                {{else if newOtherMasterMDP}}
                 {{else}}
                     <tr style="height: 60px">
-                        <td colspan="6" class="center">
+                        <td colspan="2" class="center">
                             <p id="noRecord">You have not created any Discharge Checklist yet</p>
                         </td>
                     </tr>
@@ -80,7 +46,7 @@
     {{/unless}}
     <input type="hidden" name="_method" value="PUT">
     {{else}}
-    <form action="/master/add-mdp" method="POST" id="addMDP">
+    <form action="/master/add-discharge-planning" method="POST" id="addMDP">
     {{/if}}
         <div class="card purple lighten-5">
             <div class="card-content">
@@ -310,8 +276,8 @@
                             <tr style="border: none;">
                                 <td style="padding-top:23px;">
                                     <label style="display: inline-block;">
-                                        <input id="dyponea" name="adviceGivenOn" type="checkbox" value="Dyponea"
-                                            {{resetExceptNone assessment.breathingPresence 'Dyponea' 'None'}} />
+                                        <input id="FollowUpAppointment" name="adviceGivenOn" type="checkbox" value="Follow-up appointment"
+                                            {{resetExceptNone assessment.breathingPresence 'Follow-up appointment' 'None'}} />
                                         <span style="padding-left: 25px; padding-right: 10px">Follow-up appointment</span>
                                     </label>
                                 </td>
@@ -321,7 +287,7 @@
                                 <td>
                                     <div class="row">
                                         <div class="col s12 m4 input-field">
-                                            <select id="followUpAppointment" name="followUpAppointment" required>
+                                            <select id="followUpAppointment" name="followUpAppointment">
                                                 <option value="" disabled selected>Please select</option>
                                                 <option value="Doctors">Doctors</option>
                                                 <option value="Therapists">Therapists</option>
@@ -339,14 +305,14 @@
                                     
                                     <div class="row">
                                         <div class="col s12 m4 input-field">
-                                            <input id="appointmentDate" type="text" class="datepicker" name="dateMDP" value="{{editMDP.date}}" required>
-                                            <label for="dateMDP">Date</label>
+                                            <input id="appointmentDate" type="text" class="datepicker" name="appointmentDate" value="{{editMDP.date}}">
+                                            <label for="appointmentDate">Date</label>
                                             <span class="helper-text">dd/mm/yyyy</span>
                                         </div>
 
                                         <div class="col s12 m4 input-field">
-                                            <input id="appointmentTime" type="text" class="timepicker" name="timeMDP" value="{{editMDP.time}}" required>
-                                            <label for="timeMDP">Time</label>
+                                            <input id="appointmentTime" type="text" class="timepicker" name="appointmentTime" value="{{editMDP.time}}">
+                                            <label for="appointmentTime">Time</label>
                                             <span class="helper-text">hh:ss</span>
                                         </div>
                                     </div>
@@ -408,8 +374,8 @@
                             <tr style="border: none;">
                                 <td>
                                     <label style="display: inline-block;">
-                                        <input id="orthopnoea" name="adviceGivenOn" type="checkbox" value="Orthopnoea"
-                                            {{resetExceptNone assessment.breathingPresence 'Orthopnoea' 'None'}}/>
+                                        <input id="SpecialInstructions" name="adviceGivenOn" type="checkbox" value="Special instructions"
+                                            {{resetExceptNone assessment.breathingPresence 'Special instructions' 'None'}}/>
                                         <span style="padding-left: 25px; padding-right: 10px">Special instructions</span>
                                     </label>
                                 </td>
@@ -431,8 +397,8 @@
                             <tr style="border: none;">
                                 <td>
                                     <label style="display: inline-block;">
-                                        <input id="wheeze" name="adviceGivenOn" type="checkbox" value="Wheeze"
-                                            {{resetExceptNone assessment.breathingPresence 'Wheeze' 'None'}}/>
+                                        <input id="Referrals" name="adviceGivenOn" type="checkbox" value="Referrals"
+                                            {{resetExceptNone assessment.breathingPresence 'Referrals' 'None'}}/>
                                         <span style="padding-left: 25px; padding-right: 10px">Referrals</span>
                                     </label>
                                 </td>
@@ -443,7 +409,7 @@
                                 <td>
                                     <div class="row">
                                         <div class="col s12 m4 input-field">
-                                            <select id="referrals" name="referrals" required>
+                                            <select id="referrals" name="referrals">
                                                 <option value="" disabled selected>Please select</option>
                                                 <option value="Community Hosptal">Community Hosptal</option>
                                                 <option value="Day Care Centre">Day Care Centre</option>
@@ -469,8 +435,8 @@
                             <tr style="border: none;">
                                 <td>
                                     <label style="display: inline-block;">
-                                        <input id="cyanosis" name="adviceGivenOn" type="checkbox" value="Cyanosis"
-                                            {{resetExceptNone assessment.breathingPresence 'Cyanosis' 'None'}}/>
+                                        <input id="Medications" name="adviceGivenOn" type="checkbox" value="Medications"
+                                            {{resetExceptNone assessment.breathingPresence 'Medications' 'None'}}/>
                                         <span style="padding-left: 25px; padding-right: 10px">Medications</span>
                                     </label>
                                 </td>
@@ -478,7 +444,7 @@
                             <tr style="border: none;">
                                 <td>
                                     <label style="display: inline-block;">
-                                        <input id="noneResPresenceOf" name="adviceGivenOn" type="checkbox" value="None"
+                                        <input id="MedikAwas" name="adviceGivenOn" type="checkbox" value="Medik Awas"
                                             {{checked assessment.breathingPresence 'None'}}
                                             onclick="resetExceptNone('breathingPresence', 'noneResPresenceOf')"/>
                                         <span style="padding-left: 25px; padding-right: 10px">Medik Awas</span>
@@ -488,8 +454,8 @@
                             <tr style="border: none;">
                                 <td>
                                     <label style="display: inline-block;">
-                                        <input id="noneResPresenceOf" name="adviceGivenOn" type="checkbox" value="None"
-                                            {{checked assessment.breathingPresence 'None'}}
+                                        <input id="DischargeTeachingInstructions" name="adviceGivenOn" type="checkbox" value="Discharge teaching/Instructions"
+                                            {{checked assessment.breathingPresence 'Discharge teaching/Instructions'}}
                                             onclick="resetExceptNone('breathingPresence', 'noneResPresenceOf')"/>
                                         <span style="padding-left: 25px; padding-right: 10px">Discharge teaching/Instructions</span>
                                     </label>
@@ -498,8 +464,8 @@
                             <tr style="border: none;">
                                 <td>
                                     <label style="display: inline-block;">
-                                        <input id="noneResPresenceOf" name="adviceGivenOn" type="checkbox" value="None"
-                                            {{checked assessment.breathingPresence 'None'}}
+                                        <input id="HospitalInpatientDischargeSummary" name="adviceGivenOn" type="checkbox" value="Hospital inpatient discharge summary"
+                                            {{checked assessment.breathingPresence 'Hospital inpatient discharge summary'}}
                                             onclick="resetExceptNone('breathingPresence', 'noneResPresenceOf')"/>
                                         <span style="padding-left: 25px; padding-right: 10px">Hospital inpatient discharge summary</span>
                                     </label>
@@ -508,8 +474,8 @@
                             <tr style="border: none;">
                                 <td>
                                     <label style="display: inline-block;">
-                                        <input id="noneResPresenceOf" name="adviceGivenOn" type="checkbox" value="None"
-                                            {{checked assessment.breathingPresence 'None'}}
+                                        <input id="MedicalCertificateNo" name="adviceGivenOn" type="checkbox" value="Medical Certificate No."
+                                            {{checked assessment.breathingPresence 'Medical Certificate No.'}}
                                             onclick="resetExceptNone('breathingPresence', 'noneResPresenceOf')"/>
                                         <span style="padding-left: 25px; padding-right: 10px">Medical Certificate No.</span>
                                     </label>
@@ -534,8 +500,8 @@
                             <tr style="border: none;">
                                 <td>
                                     <label style="display: inline-block;">
-                                        <input id="noneResPresenceOf" name="adviceGivenOn" type="checkbox" value="None"
-                                            {{checked assessment.breathingPresence 'None'}}
+                                        <input id="FeedbackForm" name="adviceGivenOn" type="checkbox" value="Feedback form"
+                                            {{checked assessment.breathingPresence 'Feedback form'}}
                                             onclick="resetExceptNone('breathingPresence', 'noneResPresenceOf')"/>
                                         <span style="padding-left: 25px; padding-right: 10px">Feedback form</span>
                                     </label>

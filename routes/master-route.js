@@ -32,9 +32,8 @@ const MasterMotorStrength = mongoose.model('masterMotorStrength');
 //Feeding Regime & Schedule
 const MasterFeedingRegime = mongoose.model('masterFeedingRegime');
 const MasterScheduleFeed = mongoose.model('masterScheduleFeed');
-
-
-
+// Discharge Planning
+const MasterDischargePlanning = mongoose.model('masterDischargePlanning');
 
 const moment = require('moment');
 const csrf = require('csurf');
@@ -1795,7 +1794,7 @@ router.get('/oxygen/:oxygenID', ensureAuthenticated, ensureAuthorised, (req, res
 //Add oxygen information
 router.post('/add-oxygen', ensureAuthenticated, ensureAuthorised, (req, res) => {
 	oxygenid = (new standardID('AAA0000')).generate();
-	datetime = moment(req.body.dateOxy, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeOxy;
+	datetime = moment(req.body.dateOxy, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeDischargePlanning;
 
 	new MasterOxygen({
 		patientID: req.session.patient.patientID,
@@ -3376,18 +3375,147 @@ router.put('/edit-schedule/:scheduleID/:name', ensureAuthenticated, ensureAuthor
 
 // Discharge Planning
 router.get('/DischargePlanning', ensureAuthenticated, ensureAuthorised, (req, res) => {
-	/*MasterMotorStrength.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(newmotorstrength => {
-		MasterMotorStrength.findOne({ motorstrengthID: req.params.motorstrengthID }).then(editmotorstrength => {*/
-
-			//editmotorstrength.date = moment(editmotorstrength.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
-			res.render('discharge-planning/master/discharge-planning', {
-				/*newmotorstrength: newmotorstrength,
-				editmotorstrength: editmotorstrength,*/
-				patient: req.session.patient,
-				showMenu: true			
-			})
-		//})
-	//})
+	MasterDischargePlanning.find({patientID: req.session.patient.patientID}).sort({'datetime':1})
+	.then(newDischargePlanning => { // discharge planning that they have created
+		console.log('req.session.user.patientID: '+ req.session.patient.patientID );
+		res.render('discharge-planning/master/discharge-planning', {
+			newDischargePlanning: newDischargePlanning,
+			patient: req.session.patient,
+			showMenu: true			
+		})
+	})
 })
+// saves edited/updated nursing assessment form
+router.post('/add-discharge-planning', ensureAuthenticated, (req, res) => {
+	//console.log('Assessment id: ' + req.session.assessment._id);
+	
+	// Todo: check authorised user
+	/*NursingAssessmentModel.findByIdAndUpdate(
+		// the id of the item to find
+		req.params.nursingAssessmentID,
+		req.body, // will default all boolean radio buttons to false even if no selection is made
+		{new: true},
+		// the callback function
+		(err, assessment) => {
+			// Handle any possible database errors
+			if (err) {
+				return res.status(500).send(err);
+			}
+			//alertMessage.flashMessage(res, 'Nursing assessment updated', 'far fa-thumbs-up', true);
+			toaster.setSuccessMessage(' ', 'Nursing Assessment Updated');
+			res.render('master/master-edit-nursing-assessment', {
+				assessment: assessment,
+				patient: req.session.patient,
+				user: req.user,
+				toaster,
+				showMenu: true
+			});
+			/*if (req.user.userType === 'staff'){
+			
+			} else {
+				res.redirect('/student/list-patients');
+			}*/
+			
+		//}
+	//);
+	datetime = moment(req.body.dateDischargePlanning, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeDischargePlanning;
+	dischargePlanningID = (new standardID('AAA0000')).generate();
+	new MasterDischargePlanning({
+		patientID: req.session.patient.patientID,
+		dischargePlanningID: dischargePlanningID,
+		datetime: datetime,
+		date: moment(req.body.dateDischargePlanning, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		time: req.body.timeDischargePlanning,
+		// 1
+		dischargeCondition: req.body.dischargeCondition,
+		// 2
+		dischargeTo: req.body.dischargeTo,
+		dischargeToSpecify: req.body.dischargeToSpecify,
+		// 3
+		accompaniedBy: req.body.accompaniedBy,
+		accompaniedBySpecify: req.body.accompaniedBySpecify,
+		// 4
+		modeOfTransport: req.body.modeOfTransport,
+		modeOfTransportSpecify: req.body.modeOfTransportSpecify,
+		// 5
+		removalOf: req.body.removalOf,
+		// 6
+		checkedAndReturned: req.body.checkedAndReturned,
+		checkedAndReturnedAppliancesSpecify: req.body.checkedAndReturnedAppliancesSpecify,
+		checkedAndReturnedSpecify: req.body.checkedAndReturnedSpecify,
+		// 7
+		adviceGivenOn: req.body.adviceGivenOn,
+		// Follow-up Appointment
+		followUpAppointment: req.body.followUpAppointment,
+		followUpAppointmentSpecify: req.body.followUpAppointmentSpecify,
+		appointmentDate:  moment(req.body.appointmentDate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		appointmentTime: req.body.appointmentTime,
+		clinic: req.body.clinic,
+		nameOfDoctor: req.body.nameOfDoctor,
+		memoGiven: req.body.memoGiven,
+		remarks: req.body.remarks,
+		// Special Instructions
+		specialInstructionsSpecify: req.body.specialInstructionsSpecify,
+		// Referrals
+		referrals: req.body.referrals,
+		referralsSpecify: req.body.referralsSpecify,
+		// Medical Cert No
+		medicalCertificateNo: req.body.medicalCertificateNo
+	}).save();
+	/*
+    patientID:  {type: String, require: true},
+	nric:  {type: String, default: ''},
+	familyName: {type: String, default: ''},
+	givenName:  {type: String, default: ''},
+	userID: {
+		type: Schema.Types.ObjectId,
+		ref: 'emr-users' 	// collection name in mongodb
+	},
+	nursingAssessmentID: {
+		type: Schema.Types.ObjectId,
+		ref: 'nursing-assessment'
+    },
+    dischargePlanningID:    {type: String, default: ''},
+    datetime:   {type: String, default: ''},
+    date:   {type: String, default: ''},
+    time:   {type: String, default: ''},
+    // 1
+    dischargeCondition: {type: String, default: ''},
+    // 2
+    dischargeTo: {type: String, default: ''},
+    dischargeToSpecify: {type: String, default: ''},
+    // 3
+    accompaniedBy: {type: String, default: ''},
+    accompaniedBySpecify: {type: String, default: ''},
+    // 4
+    modeOfTransport: {type: String, default: ''},
+    modeOfTransportSpecify: {type: String, default: ''},
+    // 5
+    removalOf: [String],
+    // 6
+    checkedAndReturned: [String], // checklist
+    checkedAndReturnedAppliancesSpecify: {type: String, default: ''},
+    checkedAndReturnedSpecify: {type: String, default: ''},
+    // 7
+    adviceGivenOn: [String], // checklist
+    // Follow-up Appointment
+    followUpAppointment: {type: String, default: ''},
+    followUpAppointmentSpecify: {type: String, default: ''},
+    appointmentDate: {type: String, default: ''},
+    appointmentTime: {type: String, default: ''},
+    clinic: {type: String, default:''},
+    nameOfDoctor: {type: String, default: ''},
+    memoGiven: {type: Boolean}, // radio button
+    remarks: {type: String, default: ''},
+    // Special Instructions
+    specialInstructionsSpecify: {type: String, default: ''},
+    // Referrals
+    referrals:	 {type: String, default: ''},
+    referralsSpecify: {type: String, default: ''},
+    // Medical Cert No
+    medicalCertificateNo: {type: String, default: ''},	
+	*/
+	res.redirect('/master/DischargePlanning');
+});
 
 module.exports = router;

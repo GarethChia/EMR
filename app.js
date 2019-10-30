@@ -50,6 +50,8 @@ require('./models/MasterMotorStrength');
 //feeding regime & schedule
 require('./models/MasterFeedingRegime');
 require('./models/MasterScheduleFeed');
+//discharge planning
+require('./models/MasterDischargePlanning');
 
 // load keys
 const key = fs.readFileSync('./server.key');

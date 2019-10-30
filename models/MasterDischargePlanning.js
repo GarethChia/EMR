@@ -4,7 +4,7 @@ const EMR_User = mongoose.model('emr-users');
 
 
 //Create Schema
-const DischargePlanning = new Schema({
+const MasterDischargePlanningSchema = new Schema({
     patientID:  {type: String, require: true},
 	nric:  {type: String, default: ''},
 	familyName: {type: String, default: ''},
@@ -47,7 +47,7 @@ const DischargePlanning = new Schema({
     appointmentTime: {type: String, default: ''},
     clinic: {type: String, default:''},
     nameOfDoctor: {type: String, default: ''},
-    memoGiven: {type: Boolean, default: ''}, // radio button
+    memoGiven: {type: Boolean}, // radio button
     remarks: {type: String, default: ''},
     // Special Instructions
     specialInstructionsSpecify: {type: String, default: ''},
@@ -58,4 +58,4 @@ const DischargePlanning = new Schema({
     medicalCertificateNo: {type: String, default: ''},
 });
 
-mongoose.model('dischargePlanning', DischargePlanning, 'discharge-planning');
+mongoose.model('masterDischargePlanning', MasterDischargePlanningSchema, 'master-discharge-planning');
