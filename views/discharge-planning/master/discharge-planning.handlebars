@@ -38,9 +38,7 @@
 
     {{#if editDischargePlanning}}
     {{#unless userType}}
-    <form action="/master/edit-mdp/{{editMDP.mdpID}}?_method=PUT" method="POST" id="editMDP">
-    {{else}}    
-    <form action="/student/edit-mdp/{{recordID}}/{{editMDP.mdpID}}?_method=PUT" method="POST" id="editMDP">
+    <form action="/master/edit-DischargePlanning/{{editDischargePlanning.dischargePlanningID}}?_method=PUT" method="POST" id="editMDP">
     {{/unless}}
     <input type="hidden" name="_method" value="PUT">
     {{else}}
@@ -82,7 +80,7 @@
                             <label style="font-size: 15px">Discharge to</label>
                         </div>
                         <div class="col s12 m4 input-field">
-                                <select id="dischargeTo" name="dischargeTo" required>
+                                <select id="dischargeTo" name="dischargeTo">
                                     <option value="" disabled selected>Please select</option>
                                     <option value="Home">Home</option>
                                     <option value="Community Hospital">Community Hospital</option>
@@ -105,7 +103,7 @@
                             <label style="font-size: 15px">Accompained by</label>
                         </div>
                         <div class="col s12 m4 input-field">
-                                <select id="accompaniedBy" name="accompaniedBy" required>
+                                <select id="accompaniedBy" name="accompaniedBy">
                                     <option value="" disabled selected>Please select</option>
                                     <option value="Self">Self</option>
                                     <option value="Spouse">Spouse</option>
@@ -132,7 +130,7 @@
                             <label style="font-size: 15px">Mode of transportation</label>
                         </div>
                         <div class="col s12 m4 input-field">
-                                <select id="modeOfTransport" name="modeOfTransport" required>
+                                <select id="modeOfTransport" name="modeOfTransport">
                                     <option value="" disabled selected>Please select</option>
                                     <option value="Walk">Walk</option>
                                     <option value="Wheel chair">Wheel chair</option>
@@ -518,7 +516,7 @@
         <div class="col s12 m8"></div>
 
         <div class="col s12 m4">
-            {{#if editMDP}}
+            {{#if editDischargePlanning}}
             <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editMDP">Save
             {{else}}
             {{#unless userType}}

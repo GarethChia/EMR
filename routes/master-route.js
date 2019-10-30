@@ -3493,7 +3493,14 @@ router.get('/DischargePlanning/:dischargePlanningID', ensureAuthenticated, ensur
 	.then(newDischargePlanning => {
 		MasterDischargePlanning.findOne({dischargePlanningID: req.params.dischargePlanningID})
 		.then(editDischargePlanning => {
-			console.log("Hi: "+ editDischargePlanning);
+			editDischargePlanning.date = moment(editDischargePlanning.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
+			
+			if (editDischargePlanning.appointmentDate == "Invalid date") {
+				editDischargePlanning.appointmentDate = "";
+			}
+			else {
+				editDischargePlanning.appointmentDate = moment(editDischargePlanning.appointmentDate , 'YYYY-MM-DD').format('DD/MM/YYYY');
+			}
 			res.render('discharge-planning/master/discharge-planning', {
 				editDischargePlanning: editDischargePlanning,
 				newDischargePlanning: newDischargePlanning,
@@ -3503,5 +3510,54 @@ router.get('/DischargePlanning/:dischargePlanningID', ensureAuthenticated, ensur
 		})
 	});
 });
+
+// edit Discharge Planning
+router.put('/edit-DischargePlanning/:dischargePlanningID', ensureAuthenticated, ensureAuthorised, (req,res) => {
+	datetime = moment(req.body.dateDischargePlanning, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeDischargePlanning;
+
+	MasterDischargePlanning.findOne({ dischargePlanningID: req.params.dischargePlanningID}).then(editDischargePlanning => {
+		editDischargePlanning.date = moment(req.body.dateDischargePlanning, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		editDischargePlanning.time = req.body.timeDischargePlanning,
+		editDischargePlanning.datetime = datetime,
+		// 1
+		editDischargePlanning.dischargeCondition = req.body.dischargeCondition,
+		// 2
+		editDischargePlanning.dischargeTo = req.body.dischargeTo,
+		editDischargePlanning.dischargeToSpecify = req.body.dischargeToSpecify,
+		// 3
+		editDischargePlanning.accompaniedBy = req.body.accompaniedBy,
+		editDischargePlanning.accompaniedBySpecify = req.body.accompaniedBySpecify,
+		// 4
+		editDischargePlanning.modeOfTransport = req.body.modeOfTransport,
+		editDischargePlanning.modeOfTransportSpecify = req.body.modeOfTransportSpecify,
+		// 5
+		editDischargePlanning.removalOf = req.body.removalOf,
+		// 6
+		editDischargePlanning.checkedAndReturned = req.body.checkedAndReturned,
+		editDischargePlanning.checkedAndReturnedAppliancesSpecify = req.body.checkedAndReturnedAppliancesSpecify,
+		editDischargePlanning.checkedAndReturnedSpecify = req.body.checkedAndReturnedSpecify,
+		// 7
+		editDischargePlanning.adviceGivenOn = req.body.adviceGivenOn,
+		// Follow-up Appointment
+		editDischargePlanning.followUpAppointment = req.body.followUpAppointment,
+		editDischargePlanning.followUpAppointmentSpecify = req.body.followUpAppointmentSpecify,
+		editDischargePlanning.appointmentDate = moment(req.body.appointmentDate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		editDischargePlanning.appointmentTime = req.body.appointmentTime,
+		editDischargePlanning.clinic = req.body.clinic,
+		editDischargePlanning.nameOfDoctor = req.body.nameOfDoctor,
+		editDischargePlanning.memoGiven = req.body.memoGiven,
+		editDischargePlanning.remarks = req.body.remarks,
+		// Special Instructions
+		editDischargePlanning.specialInstructionsSpecify = req.body.specialInstructionsSpecify,
+		// Referrals
+		editDischargePlanning.referrals = req.body.referrals,
+		editDischargePlanning.referralsSpecify = req.body.referralsSpecify,
+		// Medical Cert No
+		editDischargePlanning.medicalCertificateNo = req.body.medicalCertificateNo
+
+		editDischargePlanning.save();
+	});
+	res.redirect("/master/DischargePlanning");
+})
 
 module.exports = router;
