@@ -20,8 +20,6 @@
                     <tr style="height: 60px">
                         {{#unless ../userType}}
                         <td><a href="/master/mdp/{{mdpID}}">{{date}}</a></td>
-                        {{else}}
-                        <td><a href="/student/io/{{../recordID}}/{{mdpID}}">{{date}}</a></td>
                         {{/unless}}
                         <td>{{time}}</td>
                         <td>{{progressNotes}}</td>

@@ -14,9 +14,7 @@
                     {{#each newDischargePlanning}}
                     <tr style="height: 60px">
                         {{#unless ../userType}}
-                        <td><a href="/master/mdp/{{mdpID}}">{{date}}</a></td>
-                        {{else}}
-                        <td><a href="/student/io/{{../recordID}}/{{mdpID}}">{{date}}</a></td>
+                        <td><a href="/master/DischargePlanning/{{dischargePlanningID}}">{{date}}</a></td>
                         {{/unless}}
                         <td>{{time}}</td>
                     </tr>
@@ -38,7 +36,7 @@
         <div class="col s12 m8"></div>
     </div>
 
-    {{#if editMDP}}
+    {{#if editDischargePlanning}}
     {{#unless userType}}
     <form action="/master/edit-mdp/{{editMDP.mdpID}}?_method=PUT" method="POST" id="editMDP">
     {{else}}    
@@ -55,13 +53,13 @@
                 
                     <div class="row">
                             <div class="col s12 m4 input-field">
-                                <input id="dateDischargePlanning" type="text" class="datepicker" name="dateDischargePlanning" value="{{editMDP.date}}" required>
+                                <input id="dateDischargePlanning" type="text" class="datepicker" name="dateDischargePlanning" value="{{editDischargePlanning.date}}" required>
                                 <label for="dateDischargePlanning">Date</label>
                                 <span class="helper-text">dd/mm/yyyy</span>
                             </div>
 
                             <div class="col s12 m4 input-field">
-                                <input id="timeDischargePlanning" type="text" class="timepicker" name="timeDischargePlanning" value="{{editMDP.time}}" required>
+                                <input id="timeDischargePlanning" type="text" class="timepicker" name="timeDischargePlanning" value="{{editDischargePlanning.time}}" required>
                                 <label for="timeDischargePlanning">Time</label>
                                 <span class="helper-text">hh:ss</span>
                             </div>
@@ -72,7 +70,7 @@
                             <label style="font-size: 15px">Condition on discharge</label>
                         </div>
                         <div class="col s12 m4 input-field" >
-                            <input id="dischargeCondition" name="dischargeCondition" type="text" value="{{assessment.treatment}}"/>
+                            <input id="dischargeCondition" name="dischargeCondition" type="text" value="{{editDischargePlanning.dischargeCondition}}"/>
                             <label for="dischargeCondition">Describe</label>
                             <span class="helper-text"></span>
                         </div>
@@ -95,7 +93,7 @@
                         </div>
                         
                         <div class="col s12 m4 input-field">
-                            <input id="dischargeToSpecify" type="text" name="dischargeToSpecify" value="{{editMDP.nameOfHealthProvider}}">
+                            <input id="dischargeToSpecify" type="text" name="dischargeToSpecify" value="{{editDischargePlanning.dischargeToSpecify}}">
                             <label for="dischargeToSpecify">Others</label>
                             <span class="helper-text">Specify</span>
                         </div>
@@ -122,7 +120,7 @@
                         </div>
                         
                         <div class="col s12 m4 input-field">
-                            <input id="accompaniedBySpecify" type="text" name="accompaniedBySpecify" value="{{editMDP.nameOfHealthProvider}}">
+                            <input id="accompaniedBySpecify" type="text" name="accompaniedBySpecify" value="{{editDischargePlanning.accompaniedBySpecify}}">
                             <label for="accompaniedBySpecify">Others</label>
                             <span class="helper-text">Specify</span>
                         </div>
@@ -146,7 +144,7 @@
                         </div>
                         
                         <div class="col s12 m4 input-field">
-                            <input id="modeOfTransportSpecify" type="text" name="modeOfTransportSpecify" value="{{editMDP.nameOfHealthProvider}}">
+                            <input id="modeOfTransportSpecify" type="text" name="modeOfTransportSpecify" value="{{editDischargePlanning.modeOfTransportSpecify}}">
                             <label for="modeOfTransportSpecify">Others</label>
                             <span class="helper-text">Specify</span>
                         </div>
@@ -164,27 +162,27 @@
                                     <td style="padding-top: 23px">
                                         <label>
                                             <input id="ivCannula" name="removalOf" type="checkbox" value="IV Cannula"
-                                                {{resetExceptNone assessment.breathingPresence 'IV Cannula' 'None'}}/>
+                                                {{resetExceptNone editDischargePlanning.removalOf 'IV Cannula' 'None'}}/>
                                             <span style="padding-left: 25px; padding-right: 10px">IV Cannula</span>
                                         </label>
                                         <label>
                                             <input id="drains" name="removalOf" type="checkbox" value="Drain(s)"
-                                                {{resetExceptNone assessment.breathingPresence 'Drain(s)' 'None'}}/>
+                                                {{resetExceptNone editDischargePlanning.removalOf 'Drain(s)' 'None'}}/>
                                             <span style="padding-left: 25px; padding-right: 10px">Drain(s)</span>
                                         </label>
                                         <label>
                                             <input id="urinaryCatheter" name="removalOf" type="checkbox" value="Urinary catheter"
-                                                {{resetExceptNone assessment.breathingPresence 'Urinary catheter' 'None'}}/>
+                                                {{resetExceptNone editDischargePlanning.removalOf 'Urinary catheter' 'None'}}/>
                                             <span style="padding-left: 25px; padding-right: 10px">Urinary catheter</span>
                                         </label>
                                         <label>
                                             <input id="identificationBand" name="removalOf" type="checkbox" value="Identification band"
-                                                {{resetExceptNone assessment.breathingPresence 'Identification band' 'None'}}/>
+                                                {{resetExceptNone editDischargePlanning.removalOf 'Identification band' 'None'}}/>
                                             <span style="padding-left: 25px; padding-right: 10px">Identification band</span>
                                         </label>
                                         <label>
                                             <input id="stitchesStaple" name="removalOf" type="checkbox" value="Stitches/Staple"
-                                                {{checked assessment.breathingPresence 'Stitches/Staple'}} />
+                                                {{checked editDischargePlanning.removalOf 'Stitches/Staple'}} />
                                             <span style="padding-left: 25px; padding-right: 10px">Stitches/Staple</span>
                                         </label>
                                     </td>
@@ -206,7 +204,7 @@
                                     <td style="padding-top:23px;">
                                         <label>
                                             <input id="PropertyReceipt" name="checkedAndReturned" type="checkbox" value="Propery/ Property Receipt"
-                                                {{resetExceptNone assessment.breathingPresence 'Propery/ Property Receipt' 'None'}}/>
+                                                {{resetExceptNone editDischargePlanning.checkedAndReturned 'Propery/ Property Receipt' 'None'}}/>
                                             <span style="padding-left: 25px; padding-right: 10px">Propery/ Property Receipt</span>
                                         </label>
                                     </td>
@@ -215,7 +213,7 @@
                                     <td>
                                         <label>
                                             <input id="OwnMedications" name="checkedAndReturned" type="checkbox" value="Own medications"
-                                                {{resetExceptNone assessment.breathingPresence 'Own medications' 'None'}}/>
+                                                {{resetExceptNone editDischargePlanning.checkedAndReturned 'Own medications' 'None'}}/>
                                             <span style="padding-left: 25px; padding-right: 10px">Own medications</span>
                                         </label>
                                     </td>
@@ -224,12 +222,12 @@
                                     <td>
                                         <label>
                                             <input id="AppliancesSpecify" name="checkedAndReturned" type="checkbox" value="Appliances (Specify)"
-                                                {{resetExceptNone assessment.breathingPresence 'Appliances (Specify)' 'None'}}/>
+                                                {{resetExceptNone editDischargePlanning.checkedAndReturned 'Appliances (Specify)' 'None'}}/>
                                             <span style="padding-left: 25px; padding-right: 10px">Appliances (Specify)</span>
                                         </label>
                                         <br>
                                         <div class="col s12 m4 input-field">
-                                            <input id="checkedAndReturnedAppliancesSpecify" type="text" name="checkedAndReturnedAppliancesSpecify" value="{{editMDP.nameOfHealthProvider}}">
+                                            <input id="checkedAndReturnedAppliancesSpecify" type="text" name="checkedAndReturnedAppliancesSpecify" value="{{editDischargePlanning.checkedAndReturnedAppliancesSpecify}}">
                                             <label for="checkedAndReturnedAppliancesSpecify">Specify</label>
                                             <span class="helper-text">Specify</span>
                                         </div>
@@ -240,7 +238,7 @@
                                     <td>
                                         <label>
                                             <input id="PrivateXRays" name="checkedAndReturned" type="checkbox" value="Private X-rays"
-                                                {{resetExceptNone assessment.breathingPresence 'Private X-rays' 'None'}}/>
+                                                {{resetExceptNone editDischargePlanning.checkedAndReturned 'Private X-rays' 'None'}}/>
                                             <span style="padding-left: 25px; padding-right: 10px">Private X-rays</span>
                                         </label>
                                     </td>
@@ -249,12 +247,12 @@
                                     <td>
                                         <label>
                                             <input id="OthersSpecify" name="checkedAndReturned" type="checkbox" value="Others (Specify)"
-                                                {{checked assessment.breathingPresence 'Others (Specify)'}}/>
+                                                {{checked editDischargePlanning.checkedAndReturned 'Others (Specify)'}}/>
                                             <span style="padding-left: 25px; padding-right: 10px">Others (Specify)</span>
                                         </label>
                                         <br>
                                         <div class="col s12 m4 input-field">
-                                            <input id="checkedAndReturnedSpecify" type="text" name="checkedAndReturnedSpecify" value="{{editMDP.nameOfHealthProvider}}">
+                                            <input id="checkedAndReturnedSpecify" type="text" name="checkedAndReturnedSpecify" value="{{editDischargePlanning.checkedAndReturnedSpecify}}">
                                             <label for="checkedAndReturnedSpecify">Others</label>
                                             <span class="helper-text">Specify</span>
                                         </div>
@@ -277,7 +275,7 @@
                                 <td style="padding-top:23px;">
                                     <label style="display: inline-block;">
                                         <input id="FollowUpAppointment" name="adviceGivenOn" type="checkbox" value="Follow-up appointment"
-                                            {{resetExceptNone assessment.breathingPresence 'Follow-up appointment' 'None'}} />
+                                            {{resetExceptNone editDischargePlanning.adviceGivenOn 'Follow-up appointment' 'None'}} />
                                         <span style="padding-left: 25px; padding-right: 10px">Follow-up appointment</span>
                                     </label>
                                 </td>
@@ -297,7 +295,7 @@
                                             <label for="followUpAppointment">Follow up</label>
                                         </div>
                                         <div class="col s12 m4 input-field">
-                                            <input id="followUpAppointmentSpecify" type="text" name="followUpAppointmentSpecify" value="{{editMDP.nameOfHealthProvider}}">
+                                            <input id="followUpAppointmentSpecify" type="text" name="followUpAppointmentSpecify" value="{{editDischargePlanning.followUpAppointmentSpecify}}">
                                             <label for="followUpAppointmentSpecify">Others</label>
                                             <span class="helper-text">Specify</span>
                                         </div>
@@ -305,13 +303,13 @@
                                     
                                     <div class="row">
                                         <div class="col s12 m4 input-field">
-                                            <input id="appointmentDate" type="text" class="datepicker" name="appointmentDate" value="{{editMDP.date}}">
+                                            <input id="appointmentDate" type="text" class="datepicker" name="appointmentDate" value="{{editDischargePlanning.appointmentDate}}">
                                             <label for="appointmentDate">Date</label>
                                             <span class="helper-text">dd/mm/yyyy</span>
                                         </div>
 
                                         <div class="col s12 m4 input-field">
-                                            <input id="appointmentTime" type="text" class="timepicker" name="appointmentTime" value="{{editMDP.time}}">
+                                            <input id="appointmentTime" type="text" class="timepicker" name="appointmentTime" value="{{editDischargePlanning.appointmentTime}}">
                                             <label for="appointmentTime">Time</label>
                                             <span class="helper-text">hh:ss</span>
                                         </div>
@@ -322,7 +320,7 @@
                                             <label style="font-size: 15px">Clinic</label>
                                         </div>
                                         <div class="col s12 m4 input-field">
-                                            <input id="clinic" type="text" name="clinic" value="{{editMDP.nameOfHealthProvider}}">
+                                            <input id="clinic" type="text" name="clinic" value="{{editDischargePlanning.clinic}}">
                                             <label for="clinic">Key in the Clinic name</label>
                                             {{!-- <span class="helper-text">Specify</span> --}}
                                         </div>
@@ -333,7 +331,7 @@
                                             <label style="font-size: 15px">Name of the Doctor</label>
                                         </div>
                                         <div class="col s12 m4 input-field">
-                                            <input id="nameOfDoctor" type="text" name="nameOfDoctor" value="{{editMDP.nameOfHealthProvider}}">
+                                            <input id="nameOfDoctor" type="text" name="nameOfDoctor" value="{{editDischargePlanning.nameOfDoctor}}">
                                             <label for="nameOfDoctor">Doctor/Therapists/Dietitian/Others' name</label>
                                             {{!-- <span class="helper-text">Specify</span> --}}
                                         </div>
@@ -341,19 +339,19 @@
 
                                     <div class="row">
                                         <div class="col s12 m2 l2" style="padding-top:20px">
-                                            <label for="cough" style="font-size: 15px">Memo given</label>
+                                            <label for="memoGiven" style="font-size: 15px">Memo given</label>
                                         </div>
                                         <div class="col s12 m2 l2" style="padding-top:20px">
                                             <label>
-                                                <input id="coughYes" name="cough" type="radio" value="true"
+                                                <input id="memoGivenYes" name="memoGiven" type="radio" value="true"
                                                     {{!--{{#if assessment.cough}} checked="checked" {{/if}}--}}
-                                                    {{ setRadioButton assessment.cough true }}/>
+                                                    {{ setRadioButton editDischargePlanning.memoGiven true }}/>
                                                 <span style="padding-left: 25px; padding-right: 10px">Yes</span>
                                             </label>
                                             <label>
-                                                <input id="coughNo" name="cough" type="radio" value="false"
+                                                <input id="memoGivenNo" name="memoGiven" type="radio" value="false"
                                                     {{!--{{#unless assessment.cough}} checked="checked" {{/unless}}--}}
-                                                    {{ setRadioButton assessment.cough false }}/>
+                                                    {{ setRadioButton editDischargePlanning.memoGiven false }}/>
                                                 <span style="padding-left: 25px; padding-right: 10px">No</span>
                                             </label>
                                         </div>
@@ -364,7 +362,7 @@
                                             <label style="font-size: 15px">Remarks</label>
                                         </div>
                                         <div class="col s12 m4 input-field">
-                                            <input id="remarks" type="text" name="remarks" value="{{editMDP.nameOfHealthProvider}}">
+                                            <input id="remarks" type="text" name="remarks" value="{{editDischargePlanning.remarks}}">
                                             <label for="remarks">Specify</label>
                                             {{!-- <span class="helper-text">Specify</span> --}}
                                         </div>
@@ -375,7 +373,7 @@
                                 <td>
                                     <label style="display: inline-block;">
                                         <input id="SpecialInstructions" name="adviceGivenOn" type="checkbox" value="Special instructions"
-                                            {{resetExceptNone assessment.breathingPresence 'Special instructions' 'None'}}/>
+                                            {{resetExceptNone editDischargePlanning.adviceGivenOn 'Special instructions' 'None'}}/>
                                         <span style="padding-left: 25px; padding-right: 10px">Special instructions</span>
                                     </label>
                                 </td>
@@ -385,7 +383,7 @@
                                 <td>
                                     <div class="row">
                                         <div class="col s12 m4 input-field">
-                                            <input id="specialInstructionsSpecify" type="text" name="specialInstructionsSpecify" value="{{editMDP.nameOfHealthProvider}}">
+                                            <input id="specialInstructionsSpecify" type="text" name="specialInstructionsSpecify" value="{{editDischargePlanning.specialInstructionsSpecify}}">
                                             <label for="specialInstructionsSpecify">Specify</label>
                                             {{!-- <span class="helper-text">Specify</span> --}}
                                         </div>
@@ -398,7 +396,7 @@
                                 <td>
                                     <label style="display: inline-block;">
                                         <input id="Referrals" name="adviceGivenOn" type="checkbox" value="Referrals"
-                                            {{resetExceptNone assessment.breathingPresence 'Referrals' 'None'}}/>
+                                            {{resetExceptNone editDischargePlanning.adviceGivenOn 'Referrals' 'None'}}/>
                                         <span style="padding-left: 25px; padding-right: 10px">Referrals</span>
                                     </label>
                                 </td>
@@ -423,7 +421,7 @@
                                         </div>
 
                                         <div class="col s12 m4 input-field">
-                                            <input id="referralsSpecify" type="text" name="referralsSpecify" value="{{editMDP.nameOfHealthProvider}}">
+                                            <input id="referralsSpecify" type="text" name="referralsSpecify" value="{{editDischargePlanning.referralsSpecify}}">
                                             <label for="referralsSpecify">Others</label>
                                             <span class="helper-text">Specify</span>
                                         </div>
@@ -436,7 +434,7 @@
                                 <td>
                                     <label style="display: inline-block;">
                                         <input id="Medications" name="adviceGivenOn" type="checkbox" value="Medications"
-                                            {{resetExceptNone assessment.breathingPresence 'Medications' 'None'}}/>
+                                            {{resetExceptNone editDischargePlanning.adviceGivenOn 'Medications' 'None'}}/>
                                         <span style="padding-left: 25px; padding-right: 10px">Medications</span>
                                     </label>
                                 </td>
@@ -445,7 +443,7 @@
                                 <td>
                                     <label style="display: inline-block;">
                                         <input id="MedikAwas" name="adviceGivenOn" type="checkbox" value="Medik Awas"
-                                            {{checked assessment.breathingPresence 'None'}}
+                                            {{checked editDischargePlanning.adviceGivenOn 'Medik Awas'}}
                                             onclick="resetExceptNone('breathingPresence', 'noneResPresenceOf')"/>
                                         <span style="padding-left: 25px; padding-right: 10px">Medik Awas</span>
                                     </label>
@@ -455,7 +453,7 @@
                                 <td>
                                     <label style="display: inline-block;">
                                         <input id="DischargeTeachingInstructions" name="adviceGivenOn" type="checkbox" value="Discharge teaching/Instructions"
-                                            {{checked assessment.breathingPresence 'Discharge teaching/Instructions'}}
+                                            {{checked editDischargePlanning.adviceGivenOn 'Discharge teaching/Instructions'}}
                                             onclick="resetExceptNone('breathingPresence', 'noneResPresenceOf')"/>
                                         <span style="padding-left: 25px; padding-right: 10px">Discharge teaching/Instructions</span>
                                     </label>
@@ -465,7 +463,7 @@
                                 <td>
                                     <label style="display: inline-block;">
                                         <input id="HospitalInpatientDischargeSummary" name="adviceGivenOn" type="checkbox" value="Hospital inpatient discharge summary"
-                                            {{checked assessment.breathingPresence 'Hospital inpatient discharge summary'}}
+                                            {{checked editDischargePlanning.adviceGivenOn 'Hospital inpatient discharge summary'}}
                                             onclick="resetExceptNone('breathingPresence', 'noneResPresenceOf')"/>
                                         <span style="padding-left: 25px; padding-right: 10px">Hospital inpatient discharge summary</span>
                                     </label>
@@ -475,7 +473,7 @@
                                 <td>
                                     <label style="display: inline-block;">
                                         <input id="MedicalCertificateNo" name="adviceGivenOn" type="checkbox" value="Medical Certificate No."
-                                            {{checked assessment.breathingPresence 'Medical Certificate No.'}}
+                                            {{checked editDischargePlanning.adviceGivenOn 'Medical Certificate No.'}}
                                             onclick="resetExceptNone('breathingPresence', 'noneResPresenceOf')"/>
                                         <span style="padding-left: 25px; padding-right: 10px">Medical Certificate No.</span>
                                     </label>
@@ -489,7 +487,7 @@
                                             <label style="font-size: 15px">Medical Certificate No</label>
                                         </div> --}}
                                         <div class="col s12 m4 input-field">
-                                            <input id="medicalCertificateNo" type="text" name="medicalCertificateNo" value="{{editMDP.nameOfHealthProvider}}">
+                                            <input id="medicalCertificateNo" type="text" name="medicalCertificateNo" value="{{editDischargePlanning.medicalCertificateNo}}">
                                             <label for="medicalCertificateNo">Key in MC No</label>
                                             {{!-- <span class="helper-text">Specify</span> --}}
                                         </div>
@@ -501,8 +499,7 @@
                                 <td>
                                     <label style="display: inline-block;">
                                         <input id="FeedbackForm" name="adviceGivenOn" type="checkbox" value="Feedback form"
-                                            {{checked assessment.breathingPresence 'Feedback form'}}
-                                            onclick="resetExceptNone('breathingPresence', 'noneResPresenceOf')"/>
+                                            {{checked editDischargePlanning.adviceGivenOn 'Feedback form'}}/>
                                         <span style="padding-left: 25px; padding-right: 10px">Feedback form</span>
                                     </label>
                                 </td>
@@ -596,7 +593,11 @@
 
         })
     })  
-    {{#if editMDP}}
-        document.getElementById('dischargeTo').value = "{{editMDP.selectUser}}";
+    {{#if editDischargePlanning}}
+        document.getElementById('dischargeTo').value = "{{editDischargePlanning.dischargeTo}}";
+        document.getElementById('accompaniedBy').value = "{{editDischargePlanning.accompaniedBy}}";
+        document.getElementById('modeOfTransport').value = "{{editDischargePlanning.modeOfTransport}}";
+        document.getElementById('followUpAppointment').value = "{{editDischargePlanning.followUpAppointment}}";
+        document.getElementById('referrals').value = "{{editDischargePlanning.referrals}}";
     {{/if}}
  </script>

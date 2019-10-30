@@ -3371,8 +3371,6 @@ router.put('/edit-schedule/:scheduleID/:name', ensureAuthenticated, ensureAuthor
 	res.redirect("/master/ScheduleFeeding");
 })
 	
-
-
 // Discharge Planning
 router.get('/DischargePlanning', ensureAuthenticated, ensureAuthorised, (req, res) => {
 	MasterDischargePlanning.find({patientID: req.session.patient.patientID}).sort({'datetime':1})
@@ -3385,39 +3383,9 @@ router.get('/DischargePlanning', ensureAuthenticated, ensureAuthorised, (req, re
 		})
 	})
 })
-// saves edited/updated nursing assessment form
+// Add Discharge Planning Record
 router.post('/add-discharge-planning', ensureAuthenticated, (req, res) => {
-	//console.log('Assessment id: ' + req.session.assessment._id);
-	
-	// Todo: check authorised user
-	/*NursingAssessmentModel.findByIdAndUpdate(
-		// the id of the item to find
-		req.params.nursingAssessmentID,
-		req.body, // will default all boolean radio buttons to false even if no selection is made
-		{new: true},
-		// the callback function
-		(err, assessment) => {
-			// Handle any possible database errors
-			if (err) {
-				return res.status(500).send(err);
-			}
-			//alertMessage.flashMessage(res, 'Nursing assessment updated', 'far fa-thumbs-up', true);
-			toaster.setSuccessMessage(' ', 'Nursing Assessment Updated');
-			res.render('master/master-edit-nursing-assessment', {
-				assessment: assessment,
-				patient: req.session.patient,
-				user: req.user,
-				toaster,
-				showMenu: true
-			});
-			/*if (req.user.userType === 'staff'){
-			
-			} else {
-				res.redirect('/student/list-patients');
-			}*/
-			
-		//}
-	//);
+
 	datetime = moment(req.body.dateDischargePlanning, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeDischargePlanning;
 	dischargePlanningID = (new standardID('AAA0000')).generate();
 	new MasterDischargePlanning({
@@ -3516,6 +3484,24 @@ router.post('/add-discharge-planning', ensureAuthenticated, (req, res) => {
     medicalCertificateNo: {type: String, default: ''},	
 	*/
 	res.redirect('/master/DischargePlanning');
+});
+
+// get single Discharge Planning info
+router.get('/DischargePlanning/:dischargePlanningID', ensureAuthenticated, ensureAuthorised, (req, res) => {
+	
+	MasterDischargePlanning.find({patientID: req.session.patient.patientID}).sort({'datetime':1})
+	.then(newDischargePlanning => {
+		MasterDischargePlanning.findOne({dischargePlanningID: req.params.dischargePlanningID})
+		.then(editDischargePlanning => {
+			console.log("Hi: "+ editDischargePlanning);
+			res.render('discharge-planning/master/discharge-planning', {
+				editDischargePlanning: editDischargePlanning,
+				newDischargePlanning: newDischargePlanning,
+				patient: req.session.patient,
+				showMenu: true
+			});
+		})
+	});
 });
 
 module.exports = router;
