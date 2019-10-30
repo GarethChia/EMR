@@ -90,7 +90,7 @@
                                 <label for="dischargeTo"></label>
                         </div>
                         
-                        <div class="col s12 m4 input-field">
+                        <div class="col s12 m4 input-field" id="dischargeToSpecifyContent">
                             <input id="dischargeToSpecify" type="text" name="dischargeToSpecify" value="{{editDischargePlanning.dischargeToSpecify}}">
                             <label for="dischargeToSpecify">Others</label>
                             <span class="helper-text">Specify</span>
@@ -117,7 +117,7 @@
                                 <label for="accompaniedBy"></label>
                         </div>
                         
-                        <div class="col s12 m4 input-field">
+                        <div class="col s12 m4 input-field" id="accompaniedBySpecifyContent">
                             <input id="accompaniedBySpecify" type="text" name="accompaniedBySpecify" value="{{editDischargePlanning.accompaniedBySpecify}}">
                             <label for="accompaniedBySpecify">Others</label>
                             <span class="helper-text">Specify</span>
@@ -141,7 +141,7 @@
                                 <label for="modeOfTransport"></label>
                         </div>
                         
-                        <div class="col s12 m4 input-field">
+                        <div class="col s12 m4 input-field" id="modeOfTransportSpecifyContent">
                             <input id="modeOfTransportSpecify" type="text" name="modeOfTransportSpecify" value="{{editDischargePlanning.modeOfTransportSpecify}}">
                             <label for="modeOfTransportSpecify">Others</label>
                             <span class="helper-text">Specify</span>
@@ -224,7 +224,7 @@
                                             <span style="padding-left: 25px; padding-right: 10px">Appliances (Specify)</span>
                                         </label>
                                         <br>
-                                        <div class="col s12 m4 input-field">
+                                        <div class="col s12 m4 input-field" id="appliancesSpectifyContent">
                                             <input id="checkedAndReturnedAppliancesSpecify" type="text" name="checkedAndReturnedAppliancesSpecify" value="{{editDischargePlanning.checkedAndReturnedAppliancesSpecify}}">
                                             <label for="checkedAndReturnedAppliancesSpecify">Specify</label>
                                             <span class="helper-text">Specify</span>
@@ -249,7 +249,7 @@
                                             <span style="padding-left: 25px; padding-right: 10px">Others (Specify)</span>
                                         </label>
                                         <br>
-                                        <div class="col s12 m4 input-field">
+                                        <div class="col s12 m4 input-field" id="othersSpecifyContent">
                                             <input id="checkedAndReturnedSpecify" type="text" name="checkedAndReturnedSpecify" value="{{editDischargePlanning.checkedAndReturnedSpecify}}">
                                             <label for="checkedAndReturnedSpecify">Others</label>
                                             <span class="helper-text">Specify</span>
@@ -280,7 +280,7 @@
                             </tr>
                             <!---Follow up-->
                             <tr style="border: none;">
-                                <td>
+                                <td id="followUp">
                                     <div class="row">
                                         <div class="col s12 m4 input-field">
                                             <select id="followUpAppointment" name="followUpAppointment">
@@ -292,7 +292,7 @@
                                             </select>
                                             <label for="followUpAppointment">Follow up</label>
                                         </div>
-                                        <div class="col s12 m4 input-field">
+                                        <div class="col s12 m4 input-field" id="followUpAppointmentSpecifyContent">
                                             <input id="followUpAppointmentSpecify" type="text" name="followUpAppointmentSpecify" value="{{editDischargePlanning.followUpAppointmentSpecify}}">
                                             <label for="followUpAppointmentSpecify">Others</label>
                                             <span class="helper-text">Specify</span>
@@ -378,7 +378,7 @@
                             </tr>
                             <!--Special instructions-->
                             <tr style="border: none;">
-                                <td>
+                                <td id="specialInstructionsContent">
                                     <div class="row">
                                         <div class="col s12 m4 input-field">
                                             <input id="specialInstructionsSpecify" type="text" name="specialInstructionsSpecify" value="{{editDischargePlanning.specialInstructionsSpecify}}">
@@ -402,7 +402,7 @@
 
                             <!--referrals-->
                             <tr style="border: none;">
-                                <td>
+                                <td id = "referralsContent">
                                     <div class="row">
                                         <div class="col s12 m4 input-field">
                                             <select id="referrals" name="referrals">
@@ -418,7 +418,7 @@
                                             <label for="referrals"></label>
                                         </div>
 
-                                        <div class="col s12 m4 input-field">
+                                        <div class="col s12 m4 input-field" id="referralsSpecifyContent">
                                             <input id="referralsSpecify" type="text" name="referralsSpecify" value="{{editDischargePlanning.referralsSpecify}}">
                                             <label for="referralsSpecify">Others</label>
                                             <span class="helper-text">Specify</span>
@@ -479,7 +479,7 @@
                             </tr>
                             <!--Medical certificate no-->
                             <tr style="border: none;">
-                                <td>
+                                <td id="medicalCertificateNoContent">
                                     <div class="row">
                                         {{!-- <div class="col s12 m2 l2" style="padding-top:20px">
                                             <label style="font-size: 15px">Medical Certificate No</label>
@@ -598,4 +598,136 @@
         document.getElementById('followUpAppointment').value = "{{editDischargePlanning.followUpAppointment}}";
         document.getElementById('referrals').value = "{{editDischargePlanning.referrals}}";
     {{/if}}
+
+    $( document ).ready(function() {
+        {{#if editDischargePlanning}}
+            // 2
+            // Discharge to
+            if (document.getElementById("dischargeTo").value == "Others (Specify)") {
+                $("#dischargeToSpecifyContent").show();
+            }
+            else {
+                $("#dischargeToSpecifyContent").hide();
+            }
+            // 3
+            // Accompanied by
+            if (document.getElementById("accompaniedBy").value == "Others (Specify)") {
+                $("#accompaniedBySpecifyContent").show();
+            }
+            else {
+                $("#accompaniedBySpecifyContent").hide();
+            }
+            // 4 
+            // Mode of transportation (Others)
+            if (document.getElementById("modeOfTransport").value == "Others (Specify)") {
+                $("#modeOfTransportSpecifyContent").show();
+            }
+            else {
+                $("#modeOfTransportSpecifyContent").hide();
+            }
+            // 6
+            var anArray6 = "{{editDischargePlanning.checkedAndReturned}}";
+            // Appliances (Specify)
+            console.log("Appliances (Specify)'s content: "+inArray(anArray6, "Appliances (Specify)"));
+            if (inArray(anArray6, "Appliances (Specify)") == true) {
+                $("#appliancesSpectifyContent").show();
+            }
+            else {
+                $("#appliancesSpectifyContent").hide();
+            }
+            // -- Appliances (Specify)
+            // Others (Specify)
+            console.log("Others (Specify)'s content: "+inArray(anArray6, "Others (Specify)"));
+            if (inArray(anArray6, "Others (Specify)") == true) {
+                $("#othersSpecifyContent").show();
+            }
+            else {
+                $("#othersSpecifyContent").hide();
+            }
+            // -- Others (Specify)
+
+            // 7
+            var anArray = "{{editDischargePlanning.adviceGivenOn}}"
+
+            // Follow-up appointment
+            console.log("Follow-up appointment's content: "+inArray(anArray, "Follow-up appointment"));
+
+            if (inArray(anArray, "Follow-up appointment") == true) {
+                $("#followUp").show();
+            }
+            else {
+                $("#followUp").hide();
+            }
+            if (document.getElementById("followUpAppointment").value == "Others (Specify)") {
+                $("#followUpAppointmentSpecifyContent").show();
+            }
+            else {
+                $("#followUpAppointmentSpecifyContent").hide();
+            }
+            // -- Follow-up appointment
+            // Special instructions
+            console.log("Special instructions's content: "+inArray(anArray, "Special instructions"));
+
+            if (inArray(anArray, "Special instructions") == true) {
+                $("#specialInstructionsContent").show();
+            }
+            else {
+                $("#specialInstructionsContent").hide();
+            }
+            // -- Special instructions
+            // Referrals
+            console.log("Referrals' content: "+inArray(anArray, "Referrals"));
+
+            if (inArray(anArray, "Referrals") == true) {
+                $("#referralsContent").show();
+            }
+            else {
+                $("#referralsContent").hide();
+            }
+
+            if (document.getElementById("referrals").value == "Others (Specify)") {
+                $("#referralsSpecifyContent").show();
+            }
+            else {
+                $("#referralsSpecifyContent").hide();
+            }
+            // -- Referrals
+            // Medical Certificate No.
+            console.log("Medical Certificate No's content: "+inArray(anArray, "Medical Certificate No."));
+
+            if (inArray(anArray, "Medical Certificate No.") == true) {
+                $("#medicalCertificateNoContent").show();
+            }
+            else {
+                $("#medicalCertificateNoContent").hide();
+            }
+            // -- Medical Certificate No.
+
+
+        {{/if}}
+	});
+
+    /* 
+    create a function that searches whether if it is in the array, 
+    if it is, return true, else, return false
+    */
+    function inArray(val1, val2) {
+        arrayContent = val1.split(",");
+
+        var i;
+        var result;
+        for (i = 0; i < arrayContent.length; i++) {
+            // console.log("Hi: "+ arrayContent[i]);
+            if (arrayContent[i] == val2) {
+                result = true;
+                break;
+            }
+            else {
+                result = false;
+            }
+        }
+
+        return result;
+    }
+
  </script>
