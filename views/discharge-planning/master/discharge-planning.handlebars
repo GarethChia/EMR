@@ -599,6 +599,211 @@
         document.getElementById('referrals').value = "{{editDischargePlanning.referrals}}";
     {{/if}}
 
+    // dropdown
+    $('#dischargeTo').change(
+        function() {
+
+            // dischargeTo
+            var dischargeTo = $('#dischargeTo option:selected').val();
+            showOrHide(dischargeTo, $("#dischargeToSpecifyContent"), "Others (Specify)");
+
+            if (dischargeTo != "Others (Specify)") {
+                $('#dischargeToSpecify').val('');
+            }
+        }
+    );
+
+    $('#accompaniedBy').change(
+        function() {
+
+            // accompaniedBy
+            var accompaniedBy = $('#accompaniedBy option:selected').val();
+            
+            showOrHide(accompaniedBy, $("#accompaniedBySpecifyContent"), "Others (Specify)");
+        
+            if (accompaniedBy != "Others (Specify)") {
+                $('#accompaniedBySpecify').val('');
+            }
+        }
+    );
+
+    $('#modeOfTransport').change(
+        function() {
+
+            // modeOfTransport
+            var modeOfTransport = $('#modeOfTransport option:selected').val();
+            
+            showOrHide(modeOfTransport, $("#modeOfTransportSpecifyContent"), "Others (Specify)");
+        
+            if (modeOfTransport != "Others (Specify)") {
+                $('#modeOfTransportSpecify').val('');
+            }
+        }
+    );
+
+    $('#followUpAppointment').change(
+        function() {
+
+            // followUpAppointment
+            var followUpAppointment = $('#followUpAppointment option:selected').val();
+            
+            showOrHide(followUpAppointment, $("#followUpAppointmentSpecifyContent"), "Others (Specify)");
+
+            if (followUpAppointment != "Others (Specify)") {
+                $('#followUpAppointmentSpecify').val('');
+            }
+        }
+    );
+
+    $('#referrals').change(
+        function() {
+
+            // referrals
+            var referrals = $('#referrals option:selected').val();
+
+            showOrHide(referrals, $("#referralsSpecifyContent"), "Others (Specify)");
+
+            if (referrals != "Others (Specify)") {
+                $('#referralsSpecify').val('');
+            }
+        }
+    );
+
+    // checkbox
+    $('#AppliancesSpecify').change(
+        function() {
+
+            // AppliancesSpecify
+            var AppliancesSpecify = $('#AppliancesSpecify');
+
+            showOrHide(AppliancesSpecify.is(':checked'), $("#appliancesSpectifyContent"), true);
+            
+            if (AppliancesSpecify.is(':checked') == false) { // clear out the textbox value
+
+                $('#checkedAndReturnedAppliancesSpecify').val('');
+            }
+        }
+    );
+
+    $('#OthersSpecify').change(
+        function() {
+
+            // OthersSpecify
+            var OthersSpecify = $('#OthersSpecify');
+
+            showOrHide(OthersSpecify.is(':checked'), $("#othersSpecifyContent"), true);
+            
+            if (OthersSpecify.is(':checked') == false) { // clear out the textbox value
+
+                $('#checkedAndReturnedSpecify').val('');
+            }
+        }
+    );
+
+    $('#FollowUpAppointment').change(
+        function() {
+
+            // FollowUpAppointment
+            var FollowUpAppointment = $('#FollowUpAppointment');
+            
+            showOrHide(FollowUpAppointment.is(':checked'), $("#followUp"), true);
+
+            if (FollowUpAppointment.is(':checked') == false) { // clear out the textbox value
+                
+                $(':radio').prop('checked',false);
+                $('#followUpAppointment').prop('selectedIndex', 0);
+
+                $('#followUpAppointmentSpecify').val('');
+                $('#appointmentDate').val('');
+                $('#appointmentTime').val('');
+                $('#clinic').val('');
+                $('#nameOfDoctor').val('');
+                $('#remarks').val('');
+                
+                
+            }
+        }
+    );
+
+    
+
+    $('#SpecialInstructions').change(
+        function() {
+
+            // SpecialInstructions
+            var SpecialInstructions = $('#SpecialInstructions');
+            
+            showOrHide(SpecialInstructions.is(':checked'), $("#specialInstructionsContent"), true);
+
+            if (SpecialInstructions.is(':checked') == false) { // clear out the textbox value
+                
+                $('#specialInstructionsSpecify').val('');
+            }
+        }
+    );
+
+    $('#Referrals').change(
+        function() {
+
+            // referrals
+            var referrals = $('#Referrals');
+            
+            showOrHide(referrals.is(':checked'), $("#referralsContent"), true);
+
+            if (referrals.is(':checked') == false) { // clear out the textbox value
+
+                $('#referrals').prop('selectedIndex', 0);
+                $('#referralsSpecify').val('');
+            }
+        }
+    );
+
+    $('#MedicalCertificateNo').change(
+        function() {
+
+            // MedicalCertificateNo
+            var MedicalCertificateNo = $('#MedicalCertificateNo');
+            
+            showOrHide(MedicalCertificateNo.is(':checked'), $("#medicalCertificateNoContent"), true);
+
+            if (MedicalCertificateNo.is(':checked') == false) { // clear out the textbox value
+
+                $('#medicalCertificateNo').val('');
+            }
+        }
+    );
+
+    /* 
+    create a function that show or disable content
+    */
+    function showOrHide(val1, id2, val2) {
+        if (val1 == val2) {
+            id2.show();
+        }
+        else {
+            id2.hide();
+        }
+    }
+
+    function inArray(val1, val2) {
+        arrayContent = val1.split(",");
+
+        var i;
+        var result;
+        for (i = 0; i < arrayContent.length; i++) {
+
+            if (arrayContent[i] == val2) {
+                result = true;
+                break;
+            }
+            else {
+                result = false;
+            }
+        }
+
+        return result;
+    }
+
     $( document ).ready(function() {
         {{#if editDischargePlanning}}
             // 2
@@ -628,7 +833,6 @@
             // 6
             var anArray6 = "{{editDischargePlanning.checkedAndReturned}}";
             // Appliances (Specify)
-            console.log("Appliances (Specify)'s content: "+inArray(anArray6, "Appliances (Specify)"));
             if (inArray(anArray6, "Appliances (Specify)") == true) {
                 $("#appliancesSpectifyContent").show();
             }
@@ -637,7 +841,6 @@
             }
             // -- Appliances (Specify)
             // Others (Specify)
-            console.log("Others (Specify)'s content: "+inArray(anArray6, "Others (Specify)"));
             if (inArray(anArray6, "Others (Specify)") == true) {
                 $("#othersSpecifyContent").show();
             }
@@ -650,7 +853,6 @@
             var anArray = "{{editDischargePlanning.adviceGivenOn}}"
 
             // Follow-up appointment
-            console.log("Follow-up appointment's content: "+inArray(anArray, "Follow-up appointment"));
 
             if (inArray(anArray, "Follow-up appointment") == true) {
                 $("#followUp").show();
@@ -666,7 +868,6 @@
             }
             // -- Follow-up appointment
             // Special instructions
-            console.log("Special instructions's content: "+inArray(anArray, "Special instructions"));
 
             if (inArray(anArray, "Special instructions") == true) {
                 $("#specialInstructionsContent").show();
@@ -676,7 +877,6 @@
             }
             // -- Special instructions
             // Referrals
-            console.log("Referrals' content: "+inArray(anArray, "Referrals"));
 
             if (inArray(anArray, "Referrals") == true) {
                 $("#referralsContent").show();
@@ -693,7 +893,6 @@
             }
             // -- Referrals
             // Medical Certificate No.
-            console.log("Medical Certificate No's content: "+inArray(anArray, "Medical Certificate No."));
 
             if (inArray(anArray, "Medical Certificate No.") == true) {
                 $("#medicalCertificateNoContent").show();
@@ -717,7 +916,6 @@
         var i;
         var result;
         for (i = 0; i < arrayContent.length; i++) {
-            // console.log("Hi: "+ arrayContent[i]);
             if (arrayContent[i] == val2) {
                 result = true;
                 break;
