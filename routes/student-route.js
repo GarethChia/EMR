@@ -4198,12 +4198,21 @@ router.put('/edit-schedule/:recordID/:scheduleID/:name', ensureAuthenticated, (r
 // Discharge Planning
 router.get('/DischargePlanning/:recordID', ensureAuthenticated, (req, res) => {
 	
+	userType = req.user.userType == 'student';
+
+	if (req.user.userType == 'staff')
+	{
+		userType = 'student';
+	}
+
 	StudentDischargePlanning.find({patientID: req.params.recordID}).sort({'datetime':1})
 	.then(newDischargePlanning => { // discharge planning that they have created
 		res.render('discharge-planning/student/discharge-planning', {
 			newDischargePlanning: newDischargePlanning,
 			patient: req.session.patient,
 			recordID: req.params.recordID,
+			userType: userType,
+			currentUserType: req.user.userType,
 			showMenu: true			
 		})
 	})
@@ -4263,27 +4272,64 @@ router.post('/add-discharge-planning/:recordID', ensureAuthenticated, (req, res)
 // get single Discharge Planning info
 router.get('/DischargePlanning/:recordID/:dischargePlanningID', ensureAuthenticated, (req, res) => {
 	
-	StudentDischargePlanning.find({patientID: req.params.recordID}).sort({'datetime':1})
-	.then(newDischargePlanning => {
-		StudentDischargePlanning.findOne({dischargePlanningID: req.params.dischargePlanningID})
-		.then(editDischargePlanning => {
-			editDischargePlanning.date = moment(editDischargePlanning.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
-			
-			if (editDischargePlanning.appointmentDate == "Invalid date") {
-				editDischargePlanning.appointmentDate = "";
-			}
-			else {
-				editDischargePlanning.appointmentDate = moment(editDischargePlanning.appointmentDate , 'YYYY-MM-DD').format('DD/MM/YYYY');
-			}
-			res.render('discharge-planning/student/discharge-planning', {
-				editDischargePlanning: editDischargePlanning,
-				newDischargePlanning: newDischargePlanning,
-				recordID: req.params.recordID,
-				patient: req.session.patient,
-				showMenu: true
-			});
-		})
-	});
+	userType = req.user.userType == 'student';
+
+
+	if (req.user.userType == 'staff')
+	{
+
+		userType = 'student';
+		
+		StudentDischargePlanning.find({patientID: req.params.recordID}).sort({'datetime':1})
+		.then(newDischargePlanning => {
+			StudentDischargePlanning.findOne({dischargePlanningID: req.params.dischargePlanningID})
+			.then(editDischargePlanning => {
+				editDischargePlanning.date = moment(editDischargePlanning.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
+				
+				if (editDischargePlanning.appointmentDate == "Invalid date") {
+					editDischargePlanning.appointmentDate = "";
+				}
+				else {
+					editDischargePlanning.appointmentDate = moment(editDischargePlanning.appointmentDate , 'YYYY-MM-DD').format('DD/MM/YYYY');
+				}
+				res.render('discharge-planning/student/discharge-planning', {
+					editDischargePlanning: editDischargePlanning,
+					newDischargePlanning: newDischargePlanning,
+					recordID: req.params.recordID,
+					patient: req.session.patient,
+					userType: userType,
+					currentUserType: req.user.userType,
+					showMenu: true
+				});
+			})
+		});
+	}
+	else
+	{
+		StudentDischargePlanning.find({patientID: req.params.recordID}).sort({'datetime':1})
+		.then(newDischargePlanning => {
+			StudentDischargePlanning.findOne({dischargePlanningID: req.params.dischargePlanningID})
+			.then(editDischargePlanning => {
+				editDischargePlanning.date = moment(editDischargePlanning.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
+				
+				if (editDischargePlanning.appointmentDate == "Invalid date") {
+					editDischargePlanning.appointmentDate = "";
+				}
+				else {
+					editDischargePlanning.appointmentDate = moment(editDischargePlanning.appointmentDate , 'YYYY-MM-DD').format('DD/MM/YYYY');
+				}
+				res.render('discharge-planning/student/discharge-planning', {
+					editDischargePlanning: editDischargePlanning,
+					newDischargePlanning: newDischargePlanning,
+					recordID: req.params.recordID,
+					patient: req.session.patient,
+					userType: userType,
+					showMenu: true
+				});
+			})
+		});
+	}
+	
 });
 
 // edit Discharge Planning

@@ -513,10 +513,10 @@
 
         <div class="col s12 m4">
             {{#if editDischargePlanning}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editDischargePlanning">Save
+            <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editDischargePlanning">Save
             {{else}}
             {{#unless userType}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addDischargePlanning">Save
+            <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addDischargePlanning">Save
             {{/unless}}
             {{/if}}
             {{#unless userType}}
@@ -922,4 +922,12 @@
         return result;
     }
 
+    if ("{{currentUserType}}" == "staff")
+    {
+        $(".saveButton").hide();
+    }
+    else
+    {
+        $(".saveButton").show();
+    }
  </script>
