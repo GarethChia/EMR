@@ -52,6 +52,7 @@ require('./models/MasterFeedingRegime');
 require('./models/MasterScheduleFeed');
 //discharge planning
 require('./models/MasterDischargePlanning');
+require('./models/StudentDischargePlanning');
 
 // load keys
 const key = fs.readFileSync('./server.key');

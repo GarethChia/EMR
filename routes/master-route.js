@@ -3375,7 +3375,7 @@ router.put('/edit-schedule/:scheduleID/:name', ensureAuthenticated, ensureAuthor
 router.get('/DischargePlanning', ensureAuthenticated, ensureAuthorised, (req, res) => {
 	MasterDischargePlanning.find({patientID: req.session.patient.patientID}).sort({'datetime':1})
 	.then(newDischargePlanning => { // discharge planning that they have created
-		console.log('req.session.user.patientID: '+ req.session.patient.patientID );
+		//console.log('req.session.user.patientID: '+ req.session.patient.patientID );
 		res.render('discharge-planning/master/discharge-planning', {
 			newDischargePlanning: newDischargePlanning,
 			patient: req.session.patient,

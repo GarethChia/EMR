@@ -1,8 +1,8 @@
 <br/>
-<div id="mdp">
+<div id="dischargePlanning">
     <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">Discharge Checklist</div>
     <div style="overflow-x:auto; max-height: 16em;">
-        <table id="ioRecords" class="hover order-column">
+        <table id="dischargePlanningRecords" class="hover order-column">
             <thead>
                 <tr>
                     <th>Date</th>
@@ -10,7 +10,7 @@
                 </tr>
             </thead>
             <tbody>
-                {{#if newDischargePlanning}} <!--Current lecturer's mdp notes-->
+                {{#if newDischargePlanning}}
                     {{#each newDischargePlanning}}
                     <tr style="height: 60px">
                         {{#unless ../userType}}
@@ -38,15 +38,15 @@
 
     {{#if editDischargePlanning}}
     {{#unless userType}}
-    <form action="/master/edit-DischargePlanning/{{editDischargePlanning.dischargePlanningID}}?_method=PUT" method="POST" id="editMDP">
+    <form action="/master/edit-DischargePlanning/{{editDischargePlanning.dischargePlanningID}}?_method=PUT" method="POST" id="editDischargePlanning">
     {{/unless}}
     <input type="hidden" name="_method" value="PUT">
     {{else}}
-    <form action="/master/add-discharge-planning" method="POST" id="addMDP">
+    <form action="/master/add-discharge-planning" method="POST" id="addDischargePlanning">
     {{/if}}
         <div class="card purple lighten-5">
             <div class="card-content">
-                <div id="ioInfo">
+                <div id="dischargePlanningInfo">
                     <span class="purple-text darken-2">Discharge Checklist</span>
                 
                     <div class="row">
@@ -342,13 +342,11 @@
                                         <div class="col s12 m2 l2" style="padding-top:20px">
                                             <label>
                                                 <input id="memoGivenYes" name="memoGiven" type="radio" value="true"
-                                                    {{!--{{#if assessment.cough}} checked="checked" {{/if}}--}}
                                                     {{ setRadioButton editDischargePlanning.memoGiven true }}/>
                                                 <span style="padding-left: 25px; padding-right: 10px">Yes</span>
                                             </label>
                                             <label>
                                                 <input id="memoGivenNo" name="memoGiven" type="radio" value="false"
-                                                    {{!--{{#unless assessment.cough}} checked="checked" {{/unless}}--}}
                                                     {{ setRadioButton editDischargePlanning.memoGiven false }}/>
                                                 <span style="padding-left: 25px; padding-right: 10px">No</span>
                                             </label>
@@ -517,10 +515,10 @@
 
         <div class="col s12 m4">
             {{#if editDischargePlanning}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editMDP">Save
+            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editDischargePlanning">Save
             {{else}}
             {{#unless userType}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addMDP">Save
+            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addDischargePlanning">Save
             {{/unless}}
             {{/if}}
             {{#unless userType}}
@@ -538,7 +536,6 @@
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // MDP
         const dateDischargePlanning = document.querySelector('#dateDischargePlanning');
         const timeDischargePlanning = document.querySelector('#timeDischargePlanning');
         const dischargeTo = document.querySelector('#dischargeTo');
@@ -549,7 +546,6 @@
         const appointmentTime = document.querySelector('#appointmentTime');
         const referrals = document.querySelector('#referrals');
 
-        // MDP Instances
         M.Datepicker.init(dateDischargePlanning, {
             maxDate: new Date(),
             format: 'dd/mm/yyyy',
@@ -774,7 +770,7 @@
     );
 
     /* 
-    create a function that show or disable content
+    function that show or disable content
     */
     function showOrHide(val1, id2, val2) {
         if (val1 == val2) {
@@ -805,109 +801,105 @@
     }
 
     $( document ).ready(function() {
-        {{#if editDischargePlanning}}
-            // 2
-            // Discharge to
-            if (document.getElementById("dischargeTo").value == "Others (Specify)") {
-                $("#dischargeToSpecifyContent").show();
-            }
-            else {
-                $("#dischargeToSpecifyContent").hide();
-            }
-            // 3
-            // Accompanied by
-            if (document.getElementById("accompaniedBy").value == "Others (Specify)") {
-                $("#accompaniedBySpecifyContent").show();
-            }
-            else {
-                $("#accompaniedBySpecifyContent").hide();
-            }
-            // 4 
-            // Mode of transportation (Others)
-            if (document.getElementById("modeOfTransport").value == "Others (Specify)") {
-                $("#modeOfTransportSpecifyContent").show();
-            }
-            else {
-                $("#modeOfTransportSpecifyContent").hide();
-            }
-            // 6
-            var anArray6 = "{{editDischargePlanning.checkedAndReturned}}";
-            // Appliances (Specify)
-            if (inArray(anArray6, "Appliances (Specify)") == true) {
-                $("#appliancesSpectifyContent").show();
-            }
-            else {
-                $("#appliancesSpectifyContent").hide();
-            }
-            // -- Appliances (Specify)
-            // Others (Specify)
-            if (inArray(anArray6, "Others (Specify)") == true) {
-                $("#othersSpecifyContent").show();
-            }
-            else {
-                $("#othersSpecifyContent").hide();
-            }
-            // -- Others (Specify)
+        // 2
+        // Discharge to
+        if (document.getElementById("dischargeTo").value == "Others (Specify)") {
+            $("#dischargeToSpecifyContent").show();
+        }
+        else {
+            $("#dischargeToSpecifyContent").hide();
+        }
+        // 3
+        // Accompanied by
+        if (document.getElementById("accompaniedBy").value == "Others (Specify)") {
+            $("#accompaniedBySpecifyContent").show();
+        }
+        else {
+            $("#accompaniedBySpecifyContent").hide();
+        }
+        // 4 
+        // Mode of transportation (Others)
+        if (document.getElementById("modeOfTransport").value == "Others (Specify)") {
+            $("#modeOfTransportSpecifyContent").show();
+        }
+        else {
+            $("#modeOfTransportSpecifyContent").hide();
+        }
+        // 6
+        var anArray6 = "{{editDischargePlanning.checkedAndReturned}}";
+        // Appliances (Specify)
+        if (inArray(anArray6, "Appliances (Specify)") == true) {
+            $("#appliancesSpectifyContent").show();
+        }
+        else {
+            $("#appliancesSpectifyContent").hide();
+        }
+        // -- Appliances (Specify)
+        // Others (Specify)
+        if (inArray(anArray6, "Others (Specify)") == true) {
+            $("#othersSpecifyContent").show();
+        }
+        else {
+            $("#othersSpecifyContent").hide();
+        }
+        // -- Others (Specify)
 
-            // 7
-            var anArray = "{{editDischargePlanning.adviceGivenOn}}"
+        // 7
+        var anArray = "{{editDischargePlanning.adviceGivenOn}}"
 
-            // Follow-up appointment
+        // Follow-up appointment
 
-            if (inArray(anArray, "Follow-up appointment") == true) {
-                $("#followUp").show();
-            }
-            else {
-                $("#followUp").hide();
-            }
-            if (document.getElementById("followUpAppointment").value == "Others (Specify)") {
-                $("#followUpAppointmentSpecifyContent").show();
-            }
-            else {
-                $("#followUpAppointmentSpecifyContent").hide();
-            }
-            // -- Follow-up appointment
-            // Special instructions
+        if (inArray(anArray, "Follow-up appointment") == true) {
+            $("#followUp").show();
+        }
+        else {
+            $("#followUp").hide();
+        }
+        if (document.getElementById("followUpAppointment").value == "Others (Specify)") {
+            $("#followUpAppointmentSpecifyContent").show();
+        }
+        else {
+            $("#followUpAppointmentSpecifyContent").hide();
+        }
+        // -- Follow-up appointment
+        // Special instructions
 
-            if (inArray(anArray, "Special instructions") == true) {
-                $("#specialInstructionsContent").show();
-            }
-            else {
-                $("#specialInstructionsContent").hide();
-            }
-            // -- Special instructions
-            // Referrals
+        if (inArray(anArray, "Special instructions") == true) {
+            $("#specialInstructionsContent").show();
+        }
+        else {
+            $("#specialInstructionsContent").hide();
+        }
+        // -- Special instructions
+        // Referrals
 
-            if (inArray(anArray, "Referrals") == true) {
-                $("#referralsContent").show();
-            }
-            else {
-                $("#referralsContent").hide();
-            }
+        if (inArray(anArray, "Referrals") == true) {
+            $("#referralsContent").show();
+        }
+        else {
+            $("#referralsContent").hide();
+        }
 
-            if (document.getElementById("referrals").value == "Others (Specify)") {
-                $("#referralsSpecifyContent").show();
-            }
-            else {
-                $("#referralsSpecifyContent").hide();
-            }
-            // -- Referrals
-            // Medical Certificate No.
+        if (document.getElementById("referrals").value == "Others (Specify)") {
+            $("#referralsSpecifyContent").show();
+        }
+        else {
+            $("#referralsSpecifyContent").hide();
+        }
+        // -- Referrals
+        // Medical Certificate No.
 
-            if (inArray(anArray, "Medical Certificate No.") == true) {
-                $("#medicalCertificateNoContent").show();
-            }
-            else {
-                $("#medicalCertificateNoContent").hide();
-            }
-            // -- Medical Certificate No.
-
-
-        {{/if}}
+        if (inArray(anArray, "Medical Certificate No.") == true) {
+            $("#medicalCertificateNoContent").show();
+        }
+        else {
+            $("#medicalCertificateNoContent").hide();
+        }
+        // -- Medical Certificate No.
 	});
 
     /* 
-    create a function that searches whether if it is in the array, 
+    function that checks if the array(val1) contains the required value(val2), 
     if it is, return true, else, return false
     */
     function inArray(val1, val2) {
