@@ -4021,8 +4021,8 @@ router.get('/FeedingRegime/:recordID', ensureAuthenticated, (req, res) => {
 				if (!(schedsample.includes(sched.datetime))) {
 					schedsample.push(sched.datetime);
 					schedsampleDate.push(sched.date);
-					schedsampleName.push(sched.by);
-					schedsampleTime.push(sched.time);
+					// schedsampleName.push(sched.by);
+					// schedsampleTime.push(sched.time);
 				}
 			});
 
@@ -4060,7 +4060,7 @@ router.get('/FeedingRegime/:recordID', ensureAuthenticated, (req, res) => {
 				userType = 'student';
 			}
 			console.log("Schedule Date Value: " + schedsampleDate);//schedsample is date and time
-			console.log("Name: "+ schedsampleName);
+			//console.log("Name: "+ schedsampleName);
 			// console.log("Schedule Flow:"+ schedFlow);//schedFlow is the records 
 			// console.log("Schedule Rowspan: "+ schedFlowLength );
 
@@ -4081,6 +4081,7 @@ router.get('/FeedingRegime/:recordID', ensureAuthenticated, (req, res) => {
 			})
 		})
 	})
+})
 //One Feeding Regime by ID
 router.get('/FeedingRegime/:recordID/:feedID/:name', ensureAuthenticated, (req,res) => {
 	
