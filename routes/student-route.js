@@ -4029,13 +4029,13 @@ router.get('/FeedingRegime/:recordID', ensureAuthenticated, (req, res) => {
 			schedsample.sort();
 			schedsampleDate.sort();
 			
-			for (i = 0; i < schedsample.length; i++) {
+			for (i = 0; i < finalDate.length; i++) {
 				
 				//Counter for empty data
 				//.length here refers to last index of the array
-				if (schedCount !== (schedFlow.length - 1)) {
+				if (schedCount !== (finalDate.length - 1)) {
 					console.log("Schedule count: " + schedCount);
-					console.log("Schedule Length: " + (schedFlow.length - 1));
+					console.log("Schedule Length: " + (finalDate));
 					schedCount++;
 				}
 				if(schedFlow != '') 
@@ -4076,6 +4076,7 @@ router.get('/FeedingRegime/:recordID', ensureAuthenticated, (req, res) => {
 				currentName: req.user.firstName,
 				patient: req.session.patient,
 				scheddateVal: schedsample,
+				finalDate: finalDate.length - 1,
 				schedFlow: schedFlow,
 				showMenu: true
 			})

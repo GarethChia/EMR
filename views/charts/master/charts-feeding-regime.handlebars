@@ -284,73 +284,59 @@
             </thead>
 
             <tbody>
-                {{#if newOtherScheduleFeed}}
-                    {{#each newOtherScheduleFeed}}
-                    {{!-- {{#each schedFlow}} --}}
-                    <tr style="height: 60px">
-                        {{#unless ../userType}}
-                        <td>{{by}}</td>
-                        {{else}}
-                                <td>
+            {{#if finalObj}}
+            {{!-- {{#if newOtherScheduleFeed}} --}}
+
+               <tr style="height: 60px">
+                    
+                    {{#each finalObj }}
+                        {{#each this}}
+                            {{#unless ../../userType}}
+                                    <td>{{by}}</td>
+                                {{else}}
+                                {{!-- <td rowspan="{{finalDate}}">
                                     {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
                                         <a href="/student/ScheduleFeeding/{{../recordID}}/{{scheduleID}}/{{by}}">{{date}}</a>
-                                    {{else}}
-                                        {{date}} 
+                                    {{else}}--}}
+                                    {{#ifCond ../currentUserType 'student'}}
+                                            <td rowspan="{{length}}">{{date}}</td>                                       
+                                        {{else}}
+                                            <td rowspan="{{length}}">{{date}}</td> 
                                     {{/ifCond}}
-                                </td>
-                        {{/unless}}
-                        
-                        {{#unless ../userType}}
-                        <td>{{date}}</td>
-                        {{/unless}}
-                        
-                        {{!-- <td>
+                                    {{!--{{/ifCond}}
+                                </td> --}}
+                                
+                                {{!-- <td rowspan="{{finalDate}}">{{date}}</td> --}}
+                            {{/unless}}
+                    {{!-- </tr>
+                    <tr> --}}
+                    <td>
                         {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
-                             <a href="/student/ScheduleFeeding/{{../recordID}}/{{scheduleID}}/{{by}}">{{time}}</a>
-                        {{else}}
                             {{time}} 
+                        {{else}}
+                            <a href="/student/ScheduleFeeding/{{../../recordID}}/{{scheduleID}}/{{by}}">{{time}}</a>
                         {{/ifCond}}
-                        </td> --}}
-                        <td>{{time}}</td>
-                        <td>{{scheduleFeed}}</td>
-                       
-
-                        <td>{{scheduleAmt}}</td>
-
-                        <td>{{scheduleFlush}}</td>
+                    </td>
+                
+                
+                    <td>{{scheduleFeed}}</td>
+                
+                    <td>{{scheduleAmt}}</td>
+            
+                    <td>{{scheduleFlush}}</td>
                         
-                        {{!-- <td>{{amtinf}}</td>
-                        <td>{{ivflush}}</td> --}}
-                        {{!-- <td>{{patientID}}</td> --}}
-                        {{!-- {{#unless ../userType}}           --}}
-                        {{!-- <td style="width: 65px"> <!-- the tr we're trying to get -->
-                            <form action="/master/del-iv/{{scheduleID}}?_method=DELETE" method="post" id="delete-form">
-                                <input type="hidden" name="_method" value="DELETE">
-                            <button type="submit" class="btn red darken-3">
-                                 <i class="material-icons">delete
-                            </button>
-                            </form>
-                        </td> --}}
-                        {{!-- {{else}} --}}
-                            {{!-- <td style="width: 65px"> <!-- the tr we're trying to get -->
-                                <form action="/student/del-iv/{{../recordID}}/{{ivID}}?_method=DELETE" method="post" id="delete-form">
-                                    <input type="hidden" name="_method" value="DELETE">
-                                <button type="submit" class="btn red darken-3">
-                                    <i class="material-icons">delete
-                                </button>
-                                </form>
-                            </td> --}}
-                        {{!-- {{/unless}} --}}
-                    </tr>
-                    {{/each}}
-                    {{!-- {{/each}} --}}
+                </tr>
+                {{/each}}
+                {{/each}}
+                {{!-- {{/each}} --}}
                 {{else}}
                 {{#unless userType}}
                     <p id="noRecord">Students have not created any Schedule records yet</p>
                 {{else}}
                     <p id="noRecord">You have not created any Schedule records yet</p>
                 {{/unless}}
-                {{/if}}
+                {{!-- {{/if}} --}}
+            {{/if}}
             </tbody>
         </table>
     </div>
