@@ -298,14 +298,12 @@
                                         {{date}} 
                                     {{/ifCond}}
                                 </td>
-                           
-                        <td>{{time}}</td>
-
                         {{/unless}}
                         
                         {{#unless ../userType}}
                         <td>{{date}}</td>
                         {{/unless}}
+                        
                         {{!-- <td>
                         {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
                              <a href="/student/ScheduleFeeding/{{../recordID}}/{{scheduleID}}/{{by}}">{{time}}</a>
@@ -313,7 +311,7 @@
                             {{time}} 
                         {{/ifCond}}
                         </td> --}}
-                        
+                        <td>{{time}}</td>
                         <td>{{scheduleFeed}}</td>
                        
 
@@ -348,10 +346,9 @@
                     {{!-- {{/each}} --}}
                 {{else}}
                 {{#unless userType}}
-                <p id="noRecord">Students have not created any Schedule records yet</p>
+                    <p id="noRecord">Students have not created any Schedule records yet</p>
                 {{else}}
-                <p id="noRecord">You have not created any Schedule records yet</p>
-
+                    <p id="noRecord">You have not created any Schedule records yet</p>
                 {{/unless}}
                 {{/if}}
             </tbody>

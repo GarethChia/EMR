@@ -3278,7 +3278,7 @@ router.put('/edit-feeding-regime/:feedID/:name', ensureAuthenticated, ensureAuth
 router.get('/ScheduleFeeding', ensureAuthenticated, ensureAuthorised, (req, res) => {
 
 	MasterScheduleFeed.find({user:{'$ne':req.user.id}, masterpatientID: req.session.patient.patientID})
-	.then(newSchedule => {//(other record)
+	.sort({'datetime': -1 }).then(newSchedule => {//(other record)
 		// MasterScheduleFeed.findOne({ patientID: req.session.patient.patientID})
 		// .then(newOtherScheduleFeed =>{ //(your own record)
 			// console.log("Yikes: " + newOtherHistory.length);
@@ -3330,7 +3330,7 @@ router.get('/ScheduleFeeding/:scheduleID/:name', ensureAuthenticated, ensureAuth
 	MasterScheduleFeed.find({ user:{'$ne':req.user.id}, masterpatientID: req.session.patient.patientID})
 	.then(newSchedule => {
 		MasterScheduleFeed.findOne({ patientID: req.session.patient.patientID})
-		.then(newOtherScheduleFeed =>{//(your own record) you need this (if you only put in the /HistoryTaking, this route do not know the newOtherHistory)
+		.sort({'datetime': -1 }).then(newOtherScheduleFeed =>{//(your own record) you need this (if you only put in the /HistoryTaking, this route do not know the newOtherHistory)
 			MasterScheduleFeed.findOne({ scheduleID: req.params.scheduleID })
 			.then(editSchedule =>{		
 				var name = req.params.name;

@@ -3966,37 +3966,36 @@ router.get('/FeedingRegime/:recordID', ensureAuthenticated, (req, res) => {
 	MasterFeedingRegime.find({ patientID: req.session.patient.patientID })
 	.sort({'datetime': 1}).then(newFeeding => {
 		// MasterScheduleFeed.findOne({ masterpatientID: req.session.patient.patientID})
-		MasterScheduleFeed.find({ masterpatientID: req.session.patient.patientID, by: req.user.firstName})
+		MasterScheduleFeed.find({ masterpatientID: req.session.patient.patientID, patientID: req.params.recordID})
 		.sort({'datetime': -1 }).then(newOtherScheduleFeed =>{
+
 			var schedFlowLength = 0;
 			
 			schedFlowLength = schedFlowLength * 2;
 
 			schedsample = [];
 			schedsampleDate = [];
-			schedsampleName = [];
-			schedsampleTime = [];
 
 			let schedFlow = Object.assign([], newOtherScheduleFeed);//all the records
 			schedCount = -1;
 			schednoRecord = 'No existing record';
 
 
-			let finalObj = {};
-			// let beech = {};
-			// var count = 0;
-      		schedFlow.forEach((element) => {
-        		const date = element.datetime.split(' ')[0];
-				if (finalObj[date]) {
-					//finalObj["hi"]["date"].push(date);
+			// let finalObj = {};
+			// // let beech = {};
+			// // var count = 0;
+      		// schedFlow.forEach((element) => {
+        	// 	const date = element.datetime.split(' ')[0];
+			// 	if (finalObj[date]) {
+			// 		//finalObj["hi"]["date"].push(date);
 				
-					finalObj[date].push(element);
-				} else {
-					finalObj[date] = [element];
-				}
-				console.log(JSON.stringify('beech' ));
-      		})
-			console.log(JSON.stringify(finalObj));
+			// 		finalObj[date].push(element);
+			// 	} else {
+			// 		finalObj[date] = [element];
+			// 	}
+			// 	// console.log(JSON.stringify('beech'));
+      		// })
+			// console.log(JSON.stringify(finalObj));
 			
 			  
 			// console.log("Hey Siti: " + Object.keys(finalObj.hi));
@@ -4007,8 +4006,6 @@ router.get('/FeedingRegime/:recordID', ensureAuthenticated, (req, res) => {
 			if (!(schedsample.includes(sched.datetime))) {
 				schedsample.push(sched.datetime);
 				schedsampleDate.push(sched.date);
-				schedsampleName.push(sched.by);
-				schedsampleTime.push(sched.time);
 			}
 
 				});
@@ -4040,34 +4037,34 @@ router.get('/FeedingRegime/:recordID', ensureAuthenticated, (req, res) => {
 						}
 					};
 
-					userType = req.user.userType == 'student';
-					if (req.user.userType == 'staff')
-					{
-						userType = 'student';
-					}
-					console.log("Schedule Date Value: " + schedsampleDate);//schedsample is date and time
-					console.log("Name: "+ schedsampleName);
-					// console.log("Schedule Flow:"+ schedFlow);//schedFlow is the records 
-					// console.log("Schedule Rowspan: "+ schedFlowLength );
 
-			res.render('charts/master/charts-feeding-regime', {
-				finalObj: finalObj,
-				// yo: yo,
-				recordID: req.params.recordID,
-				newOtherScheduleFeed: newOtherScheduleFeed,
-				userType: userType,
-				currentUserType: req.user.userType,
-				newFeeding: newFeeding,
-				schedRowspan : schedFlowLength,
-				currentName: req.user.firstName,
-				patient: req.session.patient,
-				scheddateVal: schedsample,
-				schedFlow: schedFlow,
-				showMenu: true
+				console.log("Schedule Date Value: " + schedsampleDate);//schedsample is date and time
+				//console.log("Name: "+ schedsampleName);
+				// console.log("Schedule Flow:"+ schedFlow);//schedFlow is the records 
+				// console.log("Schedule Rowspan: "+ schedFlowLength );
+				userType = req.user.userType == 'student';
+				if (req.user.userType == 'staff')
+				{
+					userType = 'student';
+				}
+				res.render('charts/master/charts-feeding-regime', {
+					//finalObj: finalObj,
+					// yo: yo,
+					recordID: req.params.recordID,
+					newOtherScheduleFeed: newOtherScheduleFeed,
+					userType: userType,
+					currentUserType: req.user.userType,
+					newFeeding: newFeeding,
+					//schedRowspan : schedFlowLength,
+					currentName: req.user.firstName,
+					patient: req.session.patient,
+					scheddateVal: schedsample,
+					schedFlow: schedFlow,
+					showMenu: true
+				})
 			})
 		})
 	})
-})
 //One Feeding Regime by ID
 router.get('/FeedingRegime/:recordID/:feedID/:name', ensureAuthenticated, (req,res) => {
 	
