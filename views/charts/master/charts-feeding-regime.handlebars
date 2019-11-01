@@ -255,16 +255,16 @@
 <div id="schedule">
 <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">Schedule</div>
     <div style="overflow-x:auto; max-height: 16em;">
-        {{!-- {{#if finalObj}}
+        {{#if finalObj}}
             {{#each finalObj}}
                 <p>{{@key}}</p>
                 {{#each this}}
-                    <p>{{this}}</p>
-                    <p>{{userType}}</p>
+                    {{!-- <p>{{this}}</p> --}}
                     <p>{{by}}</p>
+                    <p>{{length}}</p>
                 {{/each}}
             {{/each}}
-        {{/if}} --}}
+        {{/if}}
         <table id="ivRecords" class="hover order-column" >
             <thead>
                 <tr>

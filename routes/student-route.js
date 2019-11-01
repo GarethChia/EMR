@@ -3981,23 +3981,34 @@ router.get('/FeedingRegime/:recordID', ensureAuthenticated, (req, res) => {
 			schednoRecord = 'No existing record';
 
 
-			// let finalObj = {};
-			// // let beech = {};
-			// // var count = 0;
-      		// schedFlow.forEach((element) => {
-        	// 	const date = element.datetime.split(' ')[0];
-			// 	if (finalObj[date]) {
-			// 		//finalObj["hi"]["date"].push(date);
+			let finalObj = {};
+			var finalDate = [];
+			// let beech = {};
+			// var count = 0;
+      		schedFlow.forEach((element) => {
+        		const date = element.datetime.split(' ')[0];
+				if (finalObj[date]) {
 				
-			// 		finalObj[date].push(element);
-			// 	} else {
-			// 		finalObj[date] = [element];
-			// 	}
-			// 	// console.log(JSON.stringify('beech'));
-      		// })
-			// console.log(JSON.stringify(finalObj));
+					finalObj[date].push(element);
+				} else {
+					finalObj[date] = [element];
+					finalDate.push(date);
+				}
+				console.log(JSON.stringify('beech'));
+      		})
+			console.log(JSON.stringify(finalObj));
 			
-			  
+			console.log("Yo: "+ finalDate);
+			
+			finalDate.forEach((element) => {
+				console.log("date: "+ element);
+				console.log("date's length: "+ Object.keys(finalObj[element]).length);
+				Object.keys(element).length;
+				//console.log("finalObj[element] :" + finalObj[element]);
+				finalObj[element].push({"length": Object.keys(finalObj[element]).length});
+			})
+			console.log("Hi: "+ JSON.stringify(finalObj));
+			//console.log("Hi: "+ Object.keys(obj).length);
 			// console.log("Hey Siti: " + Object.keys(finalObj.hi));
 			// let yo = Object.assign([], Object.keys(finalObj.hi));
 			// console.log("Hey Siti: " + yo);
@@ -4007,61 +4018,66 @@ router.get('/FeedingRegime/:recordID', ensureAuthenticated, (req, res) => {
 				schedsample.push(sched.datetime);
 				schedsampleDate.push(sched.date);
 			}
-
-				});
-					schedsample.sort();
-					schedsampleDate.sort();
-					
-					for (i = 0; i < schedsample.length; i++) {
-						
-						//Counter for empty data
-						//.length here refers to last index of the array
-						if (schedCount !== (schedFlow.length - 1)) {
-							console.log("Schedule count: " + schedCount);
-							console.log("Schedule Length: " + (schedFlow.length - 1));
-							schedCount++;
-						}
-						if(schedFlow != '') 
-						{
-							if (schedsample[i] < schedFlow[schedCount].datetime) {
-								
-								schedFlow.splice(schedCount, 0, {datetime: ''});
-
-							} else if (schedsample[i] > schedFlow[schedCount].datetime) {
-								schedFlow.splice(schedCount + 1, 0, {datetime: ''});
-							}
-						} 
-						else
-						{
-							schedFlow.push({datetime: '', scheduleFeed: schednoRecord});
-						}
-					};
-
-
-				console.log("Schedule Date Value: " + schedsampleDate);//schedsample is date and time
-				//console.log("Name: "+ schedsampleName);
-				// console.log("Schedule Flow:"+ schedFlow);//schedFlow is the records 
-				// console.log("Schedule Rowspan: "+ schedFlowLength );
-				userType = req.user.userType == 'student';
-				if (req.user.userType == 'staff')
-				{
-					userType = 'student';
+				if (!(schedsample.includes(sched.datetime))) {
+					schedsample.push(sched.datetime);
+					schedsampleDate.push(sched.date);
+					schedsampleName.push(sched.by);
+					schedsampleTime.push(sched.time);
 				}
-				res.render('charts/master/charts-feeding-regime', {
-					//finalObj: finalObj,
-					// yo: yo,
-					recordID: req.params.recordID,
-					newOtherScheduleFeed: newOtherScheduleFeed,
-					userType: userType,
-					currentUserType: req.user.userType,
-					newFeeding: newFeeding,
-					//schedRowspan : schedFlowLength,
-					currentName: req.user.firstName,
-					patient: req.session.patient,
-					scheddateVal: schedsample,
-					schedFlow: schedFlow,
-					showMenu: true
-				})
+			});
+
+			schedsample.sort();
+			schedsampleDate.sort();
+			
+			for (i = 0; i < schedsample.length; i++) {
+				
+				//Counter for empty data
+				//.length here refers to last index of the array
+				if (schedCount !== (schedFlow.length - 1)) {
+					console.log("Schedule count: " + schedCount);
+					console.log("Schedule Length: " + (schedFlow.length - 1));
+					schedCount++;
+				}
+				if(schedFlow != '') 
+				{
+					if (schedsample[i] < schedFlow[schedCount].datetime) {
+						
+						schedFlow.splice(schedCount, 0, {datetime: ''});
+
+					} else if (schedsample[i] > schedFlow[schedCount].datetime) {
+						schedFlow.splice(schedCount + 1, 0, {datetime: ''});
+					}
+				} 
+				else
+				{
+					schedFlow.push({datetime: '', scheduleFeed: schednoRecord});
+				}
+			};
+
+			userType = req.user.userType == 'student';
+			if (req.user.userType == 'staff')
+			{
+				userType = 'student';
+			}
+			console.log("Schedule Date Value: " + schedsampleDate);//schedsample is date and time
+			console.log("Name: "+ schedsampleName);
+			// console.log("Schedule Flow:"+ schedFlow);//schedFlow is the records 
+			// console.log("Schedule Rowspan: "+ schedFlowLength );
+
+			res.render('charts/master/charts-feeding-regime', {
+				finalObj: finalObj,
+				// yo: yo,
+				recordID: req.params.recordID,
+				newOtherScheduleFeed: newOtherScheduleFeed,
+				userType: userType,
+				currentUserType: req.user.userType,
+				newFeeding: newFeeding,
+				schedRowspan : schedFlowLength,
+				currentName: req.user.firstName,
+				patient: req.session.patient,
+				scheddateVal: schedsample,
+				schedFlow: schedFlow,
+				showMenu: true
 			})
 		})
 	})
