@@ -255,6 +255,16 @@
 <div id="schedule">
 <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">Schedule</div>
     <div style="overflow-x:auto; max-height: 16em;">
+        {{!-- {{#if finalObj}}
+            {{#each finalObj}}
+                <p>{{@key}}</p>
+                {{#each this}}
+                    <p>{{this}}</p>
+                    <p>{{userType}}</p>
+                    <p>{{by}}</p>
+                {{/each}}
+            {{/each}}
+        {{/if}} --}}
         <table id="ivRecords" class="hover order-column" >
             <thead>
                 <tr>
@@ -266,9 +276,7 @@
                     <th>Feeds</th>
                     <th>Amount</th>
                     <th>Water for flush</th>
-                    {{!-- <th>Amount Infused (intermittent)</th>
-                    <th>I.V Flush (mL)</th> --}}
-                    {{!-- <th>Patient ID</th> --}}
+                    
                     {{!-- {{#unless userType}}
                     <th>Delete</th>
                     {{/unless}} --}}
@@ -278,33 +286,41 @@
             <tbody>
                 {{#if newOtherScheduleFeed}}
                     {{#each newOtherScheduleFeed}}
+                    {{!-- {{#each schedFlow}} --}}
                     <tr style="height: 60px">
                         {{#unless ../userType}}
                         <td>{{by}}</td>
                         {{else}}
-                            <td>
-                                {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
-                                    <a href="/student/ScheduleFeeding/{{../recordID}}/{{scheduleID}}/{{by}}">{{date}}</a>
-                                {{else}}
-                                    {{date}} 
-                                {{/ifCond}}
-                            </td>
+                                <td>
+                                    {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
+                                        <a href="/student/ScheduleFeeding/{{../recordID}}/{{scheduleID}}/{{by}}">{{date}}</a>
+                                    {{else}}
+                                        {{date}} 
+                                    {{/ifCond}}
+                                </td>
+                           
+                        <td>{{time}}</td>
 
-                            {{!-- <td>
-                                {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
-                                    <a href="/student/ScheduleFeeding/{{scheduleID}}/{{by}}">{{date}}</a>
-                                {{else}}
-                                    {{date}}
-                                {{/ifCond}}
-                            </td> --}}
                         {{/unless}}
+                        
                         {{#unless ../userType}}
                         <td>{{date}}</td>
                         {{/unless}}
-                        <td>{{time}}</td>
+                        {{!-- <td>
+                        {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
+                             <a href="/student/ScheduleFeeding/{{../recordID}}/{{scheduleID}}/{{by}}">{{time}}</a>
+                        {{else}}
+                            {{time}} 
+                        {{/ifCond}}
+                        </td> --}}
+                        
                         <td>{{scheduleFeed}}</td>
+                       
+
                         <td>{{scheduleAmt}}</td>
+
                         <td>{{scheduleFlush}}</td>
+                        
                         {{!-- <td>{{amtinf}}</td>
                         <td>{{ivflush}}</td> --}}
                         {{!-- <td>{{patientID}}</td> --}}
@@ -329,6 +345,7 @@
                         {{!-- {{/unless}} --}}
                     </tr>
                     {{/each}}
+                    {{!-- {{/each}} --}}
                 {{else}}
                 {{#unless userType}}
                 <p id="noRecord">Students have not created any Schedule records yet</p>

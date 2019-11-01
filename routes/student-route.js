@@ -3961,25 +3961,108 @@ router.put('/edit-motorstrength/:recordID/:motorstrengthID', ensureAuthenticated
 // })
 
 router.get('/FeedingRegime/:recordID', ensureAuthenticated, (req, res) => {
-	userType = req.user.userType == 'student';
-	if (req.user.userType == 'staff')
-	{
-		userType = 'student';
-	}
+
 	//DoctorOrders.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(docOrders => {
 	MasterFeedingRegime.find({ patientID: req.session.patient.patientID })
-	.sort({'datetime':1}).then(newFeeding => {
+	.sort({'datetime': 1}).then(newFeeding => {
 		// MasterScheduleFeed.findOne({ masterpatientID: req.session.patient.patientID})
 		MasterScheduleFeed.find({ masterpatientID: req.session.patient.patientID, by: req.user.firstName})
-		.sort({'datetime':1}).then(newOtherScheduleFeed =>{
+		.sort({'datetime': -1 }).then(newOtherScheduleFeed =>{
+			var schedFlowLength = 0;
+			
+			schedFlowLength = schedFlowLength * 2;
+
+			schedsample = [];
+			schedsampleDate = [];
+			schedsampleName = [];
+			schedsampleTime = [];
+
+			let schedFlow = Object.assign([], newOtherScheduleFeed);//all the records
+			schedCount = -1;
+			schednoRecord = 'No existing record';
+
+
+			let finalObj = {};
+			// let beech = {};
+			// var count = 0;
+      		schedFlow.forEach((element) => {
+        		const date = element.datetime.split(' ')[0];
+				if (finalObj[date]) {
+					//finalObj["hi"]["date"].push(date);
+				
+					finalObj[date].push(element);
+				} else {
+					finalObj[date] = [element];
+				}
+				console.log(JSON.stringify('beech' ));
+      		})
+			console.log(JSON.stringify(finalObj));
+			
+			  
+			// console.log("Hey Siti: " + Object.keys(finalObj.hi));
+			// let yo = Object.assign([], Object.keys(finalObj.hi));
+			// console.log("Hey Siti: " + yo);
+
+			newOtherScheduleFeed.forEach(sched => {
+			if (!(schedsample.includes(sched.datetime))) {
+				schedsample.push(sched.datetime);
+				schedsampleDate.push(sched.date);
+				schedsampleName.push(sched.by);
+				schedsampleTime.push(sched.time);
+			}
+
+				});
+					schedsample.sort();
+					schedsampleDate.sort();
+					
+					for (i = 0; i < schedsample.length; i++) {
+						
+						//Counter for empty data
+						//.length here refers to last index of the array
+						if (schedCount !== (schedFlow.length - 1)) {
+							console.log("Schedule count: " + schedCount);
+							console.log("Schedule Length: " + (schedFlow.length - 1));
+							schedCount++;
+						}
+						if(schedFlow != '') 
+						{
+							if (schedsample[i] < schedFlow[schedCount].datetime) {
+								
+								schedFlow.splice(schedCount, 0, {datetime: ''});
+
+							} else if (schedsample[i] > schedFlow[schedCount].datetime) {
+								schedFlow.splice(schedCount + 1, 0, {datetime: ''});
+							}
+						} 
+						else
+						{
+							schedFlow.push({datetime: '', scheduleFeed: schednoRecord});
+						}
+					};
+
+					userType = req.user.userType == 'student';
+					if (req.user.userType == 'staff')
+					{
+						userType = 'student';
+					}
+					console.log("Schedule Date Value: " + schedsampleDate);//schedsample is date and time
+					console.log("Name: "+ schedsampleName);
+					// console.log("Schedule Flow:"+ schedFlow);//schedFlow is the records 
+					// console.log("Schedule Rowspan: "+ schedFlowLength );
+
 			res.render('charts/master/charts-feeding-regime', {
+				finalObj: finalObj,
+				// yo: yo,
 				recordID: req.params.recordID,
 				newOtherScheduleFeed: newOtherScheduleFeed,
 				userType: userType,
 				currentUserType: req.user.userType,
 				newFeeding: newFeeding,
+				schedRowspan : schedFlowLength,
 				currentName: req.user.firstName,
 				patient: req.session.patient,
+				scheddateVal: schedsample,
+				schedFlow: schedFlow,
 				showMenu: true
 			})
 		})
@@ -4076,19 +4159,18 @@ router.put('/edit-feeding-regime/:recordID/:feedID/:name', ensureAuthenticated, 
 	});
 	res.redirect("/student/FeedingRegime/" + req.params.recordID);
 })
-//Schedule Feeding
 
+//Schedule Feeding
 
 //Add Schedule
 router.post('/add-schedule/:recordID', ensureAuthenticated, (req, res) => {
 	scheduleID = (new standardID('AAA0000')).generate();
 	datetime = moment(req.body.dateSchedule, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeSchedule;
-
 	new MasterScheduleFeed({
 		user: req.user.id,
 		by: req.user.firstName,
 		patientID: req.params.recordID,
-		date:moment(req.body.dateSchedule, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		date: moment(req.body.dateSchedule, 'DD/MM/YYYY').format('YYYY-MM-DD'),
 		time: req.body.timeSchedule,
 		datetime: datetime,
 		masterpatientID: req.session.patient.patientID,
@@ -4114,7 +4196,7 @@ router.get('/ScheduleFeeding/:recordID/:scheduleID/:name', ensureAuthenticated, 
 				// MasterScheduleFeed.find({patientID: req.session.patient.patientID, user:{'$ne': patientStudent.user}})
 				// .then(newSchedule => {
 					MasterScheduleFeed.find({  masterpatientID: req.session.patient.patientID, user: patientStudent.user})
-					.sort({'datetime':1}).then(newOtherScheduleFeed =>{
+					.sort({'datetime': -1}).then(newOtherScheduleFeed =>{
 						
 						MasterScheduleFeed.findOne({ scheduleID: req.params.scheduleID })
 						.then(editSchedule =>{
@@ -4151,7 +4233,7 @@ router.get('/ScheduleFeeding/:recordID/:scheduleID/:name', ensureAuthenticated, 
 					
 					// console.log("Edit History: "+ editHistory);
 					MasterScheduleFeed.find({ masterpatientID: req.session.patient.patientID, by: req.user.firstName})
-					.then(newOtherScheduleFeed =>{
+					.sort({'datetime': -1 }).then(newOtherScheduleFeed =>{
 						MasterScheduleFeed.findOne({ scheduleID: req.params.scheduleID })
 						.then(editSchedule =>{
 						

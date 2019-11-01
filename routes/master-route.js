@@ -3181,8 +3181,8 @@ router.get('/FeedingRegime', ensureAuthenticated, ensureAuthorised, (req, res) =
 			// console.log("Yikes: " + req.user);
 			//MasterFeedingRegime.findOne({patientID: req.session.patient.patientID})
 			//.then(editFeeding => {
-				MasterScheduleFeed.find({masterpatientID: req.session.patient.patientID})	
-				.then(newOtherScheduleFeed =>{	
+			MasterScheduleFeed.find({ masterpatientID: req.session.patient.patientID })	
+			.then(newOtherScheduleFeed =>{	
 				res.render('charts/master/charts-feeding-regime', {
 					newFeeding: newFeeding,
 					//editFeeding: editFeeding,
@@ -3258,6 +3258,7 @@ router.put('/edit-feeding-regime/:feedID/:name', ensureAuthenticated, ensureAuth
 
 	MasterFeedingRegime.findOne({ patientID:  req.session.patient.patientID,feedID: req.params.feedID})
 	.then(editFeeding => {
+		
 		editFeeding.date = moment(req.body.dateFeeding, 'DD/MM/YYYY').format('YYYY-MM-DD'),
 		editFeeding.time = req.body.timeFeeding,
 		editFeeding.datetime = datetime,
