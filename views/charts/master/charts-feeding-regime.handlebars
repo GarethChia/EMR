@@ -268,11 +268,11 @@
         <table id="ivRecords" class="hover order-column" >
             <thead>
                 <tr>
+                    <th>Date</th>
+                    <th>Time</th>
                     {{#unless userType}}
                     <th>By</th>
                     {{/unless}}
-                    <th>Date</th>
-                    <th>Time</th>
                     <th>Feeds</th>
                     <th>Amount</th>
                     <th>Water for flush</th>
@@ -292,17 +292,17 @@
                     {{#each newOtherScheduleFeed }}
                         {{!-- {{#each this}} --}}
                             {{#unless ../userType}}
-                                    <td>{{by}}</td>
+                                    <td>{{date}}</td>
                                 {{else}}
                                 {{!-- <td rowspan="{{finalDate}}">
                                     {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
                                         <a href="/student/ScheduleFeeding/{{../recordID}}/{{scheduleID}}/{{by}}">{{date}}</a>
                                     {{else}}--}}
                                     <td>
-                                    {{#ifCond currentUserType 'student'}}
+                                    {{#ifCond ../currentUserType 'student'}}
                                             <a href="/student/ScheduleFeeding/{{../recordID}}/{{scheduleID}}/{{by}}">{{date}}</a>
                                         {{else}}
-                                            {{date}} 
+                                            {{date}}
                                     {{/ifCond}}
                                     {{!--{{/ifCond}}
                                 </td> --}}
@@ -312,17 +312,17 @@
                     {{!-- </tr>
                     
                     <tr> --}}
-                        {{#unless ../userType}}
-                            <td>{{date}}</td>
-                        {{/unless}}
-                    <td>
+                    <td>{{time}}</td>
+                    {{!-- <td>
                         {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
                             {{time}} 
                         {{else}}
                             {{time}}
                         {{/ifCond}}
-                    </td>
-                
+                    </td> --}}
+                    {{#unless ../userType}}
+                            <td>{{by}}</td>
+                    {{/unless}}
                 
                     <td>{{scheduleFeed}}</td>
                 
