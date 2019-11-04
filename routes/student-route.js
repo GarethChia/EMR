@@ -3981,33 +3981,33 @@ router.get('/FeedingRegime/:recordID', ensureAuthenticated, (req, res) => {
 			schednoRecord = 'No existing record';
 
 
-			let finalObj = {};
+			// let finalObj = {};
 			var finalDate = [];
-			// let beech = {};
-			// var count = 0;
-      		schedFlow.forEach((element) => {
-        		const date = element.datetime.split(' ')[0];
-				if (finalObj[date]) {
+			// // let beech = {};
+			// // var count = 0;
+      		// schedFlow.forEach((element) => {
+        	// 	const date = element.datetime.split(' ')[0];
+			// 	if (finalObj[date]) {
 				
-					finalObj[date].push(element);
-				} else {
-					finalObj[date] = [element];
-					finalDate.push(date);
-				}
-				console.log(JSON.stringify('beech'));
-      		})
-			console.log(JSON.stringify(finalObj));
+			// 		finalObj[date].push(element);
+			// 	} else {
+			// 		finalObj[date] = [element];
+			// 		finalDate.push(date);
+			// 	}
+			// 	console.log(JSON.stringify('beech'));
+      		// })
+			// console.log(JSON.stringify(finalObj));
 			
-			console.log("Yo: "+ finalDate);
+			// console.log("Yo: "+ finalDate);
 			
-			finalDate.forEach((element) => {
-				console.log("date: "+ element);
-				console.log("date's length: "+ Object.keys(finalObj[element]).length);
-				Object.keys(element).length;
-				//console.log("finalObj[element] :" + finalObj[element]);
-				finalObj[element].push({"length": Object.keys(finalObj[element]).length});
-			})
-			console.log("Hi: "+ JSON.stringify(finalObj));
+			// finalDate.forEach((element) => {
+			// 	console.log("date: "+ element);
+			// 	console.log("date's length: "+ Object.keys(finalObj[element]).length);
+			// 	Object.keys(element).length;
+			// 	//console.log("finalObj[element] :" + finalObj[element]);
+			// 	finalObj[element].push({"length": Object.keys(finalObj[element]).length});
+			// })
+			// console.log("Hi: "+ JSON.stringify(finalObj));
 			//console.log("Hi: "+ Object.keys(obj).length);
 			// console.log("Hey Siti: " + Object.keys(finalObj.hi));
 			// let yo = Object.assign([], Object.keys(finalObj.hi));
@@ -4065,7 +4065,7 @@ router.get('/FeedingRegime/:recordID', ensureAuthenticated, (req, res) => {
 			// console.log("Schedule Rowspan: "+ schedFlowLength );
 
 			res.render('charts/master/charts-feeding-regime', {
-				finalObj: finalObj,
+				// finalObj: finalObj,
 				// yo: yo,
 				recordID: req.params.recordID,
 				newOtherScheduleFeed: newOtherScheduleFeed,
@@ -4178,6 +4178,7 @@ router.put('/edit-feeding-regime/:recordID/:feedID/:name', ensureAuthenticated, 
 //Schedule Feeding
 
 //Add Schedule
+
 router.post('/add-schedule/:recordID', ensureAuthenticated, (req, res) => {
 	scheduleID = (new standardID('AAA0000')).generate();
 	datetime = moment(req.body.dateSchedule, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeSchedule;

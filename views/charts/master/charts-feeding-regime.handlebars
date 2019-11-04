@@ -284,28 +284,29 @@
             </thead>
 
             <tbody>
-            {{#if finalObj}}
-            {{!-- {{#if newOtherScheduleFeed}} --}}
+            {{!-- {{#if finalObj}} --}}
+            {{#if newOtherScheduleFeed}}
 
                <tr style="height: 60px">
                     
-                    {{#each finalObj }}
-                        {{#each this}}
-                            {{#unless ../../userType}}
+                    {{#each newOtherScheduleFeed }}
+                        {{!-- {{#each this}} --}}
+                            {{#unless ../userType}}
                                     <td>{{by}}</td>
                                 {{else}}
                                 {{!-- <td rowspan="{{finalDate}}">
                                     {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
                                         <a href="/student/ScheduleFeeding/{{../recordID}}/{{scheduleID}}/{{by}}">{{date}}</a>
                                     {{else}}--}}
+                                    <td>
                                     {{#ifCond ../currentUserType 'student'}}
-                                            <td rowspan="{{length}}">{{date}}</td>                                       
+                                            <a href="/student/ScheduleFeeding/{{../recordID}}/{{scheduleID}}/{{by}}">{{date}}</a>
                                         {{else}}
-                                            <td rowspan="{{length}}">{{date}}</td> 
+                                            <td>{{date}}</td> 
                                     {{/ifCond}}
                                     {{!--{{/ifCond}}
                                 </td> --}}
-                                
+                                </td>
                                 {{!-- <td rowspan="{{finalDate}}">{{date}}</td> --}}
                             {{/unless}}
                     {{!-- </tr>
@@ -314,7 +315,7 @@
                         {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
                             {{time}} 
                         {{else}}
-                            <a href="/student/ScheduleFeeding/{{../../recordID}}/{{scheduleID}}/{{by}}">{{time}}</a>
+                            {{time}}
                         {{/ifCond}}
                     </td>
                 
@@ -327,7 +328,7 @@
                         
                 </tr>
                 {{/each}}
-                {{/each}}
+                {{!-- {{/each}} --}}
                 {{!-- {{/each}} --}}
                 {{else}}
                 {{#unless userType}}
