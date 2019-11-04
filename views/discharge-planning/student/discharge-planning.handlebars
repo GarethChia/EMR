@@ -36,6 +36,7 @@
 
     {{#if editDischargePlanning}}
     {{#unless userType}}
+    {{else}}
     <form action="/student/edit-DischargePlanning/{{recordID}}/{{editDischargePlanning.dischargePlanningID}}?_method=PUT" method="POST" id="editDischargePlanning">
     {{/unless}}
     <input type="hidden" name="_method" value="PUT">
@@ -516,10 +517,12 @@
             <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editDischargePlanning">Save
             {{else}}
             {{#unless userType}}
+            {{else}}
             <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addDischargePlanning">Save
             {{/unless}}
             {{/if}}
             {{#unless userType}}
+            {{else}}
                 <i class="material-icons right">send</i>
             </button>
             {{/unless}}
