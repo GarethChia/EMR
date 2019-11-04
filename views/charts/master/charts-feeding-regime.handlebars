@@ -299,18 +299,22 @@
                                         <a href="/student/ScheduleFeeding/{{../recordID}}/{{scheduleID}}/{{by}}">{{date}}</a>
                                     {{else}}--}}
                                     <td>
-                                    {{#ifCond ../currentUserType 'student'}}
+                                    {{#ifCond currentUserType 'student'}}
                                             <a href="/student/ScheduleFeeding/{{../recordID}}/{{scheduleID}}/{{by}}">{{date}}</a>
                                         {{else}}
-                                            <td>{{date}}</td> 
+                                            {{date}} 
                                     {{/ifCond}}
                                     {{!--{{/ifCond}}
                                 </td> --}}
-                                </td>
+                                    </td>
                                 {{!-- <td rowspan="{{finalDate}}">{{date}}</td> --}}
                             {{/unless}}
                     {{!-- </tr>
+                    
                     <tr> --}}
+                        {{#unless ../userType}}
+                            <td>{{date}}</td>
+                        {{/unless}}
                     <td>
                         {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
                             {{time}} 
