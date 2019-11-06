@@ -251,20 +251,32 @@
 
 
 {{!-- Schedule code start --}}
-
+        {{#unless userType}}
+    <form>
+        <div class="row">
+            <div class="col s12 m6 input-field">
+                <select id="selectUser" name="selectUser" required>
+                    <option value="" disabled selected>Please select a student</option>
+                    {{!-- <option value="Doctor">Lin Peishan</option> --}}
+                </select>
+                <label for="selectUser">Student</label>
+            </div>
+        </div>
+    </form>
+{{/unless}}
 <div id="schedule">
 <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">Schedule</div>
     <div style="overflow-x:auto; max-height: 16em;">
-        {{#if finalObj}}
+        {{!-- {{#if finalObj}}
             {{#each finalObj}}
                 <p>{{@key}}</p>
                 {{#each this}}
-                    {{!-- <p>{{this}}</p> --}}
                     <p>{{by}}</p>
                     <p>{{length}}</p>
                 {{/each}}
             {{/each}}
-        {{/if}}
+        {{/if}} --}}
+
         <table id="ivRecords" class="hover order-column" >
             <thead>
                 <tr>
@@ -486,7 +498,7 @@
         const dateSchedule = document.querySelector('#dateSchedule');
         const timeSchedule = document.querySelector('#timeSchedule');
         const scheduleFeed = document.querySelector('#scheduleFeed');
-
+        const selectUser = document.querySelector('#selectUser');
 
         //Img
         const elems = document.querySelectorAll('.materialboxed');
@@ -524,9 +536,32 @@
                 M.FormSelect.init(scheduleFeed, {
                     
                 })
+                M.FormSelect.init(selectUser, {
+            
+                })    
           })      
 
 
+// display students who has created their care plan
+    {{#if studentName}} 
+        {{#each studentName}}
+        // ** CHANGE HERE:
+        //$("#selectUser").append("<option value='https://composition.sit.nyp.edu.sg/master/CarePlan/{{createdBy}}'>{{createdBy}}</option>");
+        $("#selectUser").append("<option value='https://localhost/master/FeedingRegime/{{by}}'>{{by}}</option>"); 
+       document.getElementById('tab1').className += " active";
+        {{/each}}
+    {{/if}} 
+    
+     $('#selectUser').change(function(){ 
+        window.location.href = $(this).val();
+    });
+    // ** CHANGE HERE:
+    {{#if name}}
+        //document.getElementById("selectUser").value = "https://composition.sit.nyp.edu.sg/master/CarePlan/{{name}}";
+        // https://localhost.com
+        document.getElementById("selectUser").value = "https://localhost/master/FeedingRegime/{{by}}";
+        document.getElementById('tab1').className += " active";
+    {{/if}}
 
     {{#if editFeeding}}
         document.getElementById('typeofFormula').value = "{{editFeeding.typeofFormula}}";

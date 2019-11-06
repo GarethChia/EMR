@@ -3175,28 +3175,42 @@ router.get('/clc-motorstrength/:motorstrengthID', ensureAuthenticated, ensureAut
 router.get('/FeedingRegime', ensureAuthenticated, ensureAuthorised, (req, res) => {
 	MasterFeedingRegime.find({user:{'$ne':req.user.id}, masterpatientID: req.session.patient.patientID})
 	.then(newFeeding => {//(other record)
-		MasterFeedingRegime.findOne({ patientID: req.session.patient.patientID})
+		MasterFeedingRegime.find({ patientID: req.session.patient.patientID})
 		.then(newOtherFeeding =>{ //(your own record)
-			// console.log("Yikes: " + newOtherHistory.length);
-			// console.log("Yikes: " + req.user);
-			//MasterFeedingRegime.findOne({patientID: req.session.patient.patientID})
-			//.then(editFeeding => {
-			MasterScheduleFeed.find({ masterpatientID: req.session.patient.patientID })	
-			.then(newOtherScheduleFeed =>{	
+			// MasterScheduleFeed.find({ masterpatientID: req.session.patient.patientID})
+			// .then(studentName =>{
+				// MasterScheduleFeed.findOne({ masterpatientID: req.session.patient.patientID, by:req.params.name})	
+				// .then(newOtherScheduleFeed =>{	
+				MasterScheduleFeed.aggregate([ // display students who has created their care plan
+					{"$sort": {
+						'datetime': -1
+					}},
+					{ "$match" : { 'masterpatientID' : req.session.patient.patientID }},
+					{ "$group": { '_id' : "$by", "doc": {"$first": "$$ROOT"}}},
+					{"$replaceRoot": {"newRoot": "$doc"}},
+					{"$sort": {
+						'datetime': -1	
+					}}
+				])
+				.then(studentName =>{
+					
 				res.render('charts/master/charts-feeding-regime', {
 					newFeeding: newFeeding,
 					//editFeeding: editFeeding,
-					newOtherScheduleFeed: newOtherScheduleFeed,
+					// newOtherScheduleFeed: newOtherScheduleFeed,
 					checkifEmpty: true,
+					studentName: studentName,
+					recordID: req.params.recordID,
+					// name: req.params.name,
 					patient: req.session.patient,
 					currentName: req.user.firstName,
 					newOtherFeeding:newOtherFeeding,
 					showMenu: true
+				
 				});
-			//}
-			 //})
-			})
+			// })
 		})
+	})
 	})
 })
 
@@ -3275,30 +3289,30 @@ router.put('/edit-feeding-regime/:feedID/:name', ensureAuthenticated, ensureAuth
 
 //Schedule Feed
 // Open Schedule Feed page
-router.get('/ScheduleFeeding', ensureAuthenticated, ensureAuthorised, (req, res) => {
+// router.get('/ScheduleFeeding', ensureAuthenticated, ensureAuthorised, (req, res) => {
 
-	MasterScheduleFeed.find({user:{'$ne':req.user.id}, masterpatientID: req.session.patient.patientID})
-	.sort({'datetime': -1 }).then(newSchedule => {//(other record)
-		// MasterScheduleFeed.findOne({ patientID: req.session.patient.patientID})
-		// .then(newOtherScheduleFeed =>{ //(your own record)
-			// console.log("Yikes: " + newOtherHistory.length);
-			// console.log("Yikes: " + req.user);
-			//MasterFeedingRegime.findOne({patientID: req.session.patient.patientID})
-			//.then(editFeeding => {
-				res.render('charts/master/charts-feeding-regime', {
-					newSchedule: newSchedule,
-					//editFeeding: editFeeding,
-					checkifEmpty: true,
-					patient: req.session.patient,
-					currentName: req.user.firstName,
-					// newOtherScheduleFeed: newOtherScheduleFeed,
-					showMenu: true
-				});
-			//}
-	 		//})
-		})
-	})
-// })
+// 	MasterScheduleFeed.find({user:{'$ne':req.user.id}, masterpatientID: req.session.patient.patientID})
+// 	.sort({'datetime': -1 }).then(newSchedule => {//(other record)
+// 		// MasterScheduleFeed.findOne({ patientID: req.session.patient.patientID})
+// 		// .then(newOtherScheduleFeed =>{ //(your own record)
+// 			// console.log("Yikes: " + newOtherHistory.length);
+// 			// console.log("Yikes: " + req.user);
+// 			//MasterFeedingRegime.findOne({patientID: req.session.patient.patientID})
+// 			//.then(editFeeding => {
+// 				res.render('charts/master/charts-feeding-regime', {
+// 					newSchedule: newSchedule,
+// 					//editFeeding: editFeeding,
+// 					checkifEmpty: true,
+// 					patient: req.session.patient,
+// 					currentName: req.user.firstName,
+// 					// newOtherScheduleFeed: newOtherScheduleFeed,
+// 					showMenu: true
+// 				});
+// 			//}
+// 	 		//})
+// 		})
+// 	})
+// // })
 
 //Add Schedule Feeding
 router.post('/add-schedule', ensureAuthenticated, ensureAuthorised, (req, res) => {
@@ -3322,7 +3336,61 @@ router.post('/add-schedule', ensureAuthenticated, ensureAuthorised, (req, res) =
 	}).save();
 		res.redirect('/master/ScheduleFeeding');
 })
-
+router.get('/FeedingRegime/:name', ensureAuthenticated, ensureAuthorised, (req,res) => {
+	var name = req.params.name;
+	console.log('sched name: '+name);
+	MasterScheduleFeed.aggregate([ // display students who has created their care plan
+		{"$sort": {
+			'datetime': -1,
+		}},
+		{ "$match" : { 'masterpatientID' : req.session.patient.patientID } },
+		{ "$group": { '_id' : "$by", "doc": {"$first": "$$ROOT"}}},
+		{"$replaceRoot": {"newRoot": "$doc"}},
+		{"$sort": {
+			'datetime': -1	
+		}}
+	])
+	.then(studentName => {
+		
+			
+		// MasterScheduleFeed.aggregate([ // display students who has created their care plan
+		// 	{"$sort": {
+		// 		'datetime': -1
+		// 	}},
+		// 	{ "$match" : { 'masterpatientID' : req.session.patient.patientID, 'by': req.params.name } },
+		// 	{ "$group": { 
+		// 		'_id' : {
+		// 			"by":"$by",
+		// 		}, 
+		// 		"doc": {
+		// 			"$first": "$$ROOT"
+		// 		}
+		// 	}},
+		// 	{"$replaceRoot": {"newRoot": "$doc"}},
+		// 	{"$sort": {
+		// 		'datetime': -1,
+		// 	}}
+		// ])
+		// .then(newOtherScheduleFeed => {
+	MasterScheduleFeed.find({ masterpatientID: req.session.patient.patientID,by:req.params.name})
+	.sort({'datetime': -1 }).then(newOtherScheduleFeed =>{
+	// 	MasterScheduleFeed.find({ patientID: req.session.patient.patientID})
+	// 		.then(studentName =>{
+		
+		res.render('charts/master/charts-feeding-regime',{
+			//newSchedule: newSchedule,
+			//editSchedule: editSchedule,
+			newOtherScheduleFeed: newOtherScheduleFeed,
+			studentName:studentName,
+			patient: req.session.patient,
+			checkifEmpty: false,
+			currentName: req.user.firstName,
+			name: req.params.name,
+			showMenu: true
+		})
+	})
+})
+})
 	
 //One Schedule Feed by ID
 router.get('/ScheduleFeeding/:scheduleID/:name', ensureAuthenticated, ensureAuthorised, (req,res) => {
@@ -3333,19 +3401,36 @@ router.get('/ScheduleFeeding/:scheduleID/:name', ensureAuthenticated, ensureAuth
 		.sort({'datetime': -1 }).then(newOtherScheduleFeed =>{//(your own record) you need this (if you only put in the /HistoryTaking, this route do not know the newOtherHistory)
 			MasterScheduleFeed.findOne({ scheduleID: req.params.scheduleID })
 			.then(editSchedule =>{		
-				var name = req.params.name;
+				MasterScheduleFeed.find({user:{'$ne':req.user.id}, masterpatientID: req.session.patient.patientID,by:req.params.name})
+					.then(studentName =>{
+						
+			// MasterScheduleFeed.aggregate([ // display students who has created their care plan
+			// 	{"$sort": {
+			// 		'datetime': -1
+			// 	}},
+			// 	{ "$match" : { 'patientID' : req.session.patient.patientID } },
+			// 	{ "$group": { '_id' : "$by", "doc": {"$first": "$$ROOT"}}},
+			// 	{"$replaceRoot": {"newRoot": "$doc"}},
+			// 	{"$sort": {
+			// 		'datetime': -1	
+			// 	}}
+			// ])
+			// .then(studentName => {
+					
 				
 				editSchedule.date = moment(editSchedule.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
 
 				res.render('charts/master/charts-feeding-regime',{
 					newSchedule: newSchedule,
 					editSchedule: editSchedule,
+					studentName:studentName,
 					newOtherScheduleFeed: newOtherScheduleFeed,
 					patient: req.session.patient,
 					checkifEmpty: false,
 					currentName: req.user.firstName,
-					by: name,
+					name: req.params.name,
 					showMenu: true
+					})
 				})
 			});
 		});
