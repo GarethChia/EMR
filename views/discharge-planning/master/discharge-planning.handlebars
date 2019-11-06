@@ -1,4 +1,126 @@
+<style>
+    {{!-- td, th {
+        text-align: center
+    } --}}
+    .tabs .indicator {
+        background-color: #6A1B9A;
+    }
+    .tabs .tab a:focus, .tabs .tab a:focus.active {
+        background: transparent;
+    }
+
+    #ioflowsheetTable th {
+        border-right: 1px solid rgba(0, 0, 0, 0.12);
+        border-bottom: none;
+    }
+    #ioflowsheetTable tr {
+        border-bottom: none;
+    }
+    #ioflowsheetTable tr td {
+        border-right: 1px solid rgba(0, 0, 0, 0.12);
+    }
+</style>
+
+
+<br>
+<div class="row">
+    <div class="col s12">
+        <div class="tabs">
+            <li class="tab col s2 offset-s3" id="ioflowTab"><a class="purple-text text-darken-3" id="tab0" href="#dischargeflowsheet">Discharge Flowsheet</a></li>
+            <li class="tab col s2" id="iotab"><a class="purple-text text-darken-3" id="tab1" href="#dischargePlanning">Discharge Checklist</a></li>
+            <li class="tab col s2" id="enttab"><a class="purple-text text-darken-3" id="tab2" href="#appointment">Appointment</a></li>
+        </div>
+    </div>
+</div>
 <br/>
+<div id="dischargeflowsheet">
+    <div class="card-panel purple darken-3 white-text" style="padding: 5px; font-size: 20px; text-align: center"> Discharge Flowsheet</div>
+    
+    <div style="overflow-x: auto; max-height: 48em;">
+        <table id="ioflowsheetTable">
+            <tr>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Datetime</th>
+                {{#each iodateVal}}
+                <th style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">{{formatDatetime this}}</th>
+                {{/each}}
+            </tr>
+
+            <tr>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Discharge plan</th>
+                {{#each ioFlow}}
+                <td class="intakePO"></td>
+                {{/each}}
+            </tr>
+
+            <tr>
+                <th width="10%">Condition on discharge</th>
+                {{#each ioFlow}}
+                <td>{{foodtype}}</td>
+                {{/each}}
+            </tr>
+
+            <tr>
+                <th width="10%">Discharge to</th>
+                {{#each ioFlow}}
+                <td>{{foodportion}}</td>
+                {{/each}}
+            </tr>
+
+            <tr>
+                <th width="10%">Accompanied by</th>
+                {{#each ioFlow}}
+                <td>{{fluidtype}}</td>
+                {{/each}}
+            </tr>
+
+            <tr>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Mode of transport</th>
+                {{#each ioFlow}}
+                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)" class="fluidConsumed">{{fluidportion}}</td>
+                {{/each}}
+            </tr>
+
+        {{!-- enteral --}}
+
+            <tr>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Removal of</th>
+                {{#each enteralFlow}}
+                <td class="intakeEnteral"></td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Advice given</th>
+                {{#each enteralFlow}}
+                <td>{{enteralfeed}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Checked and returned</th>
+                {{#each enteralFlow}}
+                <td>{{formula}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Referrals</th>
+                {{#each enteralFlow}}
+                <td class="amountOfFeeding">{{feedamt}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Appointment</th>
+                {{#each enteralFlow}}
+                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)" class="flush">{{flush}}</td>
+                {{/each}}
+            </tr>
+
+            {{!-- iv --}}
+            <tr>
+                <th width="10%">Total Balance</th>
+                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12); border: 0;" id="totalBalance"></td>
+            </tr>
+        </table>
+    </div>
+</div>
 <div id="dischargePlanning">
     <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">Discharge Checklist</div>
     <div style="overflow-x:auto; max-height: 16em;">
@@ -48,7 +170,15 @@
             <div class="card-content">
                 <div id="dischargePlanningInfo">
                     <span class="purple-text darken-2">Discharge Checklist</span>
-                
+                    <br/>
+                    <br/>
+                    <label style="font-size: 15px">Instruction:</label>
+                    <br/>
+                    <label style="font-size: 15px">To initiate discharge planning within 24 hours after admission</label>
+                    <br/>
+                    <label style="font-size: 15px">Discharge planning must be actualized and completed on the day of discharge</label>
+                    <br/>
+                    <br/>
                     <div class="row">
                             <div class="col s12 m4 input-field">
                                 <input id="dateDischargePlanning" type="text" class="datepicker" name="dateDischargePlanning" value="{{editDischargePlanning.date}}" required>
@@ -260,251 +390,6 @@
                         </div>
                     </div>
                     <!--//6. Checked and returned-->
-
-                    <!--7. Advice given on-->
-                    <div class="row">
-                        <div class="col s12 m2 l2" style="padding-top:20px">
-                            <label style="font-size: 15px">Advice given on</label>
-                        </div>
-                        <div class="col s12 m1 l10">
-                            
-                            <table>
-                            <tr style="border: none;">
-                                <td style="padding-top:23px;">
-                                    <label style="display: inline-block;">
-                                        <input id="FollowUpAppointment" name="adviceGivenOn" type="checkbox" value="Follow-up appointment"
-                                            {{resetExceptNone editDischargePlanning.adviceGivenOn 'Follow-up appointment' 'None'}} />
-                                        <span style="padding-left: 25px; padding-right: 10px">Follow-up appointment</span>
-                                    </label>
-                                </td>
-                            </tr>
-                            <!---Follow up-->
-                            <tr style="border: none;">
-                                <td id="followUp">
-                                    <div class="row">
-                                        <div class="col s12 m4 input-field">
-                                            <select id="followUpAppointment" name="followUpAppointment">
-                                                <option value="" disabled selected>Please select</option>
-                                                <option value="Doctors">Doctors</option>
-                                                <option value="Therapists">Therapists</option>
-                                                <option value="Dietitians">Dietitians</option>
-                                                <option value="Others (Specify)">Others (Specify)</option>
-                                            </select>
-                                            <label for="followUpAppointment">Follow up</label>
-                                        </div>
-                                        <div class="col s12 m4 input-field" id="followUpAppointmentSpecifyContent">
-                                            <input id="followUpAppointmentSpecify" type="text" name="followUpAppointmentSpecify" value="{{editDischargePlanning.followUpAppointmentSpecify}}">
-                                            <label for="followUpAppointmentSpecify">Others</label>
-                                            <span class="helper-text">Specify</span>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="row">
-                                        <div class="col s12 m4 input-field">
-                                            <input id="appointmentDate" type="text" class="datepicker" name="appointmentDate" value="{{editDischargePlanning.appointmentDate}}">
-                                            <label for="appointmentDate">Date</label>
-                                            <span class="helper-text">dd/mm/yyyy</span>
-                                        </div>
-
-                                        <div class="col s12 m4 input-field">
-                                            <input id="appointmentTime" type="text" class="timepicker" name="appointmentTime" value="{{editDischargePlanning.appointmentTime}}">
-                                            <label for="appointmentTime">Time</label>
-                                            <span class="helper-text">hh:ss</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col s12 m2 l2" style="padding-top:20px">
-                                            <label style="font-size: 15px">Clinic</label>
-                                        </div>
-                                        <div class="col s12 m4 input-field">
-                                            <input id="clinic" type="text" name="clinic" value="{{editDischargePlanning.clinic}}">
-                                            <label for="clinic">Key in the Clinic name</label>
-                                            {{!-- <span class="helper-text">Specify</span> --}}
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col s12 m2 l2" style="padding-top:20px">
-                                            <label style="font-size: 15px">Name of the Doctor</label>
-                                        </div>
-                                        <div class="col s12 m4 input-field">
-                                            <input id="nameOfDoctor" type="text" name="nameOfDoctor" value="{{editDischargePlanning.nameOfDoctor}}">
-                                            <label for="nameOfDoctor">Doctor/Therapists/Dietitian/Others' name</label>
-                                            {{!-- <span class="helper-text">Specify</span> --}}
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col s12 m2 l2" style="padding-top:20px">
-                                            <label for="memoGiven" style="font-size: 15px">Memo given</label>
-                                        </div>
-                                        <div class="col s12 m2 l2" style="padding-top:20px">
-                                            <label>
-                                                <input id="memoGivenYes" name="memoGiven" type="radio" value="true"
-                                                    {{ setRadioButton editDischargePlanning.memoGiven true }}/>
-                                                <span style="padding-left: 25px; padding-right: 10px">Yes</span>
-                                            </label>
-                                            <label>
-                                                <input id="memoGivenNo" name="memoGiven" type="radio" value="false"
-                                                    {{ setRadioButton editDischargePlanning.memoGiven false }}/>
-                                                <span style="padding-left: 25px; padding-right: 10px">No</span>
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col s12 m2 l2" style="padding-top:20px">
-                                            <label style="font-size: 15px">Remarks</label>
-                                        </div>
-                                        <div class="col s12 m4 input-field">
-                                            <input id="remarks" type="text" name="remarks" value="{{editDischargePlanning.remarks}}">
-                                            <label for="remarks">Specify</label>
-                                            {{!-- <span class="helper-text">Specify</span> --}}
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr style="border: none;">
-                                <td>
-                                    <label style="display: inline-block;">
-                                        <input id="SpecialInstructions" name="adviceGivenOn" type="checkbox" value="Special instructions"
-                                            {{resetExceptNone editDischargePlanning.adviceGivenOn 'Special instructions' 'None'}}/>
-                                        <span style="padding-left: 25px; padding-right: 10px">Special instructions</span>
-                                    </label>
-                                </td>
-                            </tr>
-                            <!--Special instructions-->
-                            <tr style="border: none;">
-                                <td id="specialInstructionsContent">
-                                    <div class="row">
-                                        <div class="col s12 m4 input-field">
-                                            <input id="specialInstructionsSpecify" type="text" name="specialInstructionsSpecify" value="{{editDischargePlanning.specialInstructionsSpecify}}">
-                                            <label for="specialInstructionsSpecify">Specify</label>
-                                            {{!-- <span class="helper-text">Specify</span> --}}
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <!--// Special instructions-->
-
-                            <tr style="border: none;">
-                                <td>
-                                    <label style="display: inline-block;">
-                                        <input id="Referrals" name="adviceGivenOn" type="checkbox" value="Referrals"
-                                            {{resetExceptNone editDischargePlanning.adviceGivenOn 'Referrals' 'None'}}/>
-                                        <span style="padding-left: 25px; padding-right: 10px">Referrals</span>
-                                    </label>
-                                </td>
-                            </tr>
-
-                            <!--referrals-->
-                            <tr style="border: none;">
-                                <td id = "referralsContent">
-                                    <div class="row">
-                                        <div class="col s12 m4 input-field">
-                                            <select id="referrals" name="referrals">
-                                                <option value="" disabled selected>Please select</option>
-                                                <option value="Community Hosptal">Community Hosptal</option>
-                                                <option value="Day Care Centre">Day Care Centre</option>
-                                                <option value="Home Nursing Foundation">Home Nursing Foundation</option>
-                                                <option value="Hospice">Hospice</option>
-                                                <option value="Nursing Home">Nursing Home</option>
-                                                <option value="Outpatient Specialist">Outpatient Specialist</option>
-                                                <option value="Others (Specify)">Others (Specify)</option>
-                                            </select>
-                                            <label for="referrals"></label>
-                                        </div>
-
-                                        <div class="col s12 m4 input-field" id="referralsSpecifyContent">
-                                            <input id="referralsSpecify" type="text" name="referralsSpecify" value="{{editDischargePlanning.referralsSpecify}}">
-                                            <label for="referralsSpecify">Others</label>
-                                            <span class="helper-text">Specify</span>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <!--//referrals-->
-
-                            <tr style="border: none;">
-                                <td>
-                                    <label style="display: inline-block;">
-                                        <input id="Medications" name="adviceGivenOn" type="checkbox" value="Medications"
-                                            {{resetExceptNone editDischargePlanning.adviceGivenOn 'Medications' 'None'}}/>
-                                        <span style="padding-left: 25px; padding-right: 10px">Medications</span>
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr style="border: none;">
-                                <td>
-                                    <label style="display: inline-block;">
-                                        <input id="MedikAwas" name="adviceGivenOn" type="checkbox" value="Medik Awas"
-                                            {{checked editDischargePlanning.adviceGivenOn 'Medik Awas'}}
-                                            onclick="resetExceptNone('breathingPresence', 'noneResPresenceOf')"/>
-                                        <span style="padding-left: 25px; padding-right: 10px">Medik Awas</span>
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr style="border: none;">
-                                <td>
-                                    <label style="display: inline-block;">
-                                        <input id="DischargeTeachingInstructions" name="adviceGivenOn" type="checkbox" value="Discharge teaching/Instructions"
-                                            {{checked editDischargePlanning.adviceGivenOn 'Discharge teaching/Instructions'}}
-                                            onclick="resetExceptNone('breathingPresence', 'noneResPresenceOf')"/>
-                                        <span style="padding-left: 25px; padding-right: 10px">Discharge teaching/Instructions</span>
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr style="border: none;">
-                                <td>
-                                    <label style="display: inline-block;">
-                                        <input id="HospitalInpatientDischargeSummary" name="adviceGivenOn" type="checkbox" value="Hospital inpatient discharge summary"
-                                            {{checked editDischargePlanning.adviceGivenOn 'Hospital inpatient discharge summary'}}
-                                            onclick="resetExceptNone('breathingPresence', 'noneResPresenceOf')"/>
-                                        <span style="padding-left: 25px; padding-right: 10px">Hospital inpatient discharge summary</span>
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr style="border: none;">
-                                <td>
-                                    <label style="display: inline-block;">
-                                        <input id="MedicalCertificateNo" name="adviceGivenOn" type="checkbox" value="Medical Certificate No."
-                                            {{checked editDischargePlanning.adviceGivenOn 'Medical Certificate No.'}}
-                                            onclick="resetExceptNone('breathingPresence', 'noneResPresenceOf')"/>
-                                        <span style="padding-left: 25px; padding-right: 10px">Medical Certificate No.</span>
-                                    </label>
-                                </td>
-                            </tr>
-                            <!--Medical certificate no-->
-                            <tr style="border: none;">
-                                <td id="medicalCertificateNoContent">
-                                    <div class="row">
-                                        {{!-- <div class="col s12 m2 l2" style="padding-top:20px">
-                                            <label style="font-size: 15px">Medical Certificate No</label>
-                                        </div> --}}
-                                        <div class="col s12 m4 input-field">
-                                            <input id="medicalCertificateNo" type="text" name="medicalCertificateNo" value="{{editDischargePlanning.medicalCertificateNo}}">
-                                            <label for="medicalCertificateNo">Key in MC No</label>
-                                            {{!-- <span class="helper-text">Specify</span> --}}
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <!--//Medical certificate no-->
-                            <tr style="border: none;">
-                                <td>
-                                    <label style="display: inline-block;">
-                                        <input id="FeedbackForm" name="adviceGivenOn" type="checkbox" value="Feedback form"
-                                            {{checked editDischargePlanning.adviceGivenOn 'Feedback form'}}/>
-                                        <span style="padding-left: 25px; padding-right: 10px">Feedback form</span>
-                                    </label>
-                                </td>
-                            </tr>
-                            </table>    
-                        </div>
-                    </div>
-
-                    <!--//7. Advice given on-->
                 </div>
             </div>
         </div>
@@ -528,13 +413,302 @@
         </div>
     </div>
 </div>
+<div id="appointment">
+    <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">Follow-up appointment</div>
+    <div style="overflow-x:auto; max-height: 16em;">
+        <table id="dischargePlanningRecords" class="hover order-column">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#if newDischargePlanning}}
+                    {{#each newDischargePlanning}}
+                    <tr style="height: 60px">
+                        <td><a href="/student/DischargePlanning/{{../recordID}}/{{dischargePlanningID}}">{{date}}</a></td>
+                        <td>{{time}}</td>
+                    </tr>
+                    {{/each}}
+                {{else}}
+                    <tr style="height: 60px">
+                        <td colspan="2" class="center">
+                            <p id="noRecord">You have not created any Discharge Checklist yet</p>
+                        </td>
+                    </tr>
+                {{/if}}
+                
+            </tbody>
+        </table>
+    </div>
+    <br>
 
+    <div class="row">
+        <div class="col s12 m8"></div>
+    </div>
+    <div class="card purple lighten-5">
+        <div class="card-content">
+            <div id="dischargePlanningInfo">
+                <span class="purple-text darken-2">Follow-up appointment</span>
+                <!--7. Advice given on-->
+                <div class="row">
+                    <div class="col s12 m2 l2" style="padding-top:20px">
+                        <label style="font-size: 15px">Advice given on</label>
+                    </div>
+                    <div class="col s12 m1 l10">
+                        
+                        <table>
+                        <tr style="border: none;">
+                            <td style="padding-top:23px;">
+                                <label style="display: inline-block;">
+                                    <input id="FollowUpAppointment" name="adviceGivenOn" type="checkbox" value="Follow-up appointment"
+                                        {{resetExceptNone editDischargePlanning.adviceGivenOn 'Follow-up appointment' 'None'}} />
+                                    <span style="padding-left: 25px; padding-right: 10px">Follow-up appointment</span>
+                                </label>
+                            </td>
+                        </tr>
+                        <!---Follow up-->
+                        <tr style="border: none;">
+                            <td id="followUp">
+                                <div class="row">
+                                    <div class="col s12 m4 input-field">
+                                        <select id="followUpAppointment" name="followUpAppointment">
+                                            <option value="" disabled selected>Please select</option>
+                                            <option value="Doctors">Doctors</option>
+                                            <option value="Therapists">Therapists</option>
+                                            <option value="Dietitians">Dietitians</option>
+                                            <option value="Others (Specify)">Others (Specify)</option>
+                                        </select>
+                                        <label for="followUpAppointment">Follow up</label>
+                                    </div>
+                                    <div class="col s12 m4 input-field" id="followUpAppointmentSpecifyContent">
+                                        <input id="followUpAppointmentSpecify" type="text" name="followUpAppointmentSpecify" value="{{editDischargePlanning.followUpAppointmentSpecify}}">
+                                        <label for="followUpAppointmentSpecify">Others</label>
+                                        <span class="helper-text">Specify</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col s12 m4 input-field">
+                                        <input id="appointmentDate" type="text" class="datepicker" name="appointmentDate" value="{{editDischargePlanning.appointmentDate}}">
+                                        <label for="appointmentDate">Date</label>
+                                        <span class="helper-text">dd/mm/yyyy</span>
+                                    </div>
+
+                                    <div class="col s12 m4 input-field">
+                                        <input id="appointmentTime" type="text" class="timepicker" name="appointmentTime" value="{{editDischargePlanning.appointmentTime}}">
+                                        <label for="appointmentTime">Time</label>
+                                        <span class="helper-text">hh:ss</span>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col s12 m2 l2" style="padding-top:20px">
+                                        <label style="font-size: 15px">Clinic</label>
+                                    </div>
+                                    <div class="col s12 m4 input-field">
+                                        <input id="clinic" type="text" name="clinic" value="{{editDischargePlanning.clinic}}">
+                                        <label for="clinic">Key in the Clinic name</label>
+                                        {{!-- <span class="helper-text">Specify</span> --}}
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col s12 m2 l2" style="padding-top:20px">
+                                        <label style="font-size: 15px">Name of the Doctor</label>
+                                    </div>
+                                    <div class="col s12 m4 input-field">
+                                        <input id="nameOfDoctor" type="text" name="nameOfDoctor" value="{{editDischargePlanning.nameOfDoctor}}">
+                                        <label for="nameOfDoctor">Doctor/Therapists/Dietitian/Others' name</label>
+                                        {{!-- <span class="helper-text">Specify</span> --}}
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col s12 m2 l2" style="padding-top:20px">
+                                        <label for="memoGiven" style="font-size: 15px">Memo given</label>
+                                    </div>
+                                    <div class="col s12 m2 l2" style="padding-top:20px">
+                                        <label>
+                                            <input id="memoGivenYes" name="memoGiven" type="radio" value="true"
+                                                {{ setRadioButton editDischargePlanning.memoGiven true }}/>
+                                            <span style="padding-left: 25px; padding-right: 10px">Yes</span>
+                                        </label>
+                                        <label>
+                                            <input id="memoGivenNo" name="memoGiven" type="radio" value="false"
+                                                {{ setRadioButton editDischargePlanning.memoGiven false }}/>
+                                            <span style="padding-left: 25px; padding-right: 10px">No</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col s12 m2 l2" style="padding-top:20px">
+                                        <label style="font-size: 15px">Remarks</label>
+                                    </div>
+                                    <div class="col s12 m4 input-field">
+                                        <input id="remarks" type="text" name="remarks" value="{{editDischargePlanning.remarks}}">
+                                        <label for="remarks">Specify</label>
+                                        {{!-- <span class="helper-text">Specify</span> --}}
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr style="border: none;">
+                            <td>
+                                <label style="display: inline-block;">
+                                    <input id="SpecialInstructions" name="adviceGivenOn" type="checkbox" value="Special instructions"
+                                        {{resetExceptNone editDischargePlanning.adviceGivenOn 'Special instructions' 'None'}}/>
+                                    <span style="padding-left: 25px; padding-right: 10px">Special instructions</span>
+                                </label>
+                            </td>
+                        </tr>
+                        <!--Special instructions-->
+                        <tr style="border: none;">
+                            <td id="specialInstructionsContent">
+                                <div class="row">
+                                    <div class="col s12 m4 input-field">
+                                        <input id="specialInstructionsSpecify" type="text" name="specialInstructionsSpecify" value="{{editDischargePlanning.specialInstructionsSpecify}}">
+                                        <label for="specialInstructionsSpecify">Specify</label>
+                                        {{!-- <span class="helper-text">Specify</span> --}}
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <!--// Special instructions-->
+
+                        <tr style="border: none;">
+                            <td>
+                                <label style="display: inline-block;">
+                                    <input id="Referrals" name="adviceGivenOn" type="checkbox" value="Referrals"
+                                        {{resetExceptNone editDischargePlanning.adviceGivenOn 'Referrals' 'None'}}/>
+                                    <span style="padding-left: 25px; padding-right: 10px">Referrals</span>
+                                </label>
+                            </td>
+                        </tr>
+
+                        <!--referrals-->
+                        <tr style="border: none;">
+                            <td id = "referralsContent">
+                                <div class="row">
+                                    <div class="col s12 m4 input-field">
+                                        <select id="referrals" name="referrals">
+                                            <option value="" disabled selected>Please select</option>
+                                            <option value="Community Hosptal">Community Hosptal</option>
+                                            <option value="Day Care Centre">Day Care Centre</option>
+                                            <option value="Home Nursing Foundation">Home Nursing Foundation</option>
+                                            <option value="Hospice">Hospice</option>
+                                            <option value="Nursing Home">Nursing Home</option>
+                                            <option value="Outpatient Specialist">Outpatient Specialist</option>
+                                            <option value="Others (Specify)">Others (Specify)</option>
+                                        </select>
+                                        <label for="referrals"></label>
+                                    </div>
+
+                                    <div class="col s12 m4 input-field" id="referralsSpecifyContent">
+                                        <input id="referralsSpecify" type="text" name="referralsSpecify" value="{{editDischargePlanning.referralsSpecify}}">
+                                        <label for="referralsSpecify">Others</label>
+                                        <span class="helper-text">Specify</span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <!--//referrals-->
+
+                        <tr style="border: none;">
+                            <td>
+                                <label style="display: inline-block;">
+                                    <input id="Medications" name="adviceGivenOn" type="checkbox" value="Medications"
+                                        {{resetExceptNone editDischargePlanning.adviceGivenOn 'Medications' 'None'}}/>
+                                    <span style="padding-left: 25px; padding-right: 10px">Medications</span>
+                                </label>
+                            </td>
+                        </tr>
+                        <tr style="border: none;">
+                            <td>
+                                <label style="display: inline-block;">
+                                    <input id="MedikAwas" name="adviceGivenOn" type="checkbox" value="Medik Awas"
+                                        {{checked editDischargePlanning.adviceGivenOn 'Medik Awas'}}
+                                        onclick="resetExceptNone('breathingPresence', 'noneResPresenceOf')"/>
+                                    <span style="padding-left: 25px; padding-right: 10px">Medik Awas</span>
+                                </label>
+                            </td>
+                        </tr>
+                        <tr style="border: none;">
+                            <td>
+                                <label style="display: inline-block;">
+                                    <input id="DischargeTeachingInstructions" name="adviceGivenOn" type="checkbox" value="Discharge teaching/Instructions"
+                                        {{checked editDischargePlanning.adviceGivenOn 'Discharge teaching/Instructions'}}
+                                        onclick="resetExceptNone('breathingPresence', 'noneResPresenceOf')"/>
+                                    <span style="padding-left: 25px; padding-right: 10px">Discharge teaching/Instructions</span>
+                                </label>
+                            </td>
+                        </tr>
+                        <tr style="border: none;">
+                            <td>
+                                <label style="display: inline-block;">
+                                    <input id="HospitalInpatientDischargeSummary" name="adviceGivenOn" type="checkbox" value="Hospital inpatient discharge summary"
+                                        {{checked editDischargePlanning.adviceGivenOn 'Hospital inpatient discharge summary'}}
+                                        onclick="resetExceptNone('breathingPresence', 'noneResPresenceOf')"/>
+                                    <span style="padding-left: 25px; padding-right: 10px">Hospital inpatient discharge summary</span>
+                                </label>
+                            </td>
+                        </tr>
+                        <tr style="border: none;">
+                            <td>
+                                <label style="display: inline-block;">
+                                    <input id="MedicalCertificateNo" name="adviceGivenOn" type="checkbox" value="Medical Certificate No."
+                                        {{checked editDischargePlanning.adviceGivenOn 'Medical Certificate No.'}}
+                                        onclick="resetExceptNone('breathingPresence', 'noneResPresenceOf')"/>
+                                    <span style="padding-left: 25px; padding-right: 10px">Medical Certificate No.</span>
+                                </label>
+                            </td>
+                        </tr>
+                        <!--Medical certificate no-->
+                        <tr style="border: none;">
+                            <td id="medicalCertificateNoContent">
+                                <div class="row">
+                                    {{!-- <div class="col s12 m2 l2" style="padding-top:20px">
+                                        <label style="font-size: 15px">Medical Certificate No</label>
+                                    </div> --}}
+                                    <div class="col s12 m4 input-field">
+                                        <input id="medicalCertificateNo" type="text" name="medicalCertificateNo" value="{{editDischargePlanning.medicalCertificateNo}}">
+                                        <label for="medicalCertificateNo">Key in MC No</label>
+                                        {{!-- <span class="helper-text">Specify</span> --}}
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <!--//Medical certificate no-->
+                        <tr style="border: none;">
+                            <td>
+                                <label style="display: inline-block;">
+                                    <input id="FeedbackForm" name="adviceGivenOn" type="checkbox" value="Feedback form"
+                                        {{checked editDischargePlanning.adviceGivenOn 'Feedback form'}}/>
+                                    <span style="padding-left: 25px; padding-right: 10px">Feedback form</span>
+                                </label>
+                            </td>
+                        </tr>
+                        </table>    
+                    </div>
+                </div>
+
+                <!--//7. Advice given on-->
+
+            </div>
+        </div>
+    </div>
+</div>
 <script
 		src="https://code.jquery.com/jquery-3.3.1.min.js"
 		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
 		crossorigin="anonymous">
 </script>
 <script>
+    $(document).ready(() => {
+        $('.tabs').tabs();
+    })
     document.addEventListener('DOMContentLoaded', () => {
         const dateDischargePlanning = document.querySelector('#dateDischargePlanning');
         const timeDischargePlanning = document.querySelector('#timeDischargePlanning');
