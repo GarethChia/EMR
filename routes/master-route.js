@@ -34,6 +34,7 @@ const MasterFeedingRegime = mongoose.model('masterFeedingRegime');
 const MasterScheduleFeed = mongoose.model('masterScheduleFeed');
 // Discharge Planning
 const MasterDischargePlanning = mongoose.model('masterDischargePlanning');
+const MasterAppointment = mongoose.model('masterAppointment');
 
 const moment = require('moment');
 const csrf = require('csurf');
@@ -3461,11 +3462,15 @@ router.put('/edit-schedule/:scheduleID/:name', ensureAuthenticated, ensureAuthor
 router.get('/DischargePlanning', ensureAuthenticated, ensureAuthorised, (req, res) => {
 	MasterDischargePlanning.find({patientID: req.session.patient.patientID}).sort({'datetime':1})
 	.then(newDischargePlanning => { // discharge planning that they have created
-		//console.log('req.session.user.patientID: '+ req.session.patient.patientID );
-		res.render('discharge-planning/master/discharge-planning', {
-			newDischargePlanning: newDischargePlanning,
-			patient: req.session.patient,
-			showMenu: true			
+		MasterAppointment.find({patientID: req.session.patient.patientID}).sort({'datetime':1})
+		.then(newAppointment => {
+			//console.log('req.session.user.patientID: '+ req.session.patient.patientID );
+			res.render('discharge-planning/master/discharge-planning', {
+				newDischargePlanning: newDischargePlanning,
+				newAppointment: newAppointment,
+				patient: req.session.patient,
+				showMenu: true			
+			})
 		})
 	})
 })
@@ -3642,6 +3647,104 @@ router.put('/edit-DischargePlanning/:dischargePlanningID', ensureAuthenticated, 
 		editDischargePlanning.medicalCertificateNo = req.body.medicalCertificateNo
 
 		editDischargePlanning.save();
+	});
+	res.redirect("/master/DischargePlanning");
+})
+
+// Add Appointment
+router.post('/add-appointment', ensureAuthenticated, (req, res) => {
+
+	datetime = moment(req.body.appointmentDate1, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.appointmentTime1;
+	appointmentID = (new standardID('AAA0000')).generate();
+	new MasterAppointment({
+		patientID: req.session.patient.patientID,
+		appointmentID: appointmentID,
+		datetime: datetime,
+		date: moment(req.body.appointmentDate1, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		time: req.body.appointmentTime1,
+		// Follow-up Appointment
+		followUpAppointment: req.body.followUpAppointment1,
+		followUpAppointmentSpecify: req.body.followUpAppointmentSpecify1,
+		clinic: req.body.clinic1,
+		nameOfDoctor: req.body.nameOfDoctor1,
+		memoGiven: req.body.memoGiven1,
+		remarks: req.body.remarks1,
+	}).save();
+	/*
+    patientID:  {type: String, require: true},
+	nric:  {type: String, default: ''},
+	familyName: {type: String, default: ''},
+	givenName:  {type: String, default: ''},
+	userID: {
+		type: Schema.Types.ObjectId,
+		ref: 'emr-users' 	// collection name in mongodb
+	},
+	nursingAssessmentID: {
+		type: Schema.Types.ObjectId,
+		ref: 'nursing-assessment'
+    },
+    appointmentID:    {type: String, default: ''},
+    datetime:   {type: String, default: ''},
+    date:   {type: String, default: ''},
+    time:   {type: String, default: ''},
+    // 7
+    adviceGivenOn: [String], // checklist
+    // Follow-up Appointment
+    followUpAppointment: {type: String, default: ''},
+    followUpAppointmentSpecify: {type: String, default: ''},
+    appointmentDate: {type: String, default: ''},
+    appointmentTime: {type: String, default: ''},
+    clinic: {type: String, default:''},
+    nameOfDoctor: {type: String, default: ''},
+    memoGiven: {type: Boolean}, // radio button
+    remarks: {type: String, default: ''},
+    // Special Instructions
+    specialInstructionsSpecify: {type: String, default: ''},
+    // Referrals
+    referrals:	 {type: String, default: ''},
+    referralsSpecify: {type: String, default: ''},
+    // Medical Cert No
+    medicalCertificateNo: {type: String, default: ''},
+	*/
+	res.redirect('/master/DischargePlanning');
+});
+
+// get single Appointment
+router.get('/FollowUpApppointment/:appointmentID', ensureAuthenticated, ensureAuthorised, (req, res) => {
+	
+	MasterAppointment.find({patientID: req.session.patient.patientID}).sort({'datetime':1})
+	.then(newAppointment => {
+		MasterAppointment.findOne({appointmentID: req.params.appointmentID})
+		.then(editAppointment => {
+			editAppointment.date = moment(editAppointment.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
+			
+			res.render('discharge-planning/master/discharge-planning', {
+				editAppointment: editAppointment,
+				newAppointment: newAppointment,
+				patient: req.session.patient,
+				showMenu: true
+			});
+		})
+	});
+});
+
+// edit Appointment
+router.put('/edit-Appointment/:appointmentID', ensureAuthenticated, ensureAuthorised, (req,res) => {
+	datetime = moment(req.body.appointmentDate1, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.appointmentTime1;
+
+	MasterAppointment.findOne({ appointmentID: req.params.appointmentID}).then(editAppointment => {
+		editAppointment.date = moment(req.body.appointmentDate1, 'DD/MM/YYYY').format('YYYY-MM-DD')
+		editAppointment.time = req.body.appointmentTime1,
+		editAppointment.datetime = datetime,
+
+		editAppointment.followUpAppointment = req.body.followUpAppointment1,
+		editAppointment.followUpAppointmentSpecify = req.body.followUpAppointmentSpecify1,
+		editAppointment.clinic = req.body.clinic1,
+		editAppointment.nameOfDoctor = req.body.nameOfDoctor1,
+		editAppointment.memoGiven = req.body.memoGiven1,
+		editAppointment.remarks = req.body.remarks1,
+
+		editAppointment.save();
 	});
 	res.redirect("/master/DischargePlanning");
 })
