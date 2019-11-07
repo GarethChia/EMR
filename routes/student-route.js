@@ -4193,7 +4193,7 @@ router.post('/add-schedule/:recordID', ensureAuthenticated, (req, res) => {
 		scheduleFeed: req.body.scheduleFeed,
 		scheduleAmt: req.body.scheduleAmt,
 		scheduleFlush: req.body.scheduleFlush,
-		schedcomments: schedcomments,
+		schedcomments: req.body.schedcomments,
 		scheduleID: scheduleID
 	}).save();
 	res.redirect('/student/FeedingRegime/' + req.params.recordID );
@@ -4287,7 +4287,7 @@ router.put('/edit-schedule/:recordID/:scheduleID/:name', ensureAuthenticated, (r
 		editSchedule.datetime = datetime,
 		editSchedule.scheduleFeed = req.body.scheduleFeed,
 		editSchedule.scheduleAmt = req.body.scheduleAmt,
-		editSchedule.scheduleFlush = req.body.scheduleFlush
+		editSchedule.scheduleFlush = req.body.scheduleFlush,
 		editSchedule.schedcomments = req.body.schedcomments,
 
 		editSchedule.save();
