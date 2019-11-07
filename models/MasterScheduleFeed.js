@@ -21,7 +21,8 @@ const MasterScheduleFeedSchema = new Schema({
 	scheduleFeed:		 {type: String, default: ''},
 	scheduleAmt:	 {type: String, default: ''},
     scheduleFlush:	 {type: String, default: ''},
-    by: {type: String, default:''},
+	by: {type: String, default:''},
+	schedcomments: {type: String, default:''},
     masterpatientID:{type: String, default:''},
 });
 

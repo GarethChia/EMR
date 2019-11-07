@@ -3351,7 +3351,6 @@ router.get('/FeedingRegime/:name', ensureAuthenticated, ensureAuthorised, (req,r
 		}}
 	])
 	.then(studentName => {
-		
 			
 		// MasterScheduleFeed.aggregate([ // display students who has created their care plan
 		// 	{"$sort": {
@@ -3376,17 +3375,20 @@ router.get('/FeedingRegime/:name', ensureAuthenticated, ensureAuthorised, (req,r
 	.sort({'datetime': -1 }).then(newOtherScheduleFeed =>{
 	// 	MasterScheduleFeed.find({ patientID: req.session.patient.patientID})
 	// 		.then(studentName =>{
-		
-		res.render('charts/master/charts-feeding-regime',{
-			//newSchedule: newSchedule,
-			//editSchedule: editSchedule,
-			newOtherScheduleFeed: newOtherScheduleFeed,
-			studentName:studentName,
-			patient: req.session.patient,
-			checkifEmpty: false,
-			currentName: req.user.firstName,
-			name: req.params.name,
-			showMenu: true
+		MasterFeedingRegime.find({patientID: req.session.patient.patientID })
+		.sort({'datetime': 1}).then(newFeeding=>{
+			res.render('charts/master/charts-feeding-regime',{
+				newFeeding: newFeeding,
+				//newSchedule: newSchedule,
+				//editSchedule: editSchedule,
+				newOtherScheduleFeed: newOtherScheduleFeed,
+				studentName:studentName,
+				patient: req.session.patient,
+				checkifEmpty: false,
+				currentName: req.user.firstName,
+				name: req.params.name,
+				showMenu: true
+			})
 		})
 	})
 })

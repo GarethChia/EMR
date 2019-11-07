@@ -251,7 +251,9 @@
 
 
 {{!-- Schedule code start --}}
-        {{#unless userType}}
+       
+<div id="schedule">
+     {{#unless userType}}
     <form>
         <div class="row">
             <div class="col s12 m6 input-field">
@@ -264,7 +266,6 @@
         </div>
     </form>
 {{/unless}}
-<div id="schedule">
 <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">Schedule</div>
     <div style="overflow-x:auto; max-height: 16em;">
         {{!-- {{#if finalObj}}
@@ -288,7 +289,7 @@
                     <th>Feeds</th>
                     <th>Amount</th>
                     <th>Water for flush</th>
-                    
+                    <th>Comments</th>
                     {{!-- {{#unless userType}}
                     <th>Delete</th>
                     {{/unless}} --}}
@@ -341,6 +342,7 @@
                     <td>{{scheduleAmt}}</td>
             
                     <td>{{scheduleFlush}}</td>
+                    <td>{{schedcomments}}</td>
                         
                 </tr>
                 {{/each}}
@@ -399,7 +401,6 @@
                 <div class="row">
 
                         <div class="col s12 m4 input-field">
-
                                 <select id="scheduleFeed" name="scheduleFeed">
                                     <option value="ensure">Ensure</option>
                                     <option value="Ensure Life">Ensure Life</option>                                
@@ -417,8 +418,7 @@
                                     <option value="Propass">Propass</option>
                                 </select>
                                     <label for="scheduleFeed">Feeds</label>
-
-                             </div>
+                            </div>
                             
                         <div>
                             <div class="col s12 m4 input-field">
@@ -427,10 +427,18 @@
                                 <span class="helper-text"></span>
                             </div>
                         </div>
+                     
                         <div>
                             <div class="col s12 m4 input-field">
                                 <input id="scheduleFlush" type="number" name="scheduleFlush" value="{{editSchedule.scheduleFlush}}">
                                 <label for="scheduleFlush">Water for Flush (ml)</label>
+                                <span class="helper-text"></span>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="col s12 m4 input-field">
+                                <input id="schedcomments" type="text" name="schedcomments" value="{{editSchedule.schedcomments}}">
+                                <label for="schedcomments">Comments</label>
                                 <span class="helper-text"></span>
                             </div>
                         </div>
@@ -542,22 +550,31 @@
           })      
 
 
-// display students who has created their care plan
+// display students who has created their schedule
+{{#if newFeeding}}
+    document.getElementById('tab0').className += " active";
+{{/if}}
+{{#if newOtherScheduleFeed}}
+    document.getElementById('schedtab').className += " active";
+    document.getElementById('tab0').className += " disabled";
+{{/if}}
     {{#if studentName}} 
         {{#each studentName}}
         // ** CHANGE HERE:
-        //$("#selectUser").append("<option value='https://composition.sit.nyp.edu.sg/master/CarePlan/{{createdBy}}'>{{createdBy}}</option>");
+        //$("#selectUser").append("<option value='https://composition.sit.nyp.edu.sg/master/FeedingRegime/{{by}}'>{{by}}</option>");
         $("#selectUser").append("<option value='https://localhost/master/FeedingRegime/{{by}}'>{{by}}</option>"); 
-       document.getElementById('tab1').className += " active";
+       document.getElementById('schedtab').className += " active";
         {{/each}}
     {{/if}} 
     
      $('#selectUser').change(function(){ 
         window.location.href = $(this).val();
+        document.getElementById('schedtab').className += " active";
+        
     });
     // ** CHANGE HERE:
     {{#if name}}
-        //document.getElementById("selectUser").value = "https://composition.sit.nyp.edu.sg/master/CarePlan/{{name}}";
+        //document.getElementById("selectUser").value = "https://composition.sit.nyp.edu.sg/master/FeedingRegime/{{by}}";
         // https://localhost.com
         document.getElementById("selectUser").value = "https://localhost/master/FeedingRegime/{{by}}";
         document.getElementById('tab1').className += " active";
