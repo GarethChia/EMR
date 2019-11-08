@@ -47,8 +47,6 @@
                     <th>Orders</th>
                     {{!--{{#unless userType}}
                     <th>Delete</th>
-                     {{else}}
-                    <th>Delete</th> 
                     {{/unless}}--}}
                 </tr>
             </thead>
@@ -57,18 +55,9 @@
                     {{#each newFeeding}}
                     <tr style="height: 60px">
                         {{#unless ../userType}}
-                        
                             <td><a href="/master/FeedingRegime/{{feedID}}/{{by}}">{{date}}</a></td>
                         {{else}}
                             <td>{{date}}</td>
-
-                            {{!-- <td>
-                                {{#ifCond currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
-                                    <a href="/student/FeedingRegime/{{../recordID}}/{{feedID}}">{{date}}</a>
-                                {{else}}
-                                    {{date}}
-                                {{/ifCond}}
-                            </td> --}}
                         {{/unless}}
                         <td>{{time}}</td>
                         <td>{{typeofFormula}}</td>
@@ -111,15 +100,10 @@
     {{#if editFeeding}}
         {{#unless userType}}
         <form action="/master/edit-feeding-regime/{{editFeeding.feedID}}/{{editFeeding.by}}?_method=PUT" method="POST" id="editFeeding">
-        {{!-- {{else}}
-        <form action="/student/edit-feeding-regime/{{recordID}}/{{editFeeding.feedID}}/{{editFeeding.by}}?_method=PUT" method="POST" id="editFeeding"> --}}
         {{/unless}}
-    {{!-- <input type="hidden" name="_method" value="PUT"> --}}
     {{else}}
         {{#unless userType}}
             <form action="/master/add-feeding-regime" method="POST" id="addFeeding">
-            {{!-- {{else}} --}}
-            {{!-- <form action="/student/add-feeding-regime/{{recordID}}" method="POST" id="addeFeeding"> --}}
         {{/unless}}
     {{/if}}
         <div class="card purple lighten-5">
@@ -304,16 +288,16 @@
         <div class="col s12 m8"></div>
     </div>
 
-    {{#if editSchedule}}
+    {{#if editSchedule}} {{!-- students can create and edit the schedule, lecturer can only see --}}
         {{#unless userType}}
-        {{!-- <form action="/master/edit-schedule/{{editSchedule.scheduleID}}?_method=PUT" method="POST" id="editSchedule"> --}}
+        {{!-- if lecturer, you cant edit --}}
         {{else}}
         <form action="/student/edit-schedule/{{recordID}}/{{editSchedule.scheduleID}}/{{editSchedule.by}}?_method=PUT" method="POST" id="editSchedule">
         {{/unless}}
     {{else}}
     {{!-- <input type="hidden" name="_method" value="PUT"> --}}
         {{#unless userType}}
-            {{!-- <form action="/master/add-schedule" method="POST" id="addSchedule"> --}}
+        {{!-- if lecturer, you cant add --}} 
         {{else}}
             <form action="/student/add-schedule/{{recordID}}" method="POST" id="addSchedule">
         {{/unless}}
@@ -385,34 +369,21 @@
 
         <div class="col s12 m4">
             {{#unless userType}}
-
+            {{!-- lecturer cant add or edit schedule, they can only view ye --}}
             {{else}}
-            {{!-- {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit--> --}}
-
-            {{#if editSchedule}}
-          
-            <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editSchedule">Save Changes
-            {{else}}
-            {{!-- {{#unless userType}} --}}
-            <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addSchedule">Save
-            {{!-- {{/unless}} --}}
-            
-            {{!-- {{#unless userType}} --}}
-            <i class="material-icons right">send</i>
-                {{!-- {{else}} --}}
-                {{!-- <i class="material-icons right">send</i> --}}
-            {{/if}}
-            {{!-- {{/ifCond}} --}}
+                {{#if editSchedule}}
+                    <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editSchedule">Save Changes
+                {{else}}
+                    <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addSchedule">Save
+                    <i class="material-icons right">send</i>
+                {{/if}}
             {{/unless}}
             </button>
         </div>
     </div>
 </div>
-{{!-- </div> --}}
 
 {{!-- Schedule code ends here --}}
-
-
 
 <script
 		src="https://code.jquery.com/jquery-3.3.1.min.js"
@@ -421,7 +392,7 @@
 </script>
 
 <script>
-
+    //need this for tabs ya
     $(document).ready(() => {
         $('.tabs').tabs();
     })
@@ -443,7 +414,7 @@
         const elems = document.querySelectorAll('.materialboxed');
         const instances = M.Materialbox.init(elems, {});
 
-        //Feed Instances
+        //Feeding Instances
                 M.Datepicker.init(dateFeeding, {
                     maxDate: new Date(),
                     format: 'dd/mm/yyyy',
@@ -491,7 +462,7 @@
 
     {{#if studentName}} 
         {{#each studentName}}
-        // ** CHANGE HERE:
+        // ** CHANGE HERE: (if want deploy) teehee 
         //$("#selectUser").append("<option value='https://composition.sit.nyp.edu.sg/master/FeedingRegime/{{by}}'>{{by}}</option>");
         $("#selectUser").append("<option value='https://localhost/master/FeedingRegime/{{by}}'>{{by}}</option>"); 
         document.getElementById('schedtab').className += " active";
@@ -503,7 +474,7 @@
         document.getElementById('schedtab').className += " active";
         console.log('beech skskskskksksksksks');
     });
-    // ** CHANGE HERE:
+    // ** CHANGE HERE: (if want deploy) teehee 
     {{#if name}}
         //document.getElementById("selectUser").value = "https://composition.sit.nyp.edu.sg/master/FeedingRegime/{{by}}";
         // https://localhost.com
@@ -531,7 +502,7 @@
         var elems = document.querySelectorAll('.modal');
         var instances = M.Modal.init(elems, {});
     });
-      
+    // for lecturer who view the students record, this function hides the save button :)
     if ("{{currentUserType}}" == "staff")
     {
         $(".saveButton").hide();
@@ -541,9 +512,19 @@
         $(".saveButton").show();
     }
 
-   $("#tab0").on("click", function () {
-    window.location.replace("https://localhost/master/FeedingRegime");
+    // ** CHANGE HERE: (if want deploy) teehee 
+  /* $("#tab0").on("click", function () {
+       if ("{{currentUserType}}" == "staff")
+    {
+        window.location.replace("https://localhost/student/FeedingRegime/{{recordID}}");
+        $(".saveButton").hide();
+    }
+    else
+    {
+        $(".saveButton").show();
+    }
+        window.location.replace("https://localhost/master/FeedingRegime");
     //window.location.replace("https://composition.sit.nyp.edu.sg/master/FeedingRegime");
 
-});
+});*/
  </script>
