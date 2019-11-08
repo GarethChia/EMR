@@ -35,6 +35,7 @@ const MasterFeedingRegime = mongoose.model('masterFeedingRegime');
 const MasterScheduleFeed = mongoose.model('masterScheduleFeed');
 // Discharge Planning
 const StudentDischargePlanning = mongoose.model('studentDischargePlanning');
+const StudentAppointment = mongoose.model('studentAppointment');
 
 const moment = require('moment');
 const alertMessage = require('../helpers/messenger');
@@ -4305,15 +4306,98 @@ router.get('/DischargePlanning/:recordID', ensureAuthenticated, (req, res) => {
 		userType = 'student';
 	}
 
+	//==================================================================================
 	StudentDischargePlanning.find({patientID: req.params.recordID}).sort({'datetime':1})
 	.then(newDischargePlanning => { // discharge planning that they have created
-		res.render('discharge-planning/student/discharge-planning', {
-			newDischargePlanning: newDischargePlanning,
-			patient: req.session.patient,
-			recordID: req.params.recordID,
-			userType: userType,
-			currentUserType: req.user.userType,
-			showMenu: true			
+		StudentAppointment.find({patientID: req.params.recordID}).sort({'datetime':1})
+		.then(newAppointment => {
+			
+			dischargeplanningsample = [];
+			dischargeplanningsampleDate = [];
+			let dischargePlanningFlow = Object.assign([], newDischargePlanning);
+			let appointmentFlow = Object.assign([], newAppointment);
+
+			dischargePlanningCount = -1;
+			appointmentCount = -1;
+
+			dischargeplanningnoRecord = 'No existing record';
+
+			newDischargePlanning.forEach(dischargeplanning => {
+				if (!(dischargeplanningsample.includes(dischargeplanning.datetime))) {
+					dischargeplanningsample.push(dischargeplanning.datetime);
+					dischargeplanningsampleDate.push(dischargeplanning.date);
+				}
+			});
+
+			newAppointment.forEach(appointment => {
+				if (!(dischargeplanningsample.includes(appointment.datetime))){
+					dischargeplanningsample.push(appointment.datetime);
+					dischargeplanningsampleDate.push(appointment.date);
+				}
+			});
+
+				
+			dischargeplanningsample.sort();
+			dischargeplanningsampleDate.sort();
+
+			for (i = 0; i < dischargeplanningsample.length; i++) {
+				
+
+				//Counter for empty data
+				//.length here refers to last index of the array
+				if (dischargePlanningCount !== (dischargePlanningFlow.length - 1)) {
+					dischargePlanningCount++;
+				}
+
+				if (appointmentCount !== (appointmentFlow.length - 1)) {
+					appointmentCount++;
+				}	
+
+				//Insert empty data when value doesnt match
+				//Count here does the index count of flow array
+				if(dischargePlanningFlow !='') 
+				{
+					if (dischargeplanningsample[i] < dischargePlanningFlow[dischargePlanningCount].datetime) {
+						dischargePlanningFlow.splice(dischargePlanningCount, 0, {datetime: ''});
+					} else if (dischargeplanningsample[i] > dischargePlanningFlow[dischargePlanningCount].datetime) {
+						dischargePlanningFlow.splice(dischargePlanningCount + 1, 0, {datetime: ''});
+					}
+				} 
+				else
+				{
+					dischargePlanningFlow.push({datetime: '', dischargePlan: dischargeplanningnoRecord});
+				}
+
+				if(appointmentFlow !='') 
+				{
+					if (dischargeplanningsample[i] < appointmentFlow[appointmentCount].datetime) {
+						appointmentFlow.splice(appointmentCount, 0, {datetime: ''});
+					} else if (dischargeplanningsample[i] > appointmentFlow[appointmentCount].datetime) {
+						appointmentFlow.splice(appointmentCount + 1, 0, {datetime: ''});
+					}
+				} 
+				else
+				{
+					appointmentFlow.push({datetime: '', clinic: dischargeplanningnoRecord});
+				}
+
+			};
+			
+			console.log("appointmentFlow: "+ appointmentFlow);
+			console.log("dischargePlanningFlow: "+ dischargePlanningFlow);
+
+			res.render('discharge-planning/student/discharge-planning', {
+				dischargePlanningdateVal: dischargeplanningsample,
+				dischargePlanningFlow: dischargePlanningFlow,
+				appointmentFlow: appointmentFlow,
+				newDischargePlanning: newDischargePlanning,
+				newAppointment: newAppointment,
+				patient: req.session.patient,
+				recordID: req.params.recordID,
+				userType: userType,
+				currentUserType: req.user.userType,
+				showMenu: true			
+			})
 		})
 	})
 })
@@ -4330,6 +4414,7 @@ router.post('/add-discharge-planning/:recordID', ensureAuthenticated, (req, res)
 		date: moment(req.body.dateDischargePlanning, 'DD/MM/YYYY').format('YYYY-MM-DD'),
 		time: req.body.timeDischargePlanning,
 		// 1
+		dischargePlan: req.body.dischargePlan,
 		dischargeCondition: req.body.dischargeCondition,
 		// 2
 		dischargeTo: req.body.dischargeTo,
@@ -4441,6 +4526,7 @@ router.put('/edit-DischargePlanning/:recordID/:dischargePlanningID', ensureAuthe
 		editDischargePlanning.time = req.body.timeDischargePlanning,
 		editDischargePlanning.datetime = datetime,
 		// 1
+		editDischargePlanning.dischargePlan = req.body.dischargePlan,
 		editDischargePlanning.dischargeCondition = req.body.dischargeCondition,
 		// 2
 		editDischargePlanning.dischargeTo = req.body.dischargeTo,
@@ -4477,6 +4563,101 @@ router.put('/edit-DischargePlanning/:recordID/:dischargePlanningID', ensureAuthe
 		editDischargePlanning.medicalCertificateNo = req.body.medicalCertificateNo
 
 		editDischargePlanning.save();
+	});
+	res.redirect("/student/DischargePlanning/"+req.params.recordID);
+})
+
+// Add Appointment
+router.post('/add-appointment/:recordID', ensureAuthenticated, (req, res) => {
+
+	datetime = moment(req.body.appointmentDate1, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.appointmentTime1;
+	appointmentID = (new standardID('AAA0000')).generate();
+	new StudentAppointment({
+		patientID: req.params.recordID,
+		appointmentID: appointmentID,
+		datetime: datetime,
+		date: moment(req.body.appointmentDate1, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		time: req.body.appointmentTime1,
+		// Follow-up Appointment
+		followUpAppointment: req.body.followUpAppointment1,
+		followUpAppointmentSpecify: req.body.followUpAppointmentSpecify1,
+		clinic: req.body.clinic1,
+		nameOfDoctor: req.body.nameOfDoctor1,
+		memoGiven: req.body.memoGiven1,
+		remarks: req.body.remarks1,
+	}).save();
+
+	res.redirect('/student/DischargePlanning/'+ req.params.recordID);
+});
+
+// get single appointment
+router.get('/FollowUpAppointment/:recordID/:appointmentID', ensureAuthenticated, (req, res) => {
+	
+	userType = req.user.userType == 'student';
+
+	if (req.user.userType == 'staff')
+	{
+
+		userType = 'student';
+		
+		
+		StudentAppointment.find({patientID: req.params.recordID}).sort({'datetime':1})
+		.then(newAppointment => {
+			StudentAppointment.findOne({appointmentID: req.params.appointmentID})
+			.then(editAppointment => {
+				
+				editAppointment.date = moment(editAppointment.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
+
+				res.render('discharge-planning/student/discharge-planning', {
+					editAppointment: editAppointment,
+					newAppointment: newAppointment,
+					recordID: req.params.recordID,
+					patient: req.session.patient,
+					userType: userType,
+					currentUserType: req.user.userType,
+					showMenu: true
+				});
+			})
+		});
+	}
+	else
+	{
+		StudentAppointment.find({patientID: req.params.recordID}).sort({'datetime':1})
+		.then(newAppointment => {
+			StudentAppointment.findOne({appointmentID: req.params.appointmentID})
+			.then(editAppointment => {
+				editAppointment.date = moment(editAppointment.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
+				res.render('discharge-planning/student/discharge-planning', {
+					editAppointment: editAppointment,
+					newAppointment: newAppointment,
+					recordID: req.params.recordID,
+					patient: req.session.patient,
+					userType: userType,
+					showMenu: true
+				});
+			})
+		});
+	}
+	
+});
+
+// edit Appointment
+router.put('/edit-Appointment/:recordID/:appointmentID', ensureAuthenticated, (req,res) => {
+	datetime = moment(req.body.appointmentDate1, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.appointmentTime1;
+
+	StudentAppointment.findOne({ appointmentID: req.params.appointmentID}).then(editAppointment => {
+		editAppointment.date = moment(req.body.appointmentDate1, 'DD/MM/YYYY').format('YYYY-MM-DD')
+		editAppointment.time = req.body.appointmentTime1,
+		editAppointment.datetime = datetime,
+
+		editAppointment.followUpAppointment = req.body.followUpAppointment1,
+		editAppointment.followUpAppointmentSpecify = req.body.followUpAppointmentSpecify1,
+		editAppointment.clinic = req.body.clinic1,
+		editAppointment.nameOfDoctor = req.body.nameOfDoctor1,
+		editAppointment.memoGiven = req.body.memoGiven1,
+		editAppointment.remarks = req.body.remarks1,
+
+		editAppointment.save();
 	});
 	res.redirect("/student/DischargePlanning/"+req.params.recordID);
 })

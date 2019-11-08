@@ -1,4 +1,157 @@
+<style>
+    .tabs .indicator {
+        background-color: #6A1B9A;
+    }
+    .tabs .tab a:focus, .tabs .tab a:focus.active {
+        background: transparent;
+    }
+
+    #dischargePlanningTable th {
+        border-right: 1px solid rgba(0, 0, 0, 0.12);
+        border-bottom: none;
+    }
+    #dischargePlanningTable tr {
+        border-bottom: none;
+    }
+    #dischargePlanningTable tr td {
+        border-right: 1px solid rgba(0, 0, 0, 0.12);
+    }
+</style>
+
+
+<br>
+<div class="row">
+    <div class="col s12">
+        <div class="tabs">
+            <li class="tab col s2 offset-s3" id="dischargeFlowTab"><a class="purple-text text-darken-3" id="tab0" href="#dischargeflowsheet">Discharge Flowsheet</a></li>
+            <li class="tab col s2" id="dischargePlanningtab"><a class="purple-text text-darken-3" id="tab1" href="#dischargePlanning">Discharge Checklist</a></li>
+            <li class="tab col s2" id="appointmenttab"><a class="purple-text text-darken-3" id="tab2" href="#appointment">Appointment</a></li>
+        </div>
+    </div>
+</div>
 <br/>
+<div id="dischargeflowsheet">
+    <div class="card-panel purple darken-3 white-text" style="padding: 5px; font-size: 20px; text-align: center"> Discharge Flowsheet</div>
+    
+    <div style="overflow-x: auto; max-height: 48em;">
+        <table id="dischargePlanningTable">
+            <tr>
+                <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Datetime</th>
+                {{#each dischargePlanningdateVal}}
+                <th style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">{{formatDatetime this}}</th>
+                {{/each}}
+            </tr>
+
+            <tr>
+                <th width="10%">Discharge plan</th>
+                {{#each dischargePlanningFlow}}
+                <td class="intakePO">{{dischargePlan}}</td>
+                {{/each}}
+            </tr>
+
+            <tr>
+                <th width="10%">Condition on discharge</th>
+                {{#each dischargePlanningFlow}}
+                <td>{{dischargeCondition}}</td>
+                {{/each}}
+            </tr>
+
+            <tr>
+                <th width="10%">Discharge to</th>
+                {{#each dischargePlanningFlow}}
+                <td>{{dischargeTo}}</td>
+                {{/each}}
+            </tr>
+
+            <tr>
+                <th width="10%">Accompanied by</th>
+                {{#each dischargePlanningFlow}}
+                <td>{{accompaniedBy}}</td>
+                {{/each}}
+            </tr>
+
+            <tr>
+                <th width="10%">Mode of transport</th>
+                {{#each dischargePlanningFlow}}
+                <td class="fluidConsumed" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);">{{modeOfTransport}}</td>
+                {{/each}}
+            </tr>
+
+            <tr>
+                <th width="10%">Removal of</th>
+                {{#each dischargePlanningFlow}}
+                <td class="intakeEnteral" id="tableRemovalOf" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);">
+                    {{#each removalOf}}
+                        {{this}} <br/>
+                    {{/each}}
+                </td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Advice given</th>
+                {{#each dischargePlanningFlow}}
+                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);">
+                    {{#each adviceGivenOn}}
+                        {{this}} <br/>
+                    {{/each}}
+                </td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Checked and returned</th>
+                {{#each dischargePlanningFlow}}
+                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);">
+                    {{#each checkedAndReturned}}
+                        {{this}} <br/>
+                    {{/each}}
+                </td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%">Referrals</th>
+                {{#each dischargePlanningFlow}}
+                <td class="amountOfFeeding" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">{{referrals}}</td>
+                {{/each}}
+            </tr>
+            <tr>
+                <th width="10%" rowspan="5">Appointment</th>
+                {{#each appointmentFlow}}
+                <td>
+                    {{followUpAppointment}}
+                </td>
+                {{/each}}
+            </tr>
+            <tr>
+                {{#each appointmentFlow}}
+                <td>
+                    {{followUpAppointmentSpecify}}
+                </td>
+                {{/each}}
+            </tr>
+            <tr>
+                {{#each appointmentFlow}}
+                <td>
+                    {{clinic}}-{{nameOfDoctor}}
+                </td>
+                {{/each}}
+            </tr>
+            <tr>
+                {{#each appointmentFlow}}
+                <td>
+                    {{memoGiven}}
+                </td>
+                {{/each}}
+            </tr>
+            <tr>
+                {{#each appointmentFlow}}
+                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);">
+                    {{remarks}}
+                </td>
+                {{/each}}
+            </tr>
+        </table>
+    </div>
+</div>
 <div id="dischargePlanning">
     <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">Discharge Checklist</div>
     <div style="overflow-x:auto; max-height: 16em;">
@@ -35,10 +188,7 @@
     </div>
 
     {{#if editDischargePlanning}}
-    {{#unless userType}}
-    {{else}}
     <form action="/student/edit-DischargePlanning/{{recordID}}/{{editDischargePlanning.dischargePlanningID}}?_method=PUT" method="POST" id="editDischargePlanning">
-    {{/unless}}
     <input type="hidden" name="_method" value="PUT">
     {{else}}
     <form action="/student/add-discharge-planning/{{recordID}}" method="POST" id="addDischargePlanning">
@@ -47,7 +197,15 @@
             <div class="card-content">
                 <div id="dischargePlanningInfo">
                     <span class="purple-text darken-2">Discharge Checklist</span>
-                
+                    <br/>
+                    <br/>
+                    <label style="font-size: 15px">Instruction:</label>
+                    <br/>
+                    <label style="font-size: 15px">To initiate discharge planning within 24 hours after admission</label>
+                    <br/>
+                    <label style="font-size: 15px">Discharge planning must be actualized and completed on the day of discharge</label>
+                    <br/>
+                    <br/>
                     <div class="row">
                             <div class="col s12 m4 input-field">
                                 <input id="dateDischargePlanning" type="text" class="datepicker" name="dateDischargePlanning" value="{{editDischargePlanning.date}}" required>
@@ -60,6 +218,19 @@
                                 <label for="timeDischargePlanning">Time</label>
                                 <span class="helper-text">hh:ss</span>
                             </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m2 l2" style="padding-top:20px">
+                            <label style="font-size: 15px">Discharge Plan</label>
+                        </div>
+                        <div class="col s12 m4 input-field">
+                                <select id="dischargePlan" name="dischargePlan">
+                                    <option value="" disabled selected>Please select</option>
+                                    <option value="Planned">Planned</option>
+                                    <option value="Actualized">Actualized</option>
+                                </select>
+                                <label for="dischargePlan"></label>
+                        </div>
                     </div>
                     <!--1. Condition on discharge-->
                     <div class="row">
@@ -259,7 +430,6 @@
                         </div>
                     </div>
                     <!--//6. Checked and returned-->
-
                     <!--7. Advice given on-->
                     <div class="row">
                         <div class="col s12 m2 l2" style="padding-top:20px">
@@ -516,36 +686,197 @@
             {{#if editDischargePlanning}}
             <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editDischargePlanning">Save
             {{else}}
-            {{#unless userType}}
-            {{else}}
             <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addDischargePlanning">Save
-            {{/unless}}
             {{/if}}
-            {{#unless userType}}
-            {{else}}
                 <i class="material-icons right">send</i>
             </button>
-            {{/unless}}
         </div>
     </div>
 </div>
+<div id="appointment">
+    <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">Follow-up appointment</div>
+    <div style="overflow-x:auto; max-height: 16em;">
+        <table id="dischargePlanningRecords" class="hover order-column">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#if newAppointment}}
+                    {{#each newAppointment}}
+                    <tr style="height: 60px">
+                        <td><a href="/student/FollowUpAppointment/{{../recordID}}/{{appointmentID}}">{{date}}</a></td>
+                        <td>{{time}}</td>
+                    </tr>
+                    {{/each}}
+                {{else}}
+                    <tr style="height: 60px">
+                        <td colspan="2" class="center">
+                            <p id="noRecord">You have not created any Discharge Checklist yet</p>
+                        </td>
+                    </tr>
+                {{/if}}
+                
+            </tbody>
+        </table>
+    </div>
+    <br>
 
+    <div class="row">
+        <div class="col s12 m8"></div>
+    </div>
+    {{#if editAppointment}}
+    <form action="/student/edit-Appointment/{{recordID}}/{{editAppointment.appointmentID}}?_method=PUT" method="POST" id="editAppointment">
+    <input type="hidden" name="_method" value="PUT">
+    {{else}}
+    <form action="/student/add-appointment/{{recordID}}" method="POST" id="addAppointment">
+    {{/if}}
+        <div class="card purple lighten-5">
+            <div class="card-content">
+                <div id="dischargePlanningInfo">
+                    <span class="purple-text darken-2">Follow-up appointment</span>
+                    <!--7. Advice given on-->
+                    <div class="row">
+                        <div class="col s12 m1 l10">
+                            
+                            <table>
+                            <!---Follow up-->
+                            <tr style="border: none;">
+                                <td id="followUp">
+                                    <div class="row">
+                                        <div class="col s12 m4 input-field">
+                                            <select id="followUpAppointment1" name="followUpAppointment1">
+                                                <option value="" disabled selected>Please select</option>
+                                                <option value="Doctors">Doctors</option>
+                                                <option value="Therapists">Therapists</option>
+                                                <option value="Dietitians">Dietitians</option>
+                                                <option value="Others (Specify)">Others (Specify)</option>
+                                            </select>
+                                            <label for="followUpAppointment">Follow up</label>
+                                        </div>
+                                        <div class="col s12 m4 input-field" id="followUpAppointmentSpecifyContent1">
+                                            <input id="followUpAppointmentSpecify1" type="text" name="followUpAppointmentSpecify1" value="{{editAppointment.followUpAppointmentSpecify}}">
+                                            <label for="followUpAppointmentSpecify1">Others</label>
+                                            <span class="helper-text">Specify</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col s12 m4 input-field">
+                                            <input id="appointmentDate1" type="text" class="datepicker" name="appointmentDate1" value="{{editAppointment.date}}">
+                                            <label for="appointmentDate1">Date</label>
+                                            <span class="helper-text">dd/mm/yyyy</span>
+                                        </div>
+
+                                        <div class="col s12 m4 input-field">
+                                            <input id="appointmentTime1" type="text" class="timepicker" name="appointmentTime1" value="{{editAppointment.time}}">
+                                            <label for="appointmentTime1">Time</label>
+                                            <span class="helper-text">hh:ss</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col s12 m2 l2" style="padding-top:20px">
+                                            <label style="font-size: 15px">Clinic</label>
+                                        </div>
+                                        <div class="col s12 m4 input-field">
+                                            <input id="clinic1" type="text" name="clinic1" value="{{editAppointment.clinic}}">
+                                            <label for="clinic1">Key in the Clinic name</label>
+                                            {{!-- <span class="helper-text">Specify</span> --}}
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col s12 m2 l2" style="padding-top:20px">
+                                            <label style="font-size: 15px">Name of the Doctor</label>
+                                        </div>
+                                        <div class="col s12 m4 input-field">
+                                            <input id="nameOfDoctor1" type="text" name="nameOfDoctor1" value="{{editAppointment.nameOfDoctor}}">
+                                            <label for="nameOfDoctor1">Doctor/Therapists/Dietitian/Others' name</label>
+                                            {{!-- <span class="helper-text">Specify</span> --}}
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col s12 m2 l2" style="padding-top:20px">
+                                            <label for="memoGiven1" style="font-size: 15px">Memo given</label>
+                                        </div>
+                                        <div class="col s12 m2 l2" style="padding-top:20px">
+                                            <label>
+                                                <input id="memoGivenYes" name="memoGiven1" type="radio" value="true"
+                                                    {{ setRadioButton editAppointment.memoGiven true }}/>
+                                                <span style="padding-left: 25px; padding-right: 10px">Yes</span>
+                                            </label>
+                                            <label>
+                                                <input id="memoGivenNo" name="memoGiven1" type="radio" value="false"
+                                                    {{ setRadioButton editAppointment.memoGiven false }}/>
+                                                <span style="padding-left: 25px; padding-right: 10px">No</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col s12 m2 l2" style="padding-top:20px">
+                                            <label style="font-size: 15px">Remarks</label>
+                                        </div>
+                                        <div class="col s12 m4 input-field">
+                                            <input id="remarks1" type="text" name="remarks1" value="{{editAppointment.remarks}}">
+                                            <label for="remarks1">Specify</label>
+                                            {{!-- <span class="helper-text">Specify</span> --}}
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            </table>    
+                        </div>
+                    </div>
+
+                    <!--//7. Advice given on-->
+
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="row">
+        <div class="col s12 m8"></div>
+
+        <div class="col s12 m4">
+            {{#if editAppointment}}
+            <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editAppointment">Save
+            {{else}}
+            <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addAppointment">Save
+            {{/if}}
+                <i class="material-icons right">send</i>
+            </button>
+        </div>
+    </div>
+</div>
 <script
 		src="https://code.jquery.com/jquery-3.3.1.min.js"
 		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
 		crossorigin="anonymous">
 </script>
 <script>
+    $(document).ready(() => {
+        $('.tabs').tabs();
+    })
     document.addEventListener('DOMContentLoaded', () => {
         const dateDischargePlanning = document.querySelector('#dateDischargePlanning');
         const timeDischargePlanning = document.querySelector('#timeDischargePlanning');
+        const dischargePlan = document.querySelector('#dischargePlan');
         const dischargeTo = document.querySelector('#dischargeTo');
         const accompaniedBy = document.querySelector('#accompaniedBy');
         const modeOfTransport = document.querySelector('#modeOfTransport');
         const followUpAppointment = document.querySelector('#followUpAppointment');
+        const followUpAppointment1 = document.querySelector('#followUpAppointment1');
         const appointmentDate = document.querySelector('#appointmentDate');
         const appointmentTime = document.querySelector('#appointmentTime');
         const referrals = document.querySelector('#referrals');
+        const appointmentDate1 = document.querySelector('#appointmentDate1');
+        const appointmentTime1 = document.querySelector('#appointmentTime1');
 
         M.Datepicker.init(dateDischargePlanning, {
             maxDate: new Date(),
@@ -556,6 +887,10 @@
             twelveHour: false,
             showClearBtn: true
         });
+        
+        M.FormSelect.init(dischargePlan, {
+
+        })
 
         M.FormSelect.init(dischargeTo, {
             
@@ -570,6 +905,10 @@
         })
 
         M.FormSelect.init(followUpAppointment,{
+
+        })
+        
+        M.FormSelect.init(followUpAppointment1,{
 
         })
 
@@ -587,13 +926,38 @@
         M.FormSelect.init(referrals,{
 
         })
+
+        M.Datepicker.init(appointmentDate1, {
+            maxDate: new Date(),
+            format: 'dd/mm/yyyy',
+            disableWeekends: true
+        });
+
+        M.Timepicker.init(appointmentTime1, {
+            twelveHour: false,
+            showClearBtn: true
+        });
     })  
     {{#if editDischargePlanning}}
+        document.getElementById('dischargePlan').value = "{{editDischargePlanning.dischargePlan}}";
         document.getElementById('dischargeTo').value = "{{editDischargePlanning.dischargeTo}}";
         document.getElementById('accompaniedBy').value = "{{editDischargePlanning.accompaniedBy}}";
         document.getElementById('modeOfTransport').value = "{{editDischargePlanning.modeOfTransport}}";
         document.getElementById('followUpAppointment').value = "{{editDischargePlanning.followUpAppointment}}";
         document.getElementById('referrals').value = "{{editDischargePlanning.referrals}}";
+    
+
+        document.getElementById('dischargeFlowTab').className += " disabled";
+        document.getElementById('appointmenttab').className += " disabled";
+        document.getElementById('tab1').className += " active";
+    {{/if}}
+
+    {{#if editAppointment}}
+        document.getElementById('followUpAppointment1').value = "{{editAppointment.followUpAppointment}}";
+
+        document.getElementById('dischargeFlowTab').className += " disabled";
+        document.getElementById('dischargePlanningtab').className += " disabled";
+        document.getElementById('tab2').className += " active";
     {{/if}}
 
     // dropdown
@@ -648,6 +1012,20 @@
 
             if (followUpAppointment != "Others (Specify)") {
                 $('#followUpAppointmentSpecify').val('');
+            }
+        }
+    );
+
+    $('#followUpAppointment1').change(
+        function() {
+
+            // followUpAppointment1
+            var followUpAppointment1 = $('#followUpAppointment1 option:selected').val();
+            
+            showOrHide(followUpAppointment1, $("#followUpAppointmentSpecifyContent1"), "Others (Specify)");
+
+            if (followUpAppointment1 != "Others (Specify)") {
+                $('#followUpAppointmentSpecify1').val('');
             }
         }
     );
@@ -802,103 +1180,107 @@
     }
 
     $( document ).ready(function() {
-        
-            // 2
-            // Discharge to
-            if (document.getElementById("dischargeTo").value == "Others (Specify)") {
-                $("#dischargeToSpecifyContent").show();
-            }
-            else {
-                $("#dischargeToSpecifyContent").hide();
-            }
-            // 3
-            // Accompanied by
-            if (document.getElementById("accompaniedBy").value == "Others (Specify)") {
-                $("#accompaniedBySpecifyContent").show();
-            }
-            else {
-                $("#accompaniedBySpecifyContent").hide();
-            }
-            // 4 
-            // Mode of transportation (Others)
-            if (document.getElementById("modeOfTransport").value == "Others (Specify)") {
-                $("#modeOfTransportSpecifyContent").show();
-            }
-            else {
-                $("#modeOfTransportSpecifyContent").hide();
-            }
-            // 6
-            var anArray6 = "{{editDischargePlanning.checkedAndReturned}}";
-            // Appliances (Specify)
-            if (inArray(anArray6, "Appliances (Specify)") == true) {
-                $("#appliancesSpectifyContent").show();
-            }
-            else {
-                $("#appliancesSpectifyContent").hide();
-            }
-            // -- Appliances (Specify)
-            // Others (Specify)
-            if (inArray(anArray6, "Others (Specify)") == true) {
-                $("#othersSpecifyContent").show();
-            }
-            else {
-                $("#othersSpecifyContent").hide();
-            }
-            // -- Others (Specify)
+        // 2
+        // Discharge to
+        if (document.getElementById("dischargeTo").value == "Others (Specify)") {
+            $("#dischargeToSpecifyContent").show();
+        }
+        else {
+            $("#dischargeToSpecifyContent").hide();
+        }
+        // 3
+        // Accompanied by
+        if (document.getElementById("accompaniedBy").value == "Others (Specify)") {
+            $("#accompaniedBySpecifyContent").show();
+        }
+        else {
+            $("#accompaniedBySpecifyContent").hide();
+        }
+        // 4 
+        // Mode of transportation (Others)
+        if (document.getElementById("modeOfTransport").value == "Others (Specify)") {
+            $("#modeOfTransportSpecifyContent").show();
+        }
+        else {
+            $("#modeOfTransportSpecifyContent").hide();
+        }
+        // 6
+        var anArray6 = "{{editDischargePlanning.checkedAndReturned}}";
+        // Appliances (Specify)
+        if (inArray(anArray6, "Appliances (Specify)") == true) {
+            $("#appliancesSpectifyContent").show();
+        }
+        else {
+            $("#appliancesSpectifyContent").hide();
+        }
+        // -- Appliances (Specify)
+        // Others (Specify)
+        if (inArray(anArray6, "Others (Specify)") == true) {
+            $("#othersSpecifyContent").show();
+        }
+        else {
+            $("#othersSpecifyContent").hide();
+        }
+        // -- Others (Specify)
 
-            // 7
-            var anArray = "{{editDischargePlanning.adviceGivenOn}}"
+        // 7
+        var anArray = "{{editDischargePlanning.adviceGivenOn}}"
 
-            // Follow-up appointment
+        // Follow-up appointment
 
-            if (inArray(anArray, "Follow-up appointment") == true) {
-                $("#followUp").show();
-            }
-            else {
-                $("#followUp").hide();
-            }
-            if (document.getElementById("followUpAppointment").value == "Others (Specify)") {
-                $("#followUpAppointmentSpecifyContent").show();
-            }
-            else {
-                $("#followUpAppointmentSpecifyContent").hide();
-            }
-            // -- Follow-up appointment
-            // Special instructions
+        if (inArray(anArray, "Follow-up appointment") == true) {
+            $("#followUp").show();
+        }
+        else {
+            $("#followUp").hide();
+        }
+        if (document.getElementById("followUpAppointment").value == "Others (Specify)") {
+            $("#followUpAppointmentSpecifyContent").show();
+        }
+        else {
+            $("#followUpAppointmentSpecifyContent").hide();
+        }
+        if (document.getElementById("followUpAppointment1").value == "Others (Specify)") {
+            $("#followUpAppointmentSpecifyContent1").show();
+        }
+        else {
+            $("#followUpAppointmentSpecifyContent1").hide();
+        }
+        // -- Follow-up appointment
+        // Special instructions
 
-            if (inArray(anArray, "Special instructions") == true) {
-                $("#specialInstructionsContent").show();
-            }
-            else {
-                $("#specialInstructionsContent").hide();
-            }
-            // -- Special instructions
-            // Referrals
+        if (inArray(anArray, "Special instructions") == true) {
+            $("#specialInstructionsContent").show();
+        }
+        else {
+            $("#specialInstructionsContent").hide();
+        }
+        // -- Special instructions
+        // Referrals
 
-            if (inArray(anArray, "Referrals") == true) {
-                $("#referralsContent").show();
-            }
-            else {
-                $("#referralsContent").hide();
-            }
+        if (inArray(anArray, "Referrals") == true) {
+            $("#referralsContent").show();
+        }
+        else {
+            $("#referralsContent").hide();
+        }
 
-            if (document.getElementById("referrals").value == "Others (Specify)") {
-                $("#referralsSpecifyContent").show();
-            }
-            else {
-                $("#referralsSpecifyContent").hide();
-            }
-            // -- Referrals
-            // Medical Certificate No.
+        if (document.getElementById("referrals").value == "Others (Specify)") {
+            $("#referralsSpecifyContent").show();
+        }
+        else {
+            $("#referralsSpecifyContent").hide();
+        }
+        // -- Referrals
+        // Medical Certificate No.
 
-            if (inArray(anArray, "Medical Certificate No.") == true) {
-                $("#medicalCertificateNoContent").show();
-            }
-            else {
-                $("#medicalCertificateNoContent").hide();
-            }
-            // -- Medical Certificate No.
-
+        if (inArray(anArray, "Medical Certificate No.") == true) {
+            $("#medicalCertificateNoContent").show();
+        }
+        else {
+            $("#medicalCertificateNoContent").hide();
+        }
+        // -- Medical Certificate No.
 	});
 
     /* 
@@ -927,7 +1309,7 @@
     {
         $(".saveButton").hide();
     }
-    else
+    else 
     {
         $(".saveButton").show();
     }
