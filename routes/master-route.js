@@ -3467,84 +3467,84 @@ router.get('/DischargePlanning', ensureAuthenticated, ensureAuthorised, (req, re
 		MasterAppointment.find({patientID: req.session.patient.patientID}).sort({'datetime':1})
 		.then(newAppointment => {
 			
-			iosample = [];
-			iosampleDate = [];
-			let ioFlow = Object.assign([], newDischargePlanning);
-			let enteralFlow = Object.assign([], newAppointment);
+			dischargeplanningsample = [];
+			dischargeplanningsampleDate = [];
+			let dischargePlanningFlow = Object.assign([], newDischargePlanning);
+			let appointmentFlow = Object.assign([], newAppointment);
 
-			ioCount = -1;
-			enteralCount = -1;
+			dischargePlanningCount = -1;
+			appointmentCount = -1;
 
-			ionoRecord = 'No existing record';
+			dischargeplanningnoRecord = 'No existing record';
 
-			newDischargePlanning.forEach(io => {
-				if (!(iosample.includes(io.datetime))) {
-					iosample.push(io.datetime);
-					iosampleDate.push(io.date);
+			newDischargePlanning.forEach(dischargeplanning => {
+				if (!(dischargeplanningsample.includes(dischargeplanning.datetime))) {
+					dischargeplanningsample.push(dischargeplanning.datetime);
+					dischargeplanningsampleDate.push(dischargeplanning.date);
 				}
 			});
 
-			newAppointment.forEach(enteral => {
-				if (!(iosample.includes(enteral.datetime))){
-					iosample.push(enteral.datetime);
-					iosampleDate.push(enteral.date);
+			newAppointment.forEach(appointment => {
+				if (!(dischargeplanningsample.includes(appointment.datetime))){
+					dischargeplanningsample.push(appointment.datetime);
+					dischargeplanningsampleDate.push(appointment.date);
 				}
 			});
 
 				
-			iosample.sort();
-			iosampleDate.sort();
+			dischargeplanningsample.sort();
+			dischargeplanningsampleDate.sort();
 
-			for (i = 0; i < iosample.length; i++) {
+			for (i = 0; i < dischargeplanningsample.length; i++) {
 				
 
 				//Counter for empty data
 				//.length here refers to last index of the array
-				if (ioCount !== (ioFlow.length - 1)) {
-					ioCount++;
+				if (dischargePlanningCount !== (dischargePlanningFlow.length - 1)) {
+					dischargePlanningCount++;
 				}
 
-				if (enteralCount !== (enteralFlow.length - 1)) {
-					enteralCount++;
+				if (appointmentCount !== (appointmentFlow.length - 1)) {
+					appointmentCount++;
 				}	
 
 				//Insert empty data when value doesnt match
 				//Count here does the index count of flow array
-				if(ioFlow !='') 
+				if(dischargePlanningFlow !='') 
 				{
-					if (iosample[i] < ioFlow[ioCount].datetime) {
-						ioFlow.splice(ioCount, 0, {datetime: ''});
-					} else if (iosample[i] > ioFlow[ioCount].datetime) {
-						ioFlow.splice(ioCount + 1, 0, {datetime: ''});
+					if (dischargeplanningsample[i] < dischargePlanningFlow[dischargePlanningCount].datetime) {
+						dischargePlanningFlow.splice(dischargePlanningCount, 0, {datetime: ''});
+					} else if (dischargeplanningsample[i] > dischargePlanningFlow[dischargePlanningCount].datetime) {
+						dischargePlanningFlow.splice(dischargePlanningCount + 1, 0, {datetime: ''});
 					}
 				} 
 				else
 				{
-					ioFlow.push({datetime: '', intakefood: ionoRecord});
+					dischargePlanningFlow.push({datetime: '', dischargePlan: dischargeplanningnoRecord});
 				}
 
-				if(enteralFlow !='') 
+				if(appointmentFlow !='') 
 				{
-					if (iosample[i] < enteralFlow[enteralCount].datetime) {
-						enteralFlow.splice(enteralCount, 0, {datetime: ''});
-					} else if (iosample[i] > enteralFlow[enteralCount].datetime) {
-						enteralFlow.splice(enteralCount + 1, 0, {datetime: ''});
+					if (dischargeplanningsample[i] < appointmentFlow[appointmentCount].datetime) {
+						appointmentFlow.splice(appointmentCount, 0, {datetime: ''});
+					} else if (dischargeplanningsample[i] > appointmentFlow[appointmentCount].datetime) {
+						appointmentFlow.splice(appointmentCount + 1, 0, {datetime: ''});
 					}
 				} 
 				else
 				{
-					enteralFlow.push({datetime: '', enteralfeed: ionoRecord});
+					appointmentFlow.push({datetime: '', clinic: dischargeplanningnoRecord});
 				}
 
 			};
 			
-			console.log("enteralFlow: "+ enteralFlow);
-			console.log("ioFlow: "+ ioFlow);
+			console.log("appointmentFlow: "+ appointmentFlow);
+			console.log("dischargePlanningFlow: "+ dischargePlanningFlow);
 			//console.log('req.session.user.patientID: '+ req.session.patient.patientID );
 			res.render('discharge-planning/master/discharge-planning', {
-				iodateVal: iosample,
-				ioFlow: ioFlow,
-				enteralFlow: enteralFlow,
+				dischargePlanningdateVal: dischargeplanningsample,
+				dischargePlanningFlow: dischargePlanningFlow,
+				appointmentFlow: appointmentFlow,
 				newDischargePlanning: newDischargePlanning,
 				newAppointment: newAppointment,
 				patient: req.session.patient,

@@ -1,7 +1,4 @@
 <style>
-    {{!-- td, th {
-        text-align: center
-    } --}}
     .tabs .indicator {
         background-color: #6A1B9A;
     }
@@ -9,14 +6,14 @@
         background: transparent;
     }
 
-    #ioflowsheetTable th {
+    #dischargePlanningTable th {
         border-right: 1px solid rgba(0, 0, 0, 0.12);
         border-bottom: none;
     }
-    #ioflowsheetTable tr {
+    #dischargePlanningTable tr {
         border-bottom: none;
     }
-    #ioflowsheetTable tr td {
+    #dischargePlanningTable tr td {
         border-right: 1px solid rgba(0, 0, 0, 0.12);
     }
 </style>
@@ -26,9 +23,9 @@
 <div class="row">
     <div class="col s12">
         <div class="tabs">
-            <li class="tab col s2 offset-s3" id="ioflowTab"><a class="purple-text text-darken-3" id="tab0" href="#dischargeflowsheet">Discharge Flowsheet</a></li>
-            <li class="tab col s2" id="iotab"><a class="purple-text text-darken-3" id="tab1" href="#dischargePlanning">Discharge Checklist</a></li>
-            <li class="tab col s2" id="enttab"><a class="purple-text text-darken-3" id="tab2" href="#appointment">Appointment</a></li>
+            <li class="tab col s2 offset-s3" id="dischargeFlowTab"><a class="purple-text text-darken-3" id="tab0" href="#dischargeflowsheet">Discharge Flowsheet</a></li>
+            <li class="tab col s2" id="dischargePlanningtab"><a class="purple-text text-darken-3" id="tab1" href="#dischargePlanning">Discharge Checklist</a></li>
+            <li class="tab col s2" id="appointmenttab"><a class="purple-text text-darken-3" id="tab2" href="#appointment">Appointment</a></li>
         </div>
     </div>
 </div>
@@ -37,52 +34,52 @@
     <div class="card-panel purple darken-3 white-text" style="padding: 5px; font-size: 20px; text-align: center"> Discharge Flowsheet</div>
     
     <div style="overflow-x: auto; max-height: 48em;">
-        <table id="ioflowsheetTable">
+        <table id="dischargePlanningTable">
             <tr>
                 <th width="10%" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">Datetime</th>
-                {{#each iodateVal}}
+                {{#each dischargePlanningdateVal}}
                 <th style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">{{formatDatetime this}}</th>
                 {{/each}}
             </tr>
 
             <tr>
                 <th width="10%">Discharge plan</th>
-                {{#each ioFlow}}
+                {{#each dischargePlanningFlow}}
                 <td class="intakePO">{{dischargePlan}}</td>
                 {{/each}}
             </tr>
 
             <tr>
                 <th width="10%">Condition on discharge</th>
-                {{#each ioFlow}}
+                {{#each dischargePlanningFlow}}
                 <td>{{dischargeCondition}}</td>
                 {{/each}}
             </tr>
 
             <tr>
                 <th width="10%">Discharge to</th>
-                {{#each ioFlow}}
+                {{#each dischargePlanningFlow}}
                 <td>{{dischargeTo}}</td>
                 {{/each}}
             </tr>
 
             <tr>
                 <th width="10%">Accompanied by</th>
-                {{#each ioFlow}}
+                {{#each dischargePlanningFlow}}
                 <td>{{accompaniedBy}}</td>
                 {{/each}}
             </tr>
 
             <tr>
                 <th width="10%">Mode of transport</th>
-                {{#each ioFlow}}
+                {{#each dischargePlanningFlow}}
                 <td class="fluidConsumed" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);">{{modeOfTransport}}</td>
                 {{/each}}
             </tr>
 
             <tr>
                 <th width="10%">Removal of</th>
-                {{#each ioFlow}}
+                {{#each dischargePlanningFlow}}
                 <td class="intakeEnteral" id="tableRemovalOf" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);">
                     {{#each removalOf}}
                         {{this}} <br/>
@@ -92,7 +89,7 @@
             </tr>
             <tr>
                 <th width="10%">Advice given</th>
-                {{#each ioFlow}}
+                {{#each dischargePlanningFlow}}
                 <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);">
                     {{#each adviceGivenOn}}
                         {{this}} <br/>
@@ -102,7 +99,7 @@
             </tr>
             <tr>
                 <th width="10%">Checked and returned</th>
-                {{#each ioFlow}}
+                {{#each dischargePlanningFlow}}
                 <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);">
                     {{#each checkedAndReturned}}
                         {{this}} <br/>
@@ -112,41 +109,41 @@
             </tr>
             <tr>
                 <th width="10%">Referrals</th>
-                {{#each ioFlow}}
+                {{#each dischargePlanningFlow}}
                 <td class="amountOfFeeding" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">{{referrals}}</td>
                 {{/each}}
             </tr>
             <tr>
                 <th width="10%" rowspan="5">Appointment</th>
-                {{#each enteralFlow}}
+                {{#each appointmentFlow}}
                 <td>
                     {{followUpAppointment}}
                 </td>
                 {{/each}}
             </tr>
             <tr>
-                {{#each enteralFlow}}
+                {{#each appointmentFlow}}
                 <td>
                     {{followUpAppointmentSpecify}}
                 </td>
                 {{/each}}
             </tr>
             <tr>
-                {{#each enteralFlow}}
+                {{#each appointmentFlow}}
                 <td>
                     {{clinic}}-{{nameOfDoctor}}
                 </td>
                 {{/each}}
             </tr>
             <tr>
-                {{#each enteralFlow}}
+                {{#each appointmentFlow}}
                 <td>
                     {{memoGiven}}
                 </td>
                 {{/each}}
             </tr>
             <tr>
-                {{#each enteralFlow}}
+                {{#each appointmentFlow}}
                 <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);">
                     {{remarks}}
                 </td>
@@ -964,16 +961,16 @@
         document.getElementById('referrals').value = "{{editDischargePlanning.referrals}}";
     
 
-        document.getElementById('ioflowTab').className += " disabled";
-        document.getElementById('enttab').className += " disabled";
+        document.getElementById('dischargeFlowTab').className += " disabled";
+        document.getElementById('appointmenttab').className += " disabled";
         document.getElementById('tab1').className += " active";
     {{/if}}
 
     {{#if editAppointment}}
         document.getElementById('followUpAppointment1').value = "{{editAppointment.followUpAppointment}}";
 
-        document.getElementById('ioflowTab').className += " disabled";
-        document.getElementById('iotab').className += " disabled";
+        document.getElementById('dischargeFlowTab').className += " disabled";
+        document.getElementById('dischargePlanningtab').className += " disabled";
         document.getElementById('tab2').className += " active";
     {{/if}}
 
