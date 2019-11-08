@@ -28,8 +28,6 @@
         <div class="tabs">
             <li class="tab col s2  offset-s4" id="feedtab"><a class="purple-text text-darken-3" id="tab0" href="#feedingregime">Feeding Regime</a></li>
             <li class="tab col s2" id="schedtab"><a class="purple-text text-darken-3" id="tab1" href="#schedule">Schedule</a></li>
-            {{!-- <li class="tab col s2" id="outtab"><a class="purple-text text-darken-3" id="tab4" href="#output">Output</a></li> --}}
-            {{!-- <li class="tab col s2" id="tabletab"><a class="purple-text text-darken-3" id="tab5" href="#table">Net IO</a></li> --}}
         </div>
     </div>
 </div>
@@ -47,8 +45,6 @@
                     <th>Type of Formula</th>
                     <th>Enteral</th>
                     <th>Orders</th>
-                    {{!-- <th>Fluid Consumed (mL)</th> --}}
-                    {{!-- <th>Patient ID</th> --}}
                     {{!--{{#unless userType}}
                     <th>Delete</th>
                      {{else}}
@@ -78,8 +74,6 @@
                         <td>{{typeofFormula}}</td>
                         <td>{{enteralFeed}}</td>
                         <td>{{ordersFeed}}</td>
-                        {{!-- <td>{{flush}}</td> --}}
-                        {{!-- <td>{{patientID}}</td> --}}
                         {{!-- {{#unless ../userType}} --}}
                             {{!-- <td style="width: 65px"> <!-- the tr we're trying to get -->
                                 <form action="/master/del-feeding-regime/{{feedID}}?_method=DELETE" method="post" id="delete-form">
@@ -133,21 +127,21 @@
                 <div id="enteralInfo">
                     <span class="purple-text darken-2">Nutritional product Order</span>
 
-                <div class="row">
-                        <div class="col s12 m4 input-field">
-                            <input id="dateFeeding" type="text" class="datepicker" name="dateFeeding" value="{{editFeeding.date}}" required>
-                            <label for="dateFeeding">Date</label>
-                            <span class="helper-text">dd/mm/yyyy</span>
+                        <div class="row">
+                                <div class="col s12 m4 input-field">
+                                    <input id="dateFeeding" type="text" class="datepicker" name="dateFeeding" value="{{editFeeding.date}}" required>
+                                    <label for="dateFeeding">Date</label>
+                                    <span class="helper-text">dd/mm/yyyy</span>
+                                </div>
+
+                                <div class="col s12 m4 input-field">
+                                    <input id="timeFeeding" type="text" class="timepicker" name="timeFeeding" value="{{editFeeding.time}}" required>
+                                    <label for="timeFeeding">Time</label>
+                                    <span class="helper-text">hh:ss</span>
+                                </div>
                         </div>
 
-                        <div class="col s12 m4 input-field">
-                            <input id="timeFeeding" type="text" class="timepicker" name="timeFeeding" value="{{editFeeding.time}}" required>
-                            <label for="timeFeeding">Time</label>
-                            <span class="helper-text">hh:ss</span>
-                        </div>
-                </div>
-
-                <div class="row">
+                        <div class="row">
 
                             <div class="col s12 m4 input-field">
 
@@ -170,7 +164,7 @@
                                 </select>
                                     <label for="typeofFormula">Type of Formula</label>
 
-                             </div>
+                            </div>
                             <div class="col s12 m4 input-field">
 
                                 <select id="enteralFeed" name="enteralFeed">
@@ -182,32 +176,15 @@
                                 </select>
                                 <label for="enteralFeed">Enteral</label>
 
-                             </div>
-
-
-                        {{!--                     
+                            </div>
+                    </div>
+                    <div class= "row"> 
                         <div class="col s12 m4 input-field">
-                            <input id="feedamt" type="number" name="feedamt" value="{{editFeeding.feedamt}}">
-                            <label for="feedamt">Amount of feeding (mL)</label>
+                            <input id="ordersFeed" type="text" name="ordersFeed" value="{{editFeeding.ordersFeed}}">
+                            <label for="ordersFeed">Order</label>
                             <span class="helper-text"></span>
                         </div>
-
-                        <div class="col s12 m4 input-field">
-                            <input id="flush" type="number" name="flush" value="{{editFeeding.flush}}">
-                            <label for="flush">Water for Flush (mL)</label>
-                            <span class="helper-text"></span>
-                        </div> --}}
-
-                </div>
-                <div class= "row"> 
-                    <div class="col s12 m4 input-field">
-                        <input id="ordersFeed" type="text" name="ordersFeed" value="{{editFeeding.ordersFeed}}">
-                        <label for="ordersFeed">Order</label>
-                        <span class="helper-text"></span>
                     </div>
-                </div>
-
-
                 </div>
             </div>
         </div>
@@ -215,34 +192,20 @@
 
     <div class="row">
         <div class="col s12 m8"></div>
-        <div class="col s12 m4">
-            {{#unless userType}}
-            {{#if editFeeding}}
-                <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editFeeding">Save Changes
-            {{else}}
-                <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addFeeding">Save
-            {{/if}}
-            {{#unless userType}}
-                <i class="material-icons right">send</i>
-                {{!-- {{else}}
-                <i class="material-icons right">send</i> --}}
-            {{/unless}}
-            {{/unless}}
-            
-        </div>
-        {{!-- <div class="col s12 m4">
-            {{#if editenteral}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editenteral">Save
-            {{else}}
-            {{#unless userType}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addenteral">Save
-            {{/unless}}
-            {{/if}}
-            {{#unless userType}}
-                <i class="material-icons right">send</i>
-            </button>
-            {{/unless}}
-        </div> --}}
+            <div class="col s12 m4">
+                {{#unless userType}}
+                    {{#if editFeeding}}
+                            <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editFeeding">Save Changes
+                        {{else}}
+                            <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addFeeding">Save
+                    {{/if}}
+
+                    {{#unless userType}}
+                        <i class="material-icons right">send</i>
+                    {{/unless}}
+                {{/unless}}
+                
+            </div>
     </div>
 </div>
 
@@ -254,17 +217,16 @@
        
 <div id="schedule">
      {{#unless userType}}
-    <form>
-        <div class="row">
-            <div class="col s12 m6 input-field">
-                <select id="selectUser" name="selectUser" required>
-                    <option value="" disabled selected>Please select a student</option>
-                    {{!-- <option value="Doctor">Lin Peishan</option> --}}
-                </select>
-                <label for="selectUser">Student</label>
+        <form>
+            <div class="row">
+                <div class="col s12 m6 input-field">
+                    <select id="selectUser" name="selectUser" required>
+                        <option value="" disabled selected>Please select a student</option>
+                    </select>
+                    <label for="selectUser">Student</label>
+                </div>
             </div>
-        </div>
-    </form>
+        </form>
     {{/unless}}
 <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">Schedule</div>
     <div style="overflow-x:auto; max-height: 16em;">
@@ -299,62 +261,39 @@
             <tbody>
             {{!-- {{#if finalObj}} --}}
             {{#if newOtherScheduleFeed}}
-
                <tr style="height: 60px">
-                    
                     {{#each newOtherScheduleFeed }}
                         {{!-- {{#each this}} --}}
                             {{#unless ../userType}}
                                     <td>{{date}}</td>
                                 {{else}}
-                                {{!-- <td rowspan="{{finalDate}}">
-                                    {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
-                                        <a href="/student/ScheduleFeeding/{{../recordID}}/{{scheduleID}}/{{by}}">{{date}}</a>
-                                    {{else}}--}}
                                     <td>
                                     {{#ifCond ../currentUserType 'student'}}
                                             <a href="/student/ScheduleFeeding/{{../recordID}}/{{scheduleID}}/{{by}}">{{date}}</a>
                                         {{else}}
                                             {{date}}
-                                    {{/ifCond}}
-                                    {{!--{{/ifCond}}
-                                </td> --}}
+                                    {{/ifCond}}                             
                                     </td>
-                                {{!-- <td rowspan="{{finalDate}}">{{date}}</td> --}}
-                            {{/unless}}
-                    {{!-- </tr>
-                    
-                    <tr> --}}
+                            {{/unless}}   
                     <td>{{time}}</td>
-                    {{!-- <td>
-                        {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
-                            {{time}} 
-                        {{else}}
-                            {{time}}
-                        {{/ifCond}}
-                    </td> --}}
+
                     {{#unless ../userType}}
-                            <td>{{by}}</td>
+                        <td>{{by}}</td>
                     {{/unless}}
-                
+
                     <td>{{scheduleFeed}}</td>
-                
                     <td>{{scheduleAmt}}</td>
-            
                     <td>{{scheduleFlush}}</td>
                     <td>{{schedcomments}}</td>
                         
                 </tr>
                 {{/each}}
-                {{!-- {{/each}} --}}
-                {{!-- {{/each}} --}}
                 {{else}}
                 {{#unless userType}}
                     <p id="noRecord">Students have not created any Schedule records yet</p>
                 {{else}}
                     <p id="noRecord">You have not created any Schedule records yet</p>
                 {{/unless}}
-                {{!-- {{/if}} --}}
             {{/if}}
             </tbody>
         </table>
@@ -543,26 +482,26 @@
 
 
 // display students who has created their schedule
-{{#if newFeeding}}
-    document.getElementById('tab0').className += " active";
-{{/if}}
+//{{#if newFeeding}}
+//    document.getElementById('tab0').className += " active";
+//{{/if}}
 {{#if newOtherScheduleFeed}}
     document.getElementById('schedtab').className += " active";
-    document.getElementById('tab0').className += " disabled";
 {{/if}}
+
     {{#if studentName}} 
         {{#each studentName}}
         // ** CHANGE HERE:
         //$("#selectUser").append("<option value='https://composition.sit.nyp.edu.sg/master/FeedingRegime/{{by}}'>{{by}}</option>");
         $("#selectUser").append("<option value='https://localhost/master/FeedingRegime/{{by}}'>{{by}}</option>"); 
-       document.getElementById('schedtab').className += " active";
+        document.getElementById('schedtab').className += " active";
         {{/each}}
     {{/if}} 
     
      $('#selectUser').change(function(){ 
         window.location.href = $(this).val();
         document.getElementById('schedtab').className += " active";
-        
+        console.log('beech skskskskksksksksks');
     });
     // ** CHANGE HERE:
     {{#if name}}
@@ -602,5 +541,9 @@
         $(".saveButton").show();
     }
 
+   $("#tab0").on("click", function () {
+    window.location.replace("https://localhost/master/FeedingRegime");
+    //window.location.replace("https://composition.sit.nyp.edu.sg/master/FeedingRegime");
 
+});
  </script>
