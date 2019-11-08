@@ -3466,8 +3466,85 @@ router.get('/DischargePlanning', ensureAuthenticated, ensureAuthorised, (req, re
 	.then(newDischargePlanning => { // discharge planning that they have created
 		MasterAppointment.find({patientID: req.session.patient.patientID}).sort({'datetime':1})
 		.then(newAppointment => {
+			
+			iosample = [];
+			iosampleDate = [];
+			let ioFlow = Object.assign([], newDischargePlanning);
+			let enteralFlow = Object.assign([], newAppointment);
+
+			ioCount = -1;
+			enteralCount = -1;
+
+			ionoRecord = 'No existing record';
+
+			newDischargePlanning.forEach(io => {
+				if (!(iosample.includes(io.datetime))) {
+					iosample.push(io.datetime);
+					iosampleDate.push(io.date);
+				}
+			});
+
+			newAppointment.forEach(enteral => {
+				if (!(iosample.includes(enteral.datetime))){
+					iosample.push(enteral.datetime);
+					iosampleDate.push(enteral.date);
+				}
+			});
+
+				
+			iosample.sort();
+			iosampleDate.sort();
+
+			for (i = 0; i < iosample.length; i++) {
+				
+
+				//Counter for empty data
+				//.length here refers to last index of the array
+				if (ioCount !== (ioFlow.length - 1)) {
+					ioCount++;
+				}
+
+				if (enteralCount !== (enteralFlow.length - 1)) {
+					enteralCount++;
+				}	
+
+				//Insert empty data when value doesnt match
+				//Count here does the index count of flow array
+				if(ioFlow !='') 
+				{
+					if (iosample[i] < ioFlow[ioCount].datetime) {
+						ioFlow.splice(ioCount, 0, {datetime: ''});
+					} else if (iosample[i] > ioFlow[ioCount].datetime) {
+						ioFlow.splice(ioCount + 1, 0, {datetime: ''});
+					}
+				} 
+				else
+				{
+					ioFlow.push({datetime: '', intakefood: ionoRecord});
+				}
+
+				if(enteralFlow !='') 
+				{
+					if (iosample[i] < enteralFlow[enteralCount].datetime) {
+						enteralFlow.splice(enteralCount, 0, {datetime: ''});
+					} else if (iosample[i] > enteralFlow[enteralCount].datetime) {
+						enteralFlow.splice(enteralCount + 1, 0, {datetime: ''});
+					}
+				} 
+				else
+				{
+					enteralFlow.push({datetime: '', enteralfeed: ionoRecord});
+				}
+
+			};
+			
+			console.log("enteralFlow: "+ enteralFlow);
+			console.log("ioFlow: "+ ioFlow);
 			//console.log('req.session.user.patientID: '+ req.session.patient.patientID );
 			res.render('discharge-planning/master/discharge-planning', {
+				iodateVal: iosample,
+				ioFlow: ioFlow,
+				enteralFlow: enteralFlow,
 				newDischargePlanning: newDischargePlanning,
 				newAppointment: newAppointment,
 				patient: req.session.patient,
@@ -3488,6 +3565,7 @@ router.post('/add-discharge-planning', ensureAuthenticated, (req, res) => {
 		date: moment(req.body.dateDischargePlanning, 'DD/MM/YYYY').format('YYYY-MM-DD'),
 		time: req.body.timeDischargePlanning,
 		// 1
+		dischargePlan: req.body.dischargePlan,
 		dischargeCondition: req.body.dischargeCondition,
 		// 2
 		dischargeTo: req.body.dischargeTo,
@@ -3613,6 +3691,7 @@ router.put('/edit-DischargePlanning/:dischargePlanningID', ensureAuthenticated, 
 		editDischargePlanning.time = req.body.timeDischargePlanning,
 		editDischargePlanning.datetime = datetime,
 		// 1
+		editDischargePlanning.dischargePlan = req.body.dischargePlan,
 		editDischargePlanning.dischargeCondition = req.body.dischargeCondition,
 		// 2
 		editDischargePlanning.dischargeTo = req.body.dischargeTo,

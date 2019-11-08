@@ -22,6 +22,7 @@ const MasterDischargePlanningSchema = new Schema({
     date:   {type: String, default: ''},
     time:   {type: String, default: ''},
     // 1
+    dischargePlan: {type: String, default: ''},
     dischargeCondition: {type: String, default: ''},
     // 2
     dischargeTo: {type: String, default: ''},

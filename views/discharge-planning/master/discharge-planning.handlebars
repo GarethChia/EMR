@@ -48,67 +48,108 @@
             <tr>
                 <th width="10%">Discharge plan</th>
                 {{#each ioFlow}}
-                <td class="intakePO"></td>
+                <td class="intakePO">{{dischargePlan}}</td>
                 {{/each}}
             </tr>
 
             <tr>
                 <th width="10%">Condition on discharge</th>
                 {{#each ioFlow}}
-                <td>{{foodtype}}</td>
+                <td>{{dischargeCondition}}</td>
                 {{/each}}
             </tr>
 
             <tr>
                 <th width="10%">Discharge to</th>
                 {{#each ioFlow}}
-                <td>{{foodportion}}</td>
+                <td>{{dischargeTo}}</td>
                 {{/each}}
             </tr>
 
             <tr>
                 <th width="10%">Accompanied by</th>
                 {{#each ioFlow}}
-                <td>{{fluidtype}}</td>
+                <td>{{accompaniedBy}}</td>
                 {{/each}}
             </tr>
 
             <tr>
                 <th width="10%">Mode of transport</th>
                 {{#each ioFlow}}
-                <td class="fluidConsumed">{{fluidportion}}</td>
+                <td class="fluidConsumed" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);">{{modeOfTransport}}</td>
                 {{/each}}
             </tr>
 
             <tr>
                 <th width="10%">Removal of</th>
-                {{#each enteralFlow}}
-                <td class="intakeEnteral"></td>
+                {{#each ioFlow}}
+                <td class="intakeEnteral" id="tableRemovalOf" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);">
+                    {{#each removalOf}}
+                        {{this}} <br/>
+                    {{/each}}
+                </td>
                 {{/each}}
             </tr>
             <tr>
                 <th width="10%">Advice given</th>
-                {{#each enteralFlow}}
-                <td>{{enteralfeed}}</td>
+                {{#each ioFlow}}
+                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);">
+                    {{#each adviceGivenOn}}
+                        {{this}} <br/>
+                    {{/each}}
+                </td>
                 {{/each}}
             </tr>
             <tr>
                 <th width="10%">Checked and returned</th>
-                {{#each enteralFlow}}
-                <td>{{formula}}</td>
+                {{#each ioFlow}}
+                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);">
+                    {{#each checkedAndReturned}}
+                        {{this}} <br/>
+                    {{/each}}
+                </td>
                 {{/each}}
             </tr>
             <tr>
                 <th width="10%">Referrals</th>
-                {{#each enteralFlow}}
-                <td class="amountOfFeeding">{{feedamt}}</td>
+                {{#each ioFlow}}
+                <td class="amountOfFeeding" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">{{referrals}}</td>
                 {{/each}}
             </tr>
-
             <tr>
-                <th width="10%">Appointment</th>
+                <th width="10%" rowspan="5">Appointment</th>
                 {{#each enteralFlow}}
-                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);">{{feedamt}}</td>
+                <td>
+                    {{followUpAppointment}}
+                </td>
+                {{/each}}
+            </tr>
+            <tr>
+                {{#each enteralFlow}}
+                <td>
+                    {{followUpAppointmentSpecify}}
+                </td>
+                {{/each}}
+            </tr>
+            <tr>
+                {{#each enteralFlow}}
+                <td>
+                    {{clinic}}-{{nameOfDoctor}}
+                </td>
+                {{/each}}
+            </tr>
+            <tr>
+                {{#each enteralFlow}}
+                <td>
+                    {{memoGiven}}
+                </td>
+                {{/each}}
+            </tr>
+            <tr>
+                {{#each enteralFlow}}
+                <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);">
+                    {{remarks}}
+                </td>
                 {{/each}}
             </tr>
         </table>
@@ -184,6 +225,19 @@
                                 <label for="timeDischargePlanning">Time</label>
                                 <span class="helper-text">hh:ss</span>
                             </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m2 l2" style="padding-top:20px">
+                            <label style="font-size: 15px">Discharge Plan</label>
+                        </div>
+                        <div class="col s12 m4 input-field">
+                                <select id="dischargePlan" name="dischargePlan">
+                                    <option value="" disabled selected>Please select</option>
+                                    <option value="Planned">Planned</option>
+                                    <option value="Actualized">Actualized</option>
+                                </select>
+                                <label for="dischargePlan"></label>
+                        </div>
                     </div>
                     <!--1. Condition on discharge-->
                     <div class="row">
@@ -715,7 +769,7 @@
                                             </select>
                                             <label for="followUpAppointment">Follow up</label>
                                         </div>
-                                        <div class="col s12 m4 input-field" id="followUpAppointmentSpecifyContent">
+                                        <div class="col s12 m4 input-field" id="followUpAppointmentSpecifyContent1">
                                             <input id="followUpAppointmentSpecify1" type="text" name="followUpAppointmentSpecify1" value="{{editAppointment.followUpAppointmentSpecify}}">
                                             <label for="followUpAppointmentSpecify1">Others</label>
                                             <span class="helper-text">Specify</span>
@@ -829,6 +883,7 @@
     document.addEventListener('DOMContentLoaded', () => {
         const dateDischargePlanning = document.querySelector('#dateDischargePlanning');
         const timeDischargePlanning = document.querySelector('#timeDischargePlanning');
+        const dischargePlan = document.querySelector('#dischargePlan');
         const dischargeTo = document.querySelector('#dischargeTo');
         const accompaniedBy = document.querySelector('#accompaniedBy');
         const modeOfTransport = document.querySelector('#modeOfTransport');
@@ -850,6 +905,9 @@
             showClearBtn: true
         });
         
+        M.FormSelect.init(dischargePlan, {
+
+        })
 
         M.FormSelect.init(dischargeTo, {
             
@@ -898,12 +956,14 @@
         });
     })  
     {{#if editDischargePlanning}}
+        document.getElementById('dischargePlan').value = "{{editDischargePlanning.dischargePlan}}";
         document.getElementById('dischargeTo').value = "{{editDischargePlanning.dischargeTo}}";
         document.getElementById('accompaniedBy').value = "{{editDischargePlanning.accompaniedBy}}";
         document.getElementById('modeOfTransport').value = "{{editDischargePlanning.modeOfTransport}}";
         document.getElementById('followUpAppointment').value = "{{editDischargePlanning.followUpAppointment}}";
         document.getElementById('referrals').value = "{{editDischargePlanning.referrals}}";
     
+
         document.getElementById('ioflowTab').className += " disabled";
         document.getElementById('enttab').className += " disabled";
         document.getElementById('tab1').className += " active";
@@ -969,6 +1029,20 @@
 
             if (followUpAppointment != "Others (Specify)") {
                 $('#followUpAppointmentSpecify').val('');
+            }
+        }
+    );
+
+    $('#followUpAppointment1').change(
+        function() {
+
+            // followUpAppointment1
+            var followUpAppointment1 = $('#followUpAppointment1 option:selected').val();
+            
+            showOrHide(followUpAppointment1, $("#followUpAppointmentSpecifyContent1"), "Others (Specify)");
+
+            if (followUpAppointment1 != "Others (Specify)") {
+                $('#followUpAppointmentSpecify1').val('');
             }
         }
     );
@@ -1183,6 +1257,12 @@
         else {
             $("#followUpAppointmentSpecifyContent").hide();
         }
+        if (document.getElementById("followUpAppointment1").value == "Others (Specify)") {
+            $("#followUpAppointmentSpecifyContent1").show();
+        }
+        else {
+            $("#followUpAppointmentSpecifyContent1").hide();
+        }
         // -- Follow-up appointment
         // Special instructions
 
@@ -1241,5 +1321,6 @@
 
         return result;
     }
+
 
  </script>
