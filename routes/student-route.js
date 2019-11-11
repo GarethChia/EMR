@@ -735,21 +735,54 @@ router.put('/save-customised-patient/:patientID', ensureAuthenticated, (req, res
 																						
 																							}).save();
 																						})
-								
-																				
-																					}).then(newStudentPatient => {
-																						
-																						/*let alert = res.flashMessenger.success('New student patient record added');
-																						alert.titleIcon = 'far fa-thumbs-up';
-																						alert.canBeDismissed = true;
-																						*/
-																						//req.session.patient = newStudentPatient;
-																						//alertMessage.flashMessage(res, 'New student patient record added', 'far fa-thumbs-up', true);
-																						toaster.setSuccessMessage(' ', 'New Customised Record Created From Master');
-																						req.session.toaster = toaster;
-																						res.redirect('/student/list-patients');
-																						// redirect will activate router while render activates specific handlebar
-																					});
+																					}).then(feedingSched => {
+																							MasterFeedingRegime.find({ patientID: req.params.patientID }).then(feedingDatas => {
+																								MasterScheduleFeed.find({ patientID: req.params.patientID }).then(scheduleDatas => {
+																								feedingDatas.forEach(feeding => {
+																									new MasterFeedingRegime({
+																										patientID: recordID,
+																										feedID:  (new standardID('AAA0000')).generate(),
+																										date: feeding.date,
+																										datetime: feeding.datetime,
+																										time: feeding.time,
+																										typeofFormula: feeding.typeofFormula,
+																										enteralFeed: feeding.enteralFeed,
+																										ordersFeed: feeding.ordersFeed,
+																					
+																									}).save();
+																								})
+																								scheduleDatas.forEach(sched => {
+																									new MasterScheduleFeed({
+																										patientID: recordID,
+																										scheduleID:  (new standardID('AAA0000')).generate(),
+																										date: sched.date,
+																										datetime: sched.datetime,
+																										time: sched.time,
+																										scheduleFeed: sched.scheduleFeed,
+																										scheduleAmt: sched.scheduleAmt,
+																										scheduleFlush: sched.scheduleFlush,
+																										schedcomments: sched.schedcomments,
+																												
+																									}).save();
+																								})
+																																		
+																							}).then(newStudentPatient => {
+																								
+																								/*let alert = res.flashMessenger.success('New student patient record added');
+																								alert.titleIcon = 'far fa-thumbs-up';
+																								alert.canBeDismissed = true;
+																								*/
+																								//req.session.patient = newStudentPatient;
+																								//alertMessage.flashMessage(res, 'New student patient record added', 'far fa-thumbs-up', true);
+																								toaster.setSuccessMessage(' ', 'New Customised Record Created From Master');
+																								req.session.toaster = toaster;
+																								res.redirect('/student/list-patients');
+																								// redirect will activate router while render activates specific handlebar
+																							});
+																							
+																							
+																						})
+																					})
 																				})
 																			})
 																		})
