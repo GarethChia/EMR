@@ -131,7 +131,7 @@
             <tr>
                 {{#each appointmentFlow}}
                 <td>
-                    {{clinic}}-{{nameOfDoctor}}
+                    {{clinic}} {{nameOfDoctor}}
                 </td>
                 {{/each}}
             </tr>
@@ -718,7 +718,13 @@
                     <tr style="height: 60px">
                         <td><a href="/student/FollowUpAppointment/{{../recordID}}/{{appointmentID}}">{{date}}</a></td>
                         <td>{{time}}</td>
-                        <td>{{followUpAppointment}}</td>
+                        <td>
+                            {{#ifCond followUpAppointment 'Others (Specify)'}}
+                                {{followUpAppointmentSpecify}}
+                            {{else}}
+                                {{followUpAppointment}}
+                            {{/ifCond}}
+                        </td>
                         <td>{{clinic}}</td>
                         <td>{{nameOfDoctor}}</td>
                         <td>
