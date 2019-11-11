@@ -36,6 +36,8 @@ const MasterScheduleFeed = mongoose.model('masterScheduleFeed');
 // Discharge Planning
 const StudentDischargePlanning = mongoose.model('studentDischargePlanning');
 const StudentAppointment = mongoose.model('studentAppointment');
+const MasterDischargePlanning = mongoose.model('masterDischargePlanning');
+const MasterAppointment = mongoose.model('masterAppointment');
 
 const moment = require('moment');
 const alertMessage = require('../helpers/messenger');
@@ -783,6 +785,74 @@ router.put('/save-customised-patient/:patientID', ensureAuthenticated, (req, res
 																							
 																						})
 																					})
+																				})
+																			})
+																		})
+																	}).then(dischargePlanningSucc => {
+																		MasterDischargePlanning.find({	patientID: req.session.patient.patientID }).then(dischargePlanningDatas => {
+																			MasterAppointment.find({	patientID: req.session.patient.patientID }).then(appointmentDatas => {
+																				dischargePlanningDatas.forEach(dp => {
+																					new StudentDischargePlanning({
+																						patientID: recordID,
+																						dischargePlanningID: (new standardID('AAA0000')).generate(),
+																						datetime: dp.datetime,
+																						date: dp.date,
+																						time: dp.time,
+																						// 1
+																						dischargePlan: dp.dischargePlan,
+																						dischargeCondition: dp.dischargeCondition,
+																						// 2
+																						dischargeTo: dp.dischargeTo,
+																						dischargeToSpecify: dp.dischargeToSpecify,
+																						// 3
+																						accompaniedBy: dp.accompaniedBy,
+																						accompaniedBySpecify: dp.accompaniedBySpecify,
+																						// 4
+																						modeOfTransport: dp.modeOfTransport,
+																						modeOfTransportSpecify: dp.modeOfTransportSpecify,
+																						// 5
+																						removalOf: dp.removalOf,
+																						// 6
+																						checkedAndReturned: dp.checkedAndReturned,
+																						checkedAndReturnedAppliancesSpecify: dp.checkedAndReturnedAppliancesSpecify,
+																						checkedAndReturnedSpecify: dp.checkedAndReturnedSpecify,
+																						// 7
+																						adviceGivenOn: dp.adviceGivenOn,
+																						// Follow-up Appointment
+																						followUpAppointment: dp.followUpAppointment,
+																						followUpAppointmentSpecify: dp.followUpAppointmentSpecify,
+																						appointmentDate:  dp.appointmentDate,
+																						appointmentTime: dp.appointmentTime,
+																						clinic: dp.clinic,
+																						nameOfDoctor: dp.nameOfDoctor,
+																						memoGiven: dp.memoGiven,
+																						remarks: dp.remarks,
+																						// Special Instructions
+																						specialInstructionsSpecify: dp.specialInstructionsSpecify,
+																						// Referrals
+																						referrals: dp.referrals,
+																						referralsSpecify: dp.referralsSpecify,
+																						// Medical Cert No
+																						medicalCertificateNo: dp.medicalCertificateNo
+																					}).save();
+																				
+																				})
+
+																				appointmentDatas.forEach(ad => {
+																					new StudentAppointment({
+																						patientID: recordID,
+																						appointmentID: (new standardID('AAA0000')).generate(),
+																						datetime: ad.datetime,
+																						date: ad.date,
+																						time: ad.time,
+																						// Follow-up Appointment
+																						followUpAppointment: ad.followUpAppointment,
+																						followUpAppointmentSpecify: ad.followUpAppointmentSpecify,
+																						clinic: ad.clinic,
+																						nameOfDoctor: ad.nameOfDoctor,
+																						memoGiven: ad.memoGiven,
+																						remarks: ad.remarks,
+																					}).save();
 																				})
 																			})
 																		})
