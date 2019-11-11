@@ -705,6 +705,11 @@
                 <tr>
                     <th>Date</th>
                     <th>Time</th>
+                    <th>Healthcare worker</th>
+                    <th>Clinic</th>
+                    <th>Name</th>
+                    <th>Memo</th>
+                    <th>Remarks</th>
                 </tr>
             </thead>
             <tbody>
@@ -713,6 +718,17 @@
                     <tr style="height: 60px">
                         <td><a href="/student/FollowUpAppointment/{{../recordID}}/{{appointmentID}}">{{date}}</a></td>
                         <td>{{time}}</td>
+                        <td>{{followUpAppointment}}</td>
+                        <td>{{clinic}}</td>
+                        <td>{{nameOfDoctor}}</td>
+                        <td>
+                            {{#ifCond memoGiven true}} 
+                                Yes
+                            {{else ifCond memoGiven false}}
+                                No
+                            {{/ifCond}}
+                        </td>
+                        <td>{{remarks}}</td>
                     </tr>
                     {{/each}}
                 {{else}}
