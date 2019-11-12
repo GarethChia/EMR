@@ -2297,6 +2297,7 @@ router.get('/HistoryTaking/:recordID', ensureAuthenticated,  (req, res) => {
 							patient: req.session.patient,
 							currentName: req.user.firstName,
 							recordID: req.params.recordID,
+							userType: userType,
 							showMenu: true
 						});
 					});
@@ -2321,6 +2322,7 @@ router.get('/HistoryTaking/:recordID', ensureAuthenticated,  (req, res) => {
 						patient: req.session.patient,
 						currentName: req.user.firstName,
 						recordID: req.params.recordID,
+						userType: userType,
 						showMenu: true
 					});
 				});
