@@ -26,8 +26,14 @@
 <div class="row">
     <div class="col s12">
         <div class="tabs">
+            {{#unless userType}}
+
+            {{else}}
             <li class="tab col s2  offset-s4" id="feedtab"><a class="purple-text text-darken-3" id="tab0" href="#feedingregime">Feeding Regime</a></li>
+
             <li class="tab col s2" id="schedtab"><a class="purple-text text-darken-3" id="tab1" href="#schedule">Schedule</a></li>
+
+            {{/unless}}
         </div>
     </div>
 </div>
@@ -198,10 +204,14 @@
 
 
 {{!-- Schedule code start --}}
-       
+{{#unless userType}}
+
+{{else}}    
+
+
 <div id="schedule">
-     {{#unless userType}}
-        <form>
+    
+        {{!-- <form>
             <div class="row">
                 <div class="col s12 m6 input-field">
                     <select id="selectUser" name="selectUser" required>
@@ -210,8 +220,8 @@
                     <label for="selectUser">Student</label>
                 </div>
             </div>
-        </form>
-    {{/unless}}
+        </form> --}}
+
 <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">Schedule</div>
     <div style="overflow-x:auto; max-height: 16em;">
         {{!-- {{#if finalObj}}
@@ -382,7 +392,7 @@
         </div>
     </div>
 </div>
-
+{{/unless}}
 {{!-- Schedule code ends here --}}
 
 <script
