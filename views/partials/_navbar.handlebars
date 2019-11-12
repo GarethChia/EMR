@@ -29,6 +29,17 @@
 					{{#if showMenu}}
 						<!-- Beginning of navbar menu items-->
 						<ul class="right">
+							{{#ifCond currentUserType 'staff'}}
+								{{#if studentFirstName}}
+								<li>
+									<div id="student-name">
+										<span class="studentName right">
+											BY: {{studentFirstName}}
+										</span>
+									</div>
+								</li>
+								{{/if}}
+							{{/ifCond}}
 							<li>
 								<a class="dropdown-trigger navmenu" href="#!" data-target="Patient">
 									Patient

@@ -131,16 +131,18 @@ router.get('/showown/:recordID/:patientID', ensureAuthenticated, (req, res) => {
 			{
 				userType = 'student';
 			}
-			
-			req.session.patient = retrievedPatient;
-			res.render('student/student-edit-patient', { // calls handlebars
-				recordID: req.params.recordID,
-				patient: retrievedPatient,
-				userType: userType,
-				currentUserType: req.user.userType,
-				showMenu: true
+			PatientStudentModel.findOne({recordID: req.params.recordID})
+			.then(patientStudent => {
+				req.session.patient = retrievedPatient;
+				res.render('student/student-edit-patient', { // calls handlebars
+					recordID: req.params.recordID,
+					patient: retrievedPatient,
+					userType: userType,
+					currentUserType: req.user.userType,
+					studentFirstName: patientStudent.by,
+					showMenu: true
+				});
 			});
-			
 		}
 	});
 });
@@ -1219,21 +1221,26 @@ router.get('/chart/:recordID', ensureAuthenticated, (req, res) => {
 					{
 						userType = 'student';
 					}
-					res.render('charts/master/charts-vital', {
-						recordID: req.params.recordID,
-						userType: userType,
-						dateVal: sample,
-						vitalFlow: vitalFlow,
-						painFlow: painFlow,
-						oxyFlow: oxyFlow,
-						whFlow: whFlow,
-						newVital: vitalData,
-						painData: painData,
-						oxyData: oxyData,
-						whData: whData,
-						patient: req.session.patient,
-						currentUserType: req.user.userType,
-						showMenu: true
+
+					PatientStudentModel.findOne({recordID: req.params.recordID})
+					.then(patientStudent => {
+						res.render('charts/master/charts-vital', {
+							recordID: req.params.recordID,
+							userType: userType,
+							dateVal: sample,
+							vitalFlow: vitalFlow,
+							painFlow: painFlow,
+							oxyFlow: oxyFlow,
+							whFlow: whFlow,
+							newVital: vitalData,
+							painData: painData,
+							oxyData: oxyData,
+							whData: whData,
+							patient: req.session.patient,
+							studentFirstName: patientStudent.by,
+							currentUserType: req.user.userType,
+							showMenu: true
+						})
 					})
 				})
 			})
@@ -1577,14 +1584,20 @@ router.get('/doctor/orders/:recordID', ensureAuthenticated, (req, res) => {
 	{
 		userType = 'student';
 	}
-	//DoctorOrders.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(docOrders => {
-	DoctorOrders.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(docOrders => {
-		res.render('doctors/doctors-orders', {
-			recordID: req.params.recordID,
-			userType: userType,
-			docOrders: docOrders,
-			patient: req.session.patient,
-			showMenu: true
+
+	PatientStudentModel.findOne({recordID: req.params.recordID})
+	.then(patientStudent => {
+		//DoctorOrders.find({ patientID: req.params.recordID }).sort({'datetime':1}).then(docOrders => {
+		DoctorOrders.find({ patientID: req.session.patient.patientID }).sort({'datetime':1}).then(docOrders => {
+			res.render('doctors/doctors-orders', {
+				recordID: req.params.recordID,
+				userType: userType,
+				docOrders: docOrders,
+				patient: req.session.patient,
+				currentUserType: req.user.userType,
+				studentFirstName: patientStudent.by,
+				showMenu: true
+			})
 		})
 	})
 })
@@ -1750,22 +1763,26 @@ router.get('/io/:recordID', ensureAuthenticated, (req, res) => {
 					{
 						userType = 'student';
 					}
-					res.render('charts/master/charts-io', {
-						recordID: req.params.recordID,
-						userType: userType,
-						iodateVal: iosample,
-						ioFlow: ioFlow,
-						enteralFlow: enteralFlow,
-						ivFlow: ivFlow,
-						outputFlow:outputFlow,
-						newIO: newIO,
-						newenteral: newenteral,
-						newiv: newiv,
-						newoutput: newoutput,
-						patient: req.session.patient,
-						currentUserType: req.user.userType,
-						showMenu: true
-          			})
+					PatientStudentModel.findOne({recordID: req.params.recordID})
+					.then(patientStudent => {
+						res.render('charts/master/charts-io', {
+							recordID: req.params.recordID,
+							userType: userType,
+							iodateVal: iosample,
+							ioFlow: ioFlow,
+							enteralFlow: enteralFlow,
+							ivFlow: ivFlow,
+							outputFlow:outputFlow,
+							newIO: newIO,
+							newenteral: newenteral,
+							newiv: newiv,
+							newoutput: newoutput,
+							patient: req.session.patient,
+							currentUserType: req.user.userType,
+							studentFirstName: patientStudent.by,
+							showMenu: true
+						})
+					})
 				})
 			})
 		});
@@ -2071,18 +2088,23 @@ router.get('/braden/:recordID', ensureAuthenticated, (req, res) => {
 	
 		console.log(newBraden);
 		userType = req.user.userType == 'student';
-			if (req.user.userType == 'staff')
-			{
-				userType = 'student';
-			}
-		res.render('charts/master/charts-braden', {
-			// azureId: req.user.azure_oid,
-			recordID: req.params.recordID,
-			userType: userType,
-			newBraden: newBraden,
-			patient: req.session.patient,
-			currentUserType: req.user.userType,
-			showMenu: true
+		if (req.user.userType == 'staff')
+		{
+			userType = 'student';
+		}
+
+		PatientStudentModel.findOne({recordID: req.params.recordID})
+		.then(patientStudent => {
+			res.render('charts/master/charts-braden', {
+				// azureId: req.user.azure_oid,
+				recordID: req.params.recordID,
+				userType: userType,
+				newBraden: newBraden,
+				patient: req.session.patient,
+				currentUserType: req.user.userType,
+				studentFirstName: patientStudent.by,
+				showMenu: true
+			})
 		})
   	})
 })
@@ -2208,19 +2230,24 @@ router.get('/fall/:recordID', ensureAuthenticated, (req, res) => {
 	MasterFall.find({ patientID: req.params.recordID }).then(newFall => {
 		console.log(newFall);
 		userType = req.user.userType == 'student';
-			if (req.user.userType == 'staff')
-			{
-				userType = 'student';
-			}
-		res.render('charts/master/charts-Fall', {
-			// azureId: req.user.azure_oid,
-			recordID: req.params.recordID,
-			userType: userType,
-			newFall: newFall,
-			patient: req.session.patient,
-			currentUserType: req.user.userType,
-			showMenu: true
-		});
+		if (req.user.userType == 'staff')
+		{
+			userType = 'student';
+		}
+
+		PatientStudentModel.findOne({recordID: req.params.recordID})
+		.then(patientStudent => {
+			res.render('charts/master/charts-Fall', {
+				// azureId: req.user.azure_oid,
+				recordID: req.params.recordID,
+				userType: userType,
+				newFall: newFall,
+				patient: req.session.patient,
+				currentUserType: req.user.userType,
+				studentFirstName: patientStudent.by,
+				showMenu: true
+			});
+		})
 	})
 })
 
@@ -2297,6 +2324,8 @@ router.get('/HistoryTaking/:recordID', ensureAuthenticated,  (req, res) => {
 							patient: req.session.patient,
 							currentName: req.user.firstName,
 							recordID: req.params.recordID,
+							studentFirstName: patientStudent.by,
+							currentUserType: req.user.userType,
 							userType: userType,
 							showMenu: true
 						});
@@ -2385,6 +2414,7 @@ router.get('/HistoryTaking/:recordID/:historyId/:name', ensureAuthenticated, (re
 								by: name,
 								checkifEmpty: false,
 								currentUserType: req.user.userType,
+								studentFirstName: patientStudent.by,
 								showMenu: true
 							})
 						
@@ -2586,6 +2616,7 @@ router.get('/mdp/:recordID', ensureAuthenticated, (req, res) => {
 						userType: userType,
 						currentUserType: req.user.userType,
 						patient: req.session.patient,
+						studentFirstName: patientStudent.by,
 						showMenu: true
 					});
 				})	
@@ -2714,6 +2745,7 @@ router.get('/CarePlan/:recordID', ensureAuthenticated, (req, res) => {
 						userType: userType,
 						patient: req.session.patient,
 						currentUserType: req.user.userType,
+						studentFirstName: patientStudent.by,	
 						showMenu: true
 					});
 				})
@@ -2785,6 +2817,7 @@ router.get('/CarePlan/:recordID/:carePlanID', ensureAuthenticated, (req, res) =>
 						editCarePlan: editCarePlan,
 						patient: req.session.patient,
 						currentUserType: req.user.userType,
+						studentFirstName: patientStudent.by,
 						showMenu: true
 					});
 				});
@@ -2883,6 +2916,7 @@ router.get('/show-nursing-assessment/:recordID/:patientID', ensureAuthenticated,
 					showMenu: true,
 					userType: userType,
 					currentUserType: req.user.userType,
+					studentFirstName: retrievedPatient.by,
 					recordID: req.params.recordID
 				});
 			});
@@ -2958,6 +2992,7 @@ router.get('/edit/:recordID/:patientID', ensureAuthenticated, (req, res) => {
 				patient: patient,
 				userType: userType,
 				currentUserType: req.user.userType,
+				studentFirstName: patient.by,
 				recordID: req.params.recordID,
 				showMenu: true							// shows menu using unless
 			});
@@ -3023,16 +3058,21 @@ router.get('/diabetic/:recordID', ensureAuthenticated, (req, res) => {
 					{
 						userType = 'student';
 					}
-					res.render('charts/master/charts-diabetic', {
-						recordID: req.params.recordID,
-						userType: userType,
-						diabeticdateVal: diabeticsample,
-						diabeticFlow: diabeticFlow,
-						newDiabetic: newDiabetic,
-						patient: req.session.patient,
-						currentUserType: req.user.userType,
-						showMenu: true
-        			})
+
+					PatientStudentModel.findOne({recordID: req.params.recordID})
+					.then(patientStudent => {
+						res.render('charts/master/charts-diabetic', {
+							recordID: req.params.recordID,
+							userType: userType,
+							diabeticdateVal: diabeticsample,
+							diabeticFlow: diabeticFlow,
+							newDiabetic: newDiabetic,
+							patient: req.session.patient,
+							currentUserType: req.user.userType,
+							studentFirstName: patientStudent.by,
+							showMenu: true
+						})
+					})
 				})
 			})
 
@@ -3208,23 +3248,28 @@ router.get('/neuro/:recordID', ensureAuthenticated, (req, res) => {
 						{
 							userType = 'student';
 						}
-						res.render('charts/master/charts-neuro', {
-							recordID: req.params.recordID,
-							userType: userType,
-							neurodateVal: neurosample,
-							neuroFlow: neuroFlow,
-							newNeuro: newNeuro,
-							patient: req.session.patient,
-							newNeuroRightArm: newNeuroRightArm,
-							newNeuroLeftArm: newNeuroLeftArm,
-							newNeuroRightLeg: newNeuroRightLeg,
-							newNeuroLeftLeg: newNeuroLeftLeg,
-							rightArmRowSpan: rightArmNeuroFlowLength,
-							leftArmRowSpan: leftArmNeuroFlowLength,
-							rightLegRowSpan: rightLegNeuroFlowLength,
-							leftLegRowSpan: leftLegNeuroFlowLength,
-							currentUserType: req.user.userType,
-							showMenu: true
+
+						PatientStudentModel.findOne({recordID: req.params.recordID})
+						.then(patientStudent => {
+							res.render('charts/master/charts-neuro', {
+								recordID: req.params.recordID,
+								userType: userType,
+								neurodateVal: neurosample,
+								neuroFlow: neuroFlow,
+								newNeuro: newNeuro,
+								patient: req.session.patient,
+								newNeuroRightArm: newNeuroRightArm,
+								newNeuroLeftArm: newNeuroLeftArm,
+								newNeuroRightLeg: newNeuroRightLeg,
+								newNeuroLeftLeg: newNeuroLeftLeg,
+								rightArmRowSpan: rightArmNeuroFlowLength,
+								leftArmRowSpan: leftArmNeuroFlowLength,
+								rightLegRowSpan: rightLegNeuroFlowLength,
+								leftLegRowSpan: leftLegNeuroFlowLength,
+								currentUserType: req.user.userType,
+								studentFirstName: patientStudent.by,
+								showMenu: true
+							})
 						})
 					})
 				})
@@ -3651,23 +3696,28 @@ router.get('/clc/:recordID', ensureAuthenticated, (req, res) => {
 						{
 							userType = 'student';
 						}
-						res.render('charts/master/charts-clc', {
-							recordID: req.params.recordID,
-							userType: userType,
 
-							clcsampleDate: clcsample,
-							gcsFlow: gcsFlow,
-							clcvitalFlow: clcvitalFlow,
-							pupilsFlow: pupilsFlow,
-							motorstrengthFlow: motorstrengthFlow,
-							newGcs: newGcs,
-							newpupils: newpupils,
-							newclcvital: newclcvital,
-							newmotorstrength: newmotorstrength,
-							patient: req.session.patient,
-							currentUserType: req.user.userType,
-							showMenu: true
-						  })
+						PatientStudentModel.findOne({recordID: req.params.recordID})
+						.then(patientStudent => {
+							res.render('charts/master/charts-clc', {
+								recordID: req.params.recordID,
+								userType: userType,
+
+								clcsampleDate: clcsample,
+								gcsFlow: gcsFlow,
+								clcvitalFlow: clcvitalFlow,
+								pupilsFlow: pupilsFlow,
+								motorstrengthFlow: motorstrengthFlow,
+								newGcs: newGcs,
+								newpupils: newpupils,
+								newclcvital: newclcvital,
+								newmotorstrength: newmotorstrength,
+								patient: req.session.patient,
+								currentUserType: req.user.userType,
+								studentFirstName: patientStudent.by,
+								showMenu: true
+							})
+						})
 					})
 				})
 			});
@@ -4169,22 +4219,25 @@ router.get('/FeedingRegime/:recordID', ensureAuthenticated, (req, res) => {
 			//console.log("Name: "+ schedsampleName);
 			// console.log("Schedule Flow:"+ schedFlow);//schedFlow is the records 
 			// console.log("Schedule Rowspan: "+ schedFlowLength );
-
-			res.render('charts/master/charts-feeding-regime', {
-				// finalObj: finalObj,
-				// yo: yo,
-				recordID: req.params.recordID,
-				newOtherScheduleFeed: newOtherScheduleFeed,
-				userType: userType,
-				currentUserType: req.user.userType,
-				newFeeding: newFeeding,
-				schedRowspan : schedFlowLength,
-				currentName: req.user.firstName,
-				patient: req.session.patient,
-				scheddateVal: schedsample,
-				finalDate: finalDate.length - 1,
-				schedFlow: schedFlow,
-				showMenu: true
+			PatientStudentModel.findOne({recordID: req.params.recordID})
+			.then(patientStudent => {
+				res.render('charts/master/charts-feeding-regime', {
+					// finalObj: finalObj,
+					// yo: yo,
+					recordID: req.params.recordID,
+					newOtherScheduleFeed: newOtherScheduleFeed,
+					userType: userType,
+					currentUserType: req.user.userType,
+					studentFirstName: patientStudent.by,
+					newFeeding: newFeeding,
+					schedRowspan : schedFlowLength,
+					currentName: req.user.firstName,
+					patient: req.session.patient,
+					scheddateVal: schedsample,
+					finalDate: finalDate.length - 1,
+					schedFlow: schedFlow,
+					showMenu: true
+				})
 			})
 		})
 	})
@@ -4491,17 +4544,22 @@ router.get('/DischargePlanning/:recordID', ensureAuthenticated, (req, res) => {
 			console.log("appointmentFlow: "+ appointmentFlow);
 			console.log("dischargePlanningFlow: "+ dischargePlanningFlow);
 
-			res.render('discharge-planning/student/discharge-planning', {
-				dischargePlanningdateVal: dischargeplanningsample,
-				dischargePlanningFlow: dischargePlanningFlow,
-				appointmentFlow: appointmentFlow,
-				newDischargePlanning: newDischargePlanning,
-				newAppointment: newAppointment,
-				patient: req.session.patient,
-				recordID: req.params.recordID,
-				userType: userType,
-				currentUserType: req.user.userType,
-				showMenu: true			
+			PatientStudentModel.findOne({recordID: req.params.recordID})
+			.then(patientStudent => {
+
+				res.render('discharge-planning/student/discharge-planning', {
+					dischargePlanningdateVal: dischargeplanningsample,
+					dischargePlanningFlow: dischargePlanningFlow,
+					appointmentFlow: appointmentFlow,
+					newDischargePlanning: newDischargePlanning,
+					newAppointment: newAppointment,
+					patient: req.session.patient,
+					recordID: req.params.recordID,
+					userType: userType,
+					currentUserType: req.user.userType,
+					studentFirstName: patientStudent.by,
+					showMenu: true			
+				})
 			})
 		})
 	})
@@ -4582,14 +4640,19 @@ router.get('/DischargePlanning/:recordID/:dischargePlanningID', ensureAuthentica
 				else {
 					editDischargePlanning.appointmentDate = moment(editDischargePlanning.appointmentDate , 'YYYY-MM-DD').format('DD/MM/YYYY');
 				}
-				res.render('discharge-planning/student/discharge-planning', {
-					editDischargePlanning: editDischargePlanning,
-					newDischargePlanning: newDischargePlanning,
-					recordID: req.params.recordID,
-					patient: req.session.patient,
-					userType: userType,
-					currentUserType: req.user.userType,
-					showMenu: true
+
+				PatientStudentModel.findOne({recordID: req.params.recordID})
+				.then(patientStudent => {
+					res.render('discharge-planning/student/discharge-planning', {
+						editDischargePlanning: editDischargePlanning,
+						newDischargePlanning: newDischargePlanning,
+						recordID: req.params.recordID,
+						patient: req.session.patient,
+						userType: userType,
+						currentUserType: req.user.userType,
+						studentFirstName: patientStudent.by,
+						showMenu: true
+					});
 				});
 			})
 		});
