@@ -151,7 +151,7 @@ $(function(){
 		},
 		"columnDefs": [
 			{orderable: false, targets: 8},
-			{width: 35, targets: 8},
+			// {width: 35, targets: 8},
 		]
 	});
 	
