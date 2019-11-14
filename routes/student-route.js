@@ -139,14 +139,22 @@ router.get('/showown/:recordID/:patientID', ensureAuthenticated, (req, res) => {
 			.populate('user')							// gets user from emr-users collection
 			.then(patient => {
 				
-				req.session.firstNameAndEmail = patient.creator + " (" + patient.creatorEmail.split("@")[0] + ")" // firstName + email
+				console.log("Hi: " + patient);
+				if (patient.creatorEmail != null)
+				{
+					req.session.firstNameAndEmail = patient.creator + " (" + patient.creatorEmail.split("@")[0] + ")" // firstName + email
+				}
+				else
+				{
+					req.session.firstNameAndEmail = "";
+				}
 
 				res.render('student/student-edit-patient', { // calls handlebars
 					recordID: req.params.recordID,
 					patient: retrievedPatient,
 					userType: userType,
 					currentUserType: req.user.userType,
-					studentFirstName: req.session.firstNameAndEmail,
+						studentFirstName: req.session.firstNameAndEmail,
 					showMenu: true
 				});
 			});
