@@ -4363,6 +4363,7 @@ router.get('/ScheduleFeeding/:recordID/:scheduleID/:name', ensureAuthenticated, 
 			.then(patientStudent => {
 				// MasterScheduleFeed.find({patientID: req.session.patient.patientID, user:{'$ne': patientStudent.user}})
 				// .then(newSchedule => {
+					
 					MasterScheduleFeed.find({  masterpatientID: req.session.patient.patientID, user: patientStudent.user})
 					.sort({'datetime': -1}).then(newOtherScheduleFeed =>{
 						
@@ -4400,9 +4401,11 @@ router.get('/ScheduleFeeding/:recordID/:scheduleID/:name', ensureAuthenticated, 
 			
 					
 					// console.log("Edit History: "+ editHistory);
-					MasterScheduleFeed.find({ masterpatientID: req.session.patient.patientID, by: req.user.firstName})
+					PatientStudentModel.findOne({recordID: req.params.recordID})
+					.then(patientStudent => {
+					MasterScheduleFeed.find({ masterpatientID: req.session.patient.patientID, patientID: req.params.recordID})
 					.sort({'datetime': -1 }).then(newOtherScheduleFeed =>{
-						MasterScheduleFeed.findOne({ scheduleID: req.params.scheduleID })
+						MasterScheduleFeed.findOne({ scheduleID: req.params.scheduleID, patientID: req.params.recordID })
 						.then(editSchedule =>{
 						
 						editSchedule.date = moment(editSchedule.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
@@ -4422,7 +4425,7 @@ router.get('/ScheduleFeeding/:recordID/:scheduleID/:name', ensureAuthenticated, 
 							showMenu: true
 						})
 					})
-				// });
+				})
 			});
 		}
 })
