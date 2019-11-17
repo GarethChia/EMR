@@ -59,28 +59,41 @@
             <tr>
                 <th width="10%">Discharge to</th>
                 {{#each dischargePlanningFlow}}
-                <td>{{dischargeTo}}</td>
+                    {{#ifCond dischargeTo 'Others (Specify)'}}
+                        <td>{{dischargeTo}}: {{dischargeToSpecify}}</td>
+                    {{else}}
+                        <td>{{dischargeTo}}</td>
+                    {{/ifCond}}
                 {{/each}}
             </tr>
 
             <tr>
                 <th width="10%">Accompanied by</th>
                 {{#each dischargePlanningFlow}}
-                <td>{{accompaniedBy}}</td>
+                    {{#ifCond accompaniedBy 'Others (Specify)'}}
+                        <td>{{accompaniedBy}}: {{accompaniedBySpecify}}</td>
+                    {{else}}
+                        <td>{{accompaniedBy}}</td>
+                    {{/ifCond}}
                 {{/each}}
             </tr>
 
             <tr>
                 <th width="10%">Mode of transport</th>
                 {{#each dischargePlanningFlow}}
-                <td class="fluidConsumed" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);">{{modeOfTransport}}</td>
+                    {{#ifCond modeOfTransport 'Others (Specify)'}}
+                        <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);">{{modeOfTransport}}: {{modeOfTransportSpecify}}</td>
+                    {{else}}
+                        <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);">{{modeOfTransport}}</td>
+                    {{/ifCond}}
+                    
                 {{/each}}
             </tr>
 
             <tr>
                 <th width="10%">Removal of</th>
                 {{#each dischargePlanningFlow}}
-                <td class="intakeEnteral" id="tableRemovalOf" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);">
+                <td id="tableRemovalOf" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);">
                     {{#each removalOf}}
                         {{this}} <br/>
                     {{/each}}
@@ -91,8 +104,42 @@
                 <th width="10%">Advice given</th>
                 {{#each dischargePlanningFlow}}
                 <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);">
-                    {{#each adviceGivenOn}}
-                        {{this}} <br/>
+                    {{#each adviceGivenOn}} 
+                        <!--This doesn't work-->
+                        {{!-- {{#ifCond this 'Medical Certificate No.'}}
+                            Medical Certificate No: {{../medicalCertificateNo}} <br/>
+                        {{else ifCond this 'Referrals'}}
+                            {{this}}: {{../referralsSpecify}} <br/>
+                        {{else}}
+                            {{this}} <br/>
+                        {{/ifCond}} --}}
+                        {{#ifCond this 'Follow-up appointment'}}
+                            {{this}} <br/>
+                        {{/ifCond}}
+                        {{#ifCond this 'Referrals'}}
+                            {{this}}: {{../referralsSpecify}} <br/>
+                        {{/ifCond}}
+                        {{#ifCond this 'Medications'}}
+                            {{this}} <br/>
+                        {{/ifCond}}
+                        {{#ifCond this 'Medik Awas'}}
+                            {{this}} <br/>
+                        {{/ifCond}}
+                        {{#ifCond this 'Discharge teaching/Instructions'}}
+                            {{this}} <br/>
+                        {{/ifCond}}
+                        {{#ifCond this 'Hospital inpatient discharge summary'}}
+                            {{this}} <br/>
+                        {{/ifCond}}
+                        {{#ifCond this 'Medical Certificate No.'}}
+                            Medical Certificate No: {{../medicalCertificateNo}} <br/>
+                        {{/ifCond}}
+                        {{#ifCond this 'Feedback form'}}
+                            {{this}} <br/>
+                        {{/ifCond}}
+                        {{#ifCond this 'Special instructions'}}
+                            {{this}}: {{../specialInstructionsSpecify}} <br/>
+                        {{/ifCond}} 
                     {{/each}}
                 </td>
                 {{/each}}
@@ -102,7 +149,29 @@
                 {{#each dischargePlanningFlow}}
                 <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);">
                     {{#each checkedAndReturned}}
-                        {{this}} <br/>
+                        <!--This doesn't work-->
+                        {{!-- {{#ifCond this 'Appliances (Specify)'}} 
+                            {{this}}: {{../checkedAndReturnedAppliancesSpecify}} <br/>
+                        {{else ifCond this 'Others (Specify)'}}
+                            {{this}}: {{../checkedAndReturnedSpecify}} <br/>
+                        {{else}}
+                            {{this}} <br/>
+                        {{/ifCond}} --}}
+                        {{#ifCond this 'Propery/ Property Receipt'}}
+                            {{this}} <br/>
+                        {{/ifCond}}
+                        {{#ifCond this 'Own medications'}}
+                            {{this}} <br/>
+                        {{/ifCond}}
+                        {{#ifCond this 'Appliances (Specify)'}}
+                            {{this}}: {{../checkedAndReturnedAppliancesSpecify}} <br/>
+                        {{/ifCond}}
+                        {{#ifCond this 'Private X-rays'}}
+                            {{this}} <br/>
+                        {{/ifCond}}
+                        {{#ifCond this 'Others (Specify)'}}
+                            {{this}}: {{../checkedAndReturnedSpecify}} <br/>
+                        {{/ifCond}}
                     {{/each}}
                 </td>
                 {{/each}}
@@ -110,21 +179,22 @@
             <tr>
                 <th width="10%">Referrals</th>
                 {{#each dischargePlanningFlow}}
-                <td class="amountOfFeeding" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">{{referrals}}</td>
+                    {{#ifCond referrals 'Others (Specify)'}}
+                        <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">{{referrals}}: {{referralsSpecify}}</td>
+                    {{else}}
+                        <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">{{referrals}}</td>
+                    {{/ifCond}}
                 {{/each}}
             </tr>
             <tr>
                 <th width="10%" rowspan="5">Appointment</th>
                 {{#each appointmentFlow}}
                 <td>
-                    {{followUpAppointment}}
-                </td>
-                {{/each}}
-            </tr>
-            <tr>
-                {{#each appointmentFlow}}
-                <td>
-                    {{followUpAppointmentSpecify}}
+                    {{#ifCond followUpAppointment 'Others (Specify)'}}
+                        {{followUpAppointment}}: {{followUpAppointmentSpecify}}
+                    {{else}}
+                        {{followUpAppointment}}
+                    {{/ifCond}}
                 </td>
                 {{/each}}
             </tr>
@@ -452,114 +522,6 @@
                                 </td>
                             </tr>
                             <!---Follow up-->
-                            <tr style="border: none;">
-                                <td id="followUp">
-                                    <div class="row">
-                                        <div class="col s12 m4 input-field">
-                                            <select id="followUpAppointment" name="followUpAppointment">
-                                                <option value="" disabled selected>Please select</option>
-                                                <option value="Doctors">Doctors</option>
-                                                <option value="Therapists">Therapists</option>
-                                                <option value="Dietitians">Dietitians</option>
-                                                <option value="Others (Specify)">Others (Specify)</option>
-                                            </select>
-                                            <label for="followUpAppointment">Follow up</label>
-                                        </div>
-                                        <div class="col s12 m4 input-field" id="followUpAppointmentSpecifyContent">
-                                            <input id="followUpAppointmentSpecify" type="text" name="followUpAppointmentSpecify" value="{{editDischargePlanning.followUpAppointmentSpecify}}">
-                                            <label for="followUpAppointmentSpecify">Others</label>
-                                            <span class="helper-text">Specify</span>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="row">
-                                        <div class="col s12 m4 input-field">
-                                            <input id="appointmentDate" type="text" class="datepicker" name="appointmentDate" value="{{editDischargePlanning.appointmentDate}}">
-                                            <label for="appointmentDate">Date</label>
-                                            <span class="helper-text">dd/mm/yyyy</span>
-                                        </div>
-
-                                        <div class="col s12 m4 input-field">
-                                            <input id="appointmentTime" type="text" class="timepicker" name="appointmentTime" value="{{editDischargePlanning.appointmentTime}}">
-                                            <label for="appointmentTime">Time</label>
-                                            <span class="helper-text">hh:ss</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col s12 m2 l2" style="padding-top:20px">
-                                            <label style="font-size: 15px">Clinic</label>
-                                        </div>
-                                        <div class="col s12 m4 input-field">
-                                            <input id="clinic" type="text" name="clinic" value="{{editDischargePlanning.clinic}}">
-                                            <label for="clinic">Key in the Clinic name</label>
-                                            {{!-- <span class="helper-text">Specify</span> --}}
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col s12 m2 l2" style="padding-top:20px">
-                                            <label style="font-size: 15px">Name of the Doctor</label>
-                                        </div>
-                                        <div class="col s12 m4 input-field">
-                                            <input id="nameOfDoctor" type="text" name="nameOfDoctor" value="{{editDischargePlanning.nameOfDoctor}}">
-                                            <label for="nameOfDoctor">Doctor/Therapists/Dietitian/Others' name</label>
-                                            {{!-- <span class="helper-text">Specify</span> --}}
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col s12 m2 l2" style="padding-top:20px">
-                                            <label for="memoGiven" style="font-size: 15px">Memo given</label>
-                                        </div>
-                                        <div class="col s12 m2 l2" style="padding-top:20px">
-                                            <label>
-                                                <input id="memoGivenYes" name="memoGiven" type="radio" value="true"
-                                                    {{ setRadioButton editDischargePlanning.memoGiven true }}/>
-                                                <span style="padding-left: 25px; padding-right: 10px">Yes</span>
-                                            </label>
-                                            <label>
-                                                <input id="memoGivenNo" name="memoGiven" type="radio" value="false"
-                                                    {{ setRadioButton editDischargePlanning.memoGiven false }}/>
-                                                <span style="padding-left: 25px; padding-right: 10px">No</span>
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col s12 m2 l2" style="padding-top:20px">
-                                            <label style="font-size: 15px">Remarks</label>
-                                        </div>
-                                        <div class="col s12 m4 input-field">
-                                            <input id="remarks" type="text" name="remarks" value="{{editDischargePlanning.remarks}}">
-                                            <label for="remarks">Specify</label>
-                                            {{!-- <span class="helper-text">Specify</span> --}}
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr style="border: none;">
-                                <td>
-                                    <label style="display: inline-block;">
-                                        <input id="SpecialInstructions" name="adviceGivenOn" type="checkbox" value="Special instructions"
-                                            {{resetExceptNone editDischargePlanning.adviceGivenOn 'Special instructions' 'None'}}/>
-                                        <span style="padding-left: 25px; padding-right: 10px">Special instructions</span>
-                                    </label>
-                                </td>
-                            </tr>
-                            <!--Special instructions-->
-                            <tr style="border: none;">
-                                <td id="specialInstructionsContent">
-                                    <div class="row">
-                                        <div class="col s12 m4 input-field">
-                                            <input id="specialInstructionsSpecify" type="text" name="specialInstructionsSpecify" value="{{editDischargePlanning.specialInstructionsSpecify}}">
-                                            <label for="specialInstructionsSpecify">Specify</label>
-                                            {{!-- <span class="helper-text">Specify</span> --}}
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <!--// Special instructions-->
 
                             <tr style="border: none;">
                                 <td>
@@ -673,11 +635,47 @@
                                     </label>
                                 </td>
                             </tr>
+
+                            <tr style="border: none;">
+                                <td>
+                                    <label style="display: inline-block;">
+                                        <input id="SpecialInstructions" name="adviceGivenOn" type="checkbox" value="Special instructions"
+                                            {{resetExceptNone editDischargePlanning.adviceGivenOn 'Special instructions' 'None'}}/>
+                                        <span style="padding-left: 25px; padding-right: 10px">Special instructions</span>
+                                    </label>
+                                </td>
+                            </tr>
+                            <!--Special instructions-->
+                            <tr style="border: none;">
+                                <td id="specialInstructionsContent">
+                                    <div class="row">
+                                        <div class="col s12 m4 input-field">
+                                            <input id="specialInstructionsSpecify" type="text" name="specialInstructionsSpecify" value="{{editDischargePlanning.specialInstructionsSpecify}}">
+                                            <label for="specialInstructionsSpecify">Specify</label>
+                                            {{!-- <span class="helper-text">Specify</span> --}}
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!--// Special instructions-->
                             </table>    
                         </div>
                     </div>
 
                     <!--//7. Advice given on-->
+
+                    <!--8. Others-->
+                    <div class="row">
+                        <div class="col s12 m2 l2" style="padding-top:20px">
+                            <label style="font-size: 15px">Others</label>
+                        </div>
+                        <div class="col s12 m4 input-field">
+                            <input id="others" type="text" name="others" value="{{editDischargePlanning.others}}">
+                            <label for="others">Specify</label>
+                        </div>
+                    </div>
+
+                    <!--//8. Others-->
                 </div>
             </div>
         </div>
@@ -902,10 +900,7 @@
         const dischargeTo = document.querySelector('#dischargeTo');
         const accompaniedBy = document.querySelector('#accompaniedBy');
         const modeOfTransport = document.querySelector('#modeOfTransport');
-        const followUpAppointment = document.querySelector('#followUpAppointment');
         const followUpAppointment1 = document.querySelector('#followUpAppointment1');
-        const appointmentDate = document.querySelector('#appointmentDate');
-        const appointmentTime = document.querySelector('#appointmentTime');
         const referrals = document.querySelector('#referrals');
         const appointmentDate1 = document.querySelector('#appointmentDate1');
         const appointmentTime1 = document.querySelector('#appointmentTime1');
@@ -935,25 +930,10 @@
         M.FormSelect.init(modeOfTransport,{
 
         })
-
-        M.FormSelect.init(followUpAppointment,{
-
-        })
         
         M.FormSelect.init(followUpAppointment1,{
 
         })
-
-        M.Datepicker.init(appointmentDate, {
-            maxDate: new Date(),
-            format: 'dd/mm/yyyy',
-            disableWeekends: true
-        });
-
-        M.Timepicker.init(appointmentTime, {
-            twelveHour: false,
-            showClearBtn: true
-        });
 
         M.FormSelect.init(referrals,{
 
@@ -975,7 +955,6 @@
         document.getElementById('dischargeTo').value = "{{editDischargePlanning.dischargeTo}}";
         document.getElementById('accompaniedBy').value = "{{editDischargePlanning.accompaniedBy}}";
         document.getElementById('modeOfTransport').value = "{{editDischargePlanning.modeOfTransport}}";
-        document.getElementById('followUpAppointment').value = "{{editDischargePlanning.followUpAppointment}}";
         document.getElementById('referrals').value = "{{editDischargePlanning.referrals}}";
     
 
@@ -1030,20 +1009,6 @@
         
             if (modeOfTransport != "Others (Specify)") {
                 $('#modeOfTransportSpecify').val('');
-            }
-        }
-    );
-
-    $('#followUpAppointment').change(
-        function() {
-
-            // followUpAppointment
-            var followUpAppointment = $('#followUpAppointment option:selected').val();
-            
-            showOrHide(followUpAppointment, $("#followUpAppointmentSpecifyContent"), "Others (Specify)");
-
-            if (followUpAppointment != "Others (Specify)") {
-                $('#followUpAppointmentSpecify').val('');
             }
         }
     );
@@ -1106,33 +1071,6 @@
             }
         }
     );
-
-    $('#FollowUpAppointment').change(
-        function() {
-
-            // FollowUpAppointment
-            var FollowUpAppointment = $('#FollowUpAppointment');
-            
-            showOrHide(FollowUpAppointment.is(':checked'), $("#followUp"), true);
-
-            if (FollowUpAppointment.is(':checked') == false) { // clear out the textbox value
-                
-                $(':radio').prop('checked',false);
-                $('#followUpAppointment').prop('selectedIndex', 0);
-
-                $('#followUpAppointmentSpecify').val('');
-                $('#appointmentDate').val('');
-                $('#appointmentTime').val('');
-                $('#clinic').val('');
-                $('#nameOfDoctor').val('');
-                $('#remarks').val('');
-                
-                
-            }
-        }
-    );
-
-    
 
     $('#SpecialInstructions').change(
         function() {
@@ -1259,19 +1197,6 @@
         var anArray = "{{editDischargePlanning.adviceGivenOn}}"
 
         // Follow-up appointment
-
-        if (inArray(anArray, "Follow-up appointment") == true) {
-            $("#followUp").show();
-        }
-        else {
-            $("#followUp").hide();
-        }
-        if (document.getElementById("followUpAppointment").value == "Others (Specify)") {
-            $("#followUpAppointmentSpecifyContent").show();
-        }
-        else {
-            $("#followUpAppointmentSpecifyContent").hide();
-        }
         if (document.getElementById("followUpAppointment1").value == "Others (Specify)") {
             $("#followUpAppointmentSpecifyContent1").show();
         }

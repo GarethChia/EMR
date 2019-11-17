@@ -42,14 +42,14 @@ const MasterDischargePlanningSchema = new Schema({
     // 7
     adviceGivenOn: [String], // checklist
     // Follow-up Appointment
-    followUpAppointment: {type: String, default: ''},
-    followUpAppointmentSpecify: {type: String, default: ''},
-    appointmentDate: {type: String, default: ''},
-    appointmentTime: {type: String, default: ''},
-    clinic: {type: String, default:''},
-    nameOfDoctor: {type: String, default: ''},
-    memoGiven: {type: Boolean}, // radio button
-    remarks: {type: String, default: ''},
+    // followUpAppointment: {type: String, default: ''},
+    // followUpAppointmentSpecify: {type: String, default: ''},
+    // appointmentDate: {type: String, default: ''},
+    // appointmentTime: {type: String, default: ''},
+    // clinic: {type: String, default:''},
+    // nameOfDoctor: {type: String, default: ''},
+    // memoGiven: {type: Boolean}, // radio button
+    // remarks: {type: String, default: ''},
     // Special Instructions
     specialInstructionsSpecify: {type: String, default: ''},
     // Referrals
@@ -57,6 +57,8 @@ const MasterDischargePlanningSchema = new Schema({
     referralsSpecify: {type: String, default: ''},
     // Medical Cert No
     medicalCertificateNo: {type: String, default: ''},
+    // Others
+    others: {type: String, default: ''}
 });
 
 mongoose.model('masterDischargePlanning', MasterDischargePlanningSchema, 'master-discharge-planning');

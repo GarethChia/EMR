@@ -3585,21 +3585,23 @@ router.post('/add-discharge-planning', ensureAuthenticated, (req, res) => {
 		// 7
 		adviceGivenOn: req.body.adviceGivenOn,
 		// Follow-up Appointment
-		followUpAppointment: req.body.followUpAppointment,
-		followUpAppointmentSpecify: req.body.followUpAppointmentSpecify,
-		appointmentDate:  moment(req.body.appointmentDate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
-		appointmentTime: req.body.appointmentTime,
-		clinic: req.body.clinic,
-		nameOfDoctor: req.body.nameOfDoctor,
-		memoGiven: req.body.memoGiven,
-		remarks: req.body.remarks,
+		// followUpAppointment: req.body.followUpAppointment,
+		// followUpAppointmentSpecify: req.body.followUpAppointmentSpecify,
+		// appointmentDate:  moment(req.body.appointmentDate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		// appointmentTime: req.body.appointmentTime,
+		// clinic: req.body.clinic,
+		// nameOfDoctor: req.body.nameOfDoctor,
+		// memoGiven: req.body.memoGiven,
+		// remarks: req.body.remarks,
 		// Special Instructions
 		specialInstructionsSpecify: req.body.specialInstructionsSpecify,
 		// Referrals
 		referrals: req.body.referrals,
 		referralsSpecify: req.body.referralsSpecify,
 		// Medical Cert No
-		medicalCertificateNo: req.body.medicalCertificateNo
+		medicalCertificateNo: req.body.medicalCertificateNo,
+		// Others
+		others: req.body.others
 	}).save();
 
 	res.redirect('/master/DischargePlanning');
@@ -3659,21 +3661,23 @@ router.put('/edit-DischargePlanning/:dischargePlanningID', ensureAuthenticated, 
 		// 7
 		editDischargePlanning.adviceGivenOn = req.body.adviceGivenOn,
 		// Follow-up Appointment
-		editDischargePlanning.followUpAppointment = req.body.followUpAppointment,
-		editDischargePlanning.followUpAppointmentSpecify = req.body.followUpAppointmentSpecify,
-		editDischargePlanning.appointmentDate = moment(req.body.appointmentDate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
-		editDischargePlanning.appointmentTime = req.body.appointmentTime,
-		editDischargePlanning.clinic = req.body.clinic,
-		editDischargePlanning.nameOfDoctor = req.body.nameOfDoctor,
-		editDischargePlanning.memoGiven = req.body.memoGiven,
-		editDischargePlanning.remarks = req.body.remarks,
+		// editDischargePlanning.followUpAppointment = req.body.followUpAppointment,
+		// editDischargePlanning.followUpAppointmentSpecify = req.body.followUpAppointmentSpecify,
+		// editDischargePlanning.appointmentDate = moment(req.body.appointmentDate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		// editDischargePlanning.appointmentTime = req.body.appointmentTime,
+		// editDischargePlanning.clinic = req.body.clinic,
+		// editDischargePlanning.nameOfDoctor = req.body.nameOfDoctor,
+		// editDischargePlanning.memoGiven = req.body.memoGiven,
+		// editDischargePlanning.remarks = req.body.remarks,
 		// Special Instructions
 		editDischargePlanning.specialInstructionsSpecify = req.body.specialInstructionsSpecify,
 		// Referrals
 		editDischargePlanning.referrals = req.body.referrals,
 		editDischargePlanning.referralsSpecify = req.body.referralsSpecify,
 		// Medical Cert No
-		editDischargePlanning.medicalCertificateNo = req.body.medicalCertificateNo
+		editDischargePlanning.medicalCertificateNo = req.body.medicalCertificateNo,
+		// Others
+		editDischargePlanning.others = req.body.others
 
 		editDischargePlanning.save();
 	});
