@@ -139,7 +139,6 @@ router.get('/showown/:recordID/:patientID', ensureAuthenticated, (req, res) => {
 			.populate('user')							// gets user from emr-users collection
 			.then(patient => {
 				
-				console.log("Hi: " + patient);
 				if (patient.creatorEmail != null)
 				{
 					req.session.firstNameAndEmail = patient.creator + " (" + patient.creatorEmail.split("@")[0] + ")" // firstName + email
@@ -2077,7 +2076,7 @@ router.get('/braden/:recordID', ensureAuthenticated, (req, res) => {
 	// MasterBraden.find({ patientID: req.session.patient.patientID }).then(newBraden => {
 		MasterBraden.find({ patientID: req.params.recordID }).then(newBraden => {
 	
-		console.log(newBraden);
+		//console.log(newBraden);
 		userType = req.user.userType == 'student';
 		if (req.user.userType == 'staff')
 		{
@@ -2217,7 +2216,7 @@ router.get('/fall/:recordID', ensureAuthenticated, (req, res) => {
 	// MasterFall.find({ patientID: req.session.patient.patientID }).then(newFall => {
 
 	MasterFall.find({ patientID: req.params.recordID }).then(newFall => {
-		console.log(newFall);
+		//console.log(newFall);
 		userType = req.user.userType == 'student';
 		if (req.user.userType == 'staff')
 		{
@@ -2301,7 +2300,7 @@ router.get('/HistoryTaking/:recordID', ensureAuthenticated,  (req, res) => {
 				.then(newOtherHistory =>{ //(your own record)
 					MasterHistory.findOne({ masterpatientID: req.session.patient.patientID, user: patientStudent.user })
 					.then(editHistory =>{ //(your own record --> form)
-						console.log("newHistory: "+ newHistory);
+						//console.log("newHistory: "+ newHistory);
 						res.render('HistoryTaking/student/add_HistoryTaking', {
 							newHistory: newHistory,
 							newOtherHistory:newOtherHistory,
@@ -2328,7 +2327,7 @@ router.get('/HistoryTaking/:recordID', ensureAuthenticated,  (req, res) => {
 			.then(newOtherHistory =>{ //(your own record)
 				MasterHistory.findOne({ masterpatientID: req.session.patient.patientID, by: req.user.firstName })
 				.then(editHistory =>{ //(your own record --> form)
-					console.log("newHistory: "+ newHistory);
+					//console.log("newHistory: "+ newHistory);
 					res.render('HistoryTaking/student/add_HistoryTaking', {
 						newHistory: newHistory,
 						newOtherHistory:newOtherHistory,
@@ -2386,7 +2385,7 @@ router.get('/HistoryTaking/:recordID/:historyId/:name', ensureAuthenticated, (re
 						MasterHistory.findOne({ historyId: req.params.historyId })
 						.then(editHistory =>{
 							
-							console.log("Edit History: "+ editHistory);
+							//console.log("Edit History: "+ editHistory);
 
 							var name = req.params.name;
 							res.render('HistoryTaking/student/add_HistoryTaking',{
@@ -2416,7 +2415,7 @@ router.get('/HistoryTaking/:recordID/:historyId/:name', ensureAuthenticated, (re
 				MasterHistory.findOne({ historyId: req.params.historyId })
 				.then(editHistory =>{
 					
-					console.log("Edit History: "+ editHistory);
+					//console.log("Edit History: "+ editHistory);
 					MasterHistory.findOne({ masterpatientID: req.session.patient.patientID, user: req.user._id})
 					.then(newOtherHistory =>{
 
@@ -2594,7 +2593,7 @@ router.get('/mdp/:recordID', ensureAuthenticated, (req, res) => {
 
 				MasterMDP.find({patientID: req.session.patient.patientID})
 				.then(newMasterMDP=> {
-					console.log("************ newMasterMDP: "+ JSON.stringify(newMasterMDP));
+					//console.log("************ newMasterMDP: "+ JSON.stringify(newMasterMDP));
 					res.render('mdp-notes/student/mdp', {
 						recordID: req.params.recordID,
 						newMasterMDP: newMasterMDP,
@@ -2672,7 +2671,7 @@ router.get('/mdp/:recordID/:mdpID', ensureAuthenticated, (req, res) => {
 
 			MasterMDP.find({patientID: req.session.patient.patientID})
 			.then(newMasterMDP=> { 
-				console.log("editMDP: "+ editMDP);
+				//console.log("editMDP: "+ editMDP);
 				editMDP.date = moment(editMDP.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
 				res.render('mdp-notes/student/mdp', {
 					userType: userType,
@@ -4406,9 +4405,6 @@ router.get('/DischargePlanning/:recordID', ensureAuthenticated, (req, res) => {
 				}
 
 			};
-			
-			console.log("appointmentFlow: "+ appointmentFlow);
-			console.log("dischargePlanningFlow: "+ dischargePlanningFlow);
 
 			res.render('discharge-planning/student/discharge-planning', {
 				dischargePlanningdateVal: dischargeplanningsample,

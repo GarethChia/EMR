@@ -900,8 +900,7 @@ router.get('/HistoryTaking', ensureAuthenticated, ensureAuthorised, (req, res) =
 	.then(newHistory => {//(other record)
 		MasterHistory.findOne({ patientID: req.session.patient.patientID})
 		.then(newOtherHistory =>{ //(your own record)
-			// console.log("Yikes: " + newOtherHistory.length);
-			// console.log("Yikes: " + req.user);
+
 			MasterHistory.findOne({patientID: req.session.patient.patientID})
 			.then(editHistory => {
 			// if(editHistory == null){
@@ -916,7 +915,6 @@ router.get('/HistoryTaking', ensureAuthenticated, ensureAuthorised, (req, res) =
 			//}
 			// else
 			// {
-				//console.log("History is not empty: "+editHistory);
 				res.render('HistoryTaking/master/add_HistoryTaking', {
 					newHistory: newHistory,
 					editHistory: editHistory,
@@ -994,95 +992,6 @@ router.put('/edit-history/:historyId/:name', ensureAuthenticated, ensureAuthoris
 	});
 	res.redirect("/master/HistoryTaking");
 })
-	
-
-// editHistory
-// router.put('/edit-history/:historyId', ensureAuthenticated, ensureAuthorised, (req,res) => {
-
-// 	MasterHistory.findOne({ historyId: req.params.historyId}).then(editHistory => {
-// 		editHistory.chiefComp = req.body.chiefComp,
-// 		editHistory.historyPresent = req.body.chiefComp,
-// 		editHistory.allergy = req.body.allergy,
-// 		editHistory.medicalH = req.body.medicalH,
-// 		editHistory.surgicalH = req.body.surgicalH,
-// 		editHistory.familyH = req.body.familyH,
-// 		editHistory.socialH = req.body.socialH,
-// 		editHistory.travelH = req.body.travelH
-
-// 		editHistory.save();
-// 	});
-// 	res.redirect("/master/edit-history");
-// })
-
-
-//HAVENT UPDATE HISTORY
-// router.get('/edit-history/:historyId', ensureAuthenticated, (req, res) => {
-	
-// 	MasterHistory.findOne({
-// 		patientID: req.params.patientID		// gets current patient
-// 	})
-// 	.then(retrievedPatient => {
-// 		if(JSON.stringify(retrievedPatient.user._id) === JSON.stringify(req.user.id)) {
-// 			NursingAssessmentModel.findById(retrievedPatient.nursingAssessmentID,{
-// 				// new way of calling method
-// 			}).then(assessment => {
-// 				//let toaster = new Toaster('Retrieving nursing assessment record');
-// 				req.session.assessment = assessment; // save to session for saving updated info
-// 				res.render('master/HistoryTaking', {
-// 					assessment: assessment,
-// 					patient: retrievedPatient,
-// 					user: req.user,
-// 					showMenu: true
-// 				});
-// 			});
-// 		}else {
-// 			console.log('User that created record is different from this user');
-// 			//alertMessage.flashMessage(res, 'User that created record is different from current user', 'fas fa-exclamation',
-// 			// true);
-// 			toaster.setErrorMessage(' ', 'User that created record is different from this user');
-// 			res.redirect('/master/list-patients');
-// 		}
-// 	});
-// });
-
-
-// // saves edited/updated History form
-// router.put('/edit-history/:historyId/:patientID/:nursingAssessmentID', ensureAuthenticated, (req, res) => {
-// 	console.log('Assessment id: ' + req.session.assessment._id);
-	
-// 	// Todo: check authorised user
-// 	MasterHistory.findByIdAndUpdate(
-// 		// the id of the item to find
-// 		req.params.nursingAssessmentID,
-// 		req.body, // will default all boolean radio buttons to false even if no selection is made
-// 		{new: true},
-// 		// the callback function
-// 		(err, assessment) => {
-// 			// Handle any possible database errors
-// 			if (err) {
-// 				return res.status(500).send(err);
-// 			}
-// 			//alertMessage.flashMessage(res, 'Nursing assessment updated', 'far fa-thumbs-up', true);
-// 			toaster.setSuccessMessage(' ', 'History Taking Updated');
-// 			res.render('master/HistoryTaking', {
-// 				assessment: assessment,
-// 				patient: req.session.patient,
-// 				user: req.user,
-// 				toaster,
-// 				showMenu: true
-// 			});
-// 			/*if (req.user.userType === 'staff'){
-			
-// 			} else {
-// 				res.redirect('/student/list-patients');
-// 			}*/
-			
-// 		}
-// 	);
-// });
-
-//END HISTORY
-
 
 //open fall page
 router.get('/fall', ensureAuthenticated, ensureAuthorised, (req, res) => {
@@ -1886,7 +1795,7 @@ router.post('/add-wh', ensureAuthenticated, ensureAuthorised, (req, res) => {
 
 //Edit weight & height information
 router.put('/edit-wh/:whID', ensureAuthenticated, ensureAuthorised, (req, res) => {
-	console.log("hey")
+
 	datetime = moment(req.body.dateWh, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeWh;
 
 	MasterWH.findOne({ whID: req.params.whID }).then(editWH => {
@@ -2306,7 +2215,6 @@ router.get('/CarePlan', ensureAuthenticated, ensureAuthorised, (req, res) => { /
 router.get('/CarePlan/:name', ensureAuthenticated, ensureAuthorised, (req, res) => {
 	//userType = req.user.userType == 'student';
 	var name = req.params.name;
-	console.log("name: "+ name);
 	StudentCarePlan.aggregate([ // display students who has created their care plan
 		{"$sort": {
 			'datetime': -1,
@@ -2342,7 +2250,6 @@ router.get('/CarePlan/:name', ensureAuthenticated, ensureAuthorised, (req, res) 
 			}}
 		])
 		.then(newCarePlan => {
-			console.log("newCarePlan: "+ JSON.stringify(newCarePlan));
 
 			res.render('care-plan/master/care-plan', {
 				name: req.params.name,
@@ -2396,7 +2303,7 @@ router.get('/CarePlan/:name/:carePlanID', ensureAuthenticated, ensureAuthorised,
 			}}
 		])
 		.then(newCarePlan => {
-			console.log("newCarePlan: "+ JSON.stringify(newCarePlan));
+
 			StudentCarePlan.findOne({ carePlanID: req.params.carePlanID })
 			.then(editCarePlan => {
 				
@@ -2467,13 +2374,7 @@ router.get('/neuro', ensureAuthenticated, ensureAuthorised, (req, res) => {
 						{
 							leftLegNeuroFlowLength = newNeuroLeftLeg.length
 						}
-						leftLegNeuroFlowLength = leftLegNeuroFlowLength * 2; // rowspan to merge same site of injury on left arm
-						
-						/*console.log("rightArmNeuroFlowLength: "+ rightArmNeuroFlowLength);
-						console.log("leftArmNeuroFlowLength: " + leftArmNeuroFlowLength);
-						console.log("rightLegNeuroFlowLength: " +rightLegNeuroFlowLength);
-						console.log("leftLegNeuroFlowLength: "+leftLegNeuroFlowLength)*/
-						
+						leftLegNeuroFlowLength = leftLegNeuroFlowLength * 2; // rowspan to merge same site of injury on left arm		
 
 						neurosample = [];
 						neurosampleDate = [];
@@ -2589,11 +2490,6 @@ router.get('/neuro/:neuroID', ensureAuthenticated, ensureAuthorised, (req, res) 
 								leftLegNeuroFlowLength = newNeuroLeftLeg.length
 							}
 							leftLegNeuroFlowLength = leftLegNeuroFlowLength * 2; // rowspan to merge same site of injury on left arm
-							
-							/*console.log("rightArmNeuroFlowLength: "+ rightArmNeuroFlowLength);
-							console.log("leftArmNeuroFlowLength: " + leftArmNeuroFlowLength);
-							console.log("rightLegNeuroFlowLength: " +rightLegNeuroFlowLength);
-							console.log("leftLegNeuroFlowLength: "+leftLegNeuroFlowLength)*/
 
 							editNeuro.date = moment(editNeuro.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
 							res.render('charts/master/charts-neuro', {
@@ -3288,33 +3184,6 @@ router.put('/edit-feeding-regime/:feedID/:name', ensureAuthenticated, ensureAuth
 	res.redirect("/master/FeedingRegime");
 })
 
-//Schedule Feed
-// Open Schedule Feed page
-// router.get('/ScheduleFeeding', ensureAuthenticated, ensureAuthorised, (req, res) => {
-
-// 	MasterScheduleFeed.find({user:{'$ne':req.user.id}, masterpatientID: req.session.patient.patientID})
-// 	.sort({'datetime': -1 }).then(newSchedule => {//(other record)
-// 		// MasterScheduleFeed.findOne({ patientID: req.session.patient.patientID})
-// 		// .then(newOtherScheduleFeed =>{ //(your own record)
-// 			// console.log("Yikes: " + newOtherHistory.length);
-// 			// console.log("Yikes: " + req.user);
-// 			//MasterFeedingRegime.findOne({patientID: req.session.patient.patientID})
-// 			//.then(editFeeding => {
-// 				res.render('charts/master/charts-feeding-regime', {
-// 					newSchedule: newSchedule,
-// 					//editFeeding: editFeeding,
-// 					checkifEmpty: true,
-// 					patient: req.session.patient,
-// 					currentName: req.user.firstName,
-// 					// newOtherScheduleFeed: newOtherScheduleFeed,
-// 					showMenu: true
-// 				});
-// 			//}
-// 	 		//})
-// 		})
-// 	})
-// // })
-
 //Add Schedule Feeding
 router.post('/add-schedule', ensureAuthenticated, ensureAuthorised, (req, res) => {
 	scheduleID = (new standardID('AAA0000')).generate();
@@ -3538,9 +3407,6 @@ router.get('/DischargePlanning', ensureAuthenticated, ensureAuthorised, (req, re
 
 			};
 			
-			console.log("appointmentFlow: "+ appointmentFlow);
-			console.log("dischargePlanningFlow: "+ dischargePlanningFlow);
-			//console.log('req.session.user.patientID: '+ req.session.patient.patientID );
 			res.render('discharge-planning/master/discharge-planning', {
 				dischargePlanningdateVal: dischargeplanningsample,
 				dischargePlanningFlow: dischargePlanningFlow,
