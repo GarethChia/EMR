@@ -137,8 +137,8 @@
                         {{#ifCond this 'Feedback form'}}
                             {{this}} <br/>
                         {{/ifCond}}
-                        {{#ifCond this 'Special instructions'}}
-                            {{this}}: {{../specialInstructionsSpecify}} <br/>
+                        {{#ifCond this 'Others'}}
+                            {{this}}: {{../othersSpecify}} <br/>
                         {{/ifCond}} 
                     {{/each}}
                 </td>
@@ -639,49 +639,47 @@
                                     </label>
                                 </td>
                             </tr>
+                            
                             <tr style="border: none;">
                                 <td>
                                     <label style="display: inline-block;">
-                                        <input id="SpecialInstructions" name="adviceGivenOn" type="checkbox" value="Special instructions"
-                                            {{resetExceptNone editDischargePlanning.adviceGivenOn 'Special instructions' 'None'}}/>
-                                        <span style="padding-left: 25px; padding-right: 10px">Special instructions</span>
+                                        <input id="Others" name="adviceGivenOn" type="checkbox" value="Others"
+                                            {{resetExceptNone editDischargePlanning.adviceGivenOn 'Others' 'None'}}/>
+                                        <span style="padding-left: 25px; padding-right: 10px">Others</span>
                                     </label>
                                 </td>
                             </tr>
-                            <!--Special instructions-->
+                            <!--Others Content-->
                             <tr style="border: none;">
-                                <td id="specialInstructionsContent">
+                                <td id="othersContent">
                                     <div class="row">
                                         <div class="col s12 m4 input-field">
-                                            {{!-- <input id="specialInstructionsSpecify" type="text" name="specialInstructionsSpecify" value="{{editDischargePlanning.specialInstructionsSpecify}}">
-                                            <label for="specialInstructionsSpecify">Others</label>
-                                            <span class="helper-text">Specify</span> --}}
-                                            <textarea id="specialInstructionsSpecify" class="materialize-textarea" name="specialInstructionsSpecify">{{editDischargePlanning.specialInstructionsSpecify}}</textarea>
-                                            <label for="specialInstructionsSpecify">Others</label>
-                                            <span class="helper-text">Specify</span>
+                                            <input id="othersSpecify" type="text" name="othersSpecify" value="{{editDischargePlanning.othersSpecify}}">
+                                            <label for="othersSpecify">Specify</label>
+                                            {{!-- <span class="helper-text">Specify</span> --}}
                                         </div>
                                     </div>
                                 </td>
                             </tr>
-                            <!--// Special instructions-->
+                            <!--// Others Content-->
                             </table>    
                         </div>
                     </div>
 
                     <!--//7. Advice given on-->
 
-                    <!--8. Others-->
+                    <!--8. Special Instructions-->
                     <div class="row">
                         <div class="col s12 m2 l2" style="padding-top:20px">
-                            <label style="font-size: 15px">Others</label>
+                            <label style="font-size: 15px">Special Instructions</label>
                         </div>
                         <div class="col s12 m4 input-field">
-                            <input id="others" type="text" name="others" value="{{editDischargePlanning.others}}">
-                            <label for="others">Specify</label>
+                            <textarea id="specifyInstructions" class="materialize-textarea" name="specifyInstructions">{{editDischargePlanning.specifyInstructions}}</textarea>
+                            <label for="specifyInstructions">Specify</label>
                         </div>
                     </div>
 
-                    <!--//8. Others-->
+                    <!--//8. Special Instructions-->
                 </div>
             </div>
         </div>
@@ -1083,17 +1081,17 @@
     );
     
 
-    $('#SpecialInstructions').change(
+    $('#Others').change(
         function() {
 
-            // SpecialInstructions
-            var SpecialInstructions = $('#SpecialInstructions');
+            // Others
+            var Others = $('#Others');
             
-            showOrHide(SpecialInstructions.is(':checked'), $("#specialInstructionsContent"), true);
-
-            if (SpecialInstructions.is(':checked') == false) { // clear out the textbox value
+            showOrHide(Others.is(':checked'), $("#othersContent"), true);
+            
+            if (Others.is(':checked') == false) { // clear out the textbox value
                 
-                $('#specialInstructionsSpecify').val('');
+                $('#othersSpecify').val('');
             }
         }
     );
@@ -1215,15 +1213,15 @@
             $("#followUpAppointmentSpecifyContent1").hide();
         }
         // -- Follow-up appointment
-        // Special instructions
+        // Others
 
-        if (inArray(anArray, "Special instructions") == true) {
-            $("#specialInstructionsContent").show();
+        if (inArray(anArray, "Others") == true) {
+            $("#othersContent").show();
         }
         else {
-            $("#specialInstructionsContent").hide();
+            $("#othersContent").hide();
         }
-        // -- Special instructions
+        // -- Otherss
         // Referrals
 
         if (inArray(anArray, "Referrals") == true) {

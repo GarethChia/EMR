@@ -50,15 +50,15 @@ const StudentDischargePlanningSchema = new Schema({
     // nameOfDoctor: {type: String, default: ''},
     // memoGiven: {type: Boolean}, // radio button
     // remarks: {type: String, default: ''},
-    // Special Instructions
-    specialInstructionsSpecify: {type: String, default: ''},
+    // Others
+    othersSpecify: {type: String, default: ''},
     // Referrals
     referrals:	 {type: String, default: ''},
     referralsSpecify: {type: String, default: ''},
     // Medical Cert No
     medicalCertificateNo: {type: String, default: ''},
-    // Others
-    others: {type: String, default: ''}
+    // Specify Instructions
+    specifyInstructions: {type: String, default: ''}
 });
 
 mongoose.model('studentDischargePlanning', StudentDischargePlanningSchema, 'student-discharge-planning');

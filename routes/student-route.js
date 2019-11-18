@@ -836,22 +836,15 @@ router.put('/save-customised-patient/:patientID', ensureAuthenticated, (req, res
 																						checkedAndReturnedSpecify: dp.checkedAndReturnedSpecify,
 																						// 7
 																						adviceGivenOn: dp.adviceGivenOn,
-																						// Follow-up Appointment
-																						followUpAppointment: dp.followUpAppointment,
-																						followUpAppointmentSpecify: dp.followUpAppointmentSpecify,
-																						appointmentDate:  dp.appointmentDate,
-																						appointmentTime: dp.appointmentTime,
-																						clinic: dp.clinic,
-																						nameOfDoctor: dp.nameOfDoctor,
-																						memoGiven: dp.memoGiven,
-																						remarks: dp.remarks,
-																						// Special Instructions
-																						specialInstructionsSpecify: dp.specialInstructionsSpecify,
+																						// Others Specify
+																						othersSpecify: dp.othersSpecify,
 																						// Referrals
 																						referrals: dp.referrals,
 																						referralsSpecify: dp.referralsSpecify,
 																						// Medical Cert No
-																						medicalCertificateNo: dp.medicalCertificateNo
+																						medicalCertificateNo: dp.medicalCertificateNo,
+																						// Specify Instructions
+																						specifyInstructions: dp.specifyInstructions
 																					}).save();
 																				
 																				})
@@ -4587,15 +4580,15 @@ router.post('/add-discharge-planning/:recordID', ensureAuthenticated, (req, res)
 		checkedAndReturnedSpecify: req.body.checkedAndReturnedSpecify,
 		// 7
 		adviceGivenOn: req.body.adviceGivenOn,
-		// Special Instructions
-		specialInstructionsSpecify: req.body.specialInstructionsSpecify,
+		// Others Specify
+		othersSpecify: req.body.othersSpecify,
 		// Referrals
 		referrals: req.body.referrals,
 		referralsSpecify: req.body.referralsSpecify,
 		// Medical Cert No
 		medicalCertificateNo: req.body.medicalCertificateNo,
-		// Others
-		others: req.body.others
+		// specifyInstructions
+		specifyInstructions: req.body.specifyInstructions
 	}).save();
 
 	res.redirect('/student/DischargePlanning/'+ req.params.recordID);
@@ -4694,15 +4687,15 @@ router.put('/edit-DischargePlanning/:recordID/:dischargePlanningID', ensureAuthe
 		editDischargePlanning.checkedAndReturnedSpecify = req.body.checkedAndReturnedSpecify,
 		// 7
 		editDischargePlanning.adviceGivenOn = req.body.adviceGivenOn,
-		// Special Instructions
-		editDischargePlanning.specialInstructionsSpecify = req.body.specialInstructionsSpecify,
+		// Others
+		editDischargePlanning.othersSpecify = req.body.othersSpecify,
 		// Referrals
 		editDischargePlanning.referrals = req.body.referrals,
 		editDischargePlanning.referralsSpecify = req.body.referralsSpecify,
 		// Medical Cert No
 		editDischargePlanning.medicalCertificateNo = req.body.medicalCertificateNo,
-		// Others
-		editDischargePlanning.others = req.body.others
+		// specifyInstructions
+		editDischargePlanning.specifyInstructions = req.body.specifyInstructions
 
 		editDischargePlanning.save();
 	});
