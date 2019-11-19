@@ -4035,7 +4035,7 @@ router.get('/FeedingRegime/:recordID', ensureAuthenticated, (req, res) => {
 	.sort({'datetime': 1}).then(newFeeding => {
 		// MasterScheduleFeed.findOne({ masterpatientID: req.session.patient.patientID})
 		MasterScheduleFeed.find({ masterpatientID: req.session.patient.patientID, patientID: req.params.recordID})
-		.sort({'datetime': -1 }).then(newOtherScheduleFeed =>{
+		.sort({'date': -1, 'time': 1}).then(newOtherScheduleFeed =>{
 
 			var schedFlowLength = 0;
 			
@@ -4243,7 +4243,7 @@ router.get('/ScheduleFeeding/:recordID/:scheduleID/:name', ensureAuthenticated, 
 			.then(patientStudent => {
 					
 					MasterScheduleFeed.find({  masterpatientID: req.session.patient.patientID, user: patientStudent.user})
-					.sort({'datetime': -1}).then(newOtherScheduleFeed =>{
+					.sort({'date': -1, 'time': 1}).then(newOtherScheduleFeed =>{
 						
 						MasterScheduleFeed.findOne({ scheduleID: req.params.scheduleID })
 						.then(editSchedule =>{
@@ -4275,7 +4275,7 @@ router.get('/ScheduleFeeding/:recordID/:scheduleID/:name', ensureAuthenticated, 
 				PatientStudentModel.findOne({recordID: req.params.recordID})
 				.then(patientStudent => {
 				MasterScheduleFeed.find({ masterpatientID: req.session.patient.patientID, patientID: req.params.recordID})
-				.sort({'datetime': -1 }).then(newOtherScheduleFeed =>{
+				.sort({'date': -1, 'time': 1}).then(newOtherScheduleFeed =>{
 					MasterScheduleFeed.findOne({ scheduleID: req.params.scheduleID, patientID: req.params.recordID })
 					.then(editSchedule =>{
 					
