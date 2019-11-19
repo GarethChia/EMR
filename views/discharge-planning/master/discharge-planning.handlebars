@@ -187,7 +187,7 @@
                 {{/each}}
             </tr>
             <tr>
-                <th width="10%" rowspan="5">Appointment</th>
+                <th width="10%" rowspan="5">Follow-up appointment</th>
                 {{#each appointmentFlow}}
                 <td>
                     {{#ifCond followUpAppointment 'Others (Specify)'}}
@@ -201,7 +201,18 @@
             <tr>
                 {{#each appointmentFlow}}
                 <td>
-                    {{clinic}} {{nameOfDoctor}}
+                    {{#if clinic}}
+                        Clinic {{clinic}}
+                    {{/if}}
+                </td>
+                {{/each}}
+            </tr>
+            <tr>
+                {{#each appointmentFlow}}
+                <td>
+                    {{#if nameOfDoctor}}
+                        Dr {{nameOfDoctor}}
+                    {{/if}}
                 </td>
                 {{/each}}
             </tr>
@@ -209,9 +220,9 @@
                 {{#each appointmentFlow}}
                 <td>
                     {{#ifCond memoGiven true}} 
-                        Memo Given - Yes
+                        Memo given
                     {{else ifCond memoGiven false}}
-                        Memo Given - No
+                        Memo not given
                     {{/ifCond}}
                 </td>
                 {{/each}}
@@ -735,9 +746,9 @@
                         <td>{{nameOfDoctor}}</td>
                         <td>
                             {{#ifCond memoGiven true}} 
-                                Yes
+                                Memo given
                             {{else ifCond memoGiven false}}
-                                No
+                                Memo not given
                             {{/ifCond}}
                         </td>
                         <td>{{remarks}}</td>
@@ -914,7 +925,7 @@
         const appointmentTime1 = document.querySelector('#appointmentTime1');
 
         M.Datepicker.init(dateDischargePlanning, {
-            maxDate: new Date(),
+            //maxDate: new Date(),
             format: 'dd/mm/yyyy',
             disableWeekends: true
         });
@@ -948,7 +959,7 @@
         })
 
         M.Datepicker.init(appointmentDate1, {
-            maxDate: new Date(),
+            //maxDate: new Date(),
             format: 'dd/mm/yyyy',
             disableWeekends: true
         });
