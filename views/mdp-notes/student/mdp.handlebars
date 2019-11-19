@@ -9,27 +9,35 @@
                     <th>Time</th>
                     <th>Progress Notes</th>
                     <th>Health Provider</th>
-                    <th>Delete</th>
+                    <th>Name</th>
+                    {{!-- <th>Delete</th> --}}
                 </tr>
             </thead>
             <tbody>
                 {{#if newMDP}}
                     {{#each newMDP}}
                     <tr style="height: 60px">
-                        <td><a href="/student/mdp/{{studentPatientID}}/{{mdpID}}">{{date}}</a></td>
+                        <td>
+                            {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
+                                <a href="/student/mdp/{{../recordID}}/{{mdpID}}">{{date}}</a>
+                            {{else}}
+                                {{date}}
+                            {{/ifCond}}
+                        </td>
                         <td>{{time}}</td>
                         <td>{{progressNotes}}</td>
                         <td>{{selectUser}}</td>
+                        <td>{{nameOfHealthProvider}}</td>
                         {{!-- <td>{{patientID}}</td> --}}
                         {{!-- {{#unless ../userType}} --}}
-                        <td style="width: 65px"> <!-- the tr we're trying to get -->
+                        {{!-- <td style="width: 65px"> <!-- the tr we're trying to get -->
                             <form action="/student/del-mdp/{{studentPatientID}}/{{mdpID}}?_method=DELETE" method="post" id="delete-form">
                                 <input type="hidden" name="_method" value="DELETE">
                             <button type="submit" class="btn red darken-3">
                                  <i class="material-icons">delete
                             </button>
                             </form>
-                        </td>
+                        </td> --}}
                         {{!-- {{/unless}} --}}
                     </tr>
                     {{/each}}
@@ -53,6 +61,7 @@
                     <th>Time</th>
                     <th>Progress Notes</th>
                     <th>Health Provider</th>
+                    <th>Name</th>
                     <th>By</th>
                 </tr>
             </thead>
@@ -65,6 +74,7 @@
                         <td>{{time}}</td>
                         <td>{{progressNotes}}</td>
                         <td>{{selectUser}}</td>
+                        <td>{{nameOfHealthProvider}}</td>
                         <td>{{createdBy}}</td>
                     </tr>
                     {{/each}}
@@ -96,28 +106,33 @@
                     <span class="purple-text darken-2">MDP Notes</span>
                 
                     <div class="row">
-                            <div class="col s12 m4 input-field">
-                                <input id="dateMDP" type="text" class="datepicker" name="dateMDP" value="{{editMDP.date}}" required>
-                                <label for="dateMDP">Date</label>
-                                <span class="helper-text">dd/mm/yyyy</span>
-                            </div>
+                        <div class="col s12 m4 input-field">
+                            <input id="dateMDP" type="text" class="datepicker" name="dateMDP" value="{{editMDP.date}}" required>
+                            <label for="dateMDP">Date</label>
+                            <span class="helper-text">dd/mm/yyyy</span>
+                        </div>
 
-                            <div class="col s12 m4 input-field">
-                                <input id="timeMDP" type="text" class="timepicker" name="timeMDP" value="{{editMDP.time}}" required>
-                                <label for="timeMDP">Time</label>
-                                <span class="helper-text">hh:ss</span>
-                            </div>
-                            <div class="col s12 m4 input-field">
-                                    <select id="selectUser" name="selectUser" required>
-                                        <option value="" disabled selected>Please select</option>
-                                        <option value="Doctor">Doctor</option>
-                                        <option value="Nurse">Nurse</option>
-                                        <option value="Allied Health">Allied Health</option>
-                                    </select>
-                                    <label for="selectUser">Health Provider</label>
-                            </div>
+                        <div class="col s12 m4 input-field">
+                            <input id="timeMDP" type="text" class="timepicker" name="timeMDP" value="{{editMDP.time}}" required>
+                            <label for="timeMDP">Time</label>
+                            <span class="helper-text">hh:ss</span>
+                        </div>
+                        <div class="col s12 m4 input-field">
+                                <select id="selectUser" name="selectUser" required>
+                                    <option value="" disabled selected>Please select</option>
+                                    <option value="Doctor">Doctor</option>
+                                    <option value="Nurse">Nurse</option>
+                                    <option value="Allied Health">Allied Health</option>
+                                </select>
+                                <label for="selectUser">Health Provider</label>
+                        </div>
                     </div>
                     <div class="row">
+                        <div class="col s12 m4 input-field">
+                            <input id="nameOfHealthProvider" type="text" name="nameOfHealthProvider" value="{{editMDP.nameOfHealthProvider}}">
+                            <label for="nameOfHealthProvider">Name</label>
+                            <span class="helper-text"></span>
+                        </div>
                         <div class="col s12 m8 input-field">
                             <textarea id="progressNotes" class="materialize-textarea" name="progressNotes" required>{{editMDP.progressNotes}}</textarea>
                             <label for="progressNotes">Progress notes</label>
@@ -133,9 +148,9 @@
 
         <div class="col s12 m4">
             {{#if editMDP}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editMDP">Save
+            <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editMDP">Save
             {{else}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addMDP">Save
+            <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addMDP">Save
             {{/if}}
                 <i class="material-icons right">send</i>
             </button>
@@ -173,4 +188,13 @@
     {{#if editMDP}}
         document.getElementById('selectUser').value = "{{editMDP.selectUser}}";
     {{/if}}
+    
+    if ("{{currentUserType}}" == "staff")
+	{
+		$(".saveButton").hide();
+	}
+	else
+	{
+		$(".saveButton").show();
+	}
  </script>

@@ -29,43 +29,33 @@
 </style>
 <br/>
 <div id="io">
-    <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">History Taking</div>
+     <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">My History Taking</div>
     <div style="overflow-x:auto; max-height: 16em;">
         <table id="ioRecords" class="hover order-column">
            <thead>
                 <tr>
                     <th>Created By</th>
-                    <th>Chief Complains</th>
-                    <th>History of Present Illness</th>
-                    <th>Allergy Status</th>
-                    <th>Medical History</th>
-                    <th>Surgical History</th>
-                    <th>Family History</th>
-                    <th>Social History</th>
-                    <th>Travel History</th>
-                     {{!-- {{#unless userType}}
-                    <th>Delete</th>
-                    {{/unless}}  --}}
                 </tr>
             </thead>
             <tbody>
-                {{#if newHistory}}
-                    {{#each newHistory}}
+                {{#if newOtherHistory}} {{!--Own records--}}
                     <tr style="height: 60px">
-                        {{!-- {{#unless ../userType}}
-                        <td><a href="/master/HistoryTaking/{{historyId}}">{{historyId}}</a></td>
-                        {{else}}
+                        {{!-- {{#unless ../userType}}--}}
+                        <td><a id="currentName" href="/master/HistoryTaking/{{newOtherHistory.historyId}}/{{newOtherHistory.by}}">{{newOtherHistory.by}}</a></td>
+                         {{!--{{else}}
                         <td><a href="/student/io/{{../recordID}}/{{historyId}}">{{historyId}}</a></td>
-                        {{/unless}} --}}
-                        <td>{{by}}</td>
-                        <td class="textTable">{{chiefComp}}</td>
+                        {{/unless}} 
+                        <td>{{by}}</td>--}}
+
+                        {{!-- <td class="textTable">{{chiefComp}}</td>
                         <td class="textTable">{{historyPresent}}</td>
                         <td class="textTable">{{allergy}}</td>
                         <td class="textTable">{{medicalH}}</td>
                         <td class="textTable">{{surgicalH}}</td>
                         <td class="textTable">{{familyH}}</td>
                         <td class="textTable">{{socialH}}</td>
-                        <td class="textTable">{{travelH}}</td>
+                        <td class="textTable">{{travelH}}</td> --}}
+
                         {{!-- {{#unless ../userType}}
                         <td style="width: 65px"> <!-- the tr we're trying to get -->
                             <form action="/master/del-io/{{historyId}}?_method=DELETE" method="post" id="delete-form">
@@ -77,9 +67,32 @@
                         </td>
                         {{/unless}} --}}
                     </tr>
+                {{else}}
+                <p id="noRecord">You have not created any History Taking yet</p>
+                {{/if}}
+            </tbody>
+        </table>
+    </div>
+    <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">Other History Taking</div>
+    <div style="overflow-x:auto; max-height: 16em;">
+        <table id="ioRecords" class="hover order-column">
+           <thead>
+                <tr>
+                    <th>Created By</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {{#if newHistory}} {{!--Own records--}}
+                    {{#each newHistory}}
+                    <tr style="height: 60px">
+                        {{!-- {{#unless ../userType}}--}}
+                        <td><a id="currentName" href="/master/HistoryTaking/{{historyId}}/{{by}}">{{by}}</a></td>
+               
+                    </tr>
                     {{/each}}
                 {{else}}
-                <p id="noRecord">Students have not created any History Taking yet</p>
+                <p id="noRecord">You have not created any History Taking yet</p>
                 {{/if}}
             </tbody>
         </table>
@@ -92,9 +105,9 @@
 
     {{#if editHistory}}
     {{#unless userType}}
-    <form action="/master/edit-history/{{editHistory.historyId}}?_method=PUT" method="POST" id="editHistory">
+    <form action="/master/edit-history/{{editHistory.historyId}}/{{editHistory.by}}?_method=PUT" method="POST" id="editHistory">
     {{else}}    
-    <form action="/student/edit-history/{{recordID}}/{{editHistory.historyId}}?_method=PUT" method="POST" id="editHistory">
+    <form action="/student/edit-history/{{recordID}}/{{editHistory.historyId}}/{{editHistory.by}}?_method=PUT" method="POST" id="editHistory">
     {{/unless}}
     <input type="hidden" name="_method" value="PUT">
     {{else}}
@@ -229,10 +242,10 @@
 
                                 <div class="col s12 m4">
                                 {{#if editHistory}}
-                                    <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editHistory">Save Changes
+                                    <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editHistory">Save Changes
                                 {{else}}
                                 {{#unless userType}}
-                                    <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addHistory">Save
+                                    <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addHistory">Save
                                 {{/unless}}
                                 {{/if}}
                                 {{#unless userType}}
@@ -246,23 +259,7 @@
     </form>
     
 
-    {{!-- <div class="row">
-        <div class="col s12 m8"></div>
-
-        <div class="col s12 m4">
-            {{#if editIO}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editIO">Save
-            {{else}}
-            {{#unless userType}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addIO">Save
-            {{/unless}}
-            {{/if}}
-            {{#unless userType}}
-                <i class="material-icons right">send</i>
-            </button>
-            {{/unless}}
-        </div>
-    </div> --}}
+   
 </div>
 
 <script
@@ -273,93 +270,40 @@
 
 <script>
 
+    console.log("{{currentName}}");
     $(document).ready(() => {
         $('.tabs').tabs();
-    })
-/*
-    document.addEventListener('DOMContentLoaded', () => {
-        //IO
-        const dateIO = document.querySelector('#dateIO');
-        const timeIO = document.querySelector('#timeIO');
-        const foodportion = document.querySelector('#foodportion');
+        if("{{by}}" == "{{currentName}}"){
+            if({{checkifEmpty}} == true)
+            $(".saveButton").show();
+        }
+        else {
+            if({{checkifEmpty}} == false){
+                console.log("hi");
+                $(".saveButton").hide();
+            }
 
-        //Enteral
-        const dateenteral = document.querySelector('#dateenteral');
-        const timeenteral = document.querySelector('#timeenteral');
-        const enteralfeed = document.querySelector('#enteralfeed');
-        const formula = document.querySelector('#formula');
-
-        //IV
-        const dateiv = document.querySelector('#dateiv');
-        const timeiv = document.querySelector('#timeiv');
-        const coninf = document.querySelector('#coninf');
-
-        //Output
-        const dateoutput = document.querySelector('#dateoutput');
-        const timeoutput = document.querySelector('#timeoutput');
-
-        //IO Instances
-         M.Datepicker.init(dateIO, {
-            maxDate: new Date(),
-            format: 'dd/mm/yyyy',
-            disableWeekends: true
-        });
-        M.Timepicker.init(timeIO, {
-            twelveHour: false,
-            showClearBtn: true
-        });
-
-        M.FormSelect.init(foodportion, {
-            
-        })
+        }
        
-
-        //Enteral Instances
-        M.Datepicker.init(dateenteral, {
-            maxDate: new Date(),
-            format: 'dd/mm/yyyy',
-            disableWeekends: true
-        });
-        M.Timepicker.init(timeenteral, {
-            twelveHour: false,
-            showClearBtn: true
-        });
-
-        M.FormSelect.init(enteralfeed, {
-            
-        })
-        
-        M.FormSelect.init(formula, {
-            
-        })
-
-        //IV Instances
-        M.Datepicker.init(dateiv, {
-            maxDate: new Date(),
-            format: 'dd/mm/yyyy',
-            disableWeekends: true
-        });
-        M.Timepicker.init(timeiv, {
-            twelveHour: false,
-            showClearBtn: true
-        });
-
-        M.FormSelect.init(coninf, {
-            
-        })       
-
-        //Output Instances
-        M.Datepicker.init(dateoutput, {
-            maxDate: new Date(),
-            format: 'dd/mm/yyyy',
-            disableWeekends: true
-        });
-
-        M.Timepicker.init(timeoutput, {
-            twelveHour: false,
-            showClearBtn: true
-        }); **/
-                
-    })  
-
+    })
+    
+    //document.getElementById("currentName").addEventListener("click", checkifUser);
+    /*function checkifUser(elmnt, clr) {
+        console.log("Element: "+ clr);
+        //console.log(document.getElementById("currentName").innerHTML);
+        //console.log("{{currentName}}");
+        var currentName = "{{currentName}}";
+        currentName = currentName.replace(/ /g,'');
+        console.log(currentName == getElementName);
+        var getElementName = document.getElementById("currentName").innerHTML;
+        getElementName = getElementName.replace(/ /g,'');
+        if(currentName === clr){
+            console.log("hi");
+            $("#saveButton").show();
+        }
+        else{
+            console.log("noob");
+            $("#saveButton").hide();
+        }
+    }*/
  </script>

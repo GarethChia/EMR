@@ -29,67 +29,45 @@
 </style>
 <br/>
 <div id="io">
-    <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">History Taking</div>
+    <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">My History Taking</div>
     <div style="overflow-x:auto; max-height: 16em;">
         <table id="ioRecords" class="hover order-column">
             <thead>
                 <tr>
                     <th>Created By</th>
-                    <th>Chief Complains</th>
-                    <th>History of Present Illness</th>
-                    <th>Allergy Status</th>
-                    <th>Medical History</th>
-                    <th>Surgical History</th>
-                    <th>Family History</th>
-                    <th>Social History</th>
-                    <th>Travel History</th>
-                  {{!-- {{#unless userType}}
-                    <th>Delete</th>
-                    {{/unless}}  --}}
+
                 </tr>
             </thead>
             <tbody>
-                {{#if newHistory}}
+                {{#if newOtherHistory}} {{!--own record--}}
+                    <tr style="height: 60px;">
+                        <td><a href="/student/HistoryTaking/{{recordID}}/{{newOtherHistory.historyId}}/{{newOtherHistory.by}}">{{newOtherHistory.by}}</a></td>
+                    </tr>               
+                {{else}}
+                <p id="noRecord">You have not created any History Taking yet</p>
+                {{/if}}
+            </tbody>
+        </table>
+    </div>
+    <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">Other History Taking</div>
+    <div style="overflow-x:auto; max-height: 16em;">
+        <table id="ioRecords" class="hover order-column">
+            <thead>
+                <tr>
+                    <th>Created By</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                
+                {{#if newHistory}} {{!--others--}}
                     {{#each newHistory}}
                     <tr style="height: 60px;">
-                        <td>{{by}}</td>
-                        <td class="textTable">{{chiefComp}}</td>
-                        <td class="textTable">{{historyPresent}}</td>
-                        <td class="textTable">{{allergy}}</td>
-                        <td class="textTable">{{medicalH}}</td>
-                        <td class="textTable">{{surgicalH}}</td>
-                        <td class="textTable">{{familyH}}</td>
-                        <td class="textTable">{{socialH}}</td>
-                        <td class="textTable">{{travelH}}</td>
-                    {{!-- <tr style="height: 60px">
-                        {{#unless ../userType}}
-                        <td><a href="/student/HistoryTaking/{{recordID}}/{{historyId}}">{{historyId}}</a></td>
-                        {{else}}
-                        <td><a href="/master/HistoryTaking/{{../recordID}}/{{historyId}}">{{historyId}}</a></td>
-                        {{/unless}}
-                       <td>{{chiefComp}}</td>
-                        <td>{{historyPresent}}</td>
-                        <td>{{allergy}}</td>
-                        <td>{{medicalH}}</td>
-                        <td>{{surgicalH}}</td>
-                        <td>{{familyH}}</td>
-                        <td>{{socialH}}</td>
-                        <td>{{travelH}}</td>
-                        {{#unless ../userType}}
-                        <td style="width: 65px"> <!-- the tr we're trying to get -->
-                            <form action="/student/del-io/{{historyId}}?_method=DELETE" method="post" id="delete-form">
-                                <input type="hidden" name="_method" value="DELETE">
-                            <button type="submit" class="btn red darken-3">
-                                 <i class="material-icons">delete
-                            </button>
-                            </form>
-                        </td>
-                        {{/unless}}
-                    </tr>--}}
+                        <td><a href="/student/HistoryTaking/{{../recordID}}/{{historyId}}/{{by}}">{{by}}</a></td>
                     </tr>
                     {{/each}} 
                 {{else}}
-                <p id="noRecord">Lecturers have not created any History Taking yet</p>
+                <p id="noRecord">There is no History Taking records made by others yet</p>
                 {{/if}}
             </tbody>
         </table>
@@ -102,7 +80,7 @@
 
     {{#if editHistory}}
     {{!-- {{#unless userType}} --}}
-    <form action="/student/edit-history/{{editHistory.patientID}}?_method=PUT" method="POST" id="editHistory">
+    <form action="/student/edit-history/{{recordID}}/{{editHistory.historyId}}/{{editHistory.by}}?_method=PUT" method="POST" id="editHistory">
     {{!-- {{else}}     --}}
     {{!-- <form action="/master/edit-history/{{recordID}}/{{editHistory.historyId}}?_method=PUT" method="POST" id="editHistory"> --}}
     {{!-- {{/unless}} --}}
@@ -124,7 +102,7 @@
                             </td>
                             <td>
                                 <div class=>
-                                    <textarea id="chiefComp" name="chiefComp" class="materialize-textarea" value="" required>{{editHistory.chiefComp}}</textarea>
+                                    <textarea id="chiefComp" name="chiefComp" class="materialize-textarea" value="" required>{{ editHistory.chiefComp }}</textarea>
                                     <label for="chiefComp">The primary symptom that a patient states as the reason for seeking medical care</label>
                                 </div>
                             </td>
@@ -236,10 +214,10 @@
 
                                 <div>
                                 {{#if editHistory}}
-                                    <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editHistory">Save Changes
+                                    <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editHistory">Save Changes
                                 {{else}}
                                 
-                                    <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addHistory">Save
+                                    <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addHistory">Save
                                 
                                 {{/if}}
                                 {{#unless userType}}
@@ -252,23 +230,7 @@
                     </table>
     </form>
 
-    {{!-- <div class="row">
-        <div class="col s12 m8"></div>
 
-        <div class="col s12 m4">
-            {{#if editIO}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editIO">Save
-            {{else}}
-            {{#unless userType}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addIO">Save
-            {{/unless}}
-            {{/if}}
-            {{#unless userType}}
-                <i class="material-icons right">send</i>
-            </button>
-            {{/unless}}
-        </div>
-    </div> --}}
 </div>
 
 <script
@@ -281,93 +243,30 @@
 
     $(document).ready(() => {
         $('.tabs').tabs();
+        console.log("{{by}}");
+        console.log("{{currentName}}");
+        if("{{by}}" == "{{currentName}}"){
+           if({{checkifEmpty}} == true)
+               $(".saveButton").show();
+        }
+        else {
+            if({{checkifEmpty}} == false){
+                console.log("hi");
+                $(".saveButton").hide();
+            }
+
+        }
     })
     
-/*
-    document.addEventListener('DOMContentLoaded', () => {
-        //IO
-        const dateIO = document.querySelector('#dateIO');
-        const timeIO = document.querySelector('#timeIO');
-        const foodportion = document.querySelector('#foodportion');
-
-        //Enteral
-        const dateenteral = document.querySelector('#dateenteral');
-        const timeenteral = document.querySelector('#timeenteral');
-        const enteralfeed = document.querySelector('#enteralfeed');
-        const formula = document.querySelector('#formula');
-
-        //IV
-        const dateiv = document.querySelector('#dateiv');
-        const timeiv = document.querySelector('#timeiv');
-        const coninf = document.querySelector('#coninf');
-
-        //Output
-        const dateoutput = document.querySelector('#dateoutput');
-        const timeoutput = document.querySelector('#timeoutput');
-
-        //IO Instances
-         M.Datepicker.init(dateIO, {
-            maxDate: new Date(),
-            format: 'dd/mm/yyyy',
-            disableWeekends: true
-        });
-        M.Timepicker.init(timeIO, {
-            twelveHour: false,
-            showClearBtn: true
-        });
-
-        M.FormSelect.init(foodportion, {
-            
-        })
-       
-
-        //Enteral Instances
-        M.Datepicker.init(dateenteral, {
-            maxDate: new Date(),
-            format: 'dd/mm/yyyy',
-            disableWeekends: true
-        });
-        M.Timepicker.init(timeenteral, {
-            twelveHour: false,
-            showClearBtn: true
-        });
-
-        M.FormSelect.init(enteralfeed, {
-            
-        })
-        
-        M.FormSelect.init(formula, {
-            
-        })
-
-        //IV Instances
-        M.Datepicker.init(dateiv, {
-            maxDate: new Date(),
-            format: 'dd/mm/yyyy',
-            disableWeekends: true
-        });
-        M.Timepicker.init(timeiv, {
-            twelveHour: false,
-            showClearBtn: true
-        });
-
-        M.FormSelect.init(coninf, {
-            
-        })       
-
-        //Output Instances
-        M.Datepicker.init(dateoutput, {
-            maxDate: new Date(),
-            format: 'dd/mm/yyyy',
-            disableWeekends: true
-        });
-
-        M.Timepicker.init(timeoutput, {
-            twelveHour: false,
-            showClearBtn: true
-        }); **/
-                
-    })  
+  
+    if ("{{currentUserType}}" == "staff")
+    {
+        $(".saveButton").hide();
+    }
+    else
+    {
+        $(".saveButton").show();
+    }
 
 
  </script>

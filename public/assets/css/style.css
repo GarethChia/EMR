@@ -49,6 +49,24 @@
 	transform: translateX(-50%);
 }
 
+.studentName {
+	position: absolute;
+	color: #ffe124;
+	right: 450px;
+	display: inline-block;
+	font-size: 15px;
+	line-height: 100%;
+	margin: 27px 0 0 5px;
+	box-sizing: border-box;
+}
+
+
+.studentName.center {
+	right: 50%;
+	-webkit-transform: translateX(-50%);
+	transform: translateX(-50%);
+}
+
 @media only screen and (max-width: 992px) {
 	.patientInfo {
 		left: 50%;
@@ -364,13 +382,13 @@
 	color: #040505;
 }
 
-@media only screen and (max-width: 1024px) {
-	.navmenu, #patient-info {
+@media only screen and (max-width: 1200px) {
+	.navmenu, #patient-info, #student-name {
 		display: none;
 	}
 }
-@media only screen and (min-width: 1024px) {
-	.navmenu, #patient-info {
+@media only screen and (min-width: 1200px) {
+	.navmenu, #patient-info, #student-name {
 		visibility: visible;
 	}
 }

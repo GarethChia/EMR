@@ -1,6 +1,6 @@
 <br/>
 <div id="mdp">
-    <div class="card-panel purple lighten-1 white-text" style="padding:5px; font-size: 20px">My MDP Notes</div>
+    <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">Master MDP Notes</div>
     <div style="overflow-x:auto; max-height: 16em;">
         <table id="ioRecords" class="hover order-column">
             <thead>
@@ -9,22 +9,23 @@
                     <th>Time</th>
                     <th>Progress Notes</th>
                     <th>Health Provider</th>
+                    <th>Name</th>
+                    <th>By</th>
                     <th>Delete</th>
                 </tr>
             </thead>
             <tbody>
-                {{#if newMDP}}
+                {{#if newMDP}} <!--Current lecturer's mdp notes-->
                     {{#each newMDP}}
                     <tr style="height: 60px">
                         {{#unless ../userType}}
                         <td><a href="/master/mdp/{{mdpID}}">{{date}}</a></td>
-                        {{else}}
-                        <td><a href="/student/io/{{../recordID}}/{{mdpID}}">{{date}}</a></td>
                         {{/unless}}
                         <td>{{time}}</td>
                         <td>{{progressNotes}}</td>
                         <td>{{selectUser}}</td>
-                        {{!-- <td>{{patientID}}</td> --}}
+                        <td>{{nameOfHealthProvider}}</td>
+                        <td>{{createdBy}}</td>
                         {{#unless ../userType}}
                         <td style="width: 65px"> <!-- the tr we're trying to get -->
                             <form action="/master/del-mdp/{{mdpID}}?_method=DELETE" method="post" id="delete-form">
@@ -37,31 +38,8 @@
                         {{/unless}}
                     </tr>
                     {{/each}}
-                {{else}}
-                <tr style="height: 60px">
-                    <td colspan="5" class="center">
-                        <p id="noRecord">You have not created any MDP notes yet</p>
-                    </td>
-                </tr>
                 {{/if}}
-            </tbody>
-        </table>
-    </div>
-    <br>
-    <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">Master MDP Notes</div>
-    <div style="overflow-x:auto; max-height: 16em;">
-        <table id="ioRecords" class="hover order-column">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Progress Notes</th>
-                    <th>Health Provider</th>
-                    <th>By</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#if newOtherMasterMDP}}
+                {{#if newOtherMasterMDP}}  <!-- Other lecturer's mdp notes-->
                     {{#each newOtherMasterMDP}}
                     <tr style="height: 60px">
                         <td>{{date}}</td>
@@ -71,18 +49,23 @@
                         <td>{{createdBy}}</td>
                     </tr>
                     {{/each}}
-                {{else}}
-                <tr style="height: 60px">
-                    <td colspan="5" class="center">
-                        <p id="noRecord">Masters have not created any MDP notes yet</p>
-                    </td>
-                </tr>
                 {{/if}}
+
+                {{#if newMDP}} <!--Check if both current lecturer and other lecturers have created mdp notes. If they did not, it will trgger the else statement-->
+                {{else if newOtherMasterMDP}}
+                {{else}}
+                    <tr style="height: 60px">
+                        <td colspan="5" class="center">
+                            <p id="noRecord">Masters have not created any MDP notes yet</p>
+                        </td>
+                    </tr>
+                {{/if}}
+                
             </tbody>
         </table>
     </div>
     <br>
-    <div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">Student MDP Notes</div>
+    <div class="card-panel purple lighten-1 white-text" style="padding:5px; font-size: 20px">Student MDP Notes</div>
     <div style="overflow-x:auto; max-height: 16em;">
         <table id="ioRecords" class="hover order-column">
             <thead>
@@ -91,6 +74,7 @@
                     <th>Time</th>
                     <th>Progress Notes</th>
                     <th>Health Provider</th>
+                    <th>Name</th>
                     <th>By</th>
                 </tr>
             </thead>
@@ -102,6 +86,7 @@
                         <td>{{time}}</td>
                         <td>{{progressNotes}}</td>
                         <td>{{selectUser}}</td>
+                        <td>{{nameOfHealthProvider}}</td>
                         <td>{{createdBy}}</td>
                     </tr>
                     {{/each}}
@@ -159,6 +144,11 @@
                             </div>
                     </div>
                     <div class="row">
+                        <div class="col s12 m4 input-field">
+                            <input id="nameOfHealthProvider" type="text" name="nameOfHealthProvider" value="{{editMDP.nameOfHealthProvider}}">
+                            <label for="nameOfHealthProvider">Name</label>
+                            <span class="helper-text"></span>
+                        </div>
                         <div class="col s12 m8 input-field">
                             <textarea id="progressNotes" class="materialize-textarea" name="progressNotes" required>{{editMDP.progressNotes}}</textarea>
                             <label for="progressNotes">Progress notes</label>

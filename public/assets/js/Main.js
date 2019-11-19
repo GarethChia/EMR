@@ -151,7 +151,7 @@ $(function(){
 		},
 		"columnDefs": [
 			{orderable: false, targets: 8},
-			{width: 35, targets: 8},
+			// {width: 35, targets: 8},
 		]
 	});
 	
@@ -171,14 +171,32 @@ $(function(){
 	$('#patientStudentList')
 	.DataTable({
 		"bLengthChange": false,
-		"iDisplayLength": 7,
-		"order": [ [ 2, "asc" ] ],
+		"iDisplayLength": 7,// display only 7 records
+		"order": [ [ 7, "dsc" ] ], //the 7 is the highlighted column (count from 0)
 		responsive: true,
 		select: {
 			style: 'single'
 		},
 		"columnDefs": [
 			{orderable: false, targets: 9},
+			// targets: 9 works on student page
+			//targets: 10 works on lecturer page
+		]
+	});
+	
+	$('#patientStudentList1')
+	.DataTable({
+		"bLengthChange": false,
+		"iDisplayLength": 7,// display only 7 records
+		"order": [ [ 7, "dsc" ] ], //the 7 is the highlighted column (count from 0)
+		responsive: true,
+		select: {
+			style: 'single'
+		},
+		"columnDefs": [
+			{orderable: false, targets: 10},
+			// targets: 9 works on student page
+			//targets: 10 works on lecturer page
 		]
 	});
 	

@@ -157,9 +157,9 @@
     <div class="col s12 m4">
         {{#unless userType}}
         {{#if editOrder}}
-        <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editOrder">Save
+        <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editOrder">Save
         {{else}}
-        <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addOrder" id="addOrder">Save
+        <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addOrder" id="addOrder">Save
         {{/if}}
             <i class="material-icons right">send</i>
         </button>
@@ -208,4 +208,12 @@
         var elems = document.querySelectorAll('.modal');
         var instances = M.Modal.init(elems, {});    
     });
+    if ("{{currentUserType}}" == "staff")
+	{
+		$(".saveButton").hide();
+	}
+	else
+	{
+		$(".saveButton").show();
+	}
 </script>

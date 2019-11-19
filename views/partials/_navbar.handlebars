@@ -29,6 +29,17 @@
 					{{#if showMenu}}
 						<!-- Beginning of navbar menu items-->
 						<ul class="right">
+							{{#ifCond currentUserType 'staff'}}
+								{{#if studentFirstName}}
+								<li>
+									<div id="student-name">
+										<span class="studentName right">
+											BY: {{studentFirstName}}
+										</span>
+									</div>
+								</li>
+								{{/if}}
+							{{/ifCond}}
 							<li>
 								<a class="dropdown-trigger navmenu" href="#!" data-target="Patient">
 									Patient
@@ -45,7 +56,7 @@
 								<a class="dropdown-trigger navmenu" href="#!" data-target="Nurse">
 									Nurse
 									<i class="fas fa-sort-down"></i>
-								</a>
+								</a>                                                                       
 							</li>
 							<li>
 								{{#unless userType}}
@@ -190,8 +201,12 @@
 							<li><a href="/master/CarePlan">Care Plan</a></li>
 							{{else}}
 							<li><a href="/student/CarePlan/{{recordID}}">Care Plan</a></li>
+							{{/unless}}
+							{{#unless userType}}
+							<li><a href="/master/DischargePlanning">Discharge Planning</a></li>
+							{{else}}
+							<li><a href="/student/DischargePlanning/{{recordID}}">Discharge Planning</a></li>
 							{{/unless}} 
-							<li class="lighter-fonts"><a href="#!">Discharge Planning</a></li> 
 							<li class="lighter-fonts"><a class="disabled" href="#!">Education</a></li>
 							<li class="divider"></li>
 							{{!-- start of dropdown for charts --}}
@@ -207,6 +222,8 @@
 												<li><a href="/master/diabetic">Diabetic</a></li>
 												<li><a href="/master/clc">CLC</a></li> 
 												<li><a href="/master/neuro">Neurovascular</a></li> 
+												<li><a href="/master/FeedingRegime">Feeding Regime &#38; Schedule</a></li>
+
 												<li><a href="#!">Bladder Washout</a></li>
 												<li><a href="/master/fall">Morse Fall Scale</a></li>
 												<li><a href="/master/braden">Braden Scale</a></li>
@@ -219,6 +236,7 @@
 												<li><a href="/student/diabetic/{{recordID}}">Diabetic</a></li>
 												<li><a href="/student/clc/{{recordID}}">CLC</a></li>
 												<li><a href="/student/neuro/{{recordID}}">Neurovascular</a></li>
+												<li><a href="/student/FeedingRegime/{{recordID}}">Feeding Regime &#38; Schedule</a></li>
 												<li><a href="#!">Bladder Washout</a></li>
 												<li><a href="/student/fall/{{recordID}}">Morse Fall Scale</a></li>
 												<li><a href="/student/braden/{{recordID}}">Braden Scale</a></li>
@@ -378,7 +396,11 @@
 	{{else}}
 	<li><a href="/student/CarePlan/{{recordID}}">Care Plan</a></li>
 	{{/unless}}
-	<li class="lighter-fonts"><a href="#!">Discharge Planning</a></li>
+	{{#unless userType}}
+	<li><a href="/master/DischargePlanning">Discharge Planning</a></li>
+	{{else}}
+	<li><a href="/student/DischargePlanning/{{recordID}}">Discharge Planning</a></li>
+	{{/unless}}
 	<li class="lighter-fonts"><a href="#!">Education</a></li>
 	<li class="divider"></li>
 	<li>
@@ -396,6 +418,7 @@
 	<li><a href="/master/diabetic">Diabetic</a></li>
 	<li><a href="/master/clc">CLC</a></li>
 	<li><a href="/master/neuro">Neurovascular</a></li>
+	<li><a href="/master/FeedingRegime">Feeding Regime &#38; Schedule</a></li>
 	<li><a href="#!">Bladder Washout</a></li>
 	<li><a href="/master/fall">Morse Fall Scale</a></li>
 	<li><a href="/master/braden">Braden Scale</a></li>
@@ -407,6 +430,7 @@
 	<li><a href="/student/diabetic/{{recordID}}">Diabetic</a></li>
 	<li><a href="/student/clc/{{recordID}}">CLC</a></li>
 	<li><a href="/student/neuro/{{recordID}}">Neurovascular</a></li>
+	<li><a href="/student/FeedingRegime/{{recordID}}">Feeding Regime &#38; Schedule</a></li>
 	<li><a href="#!">Bladder Washout</a></li>
 	<li><a href="/student/fall/{{recordID}}">Morse Fall Scale</a></li>
 	<li><a href="/student/braden/{{recordID}}">Braden Scale</a></li>

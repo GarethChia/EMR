@@ -110,8 +110,14 @@
                 <td>{{painScale}}</td>
                 {{/each}}
             </tr>
+             <tr>
+                <th width="10%">Site of Pain</th>
+                {{#each painFlow}}
+                <td>{{siteofpain}}</td>
+                {{/each}}
+            </tr>           
             <tr>
-                <th width="10%">Pain Score (Site 1)</th>
+                <th width="10%">Pain Score</th>
                 {{#each painFlow}}
                 <td>{{painScore}}</td>
                 {{/each}}
@@ -262,7 +268,13 @@
                         {{#unless ../userType}}
                         <td><a href="/master/vital/{{vitalID}}">{{date}}</a></td>
                         {{else}}
-                        <td><a href="/student/vital/{{../recordID}}/{{vitalID}}">{{date}}</a></td>
+                            <td>
+                                {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
+                                    <a href="/student/vital/{{../recordID}}/{{vitalID}}">{{date}}</a>
+                                {{else}}
+                                    {{date}}
+                                {{/ifCond}}
+                            </td>
                         {{/unless}}
                         <td>{{time}}</td>
                         <td>{{temp}}</td>
@@ -447,13 +459,13 @@
 
         <div class="col s12 m4">
             {{#if editVital}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editVital">Save
+            <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editVital">Save
             {{else}}
-                {{#unless userType}}
+                {{!-- {{#unless userType}} --}}
+                    <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addVital">Save
+                {{!-- {{else}}
                     <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addVital">Save
-                {{else}}
-                    <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addVital">Save
-                {{/unless}}
+                {{/unless}} --}}
             {{/if}}
             {{#unless userType}}
                 <i class="material-icons right">send</i>
@@ -473,7 +485,8 @@
                     <th>Date</th>
                     <th>Time</th>
                     <th>Pain Scale</th>
-                    <th>Pain Score (Site 1)</th>
+                    <th>Site of Pain</th>
+                    <th>Pain Score</th>
                     <th>Onset</th>
                     <th>Location</th>
                     <th>Duration</th>
@@ -497,10 +510,17 @@
                         {{#unless ../userType}}
                         <td><a href="/master/pain/{{painID}}">{{date}}</a></td>
                         {{else}}
-                        <td><a href="/student/pain/{{../recordID}}/{{painID}}">{{date}}</a></td>
+                            <td>
+                                {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
+                                    <a href="/student/pain/{{../recordID}}/{{painID}}">{{date}}</a>
+                                {{else}}
+                                    {{date}}
+                                {{/ifCond}}
+                            </td>
                         {{/unless}}
                         <td>{{time}}</td>
                         <td>{{painScale}}</td>
+                        <td>{{siteofpain}}</td>
                         <td>{{painScore}}</td>
                         <td>{{onset}}</td>
                         <td>{{location}}</td>
@@ -575,7 +595,7 @@
                 <tr style="border: none; !IMPORTANT">
                     <td style="border: none; !IMPORTANT" >
                         <div class="row">
-                            <div class="col s12 m6 input-field">
+                            <div class="col s12 m4 input-field">
                                 <select id="painScale" name="painScale">
                                     <option value="" disabled selected>Scale</option>
                                     <option value="Numerical Rating Scale">Numerical Rating Scale</option>
@@ -584,7 +604,11 @@
                                 </select>
                                 <label for="painScale">Pain Scale</label>
                             </div>
-                            <div class="col s12 m6 input-field">
+                            <div class="col s12 m4 input-field">
+                                <input id="siteofpain" type="text" class="siteofpain" name="siteofpain" value="{{editPain.siteofpain}}">
+                                <label for="siteofpain">Site of Pain</label>    
+                            </div>
+                            <div class="col s12 m4 input-field">
                                 <select id="painScore" name="painScore">
                                     <option value="" disabled selected>Score</option>
                                     <option value="0">0</option>
@@ -724,9 +748,9 @@
 
         <div class="col s12 m4">
             {{#if editPain}}
-                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editPain">Save
+                <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editPain">Save
             {{else}}
-                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addPain">Save
+                <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addPain">Save
             {{/if}}
                 <i class="material-icons right">send</i>
             </button>
@@ -762,7 +786,13 @@
                         {{#unless ../userType}}
                         <td><a href="/master/oxygen/{{oxygenID}}">{{date}}</a></td>
                         {{else}}
-                        <td><a href="/student/oxygen/{{../recordID}}/{{oxygenID}}">{{date}}</a></td>
+                            <td>
+                                {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
+                                    <a href="/student/oxygen/{{../recordID}}/{{oxygenID}}">{{date}}</a>
+                                {{else}}
+                                    {{date}}
+                                {{/ifCond}}
+                            </td>
                         {{/unless}}
                         <td>{{time}}</td>
                         <td>{{o2Device}}</td>
@@ -917,13 +947,13 @@
 
         <div class="col s12 m4">
             {{#if editOxy}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editOxy">Save
+            <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editOxy">Save
             {{else}}
-                {{#unless userType}}
+                {{!-- {{#unless userType}} --}}
+                <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addOxy">Save
+                {{!-- {{else}}
                 <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addOxy">Save
-                {{else}}
-                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addOxy">Save
-                {{/unless}}
+                {{/unless}} --}}
             {{/if}}
             {{#unless userType}}
                 <i class="material-icons right">send</i>
@@ -961,7 +991,13 @@
                         {{#unless ../userType}}
                         <td><a href="/master/wh/{{whID}}">{{date}}</a></td>
                         {{else}}
-                        <td><a href="/student/wh/{{../recordID}}/{{whID}}">{{date}}</a></td>
+                            <td>
+                                {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
+                                    <a href="/student/wh/{{../recordID}}/{{whID}}">{{date}}</a>
+                                {{else}}
+                                    {{date}}
+                                {{/ifCond}}
+                            </td>
                         {{/unless}}
                         <td>{{time}}</td>
                         <td>{{height}}</td>
@@ -1098,11 +1134,11 @@
             {{#if editWh}}
                 <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editWh">Save
             {{else}}
-                {{#unless userType}}
+                {{!-- {{#unless userType}} --}}
+                <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addWh">Save
+                {{!-- {{else}}
                 <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addWh">Save
-                {{else}}
-                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addWh">Save
-                {{/unless}}
+                {{/unless}} --}}
                 {{/if}}
                     <i class="material-icons right">send</i>
                 </button>
@@ -1221,6 +1257,7 @@ $(document).ready(function(){
         const timePain = document.querySelector('#timePain');
         const painScale = document.querySelector('#painScale');
         const painScore = document.querySelector('#painScore');
+        const siteofpain = document.querySelector('#siteofpain');
 
         //Oxygen
         const dateOxy = document.querySelector('#dateOxy');
@@ -1359,4 +1396,14 @@ $(document).ready(function(){
         document.getElementById('oxyTab').className += " disabled";
         document.getElementById('tab4').className += " active";
     {{/if}}
+
+    if ("{{currentUserType}}" == "staff")
+    {
+        $(".saveButton").hide();
+    }
+    else
+    {
+        $(".saveButton").show();
+    }
+
 </script>

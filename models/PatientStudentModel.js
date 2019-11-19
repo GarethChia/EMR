@@ -63,8 +63,11 @@ const PatientStudentSchema = new Schema({
 	spiritConcerns: {type: String},
 	prefLang:	 [String],
 	otherLang:	 {type: String},
-	notes: {type: String}
+	notes: {type: String},
+	creator: {type: String},
+	creatorEmail: {type: String},
 	
+	masterID:  {type: Schema.Types.ObjectId, require: true}
 });
 
 // Create collection and add schema

@@ -391,9 +391,15 @@
                     {{#each newIO}}
                     <tr style="height: 60px">
                         {{#unless ../userType}}
-                        <td><a href="/master/io/{{ioID}}">{{date}}</a></td>
+                            <td><a href="/master/io/{{ioID}}">{{date}}</a></td>
                         {{else}}
-                        <td><a href="/student/io/{{../recordID}}/{{ioID}}">{{date}}</a></td>
+                            <td>
+                                {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
+                                    <a href="/student/io/{{../recordID}}/{{ioID}}">{{date}}</a>
+                                {{else}}
+                                    {{date}}
+                                {{/ifCond}}
+                            </td>
                         {{/unless}}
                         <td>{{time}}</td>
                         <td>{{foodtype}}</td>
@@ -517,9 +523,9 @@
 
         <div class="col s12 m4">
             {{#if editIO}}
-                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editIO">Save Changes
+                <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editIO">Save Changes
             {{else}}
-                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addIO">Save
+                <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addIO">Save
             {{/if}}
             {{#unless userType}}
                 <i class="material-icons right">send</i>
@@ -560,9 +566,15 @@
                     {{#each newenteral}}
                     <tr style="height: 60px">
                         {{#unless ../userType}}
-                        <td><a href="/master/enteral/{{enteralID}}">{{date}}</a></td>
+                            <td><a href="/master/enteral/{{enteralID}}">{{date}}</a></td>
                         {{else}}
-                        <td><a href="/student/enteral/{{../recordID}}/{{enteralID}}">{{date}}</a></td>
+                            <td>
+                                {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
+                                    <a href="/student/enteral/{{../recordID}}/{{enteralID}}">{{date}}</a>
+                                {{else}}
+                                    {{date}}
+                                {{/ifCond}}
+                            </td>
                         {{/unless}}
                         <td>{{time}}</td>
                         <td>{{enteralfeed}}</td>
@@ -699,10 +711,10 @@
         <div class="col s12 m8"></div>
         <div class="col s12 m4">
             {{#if editenteral}}
-                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editenteral">Save Changes
+                <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editenteral">Save Changes
             {{else}}
            
-                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addenteral">Save
+                <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addenteral">Save
             {{/if}}
             {{#unless userType}}
                 <i class="material-icons right">send</i>
@@ -761,7 +773,13 @@
                         {{#unless ../userType}}
                         <td><a href="/master/iv/{{ivID}}">{{date}}</a></td>
                         {{else}}
-                        <td><a href="/student/iv/{{../recordID}}/{{ivID}}">{{date}}</a></td>
+                            <td>
+                                {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
+                                    <a href="/student/iv/{{../recordID}}/{{ivID}}">{{date}}</a>
+                                {{else}}
+                                    {{date}}
+                                {{/ifCond}}
+                            </td>
                         {{/unless}}
                         <td>{{time}}</td>
                         <td>{{coninf}}</td>
@@ -912,10 +930,10 @@
 
         <div class="col s12 m4">
             {{#if editiv}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editiv">Save Changes
+            <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editiv">Save Changes
             {{else}}
             
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addiv">Save
+            <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addiv">Save
             {{/if}}
             {{#unless userType}}
                 <i class="material-icons right">send</i>
@@ -967,7 +985,13 @@
                         {{#unless ../userType}}
                         <td><a href="/master/output/{{outputID}}">{{date}}</a></td>
                         {{else}}
-                        <td><a href="/student/output/{{../recordID}}/{{outputID}}">{{date}}</a></td>
+                            <td>
+                                {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
+                                    <a href="/student/output/{{../recordID}}/{{outputID}}">{{date}}</a>
+                                {{else}}
+                                    {{date}}
+                                {{/ifCond}}
+                            </td>
                         {{/unless}}
                         <td>{{time}}</td>
                         <td>{{urineamt}}</td>
@@ -1146,9 +1170,9 @@
 
         <div class="col s12 m4">
             {{#if editoutput}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editoutput">Save Changes
+            <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editoutput">Save Changes
             {{else}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addoutput">Save
+            <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addoutput">Save
             {{/if}}
             {{#unless userType}}
                 <i class="material-icons right">send</i>
@@ -1308,4 +1332,15 @@
         var elems = document.querySelectorAll('.modal');
         var instances = M.Modal.init(elems, {});
     });
+      
+    if ("{{currentUserType}}" == "staff")
+    {
+        $(".saveButton").hide();
+    }
+    else
+    {
+        $(".saveButton").show();
+    }
+
+
  </script>

@@ -25,7 +25,13 @@
                 {{#unless ../userType}}
                 <td><a href="/master/fall/{{fallID}}">{{datetime}}</a></td>
                 {{else}}
-                <td><a href="/student/fall/{{../recordID}}/{{fallID}}">{{datetime}}</a></td>
+                    <td>
+                        {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
+                            <a href="/student/fall/{{../recordID}}/{{fallID}}">{{datetime}}</a>
+                        {{else}}
+                            {{date}}
+                        {{/ifCond}}
+                    </td>
                 {{!-- <td id="editRights{{fallID}}"></td> --}}
                 {{/unless}}
                 <td>{{historySplit}}</td>
@@ -241,10 +247,10 @@
 
         <div class="col s12 m4">
             {{#if editFall}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editFall">Save Changes
+            <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editFall">Save Changes
             {{else}}
             {{!-- {{#unless userType}} --}}
-            <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addFall">Save
+            <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addFall">Save
             {{!-- {{/unless}} --}}
             {{/if}}
            {{#unless userType}}
@@ -353,7 +359,14 @@
         document.getElementById('gait').value =  "{{editFall.gait}}";
         document.getElementById('mental').value = "{{editFall.mental}}";
     {{/if}}
-
+    if ("{{currentUserType}}" == "staff")
+    {
+        $(".saveButton").hide();
+    }
+    else
+    {
+        $(".saveButton").show();
+    }
 </script>
 
 {{!-- <script>

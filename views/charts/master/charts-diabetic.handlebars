@@ -120,7 +120,13 @@
                         {{#unless ../userType}}
                         <td><a href="/master/diabetic/{{diabeticID}}">{{date}}</a></td>
                         {{else}}
-                        <td><a href="/student/diabetic/{{../recordID}}/{{diabeticID}}">{{date}}</a></td>
+                            <td>
+                                {{#ifCond ../currentUserType 'student'}} <!--If currentUserType == "staff", they can't click on a specific records to edit-->
+                                    <a href="/student/diabetic/{{../recordID}}/{{diabeticID}}">{{date}}</a>
+                                {{else}}
+                                    {{date}}
+                                {{/ifCond}}
+                            </td>
                         {{/unless}}
                         <td>{{time}}</td>
                         <td>{{splitpoc}}</td>
@@ -256,9 +262,9 @@
 
         <div class="col s12 m4">
             {{#if editDiabetic}}
-                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="editDiabetic">Save Changes
+                <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editDiabetic">Save Changes
             {{else}}
-                <button class="btn waves-effect waves-light" style="width: 150px; float:right;" type="submit" form="addDiabetic">Save
+                <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addDiabetic">Save
             {{/if}}
             {{#unless userType}}
                 <i class="material-icons right">send</i>
@@ -326,4 +332,12 @@
         var elems = document.querySelectorAll('.modal');
         var instances = M.Modal.init(elems, {});
     });
+    if ("{{currentUserType}}" == "staff")
+    {
+        $(".saveButton").hide();
+    }
+    else
+    {
+        $(".saveButton").show();
+    }
  </script>

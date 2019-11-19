@@ -47,6 +47,14 @@ require('./models/MasterGCS');
 require('./models/MasterClcVital');
 require('./models/MasterPupils');
 require('./models/MasterMotorStrength');
+//feeding regime & schedule
+require('./models/MasterFeedingRegime');
+require('./models/MasterScheduleFeed');
+//discharge planning
+require('./models/MasterDischargePlanning');
+require('./models/StudentDischargePlanning');
+require('./models/MasterAppointment');
+require('./models/StudentAppointment');
 
 // load keys
 const key = fs.readFileSync('./server.key');
@@ -85,7 +93,8 @@ const {
 	checked,
 	resetExceptNone,
 	setRadioButton,
-	assessmentSaveLink
+	assessmentSaveLink,
+	ifEqual
 } = require('./helpers/hbs');
 
 // Map global promises
@@ -118,7 +127,8 @@ app.engine('handlebars', exphbs({
 		checked: checked,
 		resetExceptNone: resetExceptNone,
 		setRadioButton: setRadioButton,
-		assessmentSaveLink: assessmentSaveLink
+		assessmentSaveLink: assessmentSaveLink,
+		ifEqual: ifEqual
 	},
 	defaultLayout: 'main'
 }));

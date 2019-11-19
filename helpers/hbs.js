@@ -1,5 +1,6 @@
 const moment = require('moment');
 const age = require('s-age');
+const Handlebars = require('handlebars');
 
 module.exports = {
 	truncate: function(str, len){
@@ -126,5 +127,14 @@ module.exports = {
 		} else if (userType === 'student'){
 			return 'save student link';
 		}
-	}
+	},
+
+	
+	ifEqual: Handlebars.registerHelper('ifCond', function(v1, v2, options) { // "if equals" conditional comparison
+		if(v1 === v2) {
+		  return options.fn(this);
+		}
+		return options.inverse(this);
+	})
+	
 };

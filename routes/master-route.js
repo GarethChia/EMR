@@ -3,6 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const EMR_User = mongoose.model('emr-users');
 const PatientMasterModel = mongoose.model('patient');
+const PatientStudentModel = mongoose.model('patientStudent');
 const NursingAssessmentModel = mongoose.model('assessmentModel');
 const MasterVital = mongoose.model('masterVital');
 const MasterBraden = mongoose.model('masterBraden');
@@ -28,9 +29,12 @@ const MasterGcs = mongoose.model('masterGcs');
 const MasterClcVital = mongoose.model('masterClcVital');
 const MasterPupils = mongoose.model('masterPupils');
 const MasterMotorStrength = mongoose.model('masterMotorStrength');
-
-
-
+//Feeding Regime & Schedule
+const MasterFeedingRegime = mongoose.model('masterFeedingRegime');
+const MasterScheduleFeed = mongoose.model('masterScheduleFeed');
+// Discharge Planning
+const MasterDischargePlanning = mongoose.model('masterDischargePlanning');
+const MasterAppointment = mongoose.model('masterAppointment');
 
 const moment = require('moment');
 const csrf = require('csurf');
@@ -48,15 +52,29 @@ const csrfProtection = csrf({cookie: true});
 
 // Shows list of master patient documents
 router.get('/list-patients', ensureAuthenticated, ensureAuthorised, (req, res) => {
+
+	studentIDs = [];
+	studentNames = [];
+	
 	console.log('\nFrom listPatientMaster user:');
 	console.log(req.user);
 	PatientMasterModel.find({user: req.user._id}) // req.user_id is assigned to user, which is then used by find
 	.then(patients => {
-		//toaster.setErrorMessage(' ', 'Error listing master patient records');
-		// To check if user has admin rights here
-		res.render('master/master-list-patients', {
-			patients: patients,
-			showMenu: false
+
+		PatientStudentModel.find({masterID: req.user._id}) // req.user_id is self generated
+		.then(studentPatients => {
+				
+			/*EMR_User.findById({})	// findById is Mongoose utility method
+			.then(user => {*/
+				//toaster.setErrorMessage(' ', 'Error listing master patient records');
+				// To check if user has admin rights here
+				res.render('master/master-list-patients', {
+					patients: patients,
+					studentPatients: studentPatients,
+					showMenu: false
+				});
+			//});
+			
 		});
 	})
 });
@@ -878,39 +896,47 @@ router.put('/edit-braden/:bradenID', ensureAuthenticated, ensureAuthorised, (req
 
 // Open HistoryTakng page
 router.get('/HistoryTaking', ensureAuthenticated, ensureAuthorised, (req, res) => {
-	MasterHistory.find({masterpatientID: req.session.patient.patientID})
-	.then(newHistory => {
-		MasterHistory.findOne({ user: req.user.id, patientID: req.session.patient.patientID})
-	.then(editHistory => {
-		if(editHistory == null){
-			res.render('HistoryTaking/master/add_HistoryTaking', {
-				newHistory: newHistory,
-				editHistory: editHistory,
-				patient: req.session.patient,
-				showMenu: true
-			});
-		}
-		else
-		{
-			console.log("History is not empty: "+editHistory);
-			res.render('HistoryTaking/master/add_HistoryTaking', {
-				newHistory: newHistory,
-				editHistory: editHistory,
-				patient: req.session.patient,
-				showMenu: true
-			});
-		}
-		
-	 })
-		
+	MasterHistory.find({user:{'$ne':req.user.id}, masterpatientID: req.session.patient.patientID})
+	.then(newHistory => {//(other record)
+		MasterHistory.findOne({ patientID: req.session.patient.patientID})
+		.then(newOtherHistory =>{ //(your own record)
+
+			MasterHistory.findOne({patientID: req.session.patient.patientID})
+			.then(editHistory => {
+			// if(editHistory == null){
+			// 	res.render('HistoryTaking/master/add_HistoryTaking', {
+			// 		newHistory: newHistory,
+			// 		editHistory: editHistory,
+			// 		patient: req.session.patient,
+			// 		currentName: req.user.firstName,
+			// 		//newOtherHistory:newOtherHistory,
+			// 		showMenu: true
+			// 	});
+			//}
+			// else
+			// {
+				res.render('HistoryTaking/master/add_HistoryTaking', {
+					newHistory: newHistory,
+					editHistory: editHistory,
+					checkifEmpty: true,
+					patient: req.session.patient,
+					currentName: req.user.firstName,
+					newOtherHistory:newOtherHistory,
+					showMenu: true
+				});
+			//}
+	 		})
+		})
 	})
 })
+
 //Add HistoryTaking
 router.post('/add-history', ensureAuthenticated, ensureAuthorised, (req, res) => {
 	historyId = (new standardID('AAA0000')).generate();
 	new MasterHistory({
 		user: req.user.id,
 		by: req.user.firstName,
+		masterpatientID: req.session.patient.patientID,
 		patientID: req.session.patient.patientID,
 		chiefComp: req.body.chiefComp,
 		historyPresent: req.body.historyPresent,
@@ -927,28 +953,37 @@ router.post('/add-history', ensureAuthenticated, ensureAuthorised, (req, res) =>
 
 	
 //One HistoryTaking by ID
-router.get('/HistoryTaking/:historyId', ensureAuthenticated, ensureAuthorised, (req,res) => {
-	MasterHistory.find({ patientID: req.session.patient.patientID}).then(newHistory => {
-		MasterHistory.findOne({ historyId: req.params.historyId }).then(editHistory =>{
-			res.render('HistoryTaking/master/add_HistoryTaking',{
-				newHistory:newHistory,
-				editHistory: editHistory,
-				patient: req.session.patient,
-				showMenu: true
-			})
-		
+router.get('/HistoryTaking/:historyId/:name', ensureAuthenticated, ensureAuthorised, (req,res) => {
+	MasterHistory.find({ user:{'$ne':req.user.id}, masterpatientID: req.session.patient.patientID}).then(newHistory => {
+		MasterHistory.findOne({ patientID: req.session.patient.patientID})
+		.then(newOtherHistory =>{//(your own record) you need this (if you only put in the /HistoryTaking, this route do not know the newOtherHistory)
+			MasterHistory.findOne({ historyId: req.params.historyId }).then(editHistory =>{		
+				var name = req.params.name;
+				res.render('HistoryTaking/master/add_HistoryTaking',{
+					newHistory:newHistory,
+					editHistory: editHistory,
+					patient: req.session.patient,
+					checkifEmpty: false,
+					currentName: req.user.firstName,
+					newOtherHistory: newOtherHistory,	
+					by: name,
+					showMenu: true
+				})
+			});
 		});
 	})
 })
 
 //Edit the HistoryTaking
-router.put('/edit-history/:historyId', ensureAuthenticated, ensureAuthorised, (req,res) => {
-	MasterHistory.findOne({ historyId: req.params.historyId}).then(editHistory => {
+router.put('/edit-history/:historyId/:name', ensureAuthenticated, ensureAuthorised, (req,res) => {
+	MasterHistory.findOne({ patientID:  req.session.patient.patientID,historyId: req.params.historyId}).then(editHistory => {
 		editHistory.chiefComp = req.body.chiefComp,
 		editHistory.historyPresent = req.body.historyPresent,
 		editHistory.allergy = req.body.allergy,
 		editHistory.medicalH = req.body.medicalH,
 		editHistory.surgicalH = req.body.surgicalH,
+		editHistory.masterpatientID = req.session.patient.patientID,
+		editHistory.patientID = req.session.patient.patientID,
 		editHistory.familyH = req.body.familyH,
 		editHistory.socialH = req.body.socialH,
 		editHistory.travelH = req.body.travelH
@@ -957,95 +992,6 @@ router.put('/edit-history/:historyId', ensureAuthenticated, ensureAuthorised, (r
 	});
 	res.redirect("/master/HistoryTaking");
 })
-	
-
-// editHistory
-// router.put('/edit-history/:historyId', ensureAuthenticated, ensureAuthorised, (req,res) => {
-
-// 	MasterHistory.findOne({ historyId: req.params.historyId}).then(editHistory => {
-// 		editHistory.chiefComp = req.body.chiefComp,
-// 		editHistory.historyPresent = req.body.chiefComp,
-// 		editHistory.allergy = req.body.allergy,
-// 		editHistory.medicalH = req.body.medicalH,
-// 		editHistory.surgicalH = req.body.surgicalH,
-// 		editHistory.familyH = req.body.familyH,
-// 		editHistory.socialH = req.body.socialH,
-// 		editHistory.travelH = req.body.travelH
-
-// 		editHistory.save();
-// 	});
-// 	res.redirect("/master/edit-history");
-// })
-
-
-//HAVENT UPDATE HISTORY
-// router.get('/edit-history/:historyId', ensureAuthenticated, (req, res) => {
-	
-// 	MasterHistory.findOne({
-// 		patientID: req.params.patientID		// gets current patient
-// 	})
-// 	.then(retrievedPatient => {
-// 		if(JSON.stringify(retrievedPatient.user._id) === JSON.stringify(req.user.id)) {
-// 			NursingAssessmentModel.findById(retrievedPatient.nursingAssessmentID,{
-// 				// new way of calling method
-// 			}).then(assessment => {
-// 				//let toaster = new Toaster('Retrieving nursing assessment record');
-// 				req.session.assessment = assessment; // save to session for saving updated info
-// 				res.render('master/HistoryTaking', {
-// 					assessment: assessment,
-// 					patient: retrievedPatient,
-// 					user: req.user,
-// 					showMenu: true
-// 				});
-// 			});
-// 		}else {
-// 			console.log('User that created record is different from this user');
-// 			//alertMessage.flashMessage(res, 'User that created record is different from current user', 'fas fa-exclamation',
-// 			// true);
-// 			toaster.setErrorMessage(' ', 'User that created record is different from this user');
-// 			res.redirect('/master/list-patients');
-// 		}
-// 	});
-// });
-
-
-// // saves edited/updated History form
-// router.put('/edit-history/:historyId/:patientID/:nursingAssessmentID', ensureAuthenticated, (req, res) => {
-// 	console.log('Assessment id: ' + req.session.assessment._id);
-	
-// 	// Todo: check authorised user
-// 	MasterHistory.findByIdAndUpdate(
-// 		// the id of the item to find
-// 		req.params.nursingAssessmentID,
-// 		req.body, // will default all boolean radio buttons to false even if no selection is made
-// 		{new: true},
-// 		// the callback function
-// 		(err, assessment) => {
-// 			// Handle any possible database errors
-// 			if (err) {
-// 				return res.status(500).send(err);
-// 			}
-// 			//alertMessage.flashMessage(res, 'Nursing assessment updated', 'far fa-thumbs-up', true);
-// 			toaster.setSuccessMessage(' ', 'History Taking Updated');
-// 			res.render('master/HistoryTaking', {
-// 				assessment: assessment,
-// 				patient: req.session.patient,
-// 				user: req.user,
-// 				toaster,
-// 				showMenu: true
-// 			});
-// 			/*if (req.user.userType === 'staff'){
-			
-// 			} else {
-// 				res.redirect('/student/list-patients');
-// 			}*/
-			
-// 		}
-// 	);
-// });
-
-//END HISTORY
-
 
 //open fall page
 router.get('/fall', ensureAuthenticated, ensureAuthorised, (req, res) => {
@@ -1694,7 +1640,8 @@ router.post('/add-pain', ensureAuthenticated, ensureAuthorised, (req, res) => {
 		aggravatingFact: req.body.aggravatingFact,
 		relievingFact: req.body.relievingFact,
 		painIntervene: req.body.painIntervene,
-		responseIntervene: req.body.responseIntervene
+		responseIntervene: req.body.responseIntervene,
+		siteofpain: req.body.siteofpain
 	}).save();
 
 	res.redirect('/master/vital');
@@ -1719,7 +1666,8 @@ router.put('/edit-pain/:painID', ensureAuthenticated, ensureAuthorised, (req, re
 		editPain.aggravatingFact = req.body.aggravatingFact,
 		editPain.relievingFact = req.body.relievingFact,
 		editPain.painIntervene = req.body.painIntervene,
-		editPain.responseIntervene = req.body.responseIntervene
+		editPain.responseIntervene = req.body.responseIntervene,
+		editPain.siteofpain = req.body.siteofpain
 
 		editPain.save();
 	})
@@ -1756,7 +1704,7 @@ router.get('/oxygen/:oxygenID', ensureAuthenticated, ensureAuthorised, (req, res
 //Add oxygen information
 router.post('/add-oxygen', ensureAuthenticated, ensureAuthorised, (req, res) => {
 	oxygenid = (new standardID('AAA0000')).generate();
-	datetime = moment(req.body.dateOxy, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeOxy;
+	datetime = moment(req.body.dateOxy, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeDischargePlanning;
 
 	new MasterOxygen({
 		patientID: req.session.patient.patientID,
@@ -1847,7 +1795,7 @@ router.post('/add-wh', ensureAuthenticated, ensureAuthorised, (req, res) => {
 
 //Edit weight & height information
 router.put('/edit-wh/:whID', ensureAuthenticated, ensureAuthorised, (req, res) => {
-	console.log("hey")
+
 	datetime = moment(req.body.dateWh, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeWh;
 
 	MasterWH.findOne({ whID: req.params.whID }).then(editWH => {
@@ -1990,21 +1938,16 @@ router.delete('/doctor/orders/del-order/:orderID', ensureAuthenticated, ensureAu
 router.get('/mdp', ensureAuthenticated, ensureAuthorised, (req, res) => {
 	MasterMDP.find({user: req.user.id, patientID: req.session.patient.patientID}).sort({'datetime':1})
 	.then(newMDP => { // mdp that they have created
-		/*MasterMDP.find({user:{'$ne':req.user.id} , patientID: req.session.patient.patientID}).sort({'datetime':1})
-		.then(newOtherMasterMDP => { */
-		MasterMDP.aggregate(
+
+		MasterMDP.find({user:{'$ne':req.user.id} , patientID: req.session.patient.patientID}).sort({'datetime':1})
+		.then(newOtherMasterMDP => {  // mdp that is created by other users
+
+			StudentMDP.aggregate( // show the latest record created by each student
 			[
 				{"$sort": {
 					'datetime': -1
 				}},
-				{ "$match" : 
-					{ 'patientID' : req.session.patient.patientID,
-						'createdBy':
-						{ 
-							$ne: req.user.firstName // user did not work, use firstName-
-						} 
-					} 
-				},
+				{ "$match" : { 'patientID' : req.session.patient.patientID } },
 				{ "$group": { '_id' : "$createdBy",  "doc": {"$first":"$$ROOT"}}},
 				{"$replaceRoot": {"newRoot": "$doc"}},
 				{"$sort": {
@@ -2012,23 +1955,8 @@ router.get('/mdp', ensureAuthenticated, ensureAuthorised, (req, res) => {
 					'createdBy': 1
 				}}
 			])
-			.then(newOtherMasterMDP => {
+			.then(newOtherStudentMDP => {
 
-				StudentMDP.aggregate(
-				[
-					{"$sort": {
-						'datetime': -1
-					}},
-					{ "$match" : { 'patientID' : req.session.patient.patientID } },
-					{ "$group": { '_id' : "$createdBy",  "doc": {"$first":"$$ROOT"}}},
-					{"$replaceRoot": {"newRoot": "$doc"}},
-					{"$sort": {
-						'datetime': -1,
-						'createdBy': 1
-					}}
-				])
-				.then(newOtherStudentMDP => {
-				console.log("************ group value: "+ JSON.stringify(newOtherStudentMDP));
 				res.render('mdp-notes/master/mdp', {
 					newMDP: newMDP,
 					newOtherMasterMDP: newOtherMasterMDP,
@@ -2037,7 +1965,6 @@ router.get('/mdp', ensureAuthenticated, ensureAuthorised, (req, res) => {
 					showMenu: true,
 				});
 			})
-		//})
 		})
 	})
 })
@@ -2055,6 +1982,7 @@ router.post('/add-mdp', ensureAuthenticated, ensureAuthorised, (req, res) => {
 		time: req.body.timeMDP,
 		datetime: datetime,
 		selectUser: req.body.selectUser,
+		nameOfHealthProvider: req.body.nameOfHealthProvider,
 		progressNotes: req.body.progressNotes
 	}).save();
 	res.redirect('/master/mdp');
@@ -2071,32 +1999,41 @@ router.delete('/del-mdp/:mdpID', ensureAuthenticated, ensureAuthorised, (req, re
 
 // get single MDP info
 router.get('/mdp/:mdpID', ensureAuthenticated, ensureAuthorised, (req, res) => {
-	MasterMDP.find({ patientID: req.session.patient.patientID, user: req.user.id}).sort({'datetime':1}).then(newMDP => {
-		MasterMDP.findOne({ mdpID: req.params.mdpID}).then(editMDP => {
-			editMDP.date = moment(editMDP.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
+	MasterMDP.find({ patientID: req.session.patient.patientID, user: req.user.id}).sort({'datetime':1})
+	.then(newMDP => {
 
-			StudentMDP.aggregate(
-			[
-				{"$sort": {
-					'datetime': -1
-				}},
-				{ "$match" : { 'patientID' : req.session.patient.patientID } },
-				{ "$group": { '_id' : "$createdBy",  "doc": {"$first":"$$ROOT"}}},
-				{"$replaceRoot": {"newRoot": "$doc"}},
-				{"$sort": {
-					'datetime': -1,
-					'createdBy': 1
-				}}
-			]
-			).then(newOtherStudentMDP => { 
-				res.render('mdp-notes/master/mdp', {
-					newMDP: newMDP,
-					editMDP: editMDP,
-					patient: req.session.patient,
-					newOtherStudentMDP: newOtherStudentMDP,
-					showMenu: true
+		MasterMDP.find({user:{'$ne':req.user.id} , patientID: req.session.patient.patientID}).sort({'datetime':1})
+		.then(newOtherMasterMDP => { 
+
+			MasterMDP.findOne({ mdpID: req.params.mdpID})
+			.then(editMDP => {
+				
+				editMDP.date = moment(editMDP.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
+
+				StudentMDP.aggregate(
+				[
+					{"$sort": {
+						'datetime': -1
+					}},
+					{ "$match" : { 'patientID' : req.session.patient.patientID } },
+					{ "$group": { '_id' : "$createdBy",  "doc": {"$first":"$$ROOT"}}},
+					{"$replaceRoot": {"newRoot": "$doc"}},
+					{"$sort": {
+						'datetime': -1,
+						'createdBy': 1
+					}}
+				]
+				).then(newOtherStudentMDP => { 
+					res.render('mdp-notes/master/mdp', {
+						newMDP: newMDP,
+						newOtherMasterMDP: newOtherMasterMDP,
+						newOtherStudentMDP: newOtherStudentMDP,
+						editMDP: editMDP,
+						patient: req.session.patient,
+						showMenu: true
+					});
 				});
-			});
+			})
 		})
 	})
 })
@@ -2112,7 +2049,7 @@ router.put('/edit-mdp/:mdpID', ensureAuthenticated, ensureAuthorised, (req,res) 
 		editMDP.selectUser = req.body.selectUser,
 		editMDP.healthProvider = req.body.healthProvider,
 		editMDP.progressNotes = req.body.progressNotes
-
+		editMDP.nameOfHealthProvider = req.body.nameOfHealthProvider,
 		editMDP.save();
 	});
 	res.redirect("/master/mdp");
@@ -2214,7 +2151,6 @@ router.post('/add-diabetic', ensureAuthenticated,ensureAuthorised, (req, res) =>
 			hypoagent: req.body.hypoagent,
 			splitpoc: splitpoc,
 
-
 	}).save();
 
 	res.redirect('/master/diabetic');
@@ -2253,7 +2189,6 @@ router.delete('/del-diabetic/:diabeticID', ensureAuthenticated, ensureAuthorised
 //END OF DIABETIC
 // Care Plan
 router.get('/CarePlan', ensureAuthenticated, ensureAuthorised, (req, res) => { // to display the students who has created their care plan
-	userType = req.user.userType == 'student';
 
 	StudentCarePlan.aggregate([ // display students who has created their care plan
 		{"$sort": {
@@ -2267,11 +2202,10 @@ router.get('/CarePlan', ensureAuthenticated, ensureAuthorised, (req, res) => { /
 		}}
 	])
 	.then(studentCarePlanName => {
-		console.log("************ studentCarePlanName: "+ JSON.stringify(studentCarePlanName));
 		res.render('care-plan/master/care-plan', {
 			studentCarePlanName: studentCarePlanName,
 			recordID: req.params.recordID,
-			userType: userType,
+			//userType: req.user.userType,
 			patient: req.session.patient,
 			showMenu: true
 		});
@@ -2279,9 +2213,8 @@ router.get('/CarePlan', ensureAuthenticated, ensureAuthorised, (req, res) => { /
 })
 
 router.get('/CarePlan/:name', ensureAuthenticated, ensureAuthorised, (req, res) => {
-	userType = req.user.userType == 'student';
+	//userType = req.user.userType == 'student';
 	var name = req.params.name;
-	console.log("name: "+ name);
 	StudentCarePlan.aggregate([ // display students who has created their care plan
 		{"$sort": {
 			'datetime': -1,
@@ -2317,14 +2250,13 @@ router.get('/CarePlan/:name', ensureAuthenticated, ensureAuthorised, (req, res) 
 			}}
 		])
 		.then(newCarePlan => {
-			console.log("newCarePlan: "+ JSON.stringify(newCarePlan));
 
 			res.render('care-plan/master/care-plan', {
 				name: req.params.name,
 				newCarePlan: newCarePlan,	
 				studentCarePlanName: studentCarePlanName,
 				recordID: req.params.recordID,
-				userType: userType,
+				//userType: userType,
 				patient: req.session.patient,
 				showMenu: true
 			});
@@ -2334,7 +2266,7 @@ router.get('/CarePlan/:name', ensureAuthenticated, ensureAuthorised, (req, res) 
 
 // get single Care Plan info
 router.get('/CarePlan/:name/:carePlanID', ensureAuthenticated, ensureAuthorised, (req, res) => {
-	userType = req.user.userType == 'student';
+	//userType = req.user.userType == 'student';
 	
 	StudentCarePlan.aggregate([ // display students who has created their care plan
 		{"$sort": {
@@ -2371,7 +2303,7 @@ router.get('/CarePlan/:name/:carePlanID', ensureAuthenticated, ensureAuthorised,
 			}}
 		])
 		.then(newCarePlan => {
-			console.log("newCarePlan: "+ JSON.stringify(newCarePlan));
+
 			StudentCarePlan.findOne({ carePlanID: req.params.carePlanID })
 			.then(editCarePlan => {
 				
@@ -2380,7 +2312,7 @@ router.get('/CarePlan/:name/:carePlanID', ensureAuthenticated, ensureAuthorised,
 				res.render('care-plan/master/care-plan', {
 					studentCarePlanName: studentCarePlanName,
 					name: req.params.name,
-					userType: userType,
+					//userType: userType,
 					recordID: req.params.recordID,
 					newCarePlan: newCarePlan,
 					editCarePlan: editCarePlan,
@@ -2442,13 +2374,7 @@ router.get('/neuro', ensureAuthenticated, ensureAuthorised, (req, res) => {
 						{
 							leftLegNeuroFlowLength = newNeuroLeftLeg.length
 						}
-						leftLegNeuroFlowLength = leftLegNeuroFlowLength * 2; // rowspan to merge same site of injury on left arm
-						
-						/*console.log("rightArmNeuroFlowLength: "+ rightArmNeuroFlowLength);
-						console.log("leftArmNeuroFlowLength: " + leftArmNeuroFlowLength);
-						console.log("rightLegNeuroFlowLength: " +rightLegNeuroFlowLength);
-						console.log("leftLegNeuroFlowLength: "+leftLegNeuroFlowLength)*/
-						
+						leftLegNeuroFlowLength = leftLegNeuroFlowLength * 2; // rowspan to merge same site of injury on left arm		
 
 						neurosample = [];
 						neurosampleDate = [];
@@ -2564,11 +2490,6 @@ router.get('/neuro/:neuroID', ensureAuthenticated, ensureAuthorised, (req, res) 
 								leftLegNeuroFlowLength = newNeuroLeftLeg.length
 							}
 							leftLegNeuroFlowLength = leftLegNeuroFlowLength * 2; // rowspan to merge same site of injury on left arm
-							
-							/*console.log("rightArmNeuroFlowLength: "+ rightArmNeuroFlowLength);
-							console.log("leftArmNeuroFlowLength: " + leftArmNeuroFlowLength);
-							console.log("rightLegNeuroFlowLength: " +rightLegNeuroFlowLength);
-							console.log("leftLegNeuroFlowLength: "+leftLegNeuroFlowLength)*/
 
 							editNeuro.date = moment(editNeuro.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
 							res.render('charts/master/charts-neuro', {
@@ -2622,8 +2543,7 @@ router.post('/add-neuro', ensureAuthenticated,ensureAuthorised, (req, res) => {
 		movementRight: req.body.rightMovement,
 		sensationLeft: req.body.leftSensation,
 		sensationRight: req.body.rightSensation,
-		painLeft: req.body.leftTypeOfPainScale,
-		painRight: req.body.rightTypeOfPainScale,
+		painScale: req.body.painScale,
 		numericalRatingScaleLeft: req.body.numericalRatingScaleLeft,
 		numericalRatingScaleRight: req.body.numericalRatingScaleRight,
 		characteristicLeft: req.body.leftCharacteristic,
@@ -2657,8 +2577,7 @@ router.put('/edit-neuro/:neuroID', ensureAuthenticated,ensureAuthorised, (req,re
 		editNeuro.movementRight = req.body.rightMovement,
 		editNeuro.sensationLeft = req.body.leftSensation,
 		editNeuro.sensationRight = req.body.rightSensation,
-		editNeuro.painLeft = req.body.leftTypeOfPainScale,
-		editNeuro.painRight = req.body.rightTypeOfPainScale,
+		editNeuro.painScale = req.body.painScale,
 		editNeuro.numericalRatingScaleLeft = req.body.numericalRatingScaleLeft,
 		editNeuro.numericalRatingScaleRight = req.body.numericalRatingScaleRight,
 		editNeuro.characteristicLeft = req.body.leftCharacteristic,
@@ -3148,4 +3067,532 @@ router.get('/clc-motorstrength/:motorstrengthID', ensureAuthenticated, ensureAut
 		})
 	})
 })
+//FEEDING REGIME
+// Open Feeding regime page
+router.get('/FeedingRegime', ensureAuthenticated, ensureAuthorised, (req, res) => {
+	MasterFeedingRegime.find({user:{'$ne':req.user.id}, masterpatientID: req.session.patient.patientID})
+	.then(newFeeding => {//(other record)
+		MasterFeedingRegime.find({ patientID: req.session.patient.patientID})
+		.then(newOtherFeeding =>{ //(your own record)
+			// MasterScheduleFeed.find({ masterpatientID: req.session.patient.patientID})
+			// .then(studentName =>{
+				// MasterScheduleFeed.findOne({ masterpatientID: req.session.patient.patientID, by:req.params.name})	
+				// .then(newOtherScheduleFeed =>{	
+				MasterScheduleFeed.aggregate([ // display students who has created their care plan
+					{"$sort": {
+						'datetime': -1
+					}},
+					{ "$match" : { 'masterpatientID' : req.session.patient.patientID }},
+					{ "$group": { '_id' : "$by", "doc": {"$first": "$$ROOT"}}},
+					{"$replaceRoot": {"newRoot": "$doc"}},
+					{"$sort": {
+						'datetime': -1	
+					}}
+				])
+				.then(studentName =>{
+					
+				res.render('charts/master/charts-feeding-regime', {
+					newFeeding: newFeeding,
+					//editFeeding: editFeeding,
+					// newOtherScheduleFeed: newOtherScheduleFeed,
+					checkifEmpty: true,
+					studentName: studentName,
+					recordID: req.params.recordID,
+					// name: req.params.name,
+					patient: req.session.patient,
+					currentName: req.user.firstName,
+					newOtherFeeding:newOtherFeeding,
+					showMenu: true
+				
+				});
+			// })
+		})
+	})
+	})
+})
+
+//Add Feeding
+router.post('/add-feeding-regime', ensureAuthenticated, ensureAuthorised, (req, res) => {
+	feedID = (new standardID('AAA0000')).generate();
+	datetime = moment(req.body.dateFeeding, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeFeeding;
+	
+	console.log("Feeding Regime ADD NEW");
+	
+	new MasterFeedingRegime({
+		// user: req.user.id,
+		patientID: req.session.patient.patientID,
+		date:moment(req.body.dateFeeding, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		time: req.body.timeFeeding,
+		datetime: datetime,
+		typeofFormula: req.body.typeofFormula,
+		enteralFeed: req.body.enteralFeed,
+		ordersFeed: req.body.ordersFeed,
+		masterpatientID: req.session.patient.patientID,
+		by: req.user.firstName,
+		feedID: feedID,
+	}).save();
+		res.redirect('/master/FeedingRegime');
+})
+
+	
+//One Feeding Regime by ID
+router.get('/FeedingRegime/:feedID/:name', ensureAuthenticated, ensureAuthorised, (req,res) => {
+	
+	MasterFeedingRegime.find({ user:{'$ne':req.user.id}, masterpatientID: req.session.patient.patientID})
+	.then(newFeeding => {
+		MasterFeedingRegime.findOne({ patientID: req.session.patient.patientID})
+		.then(newOtherFeeding =>{//(your own record) you need this (if you only put in the /HistoryTaking, this route do not know the newOtherHistory)
+			MasterFeedingRegime.findOne({ feedID: req.params.feedID }).then(editFeeding =>{
+				
+				var name = req.params.name;
+				
+				editFeeding.date = moment(editFeeding.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
+
+				res.render('charts/master/charts-feeding-regime',{
+					newFeeding:newFeeding,
+					editFeeding: editFeeding,
+					newOtherFeeding:newOtherFeeding,
+					patient: req.session.patient,
+					checkifEmpty: false,
+					currentName: req.user.firstName,
+					by: name,
+					showMenu: true
+				})
+			})
+		});
+	})
+})
+
+//Edit the FeedingRegime
+router.put('/edit-feeding-regime/:feedID/:name', ensureAuthenticated, ensureAuthorised, (req,res) => {
+	datetime = moment(req.body.dateFeeding, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeFeeding;
+
+	MasterFeedingRegime.findOne({ patientID:  req.session.patient.patientID,feedID: req.params.feedID})
+	.then(editFeeding => {
+		
+		editFeeding.date = moment(req.body.dateFeeding, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		editFeeding.time = req.body.timeFeeding,
+		editFeeding.datetime = datetime,
+		editFeeding.masterpatientID = req.session.patient.patientID,
+		editFeeding.patientID = req.session.patient.patientID,
+		editFeeding.typeofFormula = req.body.typeofFormula,
+		editFeeding.enteralFeed = req.body.enteralFeed,
+		editFeeding.ordersFeed = req.body.ordersFeed,
+		
+		editFeeding.save();
+	});
+	res.redirect("/master/FeedingRegime");
+})
+
+//Add Schedule Feeding
+router.post('/add-schedule', ensureAuthenticated, ensureAuthorised, (req, res) => {
+	scheduleID = (new standardID('AAA0000')).generate();
+	datetime = moment(req.body.dateSchedule, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeSchedule;
+	
+	console.log("Schedule ADD NEW");
+	
+	new MasterScheduleFeed({
+		// user: req.user.id,
+		patientID: req.session.patient.patientID,
+		date:moment(req.body.dateSchedule, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		time: req.body.timeSchedule,
+		datetime: datetime,
+		scheduleFeed: req.body.scheduleFeed,
+		scheduleAmt: req.body.scheduleAmt,
+		scheduleFlush: req.body.scheduleFlush,
+		masterpatientID: req.session.patient.patientID,
+		by: req.user.firstName,
+		scheduleID: scheduleID,
+	}).save();
+		res.redirect('/master/ScheduleFeeding');
+})
+router.get('/FeedingRegime/:name', ensureAuthenticated, ensureAuthorised, (req,res) => {
+	var name = req.params.name;
+	console.log('sched name: '+name);
+	MasterScheduleFeed.aggregate([ // display students who has created their care plan
+		{"$sort": {
+			'datetime': -1,
+		}},
+		{ "$match" : { 'masterpatientID' : req.session.patient.patientID } },
+		{ "$group": { '_id' : "$by", "doc": {"$first": "$$ROOT"}}},
+		{"$replaceRoot": {"newRoot": "$doc"}},
+		{"$sort": {
+			'datetime': -1	
+		}}
+	])
+	.then(studentName => {
+			
+		// MasterScheduleFeed.aggregate([ // display students who has created their care plan
+		// 	{"$sort": {
+		// 		'datetime': -1
+		// 	}},
+		// 	{ "$match" : { 'masterpatientID' : req.session.patient.patientID, 'by': req.params.name } },
+		// 	{ "$group": { 
+		// 		'_id' : {
+		// 			"by":"$by",
+		// 		}, 
+		// 		"doc": {
+		// 			"$first": "$$ROOT"
+		// 		}
+		// 	}},
+		// 	{"$replaceRoot": {"newRoot": "$doc"}},
+		// 	{"$sort": {
+		// 		'datetime': -1,
+		// 	}}
+		// ])
+		// .then(newOtherScheduleFeed => {
+	MasterScheduleFeed.find({ masterpatientID: req.session.patient.patientID,by:req.params.name})
+	.sort({'datetime': -1 }).then(newOtherScheduleFeed =>{
+	// 	MasterScheduleFeed.find({ patientID: req.session.patient.patientID})
+	// 		.then(studentName =>{
+		MasterFeedingRegime.find({patientID: req.session.patient.patientID })
+		.sort({'datetime': 1}).then(newFeeding=>{
+			res.render('charts/master/charts-feeding-regime',{
+				newFeeding: newFeeding,
+				//newSchedule: newSchedule,
+				//editSchedule: editSchedule,
+				newOtherScheduleFeed: newOtherScheduleFeed,
+				studentName:studentName,
+				patient: req.session.patient,
+				checkifEmpty: false,
+				currentName: req.user.firstName,
+				name: req.params.name,
+				showMenu: true
+			})
+		})
+	})
+})
+})
+	
+//One Schedule Feed by ID
+router.get('/ScheduleFeeding/:scheduleID/:name', ensureAuthenticated, ensureAuthorised, (req,res) => {
+	
+	MasterScheduleFeed.find({ user:{'$ne':req.user.id}, masterpatientID: req.session.patient.patientID})
+	.then(newSchedule => {
+		MasterScheduleFeed.findOne({ patientID: req.session.patient.patientID})
+		.sort({'datetime': -1 }).then(newOtherScheduleFeed =>{//(your own record) you need this (if you only put in the /HistoryTaking, this route do not know the newOtherHistory)
+			MasterScheduleFeed.findOne({ scheduleID: req.params.scheduleID })
+			.then(editSchedule =>{		
+				MasterScheduleFeed.find({user:{'$ne':req.user.id}, masterpatientID: req.session.patient.patientID,by:req.params.name})
+					.then(studentName =>{
+						
+			// MasterScheduleFeed.aggregate([ // display students who has created their care plan
+			// 	{"$sort": {
+			// 		'datetime': -1
+			// 	}},
+			// 	{ "$match" : { 'patientID' : req.session.patient.patientID } },
+			// 	{ "$group": { '_id' : "$by", "doc": {"$first": "$$ROOT"}}},
+			// 	{"$replaceRoot": {"newRoot": "$doc"}},
+			// 	{"$sort": {
+			// 		'datetime': -1	
+			// 	}}
+			// ])
+			// .then(studentName => {
+					
+				
+				editSchedule.date = moment(editSchedule.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
+
+				res.render('charts/master/charts-feeding-regime',{
+					newSchedule: newSchedule,
+					editSchedule: editSchedule,
+					studentName:studentName,
+					newOtherScheduleFeed: newOtherScheduleFeed,
+					patient: req.session.patient,
+					checkifEmpty: false,
+					currentName: req.user.firstName,
+					name: req.params.name,
+					showMenu: true
+					})
+				})
+			});
+		});
+	})
+})
+
+//Edit the Schedule Feed
+router.put('/edit-schedule/:scheduleID/:name', ensureAuthenticated, ensureAuthorised, (req,res) => {
+	datetime = moment(req.body.dateSchedule, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeSchedule;
+
+	MasterScheduleFeed.findOne({ patientID:  req.session.patient.patientID,scheduleID: req.params.scheduleID})
+	.then(editSchedule => {
+		editSchedule.date = moment(req.body.dateSchedule, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		editSchedule.time = req.body.timeSchedule,
+		editSchedule.datetime = datetime,
+		editSchedule.masterpatientID = req.session.patient.patientID,
+		editSchedule.patientID = req.session.patient.patientID,
+		editSchedule.scheduleFeed = req.body.scheduleFeed,
+		editSchedule.scheduleAmt = req.body.scheduleAmt,
+		editSchedule.scheduleFlush = req.body.scheduleFlush,
+		
+		editSchedule.save();
+	});
+	res.redirect("/master/ScheduleFeeding");
+})
+	
+// Discharge Planning
+router.get('/DischargePlanning', ensureAuthenticated, ensureAuthorised, (req, res) => {
+	MasterDischargePlanning.find({patientID: req.session.patient.patientID}).sort({'datetime':1})
+	.then(newDischargePlanning => { // discharge planning that they have created
+		MasterAppointment.find({patientID: req.session.patient.patientID}).sort({'datetime':1})
+		.then(newAppointment => {
+			
+			dischargeplanningsample = [];
+			dischargeplanningsampleDate = [];
+			let dischargePlanningFlow = Object.assign([], newDischargePlanning);
+			let appointmentFlow = Object.assign([], newAppointment);
+
+			dischargePlanningCount = -1;
+			appointmentCount = -1;
+
+			dischargeplanningnoRecord = 'No existing record';
+
+			newDischargePlanning.forEach(dischargeplanning => {
+				if (!(dischargeplanningsample.includes(dischargeplanning.datetime))) {
+					dischargeplanningsample.push(dischargeplanning.datetime);
+					dischargeplanningsampleDate.push(dischargeplanning.date);
+				}
+			});
+
+			newAppointment.forEach(appointment => {
+				if (!(dischargeplanningsample.includes(appointment.datetime))){
+					dischargeplanningsample.push(appointment.datetime);
+					dischargeplanningsampleDate.push(appointment.date);
+				}
+			});
+
+				
+			dischargeplanningsample.sort();
+			dischargeplanningsampleDate.sort();
+
+			for (i = 0; i < dischargeplanningsample.length; i++) {
+				
+
+				//Counter for empty data
+				//.length here refers to last index of the array
+				if (dischargePlanningCount !== (dischargePlanningFlow.length - 1)) {
+					dischargePlanningCount++;
+				}
+
+				if (appointmentCount !== (appointmentFlow.length - 1)) {
+					appointmentCount++;
+				}	
+
+				//Insert empty data when value doesnt match
+				//Count here does the index count of flow array
+				if(dischargePlanningFlow !='') 
+				{
+					if (dischargeplanningsample[i] < dischargePlanningFlow[dischargePlanningCount].datetime) {
+						dischargePlanningFlow.splice(dischargePlanningCount, 0, {datetime: ''});
+					} else if (dischargeplanningsample[i] > dischargePlanningFlow[dischargePlanningCount].datetime) {
+						dischargePlanningFlow.splice(dischargePlanningCount + 1, 0, {datetime: ''});
+					}
+				} 
+				else
+				{
+					dischargePlanningFlow.push({datetime: '', dischargePlan: dischargeplanningnoRecord});
+				}
+
+				if(appointmentFlow !='') 
+				{
+					if (dischargeplanningsample[i] < appointmentFlow[appointmentCount].datetime) {
+						appointmentFlow.splice(appointmentCount, 0, {datetime: ''});
+					} else if (dischargeplanningsample[i] > appointmentFlow[appointmentCount].datetime) {
+						appointmentFlow.splice(appointmentCount + 1, 0, {datetime: ''});
+					}
+				} 
+				else
+				{
+					appointmentFlow.push({datetime: '', clinic: dischargeplanningnoRecord});
+				}
+
+			};
+			
+			res.render('discharge-planning/master/discharge-planning', {
+				dischargePlanningdateVal: dischargeplanningsample,
+				dischargePlanningFlow: dischargePlanningFlow,
+				appointmentFlow: appointmentFlow,
+				newDischargePlanning: newDischargePlanning,
+				newAppointment: newAppointment,
+				patient: req.session.patient,
+				showMenu: true			
+			})
+		})
+	})
+})
+// Add Discharge Planning Record
+router.post('/add-discharge-planning', ensureAuthenticated, (req, res) => {
+
+	datetime = moment(req.body.dateDischargePlanning, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeDischargePlanning;
+	dischargePlanningID = (new standardID('AAA0000')).generate();
+	new MasterDischargePlanning({
+		patientID: req.session.patient.patientID,
+		dischargePlanningID: dischargePlanningID,
+		datetime: datetime,
+		date: moment(req.body.dateDischargePlanning, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		time: req.body.timeDischargePlanning,
+		// 1
+		dischargePlan: req.body.dischargePlan,
+		dischargeCondition: req.body.dischargeCondition,
+		// 2
+		dischargeTo: req.body.dischargeTo,
+		dischargeToSpecify: req.body.dischargeToSpecify,
+		// 3
+		accompaniedBy: req.body.accompaniedBy,
+		accompaniedBySpecify: req.body.accompaniedBySpecify,
+		// 4
+		modeOfTransport: req.body.modeOfTransport,
+		modeOfTransportSpecify: req.body.modeOfTransportSpecify,
+		// 5
+		removalOf: req.body.removalOf,
+		// 6
+		checkedAndReturned: req.body.checkedAndReturned,
+		checkedAndReturnedAppliancesSpecify: req.body.checkedAndReturnedAppliancesSpecify,
+		checkedAndReturnedSpecify: req.body.checkedAndReturnedSpecify,
+		// 7
+		adviceGivenOn: req.body.adviceGivenOn,
+		// Others Specify
+		othersSpecify: req.body.othersSpecify,
+		// Referrals
+		referrals: req.body.referrals,
+		referralsSpecify: req.body.referralsSpecify,
+		// Medical Cert No
+		medicalCertificateNo: req.body.medicalCertificateNo,
+		// specifyInstructions
+		specifyInstructions: req.body.specifyInstructions
+	}).save();
+
+	res.redirect('/master/DischargePlanning');
+});
+
+// get single Discharge Planning info
+router.get('/DischargePlanning/:dischargePlanningID', ensureAuthenticated, ensureAuthorised, (req, res) => {
+	
+	MasterDischargePlanning.find({patientID: req.session.patient.patientID}).sort({'datetime':1})
+	.then(newDischargePlanning => {
+		MasterDischargePlanning.findOne({dischargePlanningID: req.params.dischargePlanningID})
+		.then(editDischargePlanning => {
+			editDischargePlanning.date = moment(editDischargePlanning.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
+			
+			if (editDischargePlanning.appointmentDate == "Invalid date") {
+				editDischargePlanning.appointmentDate = "";
+			}
+			else {
+				editDischargePlanning.appointmentDate = moment(editDischargePlanning.appointmentDate , 'YYYY-MM-DD').format('DD/MM/YYYY');
+			}
+			res.render('discharge-planning/master/discharge-planning', {
+				editDischargePlanning: editDischargePlanning,
+				newDischargePlanning: newDischargePlanning,
+				patient: req.session.patient,
+				showMenu: true
+			});
+		})
+	});
+});
+
+// edit Discharge Planning
+router.put('/edit-DischargePlanning/:dischargePlanningID', ensureAuthenticated, ensureAuthorised, (req,res) => {
+	datetime = moment(req.body.dateDischargePlanning, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.timeDischargePlanning;
+
+	MasterDischargePlanning.findOne({ dischargePlanningID: req.params.dischargePlanningID}).then(editDischargePlanning => {
+		editDischargePlanning.date = moment(req.body.dateDischargePlanning, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		editDischargePlanning.time = req.body.timeDischargePlanning,
+		editDischargePlanning.datetime = datetime,
+		// 1
+		editDischargePlanning.dischargePlan = req.body.dischargePlan,
+		editDischargePlanning.dischargeCondition = req.body.dischargeCondition,
+		// 2
+		editDischargePlanning.dischargeTo = req.body.dischargeTo,
+		editDischargePlanning.dischargeToSpecify = req.body.dischargeToSpecify,
+		// 3
+		editDischargePlanning.accompaniedBy = req.body.accompaniedBy,
+		editDischargePlanning.accompaniedBySpecify = req.body.accompaniedBySpecify,
+		// 4
+		editDischargePlanning.modeOfTransport = req.body.modeOfTransport,
+		editDischargePlanning.modeOfTransportSpecify = req.body.modeOfTransportSpecify,
+		// 5
+		editDischargePlanning.removalOf = req.body.removalOf,
+		// 6
+		editDischargePlanning.checkedAndReturned = req.body.checkedAndReturned,
+		editDischargePlanning.checkedAndReturnedAppliancesSpecify = req.body.checkedAndReturnedAppliancesSpecify,
+		editDischargePlanning.checkedAndReturnedSpecify = req.body.checkedAndReturnedSpecify,
+		// 7
+		editDischargePlanning.adviceGivenOn = req.body.adviceGivenOn,
+		// Others
+		editDischargePlanning.othersSpecify = req.body.othersSpecify,
+		// Referrals
+		editDischargePlanning.referrals = req.body.referrals,
+		editDischargePlanning.referralsSpecify = req.body.referralsSpecify,
+		// Medical Cert No
+		editDischargePlanning.medicalCertificateNo = req.body.medicalCertificateNo,
+		// specifyInstructions
+		editDischargePlanning.specifyInstructions = req.body.specifyInstructions
+
+		editDischargePlanning.save();
+	});
+	res.redirect("/master/DischargePlanning");
+})
+
+// Add Appointment
+router.post('/add-appointment', ensureAuthenticated, (req, res) => {
+
+	datetime = moment(req.body.appointmentDate1, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.appointmentTime1;
+	appointmentID = (new standardID('AAA0000')).generate();
+	new MasterAppointment({
+		patientID: req.session.patient.patientID,
+		appointmentID: appointmentID,
+		datetime: datetime,
+		date: moment(req.body.appointmentDate1, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+		time: req.body.appointmentTime1,
+		// Follow-up Appointment
+		followUpAppointment: req.body.followUpAppointment1,
+		followUpAppointmentSpecify: req.body.followUpAppointmentSpecify1,
+		clinic: req.body.clinic1,
+		nameOfDoctor: req.body.nameOfDoctor1,
+		memoGiven: req.body.memoGiven1,
+		remarks: req.body.remarks1,
+	}).save();
+	
+	res.redirect('/master/DischargePlanning');
+});
+
+// get single Appointment
+router.get('/FollowUpApppointment/:appointmentID', ensureAuthenticated, ensureAuthorised, (req, res) => {
+	
+	MasterAppointment.find({patientID: req.session.patient.patientID}).sort({'datetime':1})
+	.then(newAppointment => {
+		MasterAppointment.findOne({appointmentID: req.params.appointmentID})
+		.then(editAppointment => {
+			editAppointment.date = moment(editAppointment.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
+			
+			res.render('discharge-planning/master/discharge-planning', {
+				editAppointment: editAppointment,
+				newAppointment: newAppointment,
+				patient: req.session.patient,
+				showMenu: true
+			});
+		})
+	});
+});
+
+// edit Appointment
+router.put('/edit-Appointment/:appointmentID', ensureAuthenticated, ensureAuthorised, (req,res) => {
+	datetime = moment(req.body.appointmentDate1, 'DD/MM/YYYY').format('MM/DD/YYYY') + " " + req.body.appointmentTime1;
+
+	MasterAppointment.findOne({ appointmentID: req.params.appointmentID}).then(editAppointment => {
+		editAppointment.date = moment(req.body.appointmentDate1, 'DD/MM/YYYY').format('YYYY-MM-DD')
+		editAppointment.time = req.body.appointmentTime1,
+		editAppointment.datetime = datetime,
+
+		editAppointment.followUpAppointment = req.body.followUpAppointment1,
+		editAppointment.followUpAppointmentSpecify = req.body.followUpAppointmentSpecify1,
+		editAppointment.clinic = req.body.clinic1,
+		editAppointment.nameOfDoctor = req.body.nameOfDoctor1,
+		editAppointment.memoGiven = req.body.memoGiven1,
+		editAppointment.remarks = req.body.remarks1,
+
+		editAppointment.save();
+	});
+	res.redirect("/master/DischargePlanning");
+})
+
 module.exports = router;

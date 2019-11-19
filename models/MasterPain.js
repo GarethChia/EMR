@@ -34,7 +34,8 @@ const MasterPainSchema = new Schema({
     aggravatingFact:    {type: String, default: ''},
     relievingFact:  {type: String, default: ''},
     painIntervene:  {type: String, default: ''},
-    responseIntervene:  {type: String, default: ''}
+    responseIntervene:  {type: String, default: ''},
+    siteofpain: {type: String, default: ''}
 
 });
 

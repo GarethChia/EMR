@@ -1,0 +1,540 @@
+<style>
+    td, th {
+        text-align: center
+    }
+    .tabs .indicator {
+        background-color: #6A1B9A;
+    }
+    .tabs .tab a:focus, .tabs .tab a:focus.active {
+        background: transparent;
+    }
+
+    #ioflowsheetTable th {
+        border-right: 1px solid rgba(0, 0, 0, 0.12);
+        border-bottom: none;
+    }
+    #ioflowsheetTable tr {
+        border-bottom: none;
+    }
+    #ioflowsheetTable tr td {
+        border-right: 1px solid rgba(0, 0, 0, 0.12);
+    }
+</style>
+
+
+<br>
+<div class="row">
+    <div class="col s12">
+        <div class="tabs">
+            {{#unless userType}}
+
+            {{else}}
+            <li class="tab col s2  offset-s4" id="feedtab"><a class="purple-text text-darken-3" id="tab0" href="#feedingregime">Feeding Regime</a></li>
+
+            <li class="tab col s2" id="schedtab"><a class="purple-text text-darken-3" id="tab1" href="#schedule">Schedule</a></li>
+
+            {{/unless}}
+        </div>
+    </div>
+</div>
+
+{{!-- Feeding Regime code start --}}
+
+<div id="feedingregime">
+<div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">Feeding Regime</div>
+    <div style="overflow-x:auto; max-height: 16em;">
+        <table id="enteralRecords" class="hover order-column" >
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Type of Formula</th>
+                    <th>Enteral</th>
+                    <th>Orders</th>
+                    {{!--{{#unless userType}}
+                    <th>Delete</th>
+                    {{/unless}}--}}
+                </tr>
+            </thead>
+            <tbody>
+                {{#if newFeeding}}
+                    {{#each newFeeding}}
+                    <tr style="height: 60px">
+                        {{#unless ../userType}}
+                            <td><a href="/master/FeedingRegime/{{feedID}}/{{by}}">{{date}}</a></td>
+                        {{else}}
+                            <td>{{date}}</td>
+                        {{/unless}}
+                        <td>{{time}}</td>
+                        <td>{{typeofFormula}}</td>
+                        <td>{{enteralFeed}}</td>
+                        <td>{{ordersFeed}}</td>
+                        {{!-- {{#unless ../userType}} --}}
+                            {{!-- <td style="width: 65px"> <!-- the tr we're trying to get -->
+                                <form action="/master/del-feeding-regime/{{feedID}}?_method=DELETE" method="post" id="delete-form">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn red darken-3">
+                                    <i class="material-icons">delete
+                                </button>
+                                </form>
+                            </td> --}}
+                        {{else}}
+                            {{!-- <td style="width: 65px"> <!-- the tr we're trying to get -->
+                                <form action="/student/del-enteral/{{../recordID}}/{{enteralID}}?_method=DELETE" method="post" id="delete-form">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn red darken-3">
+                                    <i class="material-icons">delete
+                                </button>
+                                </form>
+                            </td> --}}
+                        {{!-- {{/unless}} --}}
+                    </tr>
+                    {{/each}}
+                {{else}}
+                <p id="noRecord">You have not created any Feeding Regime records yet</p>
+                {{/if}}
+            </tbody>
+        </table>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col s12 m8"></div>
+
+    </div>
+
+    {{#if editFeeding}}
+        {{#unless userType}}
+        <form action="/master/edit-feeding-regime/{{editFeeding.feedID}}/{{editFeeding.by}}?_method=PUT" method="POST" id="editFeeding">
+        {{/unless}}
+    {{else}}
+        {{#unless userType}}
+            <form action="/master/add-feeding-regime" method="POST" id="addFeeding">
+        {{/unless}}
+    {{/if}}
+        <div class="card purple lighten-5">
+            <div class="card-content">
+                <div id="enteralInfo">
+                    <span class="purple-text darken-2">Nutritional product Order</span>
+
+                        <div class="row">
+                                <div class="col s12 m4 input-field">
+                                    <input id="dateFeeding" type="text" class="datepicker" name="dateFeeding" value="{{editFeeding.date}}" required>
+                                    <label for="dateFeeding">Date</label>
+                                    <span class="helper-text">dd/mm/yyyy</span>
+                                </div>
+
+                                <div class="col s12 m4 input-field">
+                                    <input id="timeFeeding" type="text" class="timepicker" name="timeFeeding" value="{{editFeeding.time}}" required>
+                                    <label for="timeFeeding">Time</label>
+                                    <span class="helper-text">hh:ss</span>
+                                </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col s12 m4 input-field">
+
+                                <select id="typeofFormula" name="typeofFormula">
+                                    <option value="" disabled selected>Type of Formula</option>
+                                    <option value="ensure">Ensure</option>
+                                    <option value="Ensure Life">Ensure Life</option>                                
+                                    <option value="Ensure Plus">Ensure Plus</option>
+                                    <option value="Isocal">Isocal</option>
+                                    <option value="Resource Support">Resource Support</option>
+                                    <option value="Resource 2.0"> Resource 2.0</option>
+                                    <option value="Glucerna">Glucerna</option>
+                                    <option value="Nepro">Nepro</option>
+                                    <option value="Suplena">Suplen</option>
+                                    <option value="Pulmocare">Pulmocare</option>
+                                    <option value="Jevity">Jevity</option>                                                                
+                                    <option value="Oxepa">Oxepa</option>
+                                    <option value="Prosure">Prosure</option>
+                                    <option value="Propass">Propass</option>
+                                </select>
+                                    <label for="typeofFormula">Type of Formula</label>
+
+                            </div>
+                            <div class="col s12 m4 input-field">
+
+                                <select id="enteralFeed" name="enteralFeed">
+                                    <option value="" disabled selected>Enteral</option>
+                                    <option value="NG">NG</option>
+                                    <option value="NJ">NJ</option>
+                                    <option value="PEG">PEG</option>
+                                    <option value="PEJ">PEJ</option>
+                                </select>
+                                <label for="enteralFeed">Enteral</label>
+
+                            </div>
+                    </div>
+                    <div class= "row"> 
+                        <div class="col s12 m4 input-field">
+                            <input id="ordersFeed" type="text" name="ordersFeed" value="{{editFeeding.ordersFeed}}">
+                            <label for="ordersFeed">Order</label>
+                            <span class="helper-text"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="row">
+        <div class="col s12 m8"></div>
+            <div class="col s12 m4">
+                {{#unless userType}}
+                    {{#if editFeeding}}
+                            <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editFeeding">Save Changes
+                        {{else}}
+                            <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addFeeding">Save
+                    {{/if}}
+
+                    {{#unless userType}}
+                        <i class="material-icons right">send</i>
+                    {{/unless}}
+                {{/unless}}
+                
+            </div>
+    </div>
+</div>
+
+{{!-- end Feeding Regime Code --}}
+
+
+
+{{!-- Schedule code start --}}
+{{#unless userType}}
+
+{{else}}    
+
+
+<div id="schedule">
+    
+        {{!-- <form>
+            <div class="row">
+                <div class="col s12 m6 input-field">
+                    <select id="selectUser" name="selectUser" required>
+                        <option value="" disabled selected>Please select a student</option>
+                    </select>
+                    <label for="selectUser">Student</label>
+                </div>
+            </div>
+        </form> --}}
+
+<div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">Schedule</div>
+    <div style="overflow-x:auto; max-height: 16em;">
+        {{!-- {{#if finalObj}}
+            {{#each finalObj}}
+                <p>{{@key}}</p>
+                {{#each this}}
+                    <p>{{by}}</p>
+                    <p>{{length}}</p>
+                {{/each}}
+            {{/each}}
+        {{/if}} --}}
+
+        <table id="ivRecords" class="hover order-column" >
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    {{#unless userType}}
+                    <th>By</th>
+                    {{/unless}}
+                    <th>Feeds</th>
+                    <th>Amount</th>
+                    <th>Water for flush</th>
+                    <th>Comments</th>
+                    {{!-- {{#unless userType}}
+                    <th>Delete</th>
+                    {{/unless}} --}}
+                </tr>
+            </thead>
+
+            <tbody>
+            {{!-- {{#if finalObj}} --}}
+            {{#if newOtherScheduleFeed}}
+               <tr style="height: 60px">
+                    {{#each newOtherScheduleFeed }}
+                        {{!-- {{#each this}} --}}
+                            {{#unless ../userType}}
+                                    <td>{{date}}</td>
+                                {{else}}
+                                    <td>
+                                    {{#ifCond ../currentUserType 'student'}}
+                                            <a href="/student/ScheduleFeeding/{{../recordID}}/{{scheduleID}}/{{by}}">{{date}}</a>
+                                        {{else}}
+                                            {{date}}
+                                    {{/ifCond}}                             
+                                    </td>
+                            {{/unless}}   
+                    <td>{{time}}</td>
+
+                    {{#unless ../userType}}
+                        <td>{{by}}</td>
+                    {{/unless}}
+
+                    <td>{{scheduleFeed}}</td>
+                    <td>{{scheduleAmt}}</td>
+                    <td>{{scheduleFlush}}</td>
+                    <td>{{schedcomments}}</td>
+                        
+                </tr>
+                {{/each}}
+                {{else}}
+                {{#unless userType}}
+                    <p id="noRecord">Students have not created any Schedule records yet</p>
+                {{else}}
+                    <p id="noRecord">You have not created any Schedule records yet</p>
+                {{/unless}}
+            {{/if}}
+            </tbody>
+        </table>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col s12 m8"></div>
+    </div>
+
+    {{#if editSchedule}} {{!-- students can create and edit the schedule, lecturer can only see --}}
+        {{#unless userType}}
+        {{!-- if lecturer, you cant edit --}}
+        {{else}}
+        <form action="/student/edit-schedule/{{recordID}}/{{editSchedule.scheduleID}}/{{editSchedule.by}}?_method=PUT" method="POST" id="editSchedule">
+        {{/unless}}
+    {{else}}
+    {{!-- <input type="hidden" name="_method" value="PUT"> --}}
+        {{#unless userType}}
+        {{!-- if lecturer, you cant add --}} 
+        {{else}}
+            <form action="/student/add-schedule/{{recordID}}" method="POST" id="addSchedule">
+        {{/unless}}
+    {{/if}}
+        <div class="card purple lighten-5">
+            <div class="card-content">
+                <div id="ivInfo">
+                    <span class="purple-text darken-2">Schedule</span>
+
+                    <div class="row">
+                        <div class="col s12 m4 input-field">
+                            <input id="dateSchedule" type="text" class="datepicker" name="dateSchedule" value="{{editSchedule.date}}" required>
+                            <label for="dateSchedule">Date</label>
+                            <span class="helper-text">dd/mm/yyyy</span>
+                        </div>
+
+                        <div class="col s12 m4 input-field">
+                            <input id="timeSchedule" type="text" class="timepicker" name="timeSchedule" value="{{editSchedule.time}}" required>
+                            <label for="timeSchedule">Time</label>
+                            <span class="helper-text">hh:ss</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m4 input-field">
+                            <select id="scheduleFeed" name="scheduleFeed">
+                                <option value="ensure">Ensure</option>
+                                <option value="Ensure Life">Ensure Life</option>                                
+                                <option value="Ensure Plus">Ensure Plus</option>
+                                <option value="Isocal">Isocal</option>
+                                <option value="Resource Support">Resource Support</option>
+                                <option value="Resource 2.0"> Resource 2.0</option>
+                                <option value="Glucerna">Glucerna</option>
+                                <option value="Nepro">Nepro</option>
+                                <option value="Suplena">Suplen</option>
+                                <option value="Pulmocare">Pulmocare</option>
+                                <option value="Jevity">Jevity</option>                                                                
+                                <option value="Oxepa">Oxepa</option>
+                                <option value="Prosure">Prosure</option>
+                                <option value="Propass">Propass</option>
+                            </select>
+                                <label for="scheduleFeed">Feeds</label>
+                        </div>
+                                
+                        <div class="col s12 m4 input-field">
+                            <input id="scheduleAmt" type="number" name="scheduleAmt" value="{{editSchedule.scheduleAmt}}">
+                            <label for="scheduleAmt">Amount</label>
+                            <span class="helper-text"></span>
+                        </div>
+                    
+                        <div class="col s12 m4 input-field">
+                            <input id="scheduleFlush" type="number" name="scheduleFlush" value="{{editSchedule.scheduleFlush}}">
+                            <label for="scheduleFlush">Water for Flush (ml)</label>
+                            <span class="helper-text"></span>
+                        </div>
+                        <div class="col s12 m4 input-field">
+                            <input id="schedcomments" type="text" name="schedcomments" value="{{editSchedule.schedcomments}}">
+                            <label for="schedcomments">Comments</label>
+                            <span class="helper-text"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="row">
+
+        <div class="col s12 m8"></div>
+
+        <div class="col s12 m4">
+            {{#unless userType}}
+            {{!-- lecturer cant add or edit schedule, they can only view ye --}}
+            {{else}}
+                {{#if editSchedule}}
+                    <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="editSchedule">Save Changes
+                {{else}}
+                    <button class="btn waves-effect waves-light saveButton" style="width: 150px; float:right;" type="submit" form="addSchedule">Save
+                    <i class="material-icons right">send</i>
+                {{/if}}
+            {{/unless}}
+            </button>
+        </div>
+    </div>
+</div>
+{{/unless}}
+{{!-- Schedule code ends here --}}
+
+<script
+		src="https://code.jquery.com/jquery-3.3.1.min.js"
+		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+		crossorigin="anonymous">
+</script>
+
+<script>
+    //need this for tabs ya
+    $(document).ready(() => {
+        $('.tabs').tabs();
+    })
+
+        document.addEventListener('DOMContentLoaded', () => {
+        //Feed
+        const dateFeeding = document.querySelector('#dateFeeding');
+        const timeFeeding = document.querySelector('#timeFeeding');
+        const typeofFormula = document.querySelector('#typeofFormula');
+        const enteralFeed = document.querySelector('#enteralFeed');
+
+        //Schedule
+        const dateSchedule = document.querySelector('#dateSchedule');
+        const timeSchedule = document.querySelector('#timeSchedule');
+        const scheduleFeed = document.querySelector('#scheduleFeed');
+        const selectUser = document.querySelector('#selectUser');
+
+        //Img
+        const elems = document.querySelectorAll('.materialboxed');
+        const instances = M.Materialbox.init(elems, {});
+
+        //Feeding Instances
+                M.Datepicker.init(dateFeeding, {
+                    maxDate: new Date(),
+                    format: 'dd/mm/yyyy',
+                    disableWeekends: true
+                });
+                M.Timepicker.init(timeFeeding, {
+                    twelveHour: false,
+                    showClearBtn: true
+                });
+
+                M.FormSelect.init(typeofFormula, {
+                    
+                })
+                M.FormSelect.init(enteralFeed, {
+                    
+                })
+
+        //Schedule Instances
+                M.Datepicker.init(dateSchedule, {
+                    maxDate: new Date(),
+                    format: 'dd/mm/yyyy',
+                    disableWeekends: true
+                });
+                M.Timepicker.init(timeSchedule, {
+                    twelveHour: false,
+                    showClearBtn: true
+                });
+
+                M.FormSelect.init(scheduleFeed, {
+                    
+                })
+                M.FormSelect.init(selectUser, {
+            
+                })    
+          })      
+
+
+// display students who has created their schedule
+//{{#if newFeeding}}
+//    document.getElementById('tab0').className += " active";
+//{{/if}}
+{{#if newOtherScheduleFeed}}
+    document.getElementById('schedtab').className += " active";
+{{/if}}
+
+    {{#if studentName}} 
+        {{#each studentName}}
+        // ** CHANGE HERE: (if want deploy) teehee 
+        //$("#selectUser").append("<option value='https://composition.sit.nyp.edu.sg/master/FeedingRegime/{{by}}'>{{by}}</option>");
+        //$("#selectUser").append("<option value='https://localhost/master/FeedingRegime/{{by}}'>{{by}}</option>"); 
+        document.getElementById('schedtab').className += " active";
+        {{/each}}
+    {{/if}} 
+    
+     $('#selectUser').change(function(){ 
+        window.location.href = $(this).val();
+        document.getElementById('schedtab').className += " active";
+        console.log('beech skskskskksksksksks');
+    });
+    // ** CHANGE HERE: (if want deploy) teehee 
+    {{#if name}}
+        //document.getElementById("selectUser").value = "https://composition.sit.nyp.edu.sg/master/FeedingRegime/{{by}}";
+        // https://localhost.com
+        //document.getElementById("selectUser").value = "https://localhost/master/FeedingRegime/{{by}}";
+        document.getElementById('tab1').className += " active";
+    {{/if}}
+
+    {{#if editFeeding}}
+        document.getElementById('typeofFormula').value = "{{editFeeding.typeofFormula}}";
+        document.getElementById('enteralFeed').value = "{{editFeeding.enteralFeed}}";
+        document.getElementById('schedtab').className += " disabled";
+        document.getElementById('tab0').className += " active";
+    {{/if}}
+
+    {{#if editSchedule}}
+        document.getElementById('scheduleFeed').value = "{{editSchedule.scheduleFeed}}";
+        document.getElementById('feedtab').className += " disabled";
+        document.getElementById('tab1').className += " active";
+        
+    {{/if}}
+ 
+
+    // modal
+    document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.modal');
+        var instances = M.Modal.init(elems, {});
+    });
+    // for lecturer who view the students record, this function hides the save button :)
+    if ("{{currentUserType}}" == "staff")
+    {
+        $(".saveButton").hide();
+    }
+    else
+    {
+        $(".saveButton").show();
+    }
+
+    // ** CHANGE HERE: (if want deploy) teehee 
+  /* $("#tab0").on("click", function () {
+       if ("{{currentUserType}}" == "staff")
+    {
+        window.location.replace("https://localhost/student/FeedingRegime/{{recordID}}");
+        $(".saveButton").hide();
+    }
+    else
+    {
+        $(".saveButton").show();
+    }
+        window.location.replace("https://localhost/master/FeedingRegime");
+    //window.location.replace("https://composition.sit.nyp.edu.sg/master/FeedingRegime");
+
+});*/
+ </script>
