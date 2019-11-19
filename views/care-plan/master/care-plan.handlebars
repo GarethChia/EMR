@@ -193,8 +193,8 @@
     {{#if studentCarePlanName}} 
         {{#each studentCarePlanName}}
         // ** CHANGE HERE:
-        //$("#selectUser").append("<option value='https://composition.sit.nyp.edu.sg/master/CarePlan/{{createdBy}}'>{{createdBy}}</option>");
-        $("#selectUser").append("<option value='https://localhost/master/CarePlan/{{createdBy}}'>{{createdBy}}</option>"); 
+        $("#selectUser").append("<option value='https://composition.sit.nyp.edu.sg/master/CarePlan/{{createdBy}}'>{{createdBy}}</option>");
+        //$("#selectUser").append("<option value='https://localhost/master/CarePlan/{{createdBy}}'>{{createdBy}}</option>"); 
         {{/each}}
     {{/if}} 
     
@@ -203,9 +203,9 @@
     });
     // ** CHANGE HERE:
     {{#if name}}
-        //document.getElementById("selectUser").value = "https://composition.sit.nyp.edu.sg/master/CarePlan/{{name}}";
+        document.getElementById("selectUser").value = "https://composition.sit.nyp.edu.sg/master/CarePlan/{{name}}";
         // https://localhost.com
-        document.getElementById("selectUser").value = "https://localhost/master/CarePlan/{{name}}";
+        //document.getElementById("selectUser").value = "https://localhost/master/CarePlan/{{name}}";
     {{/if}}
 
     {{#if editCarePlan}}
