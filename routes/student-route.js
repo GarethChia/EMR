@@ -4341,7 +4341,7 @@ router.get('/DischargePlanning/:recordID', ensureAuthenticated, (req, res) => {
 			let appointmentFlow = Object.assign([], newAppointment);
 
 			dischargePlanningCount = -1;
-			appointmentCount = -1;
+			//appointmentCount = -1;
 
 			dischargeplanningnoRecord = 'No existing record';
 
@@ -4352,13 +4352,25 @@ router.get('/DischargePlanning/:recordID', ensureAuthenticated, (req, res) => {
 				}
 			});
 
-			newAppointment.forEach(appointment => {
-				if (!(dischargeplanningsample.includes(appointment.datetime))){
-					dischargeplanningsample.push(appointment.datetime);
-					dischargeplanningsampleDate.push(appointment.date);
-				}
-			});
+			// newAppointment.forEach(appointment => {
+			// 	if (!(dischargeplanningsample.includes(appointment.datetime))){
+			// 		dischargeplanningsample.push(appointment.datetime);
+			// 		dischargeplanningsampleDate.push(appointment.date);
+			// 	}
+			// });
 
+			let appointmentObj = {}; // sorting appointment based on dates
+			
+      		appointmentFlow.forEach((element) => {
+        		const date = element.datetime.split(' ')[0];
+				if (appointmentObj[date]) {
+				
+					appointmentObj[date].push(element);
+				} else {
+					appointmentObj[date] = [element];
+				}
+      		})
+			console.log(JSON.stringify(appointmentObj));
 				
 			dischargeplanningsample.sort();
 			dischargeplanningsampleDate.sort();
@@ -4372,9 +4384,9 @@ router.get('/DischargePlanning/:recordID', ensureAuthenticated, (req, res) => {
 					dischargePlanningCount++;
 				}
 
-				if (appointmentCount !== (appointmentFlow.length - 1)) {
-					appointmentCount++;
-				}	
+				// if (appointmentCount !== (appointmentFlow.length - 1)) {
+				// 	appointmentCount++;
+				// }	
 
 				//Insert empty data when value doesnt match
 				//Count here does the index count of flow array
@@ -4391,27 +4403,28 @@ router.get('/DischargePlanning/:recordID', ensureAuthenticated, (req, res) => {
 					dischargePlanningFlow.push({datetime: '', dischargePlan: dischargeplanningnoRecord});
 				}
 
-				if(appointmentFlow !='') 
-				{
-					if (dischargeplanningsample[i] < appointmentFlow[appointmentCount].datetime) {
-						appointmentFlow.splice(appointmentCount, 0, {datetime: ''});
-					} else if (dischargeplanningsample[i] > appointmentFlow[appointmentCount].datetime) {
-						appointmentFlow.splice(appointmentCount + 1, 0, {datetime: ''});
-					}
-				} 
-				else
-				{
-					appointmentFlow.push({datetime: '', clinic: dischargeplanningnoRecord});
-				}
+				// if(appointmentFlow !='') 
+				// {
+				// 	if (dischargeplanningsample[i] < appointmentFlow[appointmentCount].datetime) {
+				// 		appointmentFlow.splice(appointmentCount, 0, {datetime: ''});
+				// 	} else if (dischargeplanningsample[i] > appointmentFlow[appointmentCount].datetime) {
+				// 		appointmentFlow.splice(appointmentCount + 1, 0, {datetime: ''});
+				// 	}
+				// } 
+				// else
+				// {
+				// 	appointmentFlow.push({datetime: '', clinic: dischargeplanningnoRecord});
+				// }
 
 			};
 
 			res.render('discharge-planning/student/discharge-planning', {
 				dischargePlanningdateVal: dischargeplanningsample,
 				dischargePlanningFlow: dischargePlanningFlow,
-				appointmentFlow: appointmentFlow,
+				// appointmentFlow: appointmentFlow,
 				newDischargePlanning: newDischargePlanning,
 				newAppointment: newAppointment,
+				appointmentObj: appointmentObj,
 				patient: req.session.patient,
 				recordID: req.params.recordID,
 				userType: userType,
