@@ -3206,8 +3206,8 @@ router.get('/neuro/:recordID', ensureAuthenticated, (req, res) => {
 							//Counter for empty data
 							//.length here refers to last index of the array
 							if (neuroCount !== (neuroFlow.length - 1)) { // until it gets to 2
-								console.log("neuroCount: "+neuroCount);
-								console.log("neuroFlow.length: "+ (neuroFlow.length - 1));
+								//console.log("neuroCount: "+neuroCount);
+								//console.log("neuroFlow.length: "+ (neuroFlow.length - 1));
 								neuroCount++;
 								
 							}
@@ -4069,8 +4069,8 @@ router.get('/FeedingRegime/:recordID', ensureAuthenticated, (req, res) => {
 				//Counter for empty data
 				//.length here refers to last index of the array
 				if (schedCount !== (finalDate.length - 1)) {
-					console.log("Schedule count: " + schedCount);
-					console.log("Schedule Length: " + (finalDate));
+					//console.log("Schedule count: " + schedCount);
+					//console.log("Schedule Length: " + (finalDate));
 					schedCount++;
 				}
 				if(schedFlow != '') 
@@ -4094,7 +4094,7 @@ router.get('/FeedingRegime/:recordID', ensureAuthenticated, (req, res) => {
 			{
 				userType = 'student';
 			}
-			console.log("Schedule Date Value: " + schedsampleDate);//schedsample is date and time
+			//console.log("Schedule Date Value: " + schedsampleDate);//schedsample is date and time
 			// console.log("Schedule Flow:"+ schedFlow);//schedFlow is the records 
 			res.render('charts/master/charts-feeding-regime', {
 			
@@ -4134,7 +4134,7 @@ router.get('/FeedingRegime/:recordID/:feedID/:name', ensureAuthenticated, (req,r
 						MasterFeedingRegime.findOne({ feedID: req.params.feedID })
 						.then(editFeeding =>{
 							
-							console.log("Edit Feeding: "+ editFeeding);
+							//console.log("Edit Feeding: "+ editFeeding);
 
 							var name = req.params.name;
 							res.render('charts/master/charts-feeding-regime',{
