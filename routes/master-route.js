@@ -3360,7 +3360,6 @@ router.get('/DischargePlanning', ensureAuthenticated, ensureAuthorised, (req, re
 				}
 			});*/
 
-			//=================================================
 			let appointmentObj = {}; // sorting appointment based on dates
 			
       		appointmentFlow.forEach((element) => {
@@ -3373,8 +3372,6 @@ router.get('/DischargePlanning', ensureAuthenticated, ensureAuthorised, (req, re
 				}
       		})
 			console.log(JSON.stringify(appointmentObj));
-
-			//=================================================
 				
 			dischargeplanningsample.sort();
 			dischargeplanningsampleDate.sort();
