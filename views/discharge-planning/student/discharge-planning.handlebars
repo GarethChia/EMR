@@ -187,8 +187,8 @@
                 {{/each}}
             </tr>
             <tr>
-                <th width="10%" rowspan="5">Appointment</th>
-                {{#each appointmentFlow}}
+                <th width="10%" rowspan="5">Follow-up appointment</th>
+                {{!-- {{#each appointmentFlow}}
                 <td>
                     {{#ifCond followUpAppointment 'Others (Specify)'}}
                         {{followUpAppointment}}: {{followUpAppointmentSpecify}}
@@ -196,12 +196,23 @@
                         {{followUpAppointment}}
                     {{/ifCond}}
                 </td>
+                {{/each}} --}}
+            </tr>
+            {{!-- <tr>
+                {{#each appointmentFlow}}
+                <td>
+                    {{#if clinic}}
+                        Clinic {{clinic}}
+                    {{/if}}
+                </td>
                 {{/each}}
             </tr>
             <tr>
                 {{#each appointmentFlow}}
                 <td>
-                    {{clinic}} {{nameOfDoctor}}
+                    {{#if nameOfDoctor}}
+                        Dr {{nameOfDoctor}}
+                    {{/if}}
                 </td>
                 {{/each}}
             </tr>
@@ -209,9 +220,9 @@
                 {{#each appointmentFlow}}
                 <td>
                     {{#ifCond memoGiven true}} 
-                        Memo Given - Yes
+                        Memo given
                     {{else ifCond memoGiven false}}
-                        Memo Given - No
+                        Memo not given
                     {{/ifCond}}
                 </td>
                 {{/each}}
@@ -222,6 +233,50 @@
                     {{remarks}}
                 </td>
                 {{/each}}
+            </tr> --}}
+            <tr>
+                {{#if appointmentObj}}
+                    {{#each appointmentObj}}
+                        <th style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);border-top: 1px solid rgba(0, 0, 0, 0.12);">{{@key}}</th>
+                    {{/each}}
+                {{/if}}
+            </tr>
+            <tr>
+                {{#if appointmentObj}}
+                    {{#each appointmentObj}}
+                        <td style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);">
+                        {{#each this}}
+                            <p>{{date}} {{time}}</p>
+                            <p>
+                                {{#ifCond followUpAppointment 'Others (Specify)'}}
+                                    {{followUpAppointment}}: {{followUpAppointmentSpecify}}
+                                {{else}}
+                                    {{followUpAppointment}}
+                                {{/ifCond}}
+                            </p>
+                            <p>
+                                {{#if clinic}}
+                                    Clinic {{clinic}}
+                                {{/if}}
+                            </p>
+                            <p>
+                                {{#if nameOfDoctor}}
+                                    Dr {{nameOfDoctor}}
+                                {{/if}}
+                            </p>
+                            <p>
+                                {{#ifCond memoGiven true}} 
+                                    Memo given
+                                {{else ifCond memoGiven false}}
+                                    Memo not given
+                                {{/ifCond}}
+                            </p>
+                            <p>{{remarks}}</p>
+                            <br/>
+                        {{/each}}
+                        </td>
+                    {{/each}}
+                {{/if}}
             </tr>
         </table>
     </div>
@@ -733,9 +788,9 @@
                         <td>{{nameOfDoctor}}</td>
                         <td>
                             {{#ifCond memoGiven true}} 
-                                Yes
+                                Memo given
                             {{else ifCond memoGiven false}}
-                                No
+                                Memo not given
                             {{/ifCond}}
                         </td>
                         <td>{{remarks}}</td>
@@ -906,9 +961,9 @@
         const appointmentTime1 = document.querySelector('#appointmentTime1');
 
         M.Datepicker.init(dateDischargePlanning, {
-            maxDate: new Date(),
+            //maxDate: new Date(),
             format: 'dd/mm/yyyy',
-            disableWeekends: true
+            //disableWeekends: true
         });
         M.Timepicker.init(timeDischargePlanning, {
             twelveHour: false,
@@ -940,9 +995,9 @@
         })
 
         M.Datepicker.init(appointmentDate1, {
-            maxDate: new Date(),
+            //maxDate: new Date(),
             format: 'dd/mm/yyyy',
-            disableWeekends: true
+            //disableWeekends: true
         });
 
         M.Timepicker.init(appointmentTime1, {

@@ -31,7 +31,7 @@
             {{else}}
             <li class="tab col s2  offset-s4" id="feedtab"><a class="purple-text text-darken-3" id="tab0" href="#feedingregime">Feeding Regime</a></li>
 
-            <li class="tab col s2" id="schedtab"><a class="purple-text text-darken-3" id="tab1" href="#schedule">Schedule</a></li>
+            <li class="tab col s2" id="schedtab"><a class="purple-text text-darken-3" id="tab1" href="#schedule">Feeding Schedule</a></li>
 
             {{/unless}}
         </div>
@@ -222,7 +222,7 @@
             </div>
         </form> --}}
 
-<div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">Schedule</div>
+<div class="card-panel purple darken-3 white-text" style="padding:5px; font-size: 20px">Feeding Schedule</div>
     <div style="overflow-x:auto; max-height: 16em;">
         {{!-- {{#if finalObj}}
             {{#each finalObj}}
@@ -243,8 +243,8 @@
                     <th>By</th>
                     {{/unless}}
                     <th>Feeds</th>
-                    <th>Amount</th>
-                    <th>Water for flush</th>
+                    <th>Amount (ml)</th>
+                    <th>Water for flush (ml)</th>
                     <th>Comments</th>
                     {{!-- {{#unless userType}}
                     <th>Delete</th>
@@ -276,8 +276,8 @@
                     {{/unless}}
 
                     <td>{{scheduleFeed}}</td>
-                    <td>{{scheduleAmt}}</td>
-                    <td>{{scheduleFlush}}</td>
+                    <td>{{scheduleAmt}} ml</td>
+                    <td>{{scheduleFlush}} ml</td>
                     <td>{{schedcomments}}</td>
                         
                 </tr>
@@ -315,7 +315,7 @@
         <div class="card purple lighten-5">
             <div class="card-content">
                 <div id="ivInfo">
-                    <span class="purple-text darken-2">Schedule</span>
+                    <span class="purple-text darken-2">Feeding Schedule</span>
 
                     <div class="row">
                         <div class="col s12 m4 input-field">
@@ -353,7 +353,7 @@
                                 
                         <div class="col s12 m4 input-field">
                             <input id="scheduleAmt" type="number" name="scheduleAmt" value="{{editSchedule.scheduleAmt}}">
-                            <label for="scheduleAmt">Amount</label>
+                            <label for="scheduleAmt">Amount (ml)</label>
                             <span class="helper-text"></span>
                         </div>
                     

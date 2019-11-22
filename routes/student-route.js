@@ -3206,8 +3206,8 @@ router.get('/neuro/:recordID', ensureAuthenticated, (req, res) => {
 							//Counter for empty data
 							//.length here refers to last index of the array
 							if (neuroCount !== (neuroFlow.length - 1)) { // until it gets to 2
-								console.log("neuroCount: "+neuroCount);
-								console.log("neuroFlow.length: "+ (neuroFlow.length - 1));
+								//console.log("neuroCount: "+neuroCount);
+								//console.log("neuroFlow.length: "+ (neuroFlow.length - 1));
 								neuroCount++;
 								
 							}
@@ -4035,7 +4035,7 @@ router.get('/FeedingRegime/:recordID', ensureAuthenticated, (req, res) => {
 	.sort({'datetime': 1}).then(newFeeding => {
 		// MasterScheduleFeed.findOne({ masterpatientID: req.session.patient.patientID})
 		MasterScheduleFeed.find({ masterpatientID: req.session.patient.patientID, patientID: req.params.recordID})
-		.sort({'datetime': -1 }).then(newOtherScheduleFeed =>{
+		.sort({'date': -1, 'time': 1}).then(newOtherScheduleFeed =>{
 
 			var schedFlowLength = 0;
 			
@@ -4069,8 +4069,8 @@ router.get('/FeedingRegime/:recordID', ensureAuthenticated, (req, res) => {
 				//Counter for empty data
 				//.length here refers to last index of the array
 				if (schedCount !== (finalDate.length - 1)) {
-					console.log("Schedule count: " + schedCount);
-					console.log("Schedule Length: " + (finalDate));
+					//console.log("Schedule count: " + schedCount);
+					//console.log("Schedule Length: " + (finalDate));
 					schedCount++;
 				}
 				if(schedFlow != '') 
@@ -4094,7 +4094,7 @@ router.get('/FeedingRegime/:recordID', ensureAuthenticated, (req, res) => {
 			{
 				userType = 'student';
 			}
-			console.log("Schedule Date Value: " + schedsampleDate);//schedsample is date and time
+			//console.log("Schedule Date Value: " + schedsampleDate);//schedsample is date and time
 			// console.log("Schedule Flow:"+ schedFlow);//schedFlow is the records 
 			res.render('charts/master/charts-feeding-regime', {
 			
@@ -4134,7 +4134,7 @@ router.get('/FeedingRegime/:recordID/:feedID/:name', ensureAuthenticated, (req,r
 						MasterFeedingRegime.findOne({ feedID: req.params.feedID })
 						.then(editFeeding =>{
 							
-							console.log("Edit Feeding: "+ editFeeding);
+							//console.log("Edit Feeding: "+ editFeeding);
 
 							var name = req.params.name;
 							res.render('charts/master/charts-feeding-regime',{
@@ -4243,7 +4243,7 @@ router.get('/ScheduleFeeding/:recordID/:scheduleID/:name', ensureAuthenticated, 
 			.then(patientStudent => {
 					
 					MasterScheduleFeed.find({  masterpatientID: req.session.patient.patientID, user: patientStudent.user})
-					.sort({'datetime': -1}).then(newOtherScheduleFeed =>{
+					.sort({'date': -1, 'time': 1}).then(newOtherScheduleFeed =>{
 						
 						MasterScheduleFeed.findOne({ scheduleID: req.params.scheduleID })
 						.then(editSchedule =>{
@@ -4275,7 +4275,7 @@ router.get('/ScheduleFeeding/:recordID/:scheduleID/:name', ensureAuthenticated, 
 				PatientStudentModel.findOne({recordID: req.params.recordID})
 				.then(patientStudent => {
 				MasterScheduleFeed.find({ masterpatientID: req.session.patient.patientID, patientID: req.params.recordID})
-				.sort({'datetime': -1 }).then(newOtherScheduleFeed =>{
+				.sort({'date': -1, 'time': 1}).then(newOtherScheduleFeed =>{
 					MasterScheduleFeed.findOne({ scheduleID: req.params.scheduleID, patientID: req.params.recordID })
 					.then(editSchedule =>{
 					
@@ -4341,7 +4341,7 @@ router.get('/DischargePlanning/:recordID', ensureAuthenticated, (req, res) => {
 			let appointmentFlow = Object.assign([], newAppointment);
 
 			dischargePlanningCount = -1;
-			appointmentCount = -1;
+			//appointmentCount = -1;
 
 			dischargeplanningnoRecord = 'No existing record';
 
@@ -4352,13 +4352,25 @@ router.get('/DischargePlanning/:recordID', ensureAuthenticated, (req, res) => {
 				}
 			});
 
-			newAppointment.forEach(appointment => {
-				if (!(dischargeplanningsample.includes(appointment.datetime))){
-					dischargeplanningsample.push(appointment.datetime);
-					dischargeplanningsampleDate.push(appointment.date);
-				}
-			});
+			// newAppointment.forEach(appointment => {
+			// 	if (!(dischargeplanningsample.includes(appointment.datetime))){
+			// 		dischargeplanningsample.push(appointment.datetime);
+			// 		dischargeplanningsampleDate.push(appointment.date);
+			// 	}
+			// });
 
+			let appointmentObj = {}; // sorting appointment based on dates
+			
+      		appointmentFlow.forEach((element) => {
+        		const date = element.datetime.split(' ')[0];
+				if (appointmentObj[date]) {
+				
+					appointmentObj[date].push(element);
+				} else {
+					appointmentObj[date] = [element];
+				}
+      		})
+			console.log(JSON.stringify(appointmentObj));
 				
 			dischargeplanningsample.sort();
 			dischargeplanningsampleDate.sort();
@@ -4372,9 +4384,9 @@ router.get('/DischargePlanning/:recordID', ensureAuthenticated, (req, res) => {
 					dischargePlanningCount++;
 				}
 
-				if (appointmentCount !== (appointmentFlow.length - 1)) {
-					appointmentCount++;
-				}	
+				// if (appointmentCount !== (appointmentFlow.length - 1)) {
+				// 	appointmentCount++;
+				// }	
 
 				//Insert empty data when value doesnt match
 				//Count here does the index count of flow array
@@ -4391,27 +4403,28 @@ router.get('/DischargePlanning/:recordID', ensureAuthenticated, (req, res) => {
 					dischargePlanningFlow.push({datetime: '', dischargePlan: dischargeplanningnoRecord});
 				}
 
-				if(appointmentFlow !='') 
-				{
-					if (dischargeplanningsample[i] < appointmentFlow[appointmentCount].datetime) {
-						appointmentFlow.splice(appointmentCount, 0, {datetime: ''});
-					} else if (dischargeplanningsample[i] > appointmentFlow[appointmentCount].datetime) {
-						appointmentFlow.splice(appointmentCount + 1, 0, {datetime: ''});
-					}
-				} 
-				else
-				{
-					appointmentFlow.push({datetime: '', clinic: dischargeplanningnoRecord});
-				}
+				// if(appointmentFlow !='') 
+				// {
+				// 	if (dischargeplanningsample[i] < appointmentFlow[appointmentCount].datetime) {
+				// 		appointmentFlow.splice(appointmentCount, 0, {datetime: ''});
+				// 	} else if (dischargeplanningsample[i] > appointmentFlow[appointmentCount].datetime) {
+				// 		appointmentFlow.splice(appointmentCount + 1, 0, {datetime: ''});
+				// 	}
+				// } 
+				// else
+				// {
+				// 	appointmentFlow.push({datetime: '', clinic: dischargeplanningnoRecord});
+				// }
 
 			};
 
 			res.render('discharge-planning/student/discharge-planning', {
 				dischargePlanningdateVal: dischargeplanningsample,
 				dischargePlanningFlow: dischargePlanningFlow,
-				appointmentFlow: appointmentFlow,
+				// appointmentFlow: appointmentFlow,
 				newDischargePlanning: newDischargePlanning,
 				newAppointment: newAppointment,
+				appointmentObj: appointmentObj,
 				patient: req.session.patient,
 				recordID: req.params.recordID,
 				userType: userType,
